@@ -135,7 +135,7 @@ export function RequestTable({
       scrollLabel="Cuộn bảng yêu cầu"
       getRowKey={(request) => request.id}
       getRowHref={getRequestHref}
-      className="min-w-[88rem]"
+      className="min-w-352"
     />
   );
 }

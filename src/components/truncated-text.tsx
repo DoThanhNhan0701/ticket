@@ -11,7 +11,7 @@ export function TruncatedText({
       className={cn(
         "min-w-0",
         lines === 2
-          ? "line-clamp-2 whitespace-normal [overflow-wrap:anywhere]"
+          ? "line-clamp-2 whitespace-normal wrap-anywhere"
           : "block truncate",
         className,
       )}

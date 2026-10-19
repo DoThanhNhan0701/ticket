@@ -93,7 +93,7 @@ export function DataSearch({
   return (
     <div
       className={cn(
-        "grid min-w-0 flex-1 items-center gap-2 sm:flex sm:min-w-[28rem] sm:max-w-3xl",
+        "grid min-w-0 flex-1 items-center gap-2 sm:flex sm:min-w-md sm:max-w-3xl",
         actions
           ? "grid-cols-[minmax(0,1fr)_auto_auto]"
           : "grid-cols-[minmax(0,1fr)_auto]",
