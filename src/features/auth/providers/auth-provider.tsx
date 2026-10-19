@@ -6,15 +6,21 @@ import {
   getUserPermissionRequest,
 } from "@/features/auth/api/auth-api";
 import type { UserPermissionResponse } from "@/features/auth/types";
-import { getCookie, setCookie } from "@/lib/cookies";
+import { getCookie } from "@/lib/cookies";
 import { getStorageItem, setStorageItem } from "@/lib/storage";
 import {
   COOKIE_TOKEN_KEY,
   COOKIE_REFRESH_KEY,
   STORAGE_USERNAME_KEY,
   STORAGE_USER_PERMISSION_KEY,
+  AUTH_SESSION_CHANGED_EVENT,
 } from "@/constants";
-import { clearAuthSession } from "@/lib/auth-session";
+import {
+  clearAuthSession,
+  getAuthSessionVersion,
+  startAuthSession,
+} from "@/lib/auth-session";
+import { ApiError } from "@/lib/api/api-error";
 import { AuthContext } from "../context/auth-context";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -41,16 +47,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserPermission =
     async (): Promise<UserPermissionResponse | null> => {
+      const version = getAuthSessionVersion();
       try {
         const permData = await getUserPermissionRequest();
+        if (getAuthSessionVersion() !== version) return null;
         applyUserPermission(permData);
         return permData;
       } catch (err) {
-        resetAuthState();
         console.error("Failed to fetch user permissions:", err);
         return null;
       }
     };
+
+  useEffect(() => {
+    const syncSession = () => {
+      const savedToken = getCookie(COOKIE_TOKEN_KEY);
+      // A new sign-in still needs to finish loading its account information.
+      setToken((current) => (current ? (savedToken ?? null) : null));
+      if (!savedToken) {
+        setUsername("");
+        setUserPermission(null);
+      }
+    };
+    window.addEventListener(AUTH_SESSION_CHANGED_EVENT, syncSession);
+    return () =>
+      window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, syncSession);
+  }, []);
 
   useEffect(() => {
     if (isInitializedRef.current) return;
@@ -58,18 +80,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const initAuth = async () => {
       const savedToken = getCookie(COOKIE_TOKEN_KEY);
+      const savedRefresh = getCookie(COOKIE_REFRESH_KEY);
       const savedUsername = getStorageItem<string>(STORAGE_USERNAME_KEY);
       const savedPermission = getStorageItem<UserPermissionResponse>(
         STORAGE_USER_PERMISSION_KEY,
       );
 
-      if (savedToken) {
-        setToken(savedToken);
+      if (savedToken || savedRefresh) {
+        setToken(savedToken ?? null);
         if (savedUsername) setUsername(savedUsername);
         if (savedPermission) setUserPermission(savedPermission);
 
         // Refresh the Ticket account and permissions on page reload.
         await fetchUserPermission();
+        setToken(getCookie(COOKIE_TOKEN_KEY) ?? null);
       } else {
         clearAuthSession();
       }
@@ -80,16 +104,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginMutation = useMutation({
-    mutationFn: async (vars: { username: string; password: string }) => {
+    mutationFn: async (vars: {
+      username: string;
+      password: string;
+      version: number;
+    }) => {
       const tokens = await loginRequest(vars.username, vars.password);
-      setCookie(COOKIE_TOKEN_KEY, tokens.access);
-      setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+      if (getAuthSessionVersion() !== vars.version) {
+        throw new ApiError("Sign-in was cancelled. Please try again.", 409);
+      }
+      const version = startAuthSession(tokens);
 
       try {
         const permission = await getUserPermissionRequest();
-        return { tokens, permission };
+        if (getAuthSessionVersion() !== version) {
+          throw new ApiError("Sign-in was cancelled. Please try again.", 409);
+        }
+        return {
+          access: getCookie(COOKIE_TOKEN_KEY) ?? tokens.access,
+          permission,
+        };
       } catch (error) {
-        clearAuthSession();
+        if (getAuthSessionVersion() === version) clearAuthSession();
         throw error;
       }
     },
@@ -97,17 +133,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (userVal: string, passVal: string): Promise<boolean> => {
     try {
-      const { tokens, permission } = await loginMutation.mutateAsync({
+      const { access, permission } = await loginMutation.mutateAsync({
         username: userVal.trim(),
         password: passVal,
+        version: getAuthSessionVersion(),
       });
 
       applyUserPermission(permission);
-      setToken(tokens.access);
+      setToken(access);
 
       return true;
     } catch {
-      resetAuthState();
       return false;
     }
   };

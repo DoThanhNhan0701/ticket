@@ -1,17 +1,20 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
+import { HOME_PATH } from "@/constants/auth";
 import { LoadingScreen } from "@/components/loading-screen";
 import { PrivateLayout } from "@/app/layouts/private-layout";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PublicLayout } from "./layouts/public-layout";
+import { workspacePages } from "./navigation";
+import { LegacyPageRedirect } from "./legacy-page-redirect";
 
 const LoginPage = lazy(() =>
   import("@/pages/login").then((m) => ({ default: m.LoginPage })),
 );
-const TicketPage = lazy(() =>
-  import("@/pages/ticket").then((m) => ({ default: m.TicketPage })),
+const WorkspacePage = lazy(() =>
+  import("@/pages/workspace").then((m) => ({ default: m.WorkspacePage })),
 );
 
 export default function App() {
@@ -36,10 +39,26 @@ export default function App() {
           </Route>
 
           <Route element={<PrivateLayout />}>
-            <Route path="/" element={<TicketPage />} />
+            <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
+            {workspacePages.map((page) => (
+              <Route
+                key={page.path}
+                path={page.path}
+                element={<WorkspacePage page={page} />}
+              />
+            ))}
+            {workspacePages.flatMap((page) =>
+              (page.legacyPaths ?? []).map((path) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={<LegacyPageRedirect to={page.path} />}
+                />
+              )),
+            )}
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
         </Routes>
         <Toaster position="top-right" />
       </TooltipProvider>

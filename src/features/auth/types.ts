@@ -14,6 +14,9 @@ export interface TicketUserPermissionResponse {
 }
 
 export interface UserPermissions {
+  can_create?: boolean;
+  can_hr_rec?: boolean;
+  can_cv_interview?: boolean;
   can_accept?: boolean;
   can_process?: boolean;
   can_assign?: boolean;

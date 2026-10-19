@@ -1,32 +1,59 @@
+import { useRef, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LoadingScreen } from "@/components/loading-screen";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { HOME_PATH } from "@/constants/auth";
+import { AppSidebar, MobileSidebar } from "./app-sidebar";
 
 export function PrivateLayout() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const desktopToggleRef = useRef<HTMLButtonElement>(null);
   const { token, isInitializing, username, avatarUrl, logout } =
     useAuthContext();
   if (isInitializing) return <LoadingScreen />;
   if (!token) return <Navigate to="/login" replace />;
 
   return (
-    <div className="app-dashed-background flex h-dvh min-h-0 flex-col bg-background text-foreground">
+    <div className="app-dashed-background flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">
       <header className="h-16 shrink-0 border-b border-border bg-card">
-        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-2 px-3 sm:px-6">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-5">
+        <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.75rem,2vw,1.5rem)]">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex size-11 shrink-0 items-center justify-center">
+              <MobileSidebar desktopToggleRef={desktopToggleRef} />
+              <Button
+                ref={desktopToggleRef}
+                variant="outline"
+                size="icon"
+                className="hidden size-11 lg:inline-flex"
+                aria-label={
+                  sidebarCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"
+                }
+                title={sidebarCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
+                aria-expanded={!sidebarCollapsed}
+                aria-controls="desktop-sidebar"
+                onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+              >
+                {sidebarCollapsed ? (
+                  <PanelLeftOpen className="size-4" aria-hidden="true" />
+                ) : (
+                  <PanelLeftClose className="size-4" aria-hidden="true" />
+                )}
+              </Button>
+            </div>
             <Link
-              to="/"
+              to={HOME_PATH}
               aria-label="Rainscales Ticket home"
               className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              <BrandLogo variant="mark" className="sm:hidden" />
-              <BrandLogo className="hidden h-7 w-40 sm:inline-block" />
+              <BrandLogo className="h-7 w-[clamp(6rem,calc(100vw-14rem),10rem)]" />
             </Link>
-            <div className="flex min-w-0 items-center gap-2 border-l border-border pl-2 sm:pl-5">
+            <div className="flex min-w-0 items-center gap-2 border-l border-border pl-2">
               <UserAvatar name={username} src={avatarUrl} className="h-8 w-8" />
               <span className="hidden max-w-40 truncate text-sm font-medium sm:inline">
                 {username}
@@ -53,9 +80,23 @@ export function PrivateLayout() {
           </nav>
         </div>
       </header>
-      <main className="mx-auto flex min-h-0 w-full max-w-[1600px] flex-1 flex-col overflow-y-auto p-3 sm:p-6">
-        <Outlet />
-      </main>
+      <div className="flex min-h-0 flex-1">
+        <aside
+          id="desktop-sidebar"
+          aria-label="Sidebar Ticket"
+          className={cn(
+            "hidden min-h-0 shrink-0 overflow-hidden border-r border-sidebar-border bg-sidebar transition-[width] duration-200 motion-reduce:transition-none lg:block",
+            sidebarCollapsed ? "w-18" : "w-72",
+          )}
+        >
+          <AppSidebar collapsed={sidebarCollapsed} />
+        </aside>
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-3 sm:p-6">
+          <div className="mx-auto flex min-h-full w-full max-w-[1600px] flex-1 flex-col">
+            <Outlet />
+          </div>
+        </main>
+      </div>
       <footer className="shrink-0 border-t border-border bg-card px-3 py-2 text-center text-xs text-muted-foreground">
         © 2026 Rainscales · Ticket
       </footer>

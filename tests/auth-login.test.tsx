@@ -1,13 +1,14 @@
 // @vitest-environment jsdom
 import {
   cleanup,
+  act,
   fireEvent,
   render,
   screen,
   waitFor,
 } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import App from "@/app/app";
 import { AuthProvider } from "@/features/auth/providers/auth-provider";
@@ -15,6 +16,7 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { clearAuthSession } from "@/lib/auth-session";
 import { deleteCookie, getCookie, setCookie } from "@/lib/cookies";
 import { queryClient } from "@/lib/query-client";
+import { getRequest } from "@/lib/api/client";
 import {
   COOKIE_REFRESH_KEY,
   COOKIE_TOKEN_KEY,
@@ -30,7 +32,7 @@ const account = {
     "Ticket User",
     "https://ticket-api.aiminds.io.vn/media/avatar.png",
   ],
-  userPermission: ["can_accept", "can_report"],
+  userPermission: ["can_create", "can_accept", "can_report"],
   handlingPermission: { support: ["can_reply"] },
   is_handling: true,
   is_admin: false,
@@ -68,10 +70,11 @@ afterEach(() => {
 });
 
 function SessionDetails() {
-  const { userId, avatarUrl, permissions } = useAuthContext();
+  const { pathname } = useLocation();
+  const { token, userId, avatarUrl, permissions } = useAuthContext();
   return (
     <output data-testid="account">
-      {JSON.stringify({ userId, avatarUrl, permissions })}
+      {JSON.stringify({ token, userId, avatarUrl, permissions, pathname })}
     </output>
   );
 }
@@ -113,7 +116,9 @@ it("signs in using the ticketV2 token and account responses", async () => {
   renderApp();
   await submitLogin();
 
-  expect(await screen.findByRole("heading", { name: "Ticket" })).toBeTruthy();
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
   expect(screen.getByText("Ticket User")).toBeTruthy();
   expect(fetchMock).toHaveBeenCalledTimes(2);
   const [loginUrl, loginOptions] = fetchMock.mock.calls[0];
@@ -136,6 +141,9 @@ it("signs in using the ticketV2 token and account responses", async () => {
   expect(localStorage.getItem(STORAGE_USERNAME_KEY)).toBe("Ticket User");
   const details = JSON.parse(screen.getByTestId("account").textContent ?? "{}");
   expect(details.userId).toBe(42);
+  expect(details.pathname).toBe("/requests");
+  expect(screen.queryByText("Bạn chưa có quyền truy cập")).toBeNull();
+  expect(screen.queryByRole("link", { name: "Tổng quan" })).toBeNull();
   expect(details.avatarUrl).toBe(account.infoUser[2]);
   expect(details.permissions).toMatchObject({
     can_accept: true,
@@ -164,10 +172,14 @@ it("keeps sign-in pending until account information has loaded", async () => {
     name: "Authenticating...",
   });
   expect(button.hasAttribute("disabled")).toBe(true);
-  expect(screen.queryByRole("heading", { name: "Ticket" })).toBeNull();
+  expect(
+    screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeNull();
 
   finishAccountRequest(Response.json(account));
-  expect(await screen.findByRole("heading", { name: "Ticket" })).toBeTruthy();
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
 });
 
 it("shows bad credentials and allows the user to retry", async () => {
@@ -189,7 +201,9 @@ it("shows bad credentials and allows the user to retry", async () => {
   expect(fetchMock).toHaveBeenCalledTimes(1);
 
   await submitLogin();
-  expect(await screen.findByRole("heading", { name: "Ticket" })).toBeTruthy();
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
   expect(fetchMock).toHaveBeenCalledTimes(3);
 });
 
@@ -224,10 +238,17 @@ it.each([401, 500])(
       .mockResolvedValueOnce(
         Response.json({ detail: "Account unavailable." }, { status }),
       );
+    if (status === 401) {
+      fetchMock.mockResolvedValueOnce(
+        Response.json({ detail: "Account unavailable." }, { status: 401 }),
+      );
+    }
     renderApp();
     await submitLogin();
     expect(await screen.findByText("Account unavailable.")).toBeTruthy();
-    expect(screen.queryByRole("heading", { name: "Ticket" })).toBeNull();
+    expect(
+      screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+    ).toBeNull();
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
     expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
   },
@@ -262,7 +283,9 @@ it("restores a Ticket session and reloads account information", async () => {
   localStorage.setItem(STORAGE_USERNAME_KEY, "Old name");
   fetchMock.mockResolvedValueOnce(Response.json(account));
   renderApp("/");
-  expect(await screen.findByRole("heading", { name: "Ticket" })).toBeTruthy();
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
   expect(screen.getByText("Ticket User")).toBeTruthy();
   expect(fetchMock).toHaveBeenCalledTimes(1);
   expect(new URL(String(fetchMock.mock.calls[0][0])).pathname).toBe(
@@ -274,7 +297,7 @@ it("signs out and clears Ticket credentials, account information and cached data
   mockSuccessfulLogin();
   renderApp();
   await submitLogin();
-  await screen.findByRole("heading", { name: "Ticket" });
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   queryClient.setQueryData(["private-data"], "cached");
   fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
   expect(
@@ -295,4 +318,136 @@ it("does not reuse a Homepage session for the Ticket API", async () => {
   ).toBeTruthy();
   expect(fetchMock).not.toHaveBeenCalled();
   expect(getCookie("_access_token_homepage")).toBe("homepage-access");
+});
+
+it.each(["network", 500, 403] as const)(
+  "keeps the cached session when account restoration fails with %s",
+  async (failure) => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    setCookie(COOKIE_TOKEN_KEY, tokens.access);
+    setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+    localStorage.setItem(STORAGE_USERNAME_KEY, "Cached User");
+    localStorage.setItem(
+      STORAGE_USER_PERMISSION_KEY,
+      JSON.stringify({
+        username: "Cached User",
+        userId: 42,
+        permission: { can_create: true },
+      }),
+    );
+    queryClient.setQueryData(["private-data"], "cached");
+    if (failure === "network") {
+      fetchMock.mockRejectedValueOnce(new TypeError("Failed to fetch"));
+    } else {
+      fetchMock.mockResolvedValueOnce(
+        Response.json(
+          { detail: "Temporarily unavailable" },
+          { status: failure },
+        ),
+      );
+    }
+    renderApp("/");
+    expect(
+      await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+    ).toBeTruthy();
+    expect(screen.getByText("Cached User")).toBeTruthy();
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+    expect(getCookie(COOKIE_REFRESH_KEY)).toBe(tokens.refresh);
+    expect(queryClient.getQueryData(["private-data"])).toBe("cached");
+    expect(
+      screen.queryByRole("button", { name: "Sign In to Ticket" }),
+    ).toBeNull();
+  },
+);
+
+it("refreshes expired access during restoration and updates the provider token", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  fetchMock
+    .mockResolvedValueOnce(
+      Response.json({ code: "token_not_valid" }, { status: 401 }),
+    )
+    .mockResolvedValueOnce(
+      Response.json({ access: "renewed-access", refresh: "renewed-refresh" }),
+    )
+    .mockResolvedValueOnce(Response.json(account));
+  renderApp("/");
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
+  expect(
+    JSON.parse(screen.getByTestId("account").textContent ?? "{}").token,
+  ).toBe("renewed-access");
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe("renewed-access");
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBe("renewed-refresh");
+  expect(fetchMock).toHaveBeenCalledTimes(3);
+});
+
+it("restores with only a refresh cookie without showing the login form", async () => {
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  fetchMock
+    .mockResolvedValueOnce(Response.json({ access: "renewed-access" }))
+    .mockResolvedValueOnce(Response.json(account));
+  renderApp("/");
+  expect(
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeTruthy();
+  expect(screen.getByText("Ticket User")).toBeTruthy();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe("renewed-access");
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBe(tokens.refresh);
+});
+
+it("returns to login when the stored refresh token is rejected", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  fetchMock
+    .mockResolvedValueOnce(
+      Response.json({ detail: "Expired" }, { status: 401 }),
+    )
+    .mockResolvedValueOnce(
+      Response.json({ code: "token_not_valid" }, { status: 401 }),
+    );
+  renderApp("/");
+  expect(
+    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+  ).toBeTruthy();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
+  expect(localStorage.getItem(STORAGE_USER_PERMISSION_KEY)).toBeNull();
+});
+
+it("does not recreate the session when a refresh finishes after logout", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  let finishRefresh!: (response: Response) => void;
+  fetchMock
+    .mockResolvedValueOnce(Response.json(account))
+    .mockResolvedValueOnce(
+      Response.json({ detail: "Expired" }, { status: 401 }),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise<Response>((resolve) => {
+          finishRefresh = resolve;
+        }),
+    );
+  renderApp("/");
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  const outcome = expect(getRequest("/tickets/")).rejects.toMatchObject({
+    status: 409,
+  });
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
+  fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+  await act(async () => {
+    finishRefresh(
+      Response.json({ access: "late-access", refresh: "late-refresh" }),
+    );
+    await outcome;
+  });
+  expect(
+    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+  ).toBeTruthy();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
 });

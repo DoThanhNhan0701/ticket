@@ -7,17 +7,32 @@ import {
   postWithSlashFallback,
 } from "@/lib/api/client";
 import { getCookie } from "@/lib/cookies";
-import { clearAuthSession } from "@/lib/auth-session";
+import {
+  clearAuthSession,
+  getAuthSessionVersion,
+  updateAuthTokens,
+} from "@/lib/auth-session";
+import { COOKIE_TOKEN_KEY, COOKIE_REFRESH_KEY } from "@/constants/auth";
 import { queryClient } from "@/lib/query-client";
 
 vi.mock("@/lib/cookies", () => ({ getCookie: vi.fn() }));
-vi.mock("@/lib/auth-session", () => ({ clearAuthSession: vi.fn() }));
+vi.mock("@/lib/auth-session", () => ({
+  clearAuthSession: vi.fn(),
+  getAuthSessionVersion: vi.fn(),
+  updateAuthTokens: vi.fn(),
+}));
 vi.mock("@/lib/query-client", () => ({ queryClient: { clear: vi.fn() } }));
 const fetchMock = vi.fn<typeof fetch>();
+const storedCookies = new Map<string, string>();
+let sessionVersion = 0;
 const jsonResponse = (data: unknown, status = 200) =>
   Response.json(data, { status });
 
 beforeEach(() => {
+  fetchMock.mockReset();
+  storedCookies.clear();
+  storedCookies.set(COOKIE_TOKEN_KEY, "test-token");
+  sessionVersion += 1;
   vi.stubGlobal("fetch", fetchMock);
   vi.stubGlobal("window", {
     location: {
@@ -26,7 +41,232 @@ beforeEach(() => {
       href: "",
     },
   });
-  vi.mocked(getCookie).mockReturnValue("test-token");
+  vi.mocked(getCookie).mockImplementation((key) => storedCookies.get(key));
+  vi.mocked(getAuthSessionVersion).mockImplementation(() => sessionVersion);
+  vi.mocked(clearAuthSession).mockImplementation(() => {
+    sessionVersion += 1;
+    storedCookies.clear();
+  });
+  vi.mocked(updateAuthTokens).mockImplementation((tokens, version) => {
+    if (version !== sessionVersion) return false;
+    storedCookies.set(COOKIE_TOKEN_KEY, tokens.access);
+    if (tokens.refresh) storedCookies.set(COOKIE_REFRESH_KEY, tokens.refresh);
+    return true;
+  });
+});
+
+describe("session recovery", () => {
+  it.each([undefined, "rotated-refresh"])(
+    "refreshes an expired token and retries a POST while preserving its body and signal (%s)",
+    async (rotated) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+      fetchMock
+        .mockResolvedValueOnce(jsonResponse({ code: "token_not_valid" }, 401))
+        .mockResolvedValueOnce(
+          jsonResponse({
+            access: "new-access",
+            ...(rotated ? { refresh: rotated } : {}),
+          }),
+        )
+        .mockResolvedValueOnce(jsonResponse({ saved: true }));
+      const controller = new AbortController();
+      await expect(
+        postRequest("/tickets/", {
+          body: { title: "Support request" },
+          signal: controller.signal,
+        }),
+      ).resolves.toEqual({ saved: true });
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      const [refreshUrl, refreshOptions] = fetchMock.mock.calls[1];
+      expect(new URL(String(refreshUrl)).pathname).toBe("/api/token/refresh/");
+      expect(refreshOptions?.method).toBe("POST");
+      expect(JSON.parse(String(refreshOptions?.body))).toEqual({
+        refresh: "test-refresh",
+      });
+      expect(new Headers(refreshOptions?.headers).has("Authorization")).toBe(
+        false,
+      );
+      const [, retryOptions] = fetchMock.mock.calls[2];
+      expect(retryOptions?.body).toBe(fetchMock.mock.calls[0][1]?.body);
+      expect(retryOptions?.signal).toBe(controller.signal);
+      expect(new Headers(retryOptions?.headers).get("Authorization")).toBe(
+        "Bearer new-access",
+      );
+      expect(storedCookies.get(COOKIE_REFRESH_KEY)).toBe(
+        rotated ?? "test-refresh",
+      );
+      expect(clearAuthSession).not.toHaveBeenCalled();
+    },
+  );
+
+  it("shares a single refresh between simultaneous expired requests", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    let finishRefresh!: (response: Response) => void;
+    const pendingRefresh = new Promise<Response>((resolve) => {
+      finishRefresh = resolve;
+    });
+    fetchMock.mockImplementation(async (url, options) => {
+      if (String(url).endsWith("/token/refresh/")) return pendingRefresh;
+      if (
+        new Headers(options?.headers).get("Authorization") ===
+        "Bearer test-token"
+      ) {
+        return jsonResponse({ detail: "Expired" }, 401);
+      }
+      return jsonResponse({ ok: true });
+    });
+    const requests = Promise.all([
+      getRequest("/tickets/"),
+      getRequest("/list_permission/"),
+    ]);
+    await vi.waitFor(() =>
+      expect(
+        fetchMock.mock.calls.filter(([url]) =>
+          String(url).endsWith("/token/refresh/"),
+        ),
+      ).toHaveLength(1),
+    );
+    finishRefresh(jsonResponse({ access: "new-access" }));
+    await expect(requests).resolves.toEqual([{ ok: true }, { ok: true }]);
+    expect(fetchMock).toHaveBeenCalledTimes(5);
+    expect(clearAuthSession).not.toHaveBeenCalled();
+  });
+
+  it("reuses a token already refreshed by another request when an old 401 arrives late", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    let finishOldRequest!: (response: Response) => void;
+    fetchMock
+      .mockImplementationOnce(
+        () =>
+          new Promise<Response>((resolve) => {
+            finishOldRequest = resolve;
+          }),
+      )
+      .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+      .mockResolvedValueOnce(jsonResponse({ access: "new-access" }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true }));
+    const lateRequest = getRequest("/tickets/late/");
+    await getRequest("/tickets/first/");
+    finishOldRequest(jsonResponse({ detail: "Expired" }, 401));
+    await expect(lateRequest).resolves.toEqual({ ok: true });
+    expect(
+      fetchMock.mock.calls.filter(([url]) =>
+        String(url).endsWith("/token/refresh/"),
+      ),
+    ).toHaveLength(1);
+  });
+
+  it.each([403, 500])(
+    "keeps the session on a regular %i, even when the error mentions a token",
+    async (status) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+      fetchMock.mockResolvedValueOnce(
+        jsonResponse({ detail: "You cannot manage token settings." }, status),
+      );
+      await expect(getRequest("/settings/")).rejects.toMatchObject({ status });
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(clearAuthSession).not.toHaveBeenCalled();
+      expect(queryClient.clear).not.toHaveBeenCalled();
+      expect(window.location.href).toBe("");
+    },
+  );
+
+  it.each([429, 500, 503])(
+    "keeps tokens when the refresh service returns %i",
+    async (status) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+      fetchMock
+        .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+        .mockResolvedValueOnce(
+          jsonResponse({ detail: "Token service unavailable" }, status),
+        );
+      await expect(getRequest("/tickets/")).rejects.toMatchObject({ status });
+      expect(storedCookies.get(COOKIE_TOKEN_KEY)).toBe("test-token");
+      expect(storedCookies.get(COOKIE_REFRESH_KEY)).toBe("test-refresh");
+      expect(clearAuthSession).not.toHaveBeenCalled();
+      expect(window.location.href).toBe("");
+    },
+  );
+
+  it("retains the session after a network error and permits a later refresh attempt", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+      .mockResolvedValueOnce(jsonResponse({ access: "new-access" }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true }));
+    await expect(getRequest("/tickets/")).rejects.toThrow("Failed to fetch");
+    expect(clearAuthSession).not.toHaveBeenCalled();
+    await expect(getRequest("/tickets/")).resolves.toEqual({ ok: true });
+  });
+
+  it.each([401, 403])(
+    "signs out when the refresh token is rejected with %i",
+    async (status) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+      fetchMock
+        .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+        .mockResolvedValueOnce(
+          jsonResponse({ detail: "Refresh token invalid" }, status),
+        );
+      await expect(getRequest("/tickets/")).rejects.toMatchObject({ status });
+      expect(clearAuthSession).toHaveBeenCalledOnce();
+      expect(queryClient.clear).toHaveBeenCalledOnce();
+      expect(window.location.href).toBe("/login");
+    },
+  );
+
+  it("retries only once if the refreshed access token is also rejected", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+      .mockResolvedValueOnce(jsonResponse({ access: "new-access" }))
+      .mockResolvedValueOnce(jsonResponse({ detail: "Invalid access" }, 401));
+    await expect(getRequest("/tickets/")).rejects.toMatchObject({
+      status: 401,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(clearAuthSession).toHaveBeenCalledOnce();
+  });
+
+  it("recovers with the refresh token when the access cookie is missing", async () => {
+    storedCookies.delete(COOKIE_TOKEN_KEY);
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ access: "new-access" }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true }));
+    await expect(getRequest("/tickets/")).resolves.toEqual({ ok: true });
+    expect(new URL(String(fetchMock.mock.calls[0][0])).pathname).toBe(
+      "/api/token/refresh/",
+    );
+    expect(clearAuthSession).not.toHaveBeenCalled();
+  });
+
+  it("ignores a refresh response received after the user signs out", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+    let finishRefresh!: (response: Response) => void;
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ detail: "Expired" }, 401))
+      .mockImplementationOnce(
+        () =>
+          new Promise<Response>((resolve) => {
+            finishRefresh = resolve;
+          }),
+      );
+    const request = getRequest("/tickets/");
+    const outcome = expect(request).rejects.toMatchObject({ status: 409 });
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    clearAuthSession();
+    finishRefresh(
+      jsonResponse({ access: "late-access", refresh: "late-refresh" }),
+    );
+    await outcome;
+    expect(updateAuthTokens).not.toHaveBeenCalled();
+    expect(storedCookies.size).toBe(0);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("HTTP client", () => {

@@ -2,7 +2,7 @@
 
 Rainscales Ticket is an internal ticket workspace built with React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form and Zod.
 
-The protected `/` route opens the Ticket workspace. The current source includes the Ticket page shell, Rainscales account sign-in, themes, shared components, branding, API configuration and Docker deployment. Ticket creation, lists and tracking are not implemented yet.
+After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, themes, shared components, branding, API configuration and Docker deployment. The sidebar destinations have page shells; their forms, lists, reports and API integrations are not implemented yet.
 
 Frontend domain: `https://ticket-new.aiminds.io.vn/`.
 
@@ -28,6 +28,10 @@ The `/api` prefix is defined in `src/lib/api/api-base-url.ts` and added by the s
 Login follows the `ticketV2` API contract: `POST /api/token/` with JSON `{ "username": "...", "password": "..." }` returns `{ "access": "...", "refresh": "..." }`. The application stores these tokens in Ticket-specific cookies and uses `Authorization: Bearer <access>` for authenticated requests.
 
 After sign-in and on page reload, `GET /api/list_permission/` loads the account and permissions. The `infoUser` tuple supplies the user ID, name and avatar; `userPermission` and `handlingPermission` supply the permission flags. Sign-in completes after account information loads. Signing out removes the Ticket session and query cache. Existing Homepage sessions are separate; sign in again after switching to this authentication flow.
+
+When a protected request receives `401` or an explicit `token_not_valid` error, the client posts `{ "refresh": "..." }` to `/api/token/refresh/` and retries the request once. Concurrent requests share one refresh. If the server returns a rotated refresh token, it replaces the saved one. A missing access cookie can also be recovered using the refresh cookie. Rejected refresh credentials or a second authentication failure end the session.
+
+Network errors, ordinary `403` permission errors and temporary server errors preserve an existing session. During account restoration, cached account information remains available if reloading permissions fails temporarily. Signing out invalidates pending requests so a late refresh response cannot restore the session.
 
 Restart the development server after changing `.env.local`; rebuild deployed bundles when their API configuration changes.
 
@@ -55,12 +59,41 @@ docker run -d --name rainscales-ticket --restart unless-stopped \
 
 The backend must be reachable from inside the container. Changing `API_UPSTREAM` requires recreating the container; source changes require rebuilding the image.
 
+## Sidebar and pages
+
+The desktop sidebar supports collapsing to icons. On mobile, the menu button opens a drawer that closes after navigation. Groups can be expanded independently, and the current group opens automatically when visiting a page directly.
+
+| Group               | Pages                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| Yêu cầu             | Danh sách yêu cầu, Tất cả yêu cầu, Chuyển trạng thái ticket                        |
+| Danh sách phê duyệt | Chờ phê duyệt, Đã phê duyệt                                                        |
+| Nhiệm vụ của tôi    | Nhiệm vụ cá nhân, Tất cả nhiệm vụ                                                  |
+| Báo cáo & dữ liệu   | Báo cáo, Truy xuất dữ liệu                                                         |
+| Tuyển dụng          | Yêu cầu tuyển dụng, Quản lý ứng viên, Lịch phỏng vấn, Báo cáo tuyển dụng           |
+| Cấu hình hệ thống   | Người dùng, Bộ phận sử dụng, Bộ phận xử lý, Loại yêu cầu, Team, Chức vụ, Văn phòng |
+
+`Danh sách yêu cầu` is the default destination after sign-in and for the header logo. The overview page has been removed. The `Tạo yêu cầu` action appears in the request-list page header, linking to `/requests/new`. Both the list and creation action require `can_create`. Page URLs use English paths, with the Vietnamese navigation labels retained. Old `ticketV2` page URLs redirect to their English equivalents, preserving record identifiers, query parameters and URL fragments. Ticket details, requests from email, user creation and interview details also have contextual routes without sidebar links. The public CV form and the old Change Password page are not included.
+
+| Area        | English URLs                                                                                                                                                                      |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Requests    | `/requests`, `/requests/new`, `/requests/all`, `/requests/change-status`                                                                                                          |
+| Approvals   | `/approvals/pending`, `/approvals/approved`                                                                                                                                       |
+| Tasks       | `/tasks/mine`, `/tasks`                                                                                                                                                           |
+| Reports     | `/reports`, `/reports/export`                                                                                                                                                     |
+| Recruitment | `/recruitment/requests`, `/recruitment/candidates`, `/recruitment/interviews`, `/recruitment/reports`                                                                             |
+| Settings    | `/settings/users`, `/settings/requesting-departments`, `/settings/handling-departments`, `/settings/request-types`, `/settings/teams`, `/settings/positions`, `/settings/offices` |
+
+Contextual URLs are `/tickets/:ticketID`, `/tickets/from-email/:ticketID`, `/settings/users/new` and `/recruitment/interviews/:codeInterview`. Backend API URLs follow the server contract, including `/api/list_permission/`.
+
+`src/app/navigation.ts` defines page metadata and access rules shared by routes and the sidebar. Menu groups are filtered using permissions from `/api/list_permission/`; opening a restricted URL directly shows an access message. Superusers can access every group. Settings accepts `can_system` or `is_system_manage`; switching ticket status requires `can_return_ticket`. Backend APIs must enforce their own permissions when those pages are implemented.
+
 ## Project structure
 
 ```text
 src/
 ├── app/                    # Application routing and route layouts
 │   ├── app.tsx
+│   ├── navigation.ts        # Sidebar groups, routes and access rules
 │   └── layouts/
 ├── assets/                 # Images and static design assets
 ├── components/

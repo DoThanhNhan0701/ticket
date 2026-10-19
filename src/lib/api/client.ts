@@ -1,9 +1,14 @@
 import {
+  COOKIE_REFRESH_KEY,
   COOKIE_TOKEN_KEY,
   LOGIN_PATH,
   PUBLIC_ENDPOINTS,
 } from "@/constants/auth";
-import { clearAuthSession } from "@/lib/auth-session";
+import {
+  clearAuthSession,
+  getAuthSessionVersion,
+  updateAuthTokens,
+} from "@/lib/auth-session";
 import { getCookie } from "@/lib/cookies";
 import { queryClient } from "@/lib/query-client";
 import { ApiError } from "./api-error";
@@ -20,7 +25,12 @@ export interface RequestOptions {
   signal?: AbortSignal;
 }
 
-function clearAuthAndRedirect(): void {
+function sessionChangedError(): ApiError {
+  return new ApiError("Session changed. Please retry your request.", 409);
+}
+
+function clearAuthAndRedirect(expectedVersion: number): void {
+  if (getAuthSessionVersion() !== expectedVersion) return;
   clearAuthSession();
   queryClient.clear();
   if (window.location.pathname !== LOGIN_PATH) {
@@ -46,60 +56,106 @@ function hasInvalidToken(data: unknown): boolean {
   );
 }
 
-async function handleResponse<T>(
-  response: Response,
-  endpoint: string,
-): Promise<T> {
-  const isJson = response.headers
-    .get("content-type")
-    ?.includes("application/json");
-  const data: unknown =
-    response.status !== 204 && isJson ? await response.json() : null;
-  const message = getErrorMessage(
-    data,
-    `HTTP Error! Status: ${response.status}`,
-  );
-  const isAuthError =
-    response.status === 401 ||
-    response.status === 403 ||
-    hasInvalidToken(data) ||
-    (!response.ok && message.toLowerCase().includes("token"));
+function isAuthenticationFailure(response: Response, data: unknown): boolean {
+  return response.status === 401 || (!response.ok && hasInvalidToken(data));
+}
 
-  if (!PUBLIC_ENDPOINTS.includes(endpoint) && isAuthError) {
-    clearAuthAndRedirect();
-    throw new ApiError(
-      getErrorMessage(
-        data,
-        "Session expired or invalid token. Please sign in again.",
-      ),
-      response.status,
+async function readResponse(response: Response): Promise<unknown> {
+  return response.status !== 204 &&
+    response.headers.get("content-type")?.includes("application/json")
+    ? response.json()
+    : null;
+}
+
+let refreshInFlight: { version: number; promise: Promise<string> } | null =
+  null;
+
+function refreshAccessToken(version: number): Promise<string> {
+  if (getAuthSessionVersion() !== version)
+    return Promise.reject(sessionChangedError());
+  if (refreshInFlight?.version === version) return refreshInFlight.promise;
+
+  const refresh = getCookie(COOKIE_REFRESH_KEY);
+  if (!refresh) {
+    clearAuthAndRedirect(version);
+    return Promise.reject(
+      new ApiError("Session expired. Please sign in again.", 401),
     );
   }
-  if (!response.ok) throw new ApiError(message, response.status);
-  return data as T;
+
+  const refreshTokens = async (): Promise<string> => {
+    // A shared refresh must not be cancelled by one caller's AbortSignal.
+    const response = await fetch(
+      new URL(`${API_BASE_URL}/token/refresh/`, window.location.origin),
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh }),
+      },
+    );
+    const data = await readResponse(response);
+    if (
+      getAuthSessionVersion() !== version ||
+      getCookie(COOKIE_REFRESH_KEY) !== refresh
+    ) {
+      throw sessionChangedError();
+    }
+
+    if (!response.ok) {
+      if (
+        response.status === 401 ||
+        response.status === 403 ||
+        hasInvalidToken(data)
+      ) {
+        clearAuthAndRedirect(version);
+      }
+      throw new ApiError(
+        getErrorMessage(data, `HTTP Error! Status: ${response.status}`),
+        response.status,
+      );
+    }
+    if (
+      typeof data !== "object" ||
+      data === null ||
+      !("access" in data) ||
+      typeof data.access !== "string" ||
+      !data.access.trim() ||
+      ("refresh" in data &&
+        (typeof data.refresh !== "string" || !data.refresh.trim()))
+    ) {
+      throw new ApiError(
+        "Invalid token refresh response from the server.",
+        502,
+      );
+    }
+
+    const tokens = {
+      access: data.access,
+      refresh: "refresh" in data ? (data.refresh as string) : undefined,
+    };
+    if (!updateAuthTokens(tokens, version)) throw sessionChangedError();
+    return tokens.access;
+  };
+
+  const flight = {
+    version,
+    promise: refreshTokens().finally(() => {
+      if (refreshInFlight === flight) refreshInFlight = null;
+    }),
+  };
+  refreshInFlight = flight;
+  return flight.promise;
 }
 
 function getHeaders(
-  endpoint: string,
-  customHeaders?: Record<string, string>,
+  customHeaders: RequestOptions["headers"],
+  token?: string,
 ): Headers {
   const headers = new Headers(customHeaders);
   if (!headers.has("Content-Type"))
     headers.set("Content-Type", "application/json");
-
-  if (PUBLIC_ENDPOINTS.includes(endpoint)) return headers;
-
-  const token = getCookie(COOKIE_TOKEN_KEY);
-  if (!token) {
-    clearAuthAndRedirect();
-    throw new ApiError(
-      "Authentication token not found. Please sign in again.",
-      401,
-    );
-  }
-  if (token && !headers.has("Authorization")) {
+  if (token && !headers.has("Authorization"))
     headers.set("Authorization", `Bearer ${token}`);
-  }
   return headers;
 }
 
@@ -108,17 +164,53 @@ async function request<T>(
   endpoint: string,
   options: RequestOptions,
 ): Promise<T> {
+  const version = getAuthSessionVersion();
+  const isPublic = PUBLIC_ENDPOINTS.includes(endpoint);
   const url = new URL(`${API_BASE_URL}${endpoint}`, window.location.origin);
-  for (const [key, value] of Object.entries(options.params ?? {})) {
+  for (const [key, value] of Object.entries(options.params ?? {}))
     url.searchParams.set(key, value);
+  options.signal?.throwIfAborted();
+
+  let token = isPublic ? undefined : getCookie(COOKIE_TOKEN_KEY);
+  if (!isPublic && !token) token = await refreshAccessToken(version);
+
+  const send = (access?: string) => {
+    options.signal?.throwIfAborted();
+    if (!isPublic && getAuthSessionVersion() !== version)
+      throw sessionChangedError();
+    return fetch(url, {
+      method,
+      headers: getHeaders(options.headers, access),
+      body:
+        options.body === undefined ? undefined : JSON.stringify(options.body),
+      signal: options.signal,
+    });
+  };
+
+  let response = await send(token);
+  let data = await readResponse(response);
+  if (!isPublic && isAuthenticationFailure(response, data)) {
+    if (getAuthSessionVersion() !== version) throw sessionChangedError();
+    const currentToken = getCookie(COOKIE_TOKEN_KEY);
+    token =
+      currentToken && currentToken !== token
+        ? currentToken
+        : await refreshAccessToken(version);
+    response = await send(token);
+    data = await readResponse(response);
+    if (isAuthenticationFailure(response, data)) clearAuthAndRedirect(version);
   }
-  const response = await fetch(url, {
-    method,
-    headers: getHeaders(endpoint, options.headers),
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
-    signal: options.signal,
-  });
-  return handleResponse<T>(response, endpoint);
+  if (!isPublic && getAuthSessionVersion() !== version && response.ok) {
+    // Do not expose an old account's response after logout or another login.
+    throw sessionChangedError();
+  }
+  if (!response.ok) {
+    throw new ApiError(
+      getErrorMessage(data, `HTTP Error! Status: ${response.status}`),
+      response.status,
+    );
+  }
+  return data as T;
 }
 
 export function getRequest<T>(
