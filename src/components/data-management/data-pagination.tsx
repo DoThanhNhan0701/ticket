@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { requestPageSizes, type RequestListParams } from "../types";
+import type { DataPaginationProps } from "./types";
 
 function PageJump({
   page,
@@ -24,6 +24,7 @@ function PageJump({
   onPage: (page: number) => void;
 }>) {
   const [value, setValue] = useState(String(page));
+  const pageId = useId();
   return (
     <form
       className="flex items-center gap-2"
@@ -34,11 +35,11 @@ function PageJump({
           onPage(next);
       }}
     >
-      <Label htmlFor="request-page" className="sr-only">
+      <Label htmlFor={pageId} className="sr-only">
         Đến trang
       </Label>
       <Input
-        id="request-page"
+        id={pageId}
         type="number"
         min={1}
         max={totalPages}
@@ -55,35 +56,35 @@ function PageJump({
   );
 }
 
-export function RequestPagination({
+export function DataPagination({
   count,
-  params,
-  disabled,
+  page,
+  pageSize,
+  pageSizes,
+  itemLabel = "bản ghi",
+  disabled = false,
   onPage,
   onPageSize,
-}: Readonly<{
-  count: number;
-  params: RequestListParams;
-  disabled: boolean;
-  onPage: (page: number) => void;
-  onPageSize: (size: number) => void;
-}>) {
-  const totalPages = Math.max(1, Math.ceil(count / params.page_size));
-  const first = count ? (params.page - 1) * params.page_size + 1 : 0;
-  const last = Math.min(params.page * params.page_size, count);
+}: Readonly<DataPaginationProps>) {
+  const sizeId = useId();
+  if (count === 0) return null;
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  const first = count ? (page - 1) * pageSize + 1 : 0;
+  const last = Math.min(page * pageSize, count);
   return (
     <div className="flex shrink-0 flex-wrap items-center justify-between gap-4 border-t border-border p-4">
       <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <p aria-live="polite">
-          Hiển thị {first}–{last} trên {count} yêu cầu
+          Hiển thị {first}–{last} trên {count} {itemLabel}
         </p>
         <div className="flex items-center gap-2">
-          <Label htmlFor="request-page-size" className="sr-only">
-            Số yêu cầu mỗi trang
+          <Label htmlFor={sizeId} className="sr-only">
+            Số {itemLabel} mỗi trang
           </Label>
           <Select
-            value={params.page_size}
-            items={requestPageSizes.map((size) => ({
+            value={pageSize}
+            disabled={disabled}
+            items={pageSizes.map((size) => ({
               value: size,
               label: `${size} / trang`,
             }))}
@@ -91,11 +92,11 @@ export function RequestPagination({
               if (value !== null) onPageSize(value);
             }}
           >
-            <SelectTrigger id="request-page-size">
+            <SelectTrigger id={sizeId}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false}>
-              {requestPageSizes.map((size) => (
+              {pageSizes.map((size) => (
                 <SelectItem key={size} value={size}>
                   {size} / trang
                 </SelectItem>
@@ -105,7 +106,7 @@ export function RequestPagination({
         </div>
       </div>
       <nav
-        aria-label="Phân trang yêu cầu"
+        aria-label={`Phân trang ${itemLabel}`}
         className="flex flex-wrap items-center gap-2"
       >
         <Button
@@ -113,27 +114,27 @@ export function RequestPagination({
           variant="outline"
           size="icon"
           aria-label="Trang trước"
-          disabled={disabled || params.page <= 1}
-          onClick={() => onPage(params.page - 1)}
+          disabled={disabled || page <= 1}
+          onClick={() => onPage(page - 1)}
         >
           <ChevronLeft className="size-4" aria-hidden="true" />
         </Button>
         <span className="px-1 text-sm tabular-nums">
-          Trang {params.page} / {totalPages}
+          Trang {page} / {totalPages}
         </span>
         <Button
           type="button"
           variant="outline"
           size="icon"
           aria-label="Trang sau"
-          disabled={disabled || params.page >= totalPages}
-          onClick={() => onPage(params.page + 1)}
+          disabled={disabled || page >= totalPages}
+          onClick={() => onPage(page + 1)}
         >
           <ChevronRight className="size-4" aria-hidden="true" />
         </Button>
         <PageJump
-          key={`${params.page}:${totalPages}`}
-          page={params.page}
+          key={`${page}:${totalPages}`}
+          page={page}
           totalPages={totalPages}
           disabled={disabled}
           onPage={onPage}

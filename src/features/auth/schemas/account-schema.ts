@@ -20,3 +20,10 @@ export const ticketUserPermissionSchema = z.object({
     coloredOptionSchema.extend({ textcolor: z.string() }),
   ),
 });
+
+export const cachedUserPermissionSchema = z.object({
+  username: z.string(),
+  userId: z.number().int(),
+  avatar_url: z.string().nullable().optional(),
+  permission: z.record(z.string(), z.boolean()),
+});

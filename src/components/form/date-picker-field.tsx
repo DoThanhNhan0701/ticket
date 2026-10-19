@@ -42,7 +42,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   className,
   startYear = 1900,
   endYear = new Date().getFullYear(),
-}: DatePickerFieldProps<TFieldValues>) {
+}: Readonly<DatePickerFieldProps<TFieldValues>>) {
   const [open, setOpen] = React.useState(false);
 
   return (

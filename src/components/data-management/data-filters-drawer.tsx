@@ -4,22 +4,25 @@ import { Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { requestFilterFields, type RequestFilters } from "../types";
-import { RequestFiltersForm } from "./request-filters";
+import { DataFiltersForm } from "./data-filters-form";
+import { countActiveFilters } from "./utils";
+import type { DataFilterField, DataFilterValues } from "./types";
 
-export function RequestFiltersDrawer({
+export function DataFiltersDrawer<Name extends string>({
+  fields,
+  description = "Lọc dữ liệu theo các thông tin bên dưới.",
   initialValues,
   onApply,
   onClear,
 }: Readonly<{
-  initialValues: RequestFilters;
-  onApply: (filters: RequestFilters) => void;
+  fields: readonly DataFilterField<Name>[];
+  description?: string;
+  initialValues: DataFilterValues<Name>;
+  onApply: (filters: DataFilterValues<Name>) => void;
   onClear: () => void;
 }>) {
   const [open, setOpen] = useState(false);
-  const activeFilterCount = requestFilterFields.filter(({ name }) =>
-    initialValues[name]?.trim(),
-  ).length;
+  const activeFilterCount = countActiveFilters(fields, initialValues);
   const filterDescription =
     activeFilterCount > 0
       ? `${activeFilterCount} điều kiện lọc nâng cao đang áp dụng`
@@ -66,7 +69,7 @@ export function RequestFiltersDrawer({
                   Lọc nâng cao
                 </Dialog.Title>
                 <Dialog.Description className="text-sm text-muted-foreground">
-                  Lọc yêu cầu theo các thông tin bên dưới.
+                  {description}
                 </Dialog.Description>
               </div>
               <Dialog.Close
@@ -82,7 +85,8 @@ export function RequestFiltersDrawer({
                 <X className="size-4" aria-hidden="true" />
               </Dialog.Close>
             </header>
-            <RequestFiltersForm
+            <DataFiltersForm
+              fields={fields}
               key={JSON.stringify(initialValues)}
               initialValues={initialValues}
               onApply={(filters) => {

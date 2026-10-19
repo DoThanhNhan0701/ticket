@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AlertTriangle, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { AsyncButton } from "./async-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,28 +39,27 @@ export function ConfirmDialog({
   onConfirm,
   icon,
 }: Readonly<ConfirmDialogProps>) {
-  const getIcon = () => {
-    if (icon) return icon;
-    if (variant === "destructive" || variant === "warning") {
-      return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning-soft border border-warning-border text-warning shrink-0">
-          <AlertTriangle className="h-4 w-4" />
-        </div>
-      );
-    }
-    return (
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent border border-border text-accent-foreground shrink-0">
-        <Info className="h-4 w-4" />
-      </div>
-    );
-  };
+  const isWarning = variant === "destructive" || variant === "warning";
+  const Icon = isWarning ? AlertTriangle : Info;
+  const defaultIcon = (
+    <div
+      className={cn(
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+        isWarning
+          ? "bg-warning-soft border-warning-border text-warning"
+          : "bg-accent border-border text-accent-foreground",
+      )}
+    >
+      <Icon className="h-4 w-4" />
+    </div>
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            {getIcon()}
+            {icon || defaultIcon}
             <div>
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription className="mt-1 text-sm text-muted-foreground">

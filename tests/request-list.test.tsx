@@ -8,6 +8,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
+import { StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -94,9 +95,9 @@ function LocationControls() {
   );
 }
 
-function renderList(path = "/requests") {
+function renderList(path = "/requests", strict = false) {
   const page = workspacePages.find((item) => item.path === "/requests")!;
-  return render(
+  const tree = (
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[path]}>
@@ -104,8 +105,9 @@ function renderList(path = "/requests") {
           <LocationControls />
         </MemoryRouter>
       </AuthContext.Provider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   );
+  return render(strict ? <StrictMode>{tree}</StrictMode> : tree);
 }
 
 function listCalls() {
@@ -140,7 +142,7 @@ async function selectOption(label: string, option: string) {
   await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
 }
 
-it("loads the ticketV2 list and status endpoints with bearer authentication and renders all ten columns", async () => {
+it("loads the ticketV2 list and status endpoints with bearer authentication and renders all columns with row numbers", async () => {
   renderList();
   await ready();
   expect(lastParams()).toEqual({
@@ -159,7 +161,9 @@ it("loads the ticketV2 list and status endpoints with bearer authentication and 
     expect(options?.signal).toBeInstanceOf(AbortSignal);
   }
   const table = within(screen.getByRole("table"));
-  expect(table.getAllByRole("columnheader")).toHaveLength(10);
+  expect(table.getAllByRole("columnheader")).toHaveLength(11);
+  expect(table.getAllByRole("columnheader")[0].textContent).toBe("#");
+  expect(table.getByRole("cell", { name: "1" })).toBeTruthy();
   for (const value of [
     "RS-0042",
     "Cấp máy tính mới",
@@ -183,6 +187,67 @@ it("loads the ticketV2 list and status endpoints with bearer authentication and 
   expect(screen.getByTestId("location").textContent).toBe("/tickets/42");
 });
 
+it("cancels the development StrictMode probe and completes one active request per endpoint without losing the session", async () => {
+  renderList("/requests", true);
+  await ready();
+  await waitFor(() => {
+    for (const endpoint of ["/api/list_ticket/", "/api/list_ticketstatus/"]) {
+      const calls = fetchMock.mock.calls.filter(
+        ([url]) => new URL(String(url)).pathname === endpoint,
+      );
+      expect(calls).toHaveLength(2);
+      expect(calls[0][1]?.signal?.aborted).toBe(true);
+      expect(calls[1][1]?.signal?.aborted).toBe(false);
+    }
+  });
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
+});
+
+it("aborts an obsolete search and keeps the latest results when the older response arrives last", async () => {
+  renderList();
+  await ready();
+  let finishOld!: (response: Response) => void;
+  listResponse = () =>
+    new Promise<Response>((resolve) => {
+      finishOld = resolve;
+    });
+  const input = screen.getByRole("searchbox", { name: "Tìm kiếm yêu cầu" });
+  fireEvent.change(input, { target: { value: "old" } });
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await waitFor(() => expect(listCalls()).toHaveLength(2));
+  const oldSignal = listCalls()[1][1]?.signal;
+  listResponse = () =>
+    Response.json({
+      ...pagination,
+      count: 1,
+      results: [{ ...ticket, title: "Latest request" }],
+    });
+  fireEvent.change(
+    screen.getByRole("searchbox", { name: "Tìm kiếm yêu cầu" }),
+    { target: { value: "latest" } },
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await ready();
+  expect(oldSignal?.aborted).toBe(true);
+  expect(
+    await screen.findByRole("link", { name: "Latest request" }),
+  ).toBeTruthy();
+  await act(async () =>
+    finishOld(
+      Response.json({
+        ...pagination,
+        count: 1,
+        results: [{ ...ticket, title: "Obsolete request" }],
+      }),
+    ),
+  );
+  expect(screen.getByRole("link", { name: "Latest request" })).toBeTruthy();
+  expect(screen.queryByRole("link", { name: "Obsolete request" })).toBeNull();
+  expect(lastParams().searchAll).toBe("latest");
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
+});
+
 it("requests the next page and resets pagination when changing page size", async () => {
   renderList();
   await ready();
@@ -190,6 +255,11 @@ it("requests the next page and resets pagination when changing page size", async
   await waitFor(() => expect(lastParams().page).toBe("2"));
   await ready();
   expect(screen.getByText("Trang 2 / 3")).toBeTruthy();
+  expect(
+    within(screen.getByRole("table")).getByRole("cell", {
+      name: "101",
+    }),
+  ).toBeTruthy();
   await selectOption("Số yêu cầu mỗi trang", "200 / trang");
   await waitFor(() =>
     expect(lastParams()).toMatchObject({
@@ -199,6 +269,11 @@ it("requests the next page and resets pagination when changing page size", async
     }),
   );
   await ready();
+  expect(
+    within(screen.getByRole("table")).getByRole("cell", {
+      name: "1",
+    }),
+  ).toBeTruthy();
   fireEvent.change(screen.getByLabelText("Đến trang"), {
     target: { value: "2" },
   });
@@ -635,5 +710,5 @@ it("accepts omitted display names when their related entities are absent", async
   const row = screen
     .getByRole("link", { name: ticket.ticket_code })
     .closest("tr")!;
-  expect(within(row).getAllByRole("cell")[3].textContent).toBe("—");
+  expect(within(row).getAllByRole("cell")[4].textContent).toBe("—");
 });

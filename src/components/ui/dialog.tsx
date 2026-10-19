@@ -12,7 +12,7 @@ function DialogContent({
   className,
   children,
   ...props
-}: DialogPrimitive.Popup.Props) {
+}: Readonly<DialogPrimitive.Popup.Props>) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Backdrop className="fixed inset-0 z-50 bg-black/65 transition-opacity data-closed:opacity-0" />
@@ -58,7 +58,10 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
+function DialogTitle({
+  className,
+  ...props
+}: Readonly<DialogPrimitive.Title.Props>) {
   return (
     <DialogPrimitive.Title
       className={cn("m-0 text-base font-semibold", className)}
@@ -70,7 +73,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
 function DialogDescription({
   className,
   ...props
-}: DialogPrimitive.Description.Props) {
+}: Readonly<DialogPrimitive.Description.Props>) {
   return (
     <DialogPrimitive.Description
       className={cn(
@@ -85,7 +88,7 @@ function DialogDescription({
 function DialogCloseButton({
   className,
   ...props
-}: DialogPrimitive.Close.Props) {
+}: Readonly<DialogPrimitive.Close.Props>) {
   return (
     <DialogPrimitive.Close
       aria-label="Close dialog"

@@ -11,6 +11,7 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/**/*.test.{ts,tsx}"],
+    setupFiles: ["./tests/setup.ts"],
     clearMocks: true,
     restoreMocks: true,
     unstubGlobals: true,
@@ -19,6 +20,12 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/**/*.d.ts"],
       reporter: ["text", "lcov", "html"],
+      thresholds: {
+        statements: 80,
+        branches: 70,
+        functions: 75,
+        lines: 80,
+      },
     },
   },
 });

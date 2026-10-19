@@ -3,21 +3,23 @@ import {
   requestPageSizes,
   type RequestListParams,
 } from "../types";
+import {
+  parseListPagination,
+  readStringFilters,
+} from "@/components/data-management";
 
 export function parseRequestListParams(
   search: URLSearchParams,
 ): RequestListParams {
-  const page = Number(search.get("page"));
-  const pageSize = Number(search.get("page_size"));
+  const { page, pageSize } = parseListPagination(search, requestPageSizes);
   const params: RequestListParams = {
-    page: Number.isSafeInteger(page) && page > 0 ? page : 1,
-    page_size:
-      requestPageSizes.find((size) => size === pageSize) ?? requestPageSizes[0],
+    page,
+    page_size: pageSize,
+    ...readStringFilters(
+      search,
+      requestFilterFields.map(({ name }) => name),
+    ),
   };
-  for (const field of requestFilterFields) {
-    const value = search.get(field.name)?.trim();
-    if (value) params[field.name] = value;
-  }
   const searchAll = search.get("searchAll")?.trim();
   const status = search.get("ticket_status_name")?.trim();
   if (searchAll) params.searchAll = searchAll;

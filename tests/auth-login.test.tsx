@@ -352,6 +352,33 @@ it("does not reuse a Homepage session for the Ticket API", async () => {
   expect(getCookie("_access_token_homepage")).toBe("homepage-access");
 });
 
+it.each([
+  "broken-json",
+  { username: {}, userId: 42, permission: {} },
+  { username: "User", userId: 42, permission: { can_system: "true" } },
+])(
+  "ignores corrupt cached account data when the account API is temporarily unavailable: %j",
+  async (cached) => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    setCookie(COOKIE_TOKEN_KEY, tokens.access);
+    localStorage.setItem(
+      STORAGE_USERNAME_KEY,
+      JSON.stringify({ invalid: true }),
+    );
+    localStorage.setItem(STORAGE_USER_PERMISSION_KEY, JSON.stringify(cached));
+    fetchMock.mockRejectedValueOnce(new TypeError("Failed to fetch"));
+    renderApp("/requests");
+    expect(
+      await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+    ).toBeTruthy();
+    expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+    expect(
+      JSON.parse(screen.getByTestId("account").textContent ?? "{}").permissions,
+    ).toBeNull();
+  },
+);
+
 it.each(["network", 500, 403] as const)(
   "keeps the cached session when account restoration fails with %s",
   async (failure) => {

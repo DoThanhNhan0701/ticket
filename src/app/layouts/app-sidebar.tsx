@@ -55,7 +55,10 @@ function SidebarLink({
   );
 }
 
-export function AppSidebar({ collapsed = false, onNavigate }: SidebarProps) {
+export function AppSidebar({
+  collapsed = false,
+  onNavigate,
+}: Readonly<SidebarProps>) {
   const { permissions } = useAuthContext();
   const { pathname } = useLocation();
   const groups = navigationGroups
@@ -67,20 +70,9 @@ export function AppSidebar({ collapsed = false, onNavigate }: SidebarProps) {
 
   return (
     <div className="flex h-full min-h-0 flex-col text-sidebar-foreground">
-      <div className={cn("shrink-0 p-3", !collapsed && "px-4 pt-5")}>
-        <p
-          className={cn(
-            "px-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground",
-            collapsed && "sr-only",
-          )}
-        >
-          Không gian làm việc
-        </p>
-      </div>
-
       <nav
         aria-label="Điều hướng Ticket"
-        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-4"
+        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
       >
         <div className="space-y-1">
           {groups.map((group) => {

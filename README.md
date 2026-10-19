@@ -4,6 +4,8 @@ Rainscales Ticket is an internal ticket workspace built with React 19, TypeScrip
 
 The theme preference is stored independently under `ticket-theme` in local storage.
 
+Session cookies use the `Secure` flag on HTTPS. Cached account data is validated before it can populate the interface or sidebar permissions.
+
 After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, the request-list API integration, themes, shared components, branding, API configuration and Docker deployment. Other destinations currently have page shells; their forms, lists, reports and API integrations are not implemented yet.
 
 Frontend domain: `https://ticket-new.aiminds.io.vn/`.
@@ -47,6 +49,8 @@ Restart the development server after changing `.env.local`; rebuild deployed bun
 - Pagination runs on the server. Page sizes are 100 and 200, with a default of 100. Changing filters or page size resets to page 1. Filters and pagination live in the URL, allowing reloads, bookmarks and browser Back to restore them. Column sorting is disabled; requests always send the backend's required `columnSort=id` and `typeSort=descend`, ignoring old sort parameters in bookmarked URLs.
 
 The workspace uses its full available width. The table shows the request code, type, title, Department, Team, office, due date, approver, status and last updater. Department and Team headers and cells are centered. Every cell displays at most two lines with an ellipsis and its full text in the browser's native `title` tooltip. The status and page-size controls use the shared shadcn Select. Its focusable scroll region supports horizontal and vertical scrolling, with a sticky header and pagination outside the scrolling rows. Request links open `/tickets/:ticketID`. Loading, empty results and API errors have separate states; failed requests can be retried. Failure to load status options does not block the list. Requests use the shared authenticated client and its token refresh behavior. Accounts without list access do not fetch data.
+
+In development, React StrictMode runs an additional effect setup/cleanup cycle. TanStack Query forwards that cleanup through the request's AbortSignal, so DevTools can show one canceled request followed by one successful request for each list endpoint. The production build omits this development probe. Keep cancellation enabled: changing search parameters aborts the obsolete query, and its late response cannot replace the latest results. Regression tests cover both behaviors and confirm that cancellation preserves the authentication session.
 
 ## API contracts
 
@@ -126,13 +130,14 @@ src/
 │   └── layouts/
 ├── assets/                 # Images and static design assets
 ├── components/
+│   ├── data-management/    # Reusable lists, filters, tables, pagination and URL helpers
 │   ├── form/               # Shared, accessible React Hook Form controls
 │   └── ui/                 # UI primitives
 ├── constants/              # Shared application constants
 ├── features/
 │   ├── auth/               # Authentication API, context, provider, hooks and schemas
 │   ├── projects/           # Shared project-card presentation and icon selection
-│   └── requests/           # Request list API, filters, table and pagination
+│   └── requests/           # Request API, schemas, column/filter configuration and list composition
 ├── hooks/                  # Hooks shared across features, including debounce
 ├── lib/
 │   ├── api/                # HTTP client and typed HTTP errors
@@ -145,7 +150,7 @@ src/
 tests/                      # API contracts, validation and UI behavior tests
 ```
 
-Keep business rules and API calls inside their feature. Keep route pages focused on composing the screen. Share a component or hook only when multiple features use it. Use kebab-case for files, PascalCase for React components and types, and camelCase for functions and variables. Preserve backend field names at the API boundary.
+Keep business rules and API calls inside their feature. Keep route pages focused on composing the screen. Use the shared data-management module for management lists; keep other feature-specific code local until reuse is needed. Use kebab-case for files, PascalCase for React components and types, and camelCase for functions and variables. Preserve backend field names at the API boundary.
 
 ## Shared interface components
 
@@ -159,11 +164,33 @@ The interface uses opaque surfaces and semantic color tokens in `src/index.css`.
 
 Keep feature-specific actions in their feature; compose these components in pages and dialogs.
 
+## Reusable management lists
+
+Import shared list components, types and helpers through `@/components/data-management` (the public `index.ts`). `/requests` uses this module; its API contracts, access rules, status options and request-specific columns remain in `features/requests`.
+
+| Export                                                                             | Responsibility                                                                               |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `DataTable<T>`, `DataColumn<T>`                                                    | Typed columns, shared alignment, fixed row height, scroll region and optional row navigation |
+| `DataText`, `DataRowLink`                                                          | Two-line truncation, native browser tooltips and accessible detail links                     |
+| `DataSearch`                                                                       | Draft keyword and optional select; submit applies both values                                |
+| `DataFiltersDrawer`, `DataFilterField`                                             | Configured text/date fields, applied-filter count, date validation and modal lifecycle       |
+| `DataResults`, `DataListQuery<T>`                                                  | Initial loading, retry, empty state, pagination and loading overlay over retained rows       |
+| `DataPagination`                                                                   | Configurable sizes, page jump, empty-state hiding and independent control IDs                |
+| `parseListPagination`, `readStringFilters`, `updateListSearchParams`               | Validated paging, whitelisted string filters and immutable URL updates that reset page to 1  |
+| `getFilterValues`, `countActiveFilters`, `normalizeFilterValues`, `formatDataDate` | Field defaults/counting, trimmed values, ISO date filters and date display                   |
+
+For a new page, define a typed `DataColumn<YourRow>[]` and a readonly `DataFilterField[]`, then compose the shared controls as in `request-list.tsx` and `request-table.tsx`. Mark date filters with `type: "date"`; normalization follows that configuration rather than a particular API field name. `DataTable` takes `getRowKey` and optional `getRowHref`. Nested links and controls retain their own actions when row navigation is enabled.
+
+`DataResults` expects data shaped as `{ count, results }` and the loading/error flags in `DataListQuery<T>`; TanStack Query results already match that interface. Keep previous data while fetching to retain the table under the update overlay. Pass the page's size options explicitly (`/requests` uses `[100, 200]`), and map its API response in the feature if it has a different shape.
+
+URL helpers use `page` and `page_size`. Feature-specific keys and obsolete parameters are supplied by the caller. Changing filters or size resets page to 1; explicitly updating `page` overrides that reset. Key `DataSearch` by the applied parameters to restore its draft values when navigating Back/Forward. The Drawer restores applied values on reopening and discards unapplied edits.
+
 ## Quality checks
 
 | Command                 | Purpose                                                                      |
 | ----------------------- | ---------------------------------------------------------------------------- |
 | `npm run check`         | Lint, formatting, application/config/test type checking and tests            |
+| `npm run check:quality` | Lint, formatting, type checking, coverage thresholds and production build    |
 | `npm run build`         | Check application/config TypeScript projects and create the production build |
 | `npm run lint`          | Run Oxlint; any warning or error fails the command                           |
 | `npm run format`        | Apply Prettier formatting                                                    |
@@ -174,7 +201,9 @@ Keep feature-specific actions in their feature; compose these components in page
 | `npm run test:coverage` | Generate text, HTML and LCOV coverage reports                                |
 | `npm run preview`       | Serve the production build locally                                           |
 
-Lint rules cover hooks, explicit `any`, nested ternaries, duplicate imports and common accessibility issues. The label primitive forwards its control association through props, so label association is checked at usage sites. Semantic-role suggestions are disabled for UI primitives that use ARIA grouping.
+Lint rules cover hooks, explicit `any`, nested ternaries, duplicate imports and common accessibility issues. Application functions are limited to a cyclomatic complexity of 20 and a nesting depth of 4. The label primitive forwards its control association through props, so label association is checked at usage sites. Semantic-role suggestions are disabled for UI primitives that use ARIA grouping.
+
+Coverage checks require at least 80% statements, 80% lines, 70% branches and 75% functions across the full application source. These local regression thresholds do not replace the SonarQube server's Quality Gate or its new-code coverage calculation. Asynchronous UI assertions allow three seconds for cold lazy-route imports under coverage instrumentation; tests still fail on assertion timeouts.
 
 Tests cover HTTP error/status handling, Ticket sign-in and session restoration, authentication expiration, slash fallback, routing, request-list API parameters, filtering, default ordering, pagination, retries, access rules and shared form controls. API calls are mocked; tests do not contact the backend. Test API configuration is isolated from `.env.local`.
 
@@ -190,6 +219,8 @@ npm run build
 npm run test:coverage
 npm run sonar -- -Dsonar.qualitygate.wait=true
 ```
+
+Alternatively, `npm run check:quality` runs all local checks, coverage and the build before the scanner. A SonarJS recommended-rule audit can identify local code issues, but only a scan against the configured SonarQube server establishes its Quality Gate result. The scanner requires the server URL and authentication to be configured; do not commit tokens to the project properties or source.
 
 Generate coverage before scanning, as described in the [SonarQube JavaScript/TypeScript coverage documentation](https://docs.sonarsource.com/sonarqube-server/analyzing-source-code/test-coverage/javascript-typescript-test-coverage). The server's Quality Profile and Quality Gate determine acceptance; passing local lint and tests alone does not establish a passing SonarQube result. Coverage includes untested application files so the report reflects remaining gaps.
 

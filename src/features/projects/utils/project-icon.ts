@@ -6,46 +6,29 @@ import {
   Grid,
   LineChart,
   MessageSquare,
+  type LucideIcon,
 } from "lucide-react";
+
+const iconRules: ReadonlyArray<{
+  keywords: readonly string[];
+  icon: LucideIcon;
+}> = [
+  { keywords: ["calendar", "ticket"], icon: CalendarCheck },
+  { keywords: ["fingerprint", "chấm công", "hr"], icon: Fingerprint },
+  { keywords: ["container", "document", "tài liệu", "doc"], icon: FolderOpen },
+  {
+    keywords: ["signature", "file", "chi phí", "tài sản"],
+    icon: FileSignature,
+  },
+  { keywords: ["chart", "revenue", "doanh thu", "dt", "cp"], icon: LineChart },
+  { keywords: ["comment", "talk", "chat", "rtalk"], icon: MessageSquare },
+];
 
 export function getProjectIcon(iconName: string, projectName: string) {
   const name = (iconName || projectName).toLowerCase();
-  if (name.includes("calendar") || name.includes("ticket"))
-    return CalendarCheck;
-  if (
-    name.includes("fingerprint") ||
-    name.includes("chấm công") ||
-    name.includes("hr")
-  )
-    return Fingerprint;
-  if (
-    name.includes("container") ||
-    name.includes("document") ||
-    name.includes("tài liệu") ||
-    name.includes("doc")
-  )
-    return FolderOpen;
-  if (
-    name.includes("signature") ||
-    name.includes("file") ||
-    name.includes("chi phí") ||
-    name.includes("tài sản")
-  )
-    return FileSignature;
-  if (
-    name.includes("chart") ||
-    name.includes("revenue") ||
-    name.includes("doanh thu") ||
-    name.includes("dt") ||
-    name.includes("cp")
-  )
-    return LineChart;
-  if (
-    name.includes("comment") ||
-    name.includes("talk") ||
-    name.includes("chat") ||
-    name.includes("rtalk")
-  )
-    return MessageSquare;
-  return Grid;
+  return (
+    iconRules.find(({ keywords }) =>
+      keywords.some((keyword) => name.includes(keyword)),
+    )?.icon ?? Grid
+  );
 }

@@ -51,6 +51,15 @@ function getErrorMessage(data: unknown, fallback: string): string {
   return fallback;
 }
 
+function assertResponseOk(response: Response, data: unknown): void {
+  if (!response.ok) {
+    throw new ApiError(
+      getErrorMessage(data, `HTTP Error! Status: ${response.status}`),
+      response.status,
+    );
+  }
+}
+
 function hasInvalidToken(data: unknown): boolean {
   return (
     typeof data === "object" &&
@@ -199,12 +208,7 @@ async function request<T>(
     // Do not expose an old account's response after logout or another login.
     throw sessionChangedError();
   }
-  if (!response.ok) {
-    throw new ApiError(
-      getErrorMessage(data, `HTTP Error! Status: ${response.status}`),
-      response.status,
-    );
-  }
+  assertResponseOk(response, data);
   return data as T;
 }
 

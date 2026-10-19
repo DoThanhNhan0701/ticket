@@ -48,7 +48,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   labelAddon,
   disabled = false,
   isLoading = false,
-}: SelectFieldProps<TFieldValues>) {
+}: Readonly<SelectFieldProps<TFieldValues>>) {
   return (
     <Controller
       name={name}

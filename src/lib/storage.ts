@@ -10,7 +10,7 @@ export const getStorageItem = <T>(key: string): T | null => {
 
 export const setStorageItem = (key: string, value: unknown) => {
   const stringValue = typeof value === "string" ? value : JSON.stringify(value);
-  if (stringValue === undefined) {
+  if (typeof value !== "string" && !stringValue) {
     throw new TypeError("Storage values must be JSON serializable.");
   }
   localStorage.setItem(key, stringValue);

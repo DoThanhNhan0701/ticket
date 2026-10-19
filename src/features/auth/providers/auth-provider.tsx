@@ -22,8 +22,9 @@ import {
 } from "@/lib/auth-session";
 import { ApiError } from "@/lib/api/api-error";
 import { AuthContext } from "../context/auth-context";
+import { cachedUserPermissionSchema } from "../schemas/account-schema";
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
   const [userPermission, setUserPermission] =
@@ -81,15 +82,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const initAuth = async () => {
       const savedToken = getCookie(COOKIE_TOKEN_KEY);
       const savedRefresh = getCookie(COOKIE_REFRESH_KEY);
-      const savedUsername = getStorageItem<string>(STORAGE_USERNAME_KEY);
-      const savedPermission = getStorageItem<UserPermissionResponse>(
-        STORAGE_USER_PERMISSION_KEY,
+      const savedUsername = getStorageItem<unknown>(STORAGE_USERNAME_KEY);
+      const savedPermission = cachedUserPermissionSchema.safeParse(
+        getStorageItem<unknown>(STORAGE_USER_PERMISSION_KEY),
       );
 
       if (savedToken || savedRefresh) {
         setToken(savedToken ?? null);
-        if (savedUsername) setUsername(savedUsername);
-        if (savedPermission) setUserPermission(savedPermission);
+        if (typeof savedUsername === "string") setUsername(savedUsername);
+        if (savedPermission.success) setUserPermission(savedPermission.data);
 
         // Refresh the Ticket account and permissions on page reload.
         await fetchUserPermission();

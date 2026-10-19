@@ -55,6 +55,44 @@ function getSelectedValues(value: unknown): string[] {
   return typeof value === "string" && value ? [value] : [];
 }
 
+function SelectedBadges({
+  options,
+  maxBadgeCount,
+  disabled,
+  onRemove,
+}: Readonly<{
+  options: MultiSelectOption[];
+  maxBadgeCount?: number;
+  disabled: boolean;
+  onRemove: (value: string) => void;
+}>) {
+  const visibleBadges = options.slice(0, maxBadgeCount ?? options.length);
+  const hiddenCount = options.length - visibleBadges.length;
+  return (
+    <div className="flex flex-wrap items-center gap-1 min-w-0">
+      {visibleBadges.map((option) => (
+        <Badge tone="brand" key={option.value} className="max-w-full">
+          <span className="break-all">{option.label}</span>
+          <button
+            type="button"
+            disabled={disabled}
+            aria-label={`Remove ${option.label}`}
+            onClick={() => onRemove(option.value)}
+            className="flex h-6 w-6 items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring cursor-pointer shrink-0"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        </Badge>
+      ))}
+      {hiddenCount > 0 && (
+        <span className="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">
+          +{hiddenCount}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function MultiSelectInput({
   value,
   onChange,
@@ -71,15 +109,11 @@ function MultiSelectInput({
 }: Readonly<MultiSelectInputProps>) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const isDisabled = disabled || isLoading;
   const selectedValues = getSelectedValues(value);
   const selectedOptions = options.filter((option) =>
     selectedValues.includes(option.value),
   );
-  const visibleBadges = selectedOptions.slice(
-    0,
-    maxBadgeCount ?? selectedOptions.length,
-  );
-  const hiddenCount = selectedOptions.length - visibleBadges.length;
   const filteredOptions = options.filter((option) =>
     `${option.label} ${option.value}`
       .toLowerCase()
@@ -101,35 +135,20 @@ function MultiSelectInput({
             controlClassName,
             "flex flex-wrap items-center gap-2 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25",
             invalid && "border-destructive",
-            (disabled || isLoading) && "cursor-not-allowed bg-muted opacity-75",
+            isDisabled && "cursor-not-allowed bg-muted opacity-75",
           )}
         >
-          <div className="flex flex-wrap items-center gap-1 min-w-0">
-            {visibleBadges.map((option) => (
-              <Badge tone="brand" key={option.value} className="max-w-full">
-                <span className="break-all">{option.label}</span>
-                <button
-                  type="button"
-                  disabled={disabled || isLoading}
-                  aria-label={`Remove ${option.label}`}
-                  onClick={() => removeOption(option.value)}
-                  className="flex h-6 w-6 items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring cursor-pointer shrink-0"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-            {hiddenCount > 0 && (
-              <span className="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">
-                +{hiddenCount}
-              </span>
-            )}
-          </div>
+          <SelectedBadges
+            options={selectedOptions}
+            maxBadgeCount={maxBadgeCount}
+            disabled={isDisabled}
+            onRemove={removeOption}
+          />
           <PopoverTrigger asChild>
             <button
               type="button"
               id={id}
-              disabled={disabled || isLoading}
+              disabled={isDisabled}
               onBlur={onBlur}
               aria-label={label}
               aria-describedby={invalid ? `${id}-error` : undefined}

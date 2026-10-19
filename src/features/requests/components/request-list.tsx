@@ -1,32 +1,31 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Inbox } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-import { EmptyState } from "@/components/empty-state";
+import {
+  DataSearch,
+  DataFiltersDrawer,
+  DataResults,
+  getFilterValues,
+  countActiveFilters,
+  updateListSearchParams,
+} from "@/components/data-management";
 import { ErrorAlert } from "@/components/error-alert";
-import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
   listRequestsRequest,
   listRequestStatusesRequest,
 } from "../api/requests-api";
-import { requestFilterFields, type RequestFilters } from "../types";
+import { requestFilterFields, requestPageSizes } from "../types";
 import { parseRequestListParams } from "../utils/request-list-params";
-import { RequestSearch } from "./request-filters";
-import { RequestFiltersDrawer } from "./request-filters-drawer";
-import { RequestPagination } from "./request-pagination";
 import { RequestTable } from "./request-table";
 
 export function RequestList() {
   const { userId } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const params = parseRequestListParams(searchParams);
-  const advancedFilters: RequestFilters = {};
-  for (const { name } of requestFilterFields)
-    advancedFilters[name] = params[name] ?? "";
-  const hasAdvancedFilters = requestFilterFields.some(({ name }) =>
-    Boolean(params[name]),
-  );
+  const advancedFilters = getFilterValues(requestFilterFields, params);
+  const hasAdvancedFilters =
+    countActiveFilters(requestFilterFields, params) > 0;
   const hasFilters = Boolean(
     params.searchAll || params.ticket_status_name || hasAdvancedFilters,
   );
@@ -47,19 +46,13 @@ export function RequestList() {
     values: Record<string, string | number | undefined>,
     remove: readonly string[] = [],
   ) => {
-    setSearchParams((current) => {
-      const next = new URLSearchParams(current);
-      next.delete("columnSort");
-      next.delete("typeSort");
-      for (const key of remove) next.delete(key);
-      next.set("page", "1");
-      for (const [key, value] of Object.entries(values)) {
-        if (value === undefined || String(value).trim() === "")
-          next.delete(key);
-        else next.set(key, String(value).trim());
-      }
-      return next;
-    });
+    setSearchParams((current) =>
+      updateListSearchParams(current, values, [
+        "columnSort",
+        "typeSort",
+        ...remove,
+      ]),
+    );
   };
   const clearAdvanced = () =>
     update(
@@ -86,12 +79,16 @@ export function RequestList() {
     <div className="flex min-h-112 min-w-0 flex-1 flex-col gap-4">
       <div className="shrink-0 rounded-xl border border-border bg-card shadow-sm">
         <div className="flex items-center gap-3 overflow-x-auto p-4">
-          <RequestSearch
+          <DataSearch
+            label="Tìm kiếm yêu cầu"
             key={JSON.stringify(params)}
             initialValue={params.searchAll ?? ""}
-            initialStatus={params.ticket_status_name ?? "all"}
-            statusOptions={statusOptions}
-            statusLoading={statuses.isPending}
+            filter={{
+              label: "Trạng thái",
+              initialValue: params.ticket_status_name ?? "all",
+              options: statusOptions,
+              loading: statuses.isPending,
+            }}
             onSearch={(value, status) =>
               update(
                 {
@@ -102,7 +99,9 @@ export function RequestList() {
               )
             }
           />
-          <RequestFiltersDrawer
+          <DataFiltersDrawer
+            fields={requestFilterFields}
+            description="Lọc yêu cầu theo các thông tin bên dưới."
             initialValues={advancedFilters}
             onApply={(filters) => update(filters)}
             onClear={clearAdvanced}
@@ -139,67 +138,28 @@ export function RequestList() {
         )}
       </div>
 
-      <section
-        aria-label="Kết quả yêu cầu"
-        aria-busy={requests.isFetching}
-        className="relative flex min-h-112 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:min-h-72"
-      >
-        {requests.isPending && <LoadingState message="Đang tải yêu cầu..." />}
-        {requests.isError && (
-          <div className="space-y-3 p-4">
-            <ErrorAlert
-              message={`Không tải được yêu cầu: ${requests.error.message}`}
-            />
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => void requests.refetch()}
-              >
-                Thử lại
-              </Button>
-              {params.page > 1 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => update({ page: 1 })}
-                >
-                  Về trang đầu
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-        {!requests.isPending && !requests.isError && requests.data && (
-          <>
-            {requests.data.results.length ? (
-              <RequestTable rows={requests.data.results} />
-            ) : (
-              <EmptyState
-                title="Không tìm thấy yêu cầu"
-                description="Thử thay đổi từ khóa hoặc bộ lọc để tìm yêu cầu phù hợp."
-                icon={<Inbox className="size-6" aria-hidden="true" />}
-                className="rounded-none border-0 shadow-none"
-              />
-            )}
-            {requests.data.results.length > 0 && (
-              <RequestPagination
-                count={requests.data.count}
-                params={params}
-                disabled={requests.isPlaceholderData || requests.isFetching}
-                onPage={(page) => update({ page })}
-                onPageSize={(size) => update({ page_size: size })}
-              />
-            )}
-          </>
-        )}
-        {requests.isFetching && !requests.isPending && (
-          <LoadingState
-            message="Đang cập nhật danh sách..."
-            className="absolute inset-0 z-20 bg-card/80"
+      <DataResults
+        query={requests}
+        label="Kết quả yêu cầu"
+        loadingMessage="Đang tải yêu cầu..."
+        errorPrefix="Không tải được yêu cầu"
+        emptyTitle="Không tìm thấy yêu cầu"
+        emptyDescription="Thử thay đổi từ khóa hoặc bộ lọc để tìm yêu cầu phù hợp."
+        pagination={{
+          page: params.page,
+          pageSize: params.page_size,
+          pageSizes: requestPageSizes,
+          itemLabel: "yêu cầu",
+          onPage: (page) => update({ page }),
+          onPageSize: (size) => update({ page_size: size }),
+        }}
+        renderRows={(rows) => (
+          <RequestTable
+            rows={rows}
+            rowOffset={(params.page - 1) * params.page_size}
           />
         )}
-      </section>
+      />
     </div>
   );
 }

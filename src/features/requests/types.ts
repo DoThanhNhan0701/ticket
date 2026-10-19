@@ -1,4 +1,5 @@
 import type { z } from "zod";
+import type { DataFilterField } from "@/components/data-management";
 import type {
   requestTicketSchema,
   requestStatusSchema,
@@ -26,7 +27,12 @@ export const requestFilterFields = [
     label: "Văn phòng",
     placeholder: "Nhập tên văn phòng",
   },
-  { name: "duedate", label: "Ngày mong muốn", placeholder: "DD/MM/YYYY" },
+  {
+    name: "duedate",
+    label: "Ngày mong muốn",
+    placeholder: "DD/MM/YYYY",
+    type: "date",
+  },
   {
     name: "approve_user_name",
     label: "Người phê duyệt",
@@ -37,7 +43,7 @@ export const requestFilterFields = [
     label: "Cập nhật bởi",
     placeholder: "Nhập người cập nhật",
   },
-] as const;
+] as const satisfies readonly DataFilterField[];
 
 export type RequestFilters = Partial<
   Record<(typeof requestFilterFields)[number]["name"], string>

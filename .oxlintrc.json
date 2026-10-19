@@ -22,6 +22,13 @@
   },
   "overrides": [
     {
+      "files": ["src/**/*.{ts,tsx}"],
+      "rules": {
+        "complexity": ["error", 20],
+        "max-depth": ["error", 4]
+      }
+    },
+    {
       "files": ["src/components/ui/label.tsx"],
       "rules": {
         "jsx-a11y/label-has-associated-control": "off"
