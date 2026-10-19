@@ -26,6 +26,12 @@ let client: QueryClient;
 let auth: AuthContextValue;
 
 beforeEach(() => {
+  vi.stubGlobal(
+    "ResizeObserver",
+    vi.fn(function () {
+      return { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
+    }),
+  );
   client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   auth = {
     token: "ticket-session",
@@ -328,14 +334,55 @@ it("collapses the desktop sidebar while retaining accessible navigation", async 
   fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
   const expand = screen.getByRole("button", { name: "Mở rộng sidebar" });
   expect(expand.getAttribute("aria-expanded")).toBe("false");
-  fireEvent.click(screen.getByRole("link", { name: "Báo cáo" }));
+  const sidebar = within(
+    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+  );
+  expect(sidebar.getAllByRole("button")).toHaveLength(2);
+  expect(sidebar.queryByRole("link")).toBeNull();
+  fireEvent.click(sidebar.getByRole("button", { name: "Báo cáo & dữ liệu" }));
+  const flyout = await screen.findByRole("dialog", {
+    name: "Báo cáo & dữ liệu",
+  });
+  fireEvent.click(within(flyout).getByRole("link", { name: "Báo cáo" }));
   expect(await screen.findByRole("heading", { name: "Báo cáo" })).toBeTruthy();
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(
+    sidebar
+      .getByRole("button", { name: "Báo cáo & dữ liệu" })
+      .getAttribute("aria-current"),
+  ).toBe("true");
   fireEvent.click(expand);
   expect(
     screen
       .getByRole("button", { name: "Thu gọn sidebar" })
       .getAttribute("aria-expanded"),
   ).toBe("true");
+});
+
+it("keeps collapsed flyouts permission-filtered and highlights the list for ticket details", async () => {
+  renderApp("/tickets/42");
+  await screen.findByRole("heading", { name: "Chi tiết yêu cầu" });
+  fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
+  const sidebar = within(
+    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+  );
+  expect(sidebar.getAllByRole("button")).toHaveLength(1);
+  const trigger = sidebar.getByRole("button", { name: "Yêu cầu" });
+  expect(trigger.getAttribute("aria-current")).toBe("true");
+  fireEvent.click(trigger);
+  const flyout = await screen.findByRole("dialog", { name: "Yêu cầu" });
+  expect(within(flyout).getAllByRole("link")).toHaveLength(1);
+  expect(
+    within(flyout)
+      .getByRole("link", { name: "Danh sách yêu cầu" })
+      .getAttribute("aria-current"),
+  ).toBe("page");
+  expect(
+    within(flyout).queryByRole("link", { name: "Tất cả yêu cầu" }),
+  ).toBeNull();
+  fireEvent.keyDown(document, { key: "Escape" });
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await waitFor(() => expect(document.activeElement).toBe(trigger));
 });
 
 it("opens the mobile drawer and closes it after navigation", async () => {

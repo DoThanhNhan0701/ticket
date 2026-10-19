@@ -1,14 +1,25 @@
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@base-ui/react/dialog";
 import { ChevronDown, Menu, ShieldCheck, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { cn } from "@/lib/utils";
 import {
   canAccessPage,
   isPageActive,
   navigationGroups,
+  type NavigationGroup,
   type WorkspacePageDefinition,
 } from "../navigation";
 
@@ -17,11 +28,105 @@ interface SidebarProps {
   onNavigate?: () => void;
 }
 
+function CollapsedSidebarGroup({
+  group,
+  active,
+  onNavigate,
+}: Readonly<{
+  group: NavigationGroup;
+  active: boolean;
+  onNavigate?: () => void;
+}>) {
+  const [open, setOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const Icon = group.icon;
+  useEffect(() => {
+    if (!open) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnMobile = () => {
+      if (!desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", closeOnMobile);
+    return () => desktop.removeEventListener("change", closeOnMobile);
+  }, [open]);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <Tooltip disabled={open}>
+        <PopoverTrigger asChild>
+          <TooltipTrigger
+            render={
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label={group.label}
+                aria-current={active ? "true" : undefined}
+                className={cn(
+                  "relative size-11 rounded-xl",
+                  active
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-xs ring-1 ring-inset ring-sidebar-ring/20 hover:bg-sidebar-accent"
+                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
+                )}
+              />
+            }
+          >
+            <Icon className="size-5" aria-hidden="true" />
+            {active && (
+              <span
+                className="absolute top-1/2 -left-2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary"
+                aria-hidden="true"
+              />
+            )}
+          </TooltipTrigger>
+        </PopoverTrigger>
+        <TooltipContent side="right" sideOffset={12}>
+          {group.label}
+        </TooltipContent>
+      </Tooltip>
+      <PopoverContent
+        ref={contentRef}
+        side="right"
+        align="start"
+        sideOffset={24}
+        collisionPadding={12}
+        aria-label={group.label}
+        className="w-64 max-w-[calc(100vw-2rem)] p-2"
+        onOpenAutoFocus={(event) => {
+          const firstLink =
+            contentRef.current?.querySelector<HTMLAnchorElement>("a[href]");
+          if (firstLink) {
+            event.preventDefault();
+            firstLink.focus();
+          }
+        }}
+      >
+        <h2 className="px-3 py-2 text-xs font-semibold tracking-wide text-muted-foreground">
+          {group.label}
+        </h2>
+        <nav aria-label={group.label}>
+          <ul className="space-y-1">
+            {group.pages.map((page) => (
+              <li key={page.path}>
+                <SidebarLink
+                  page={page}
+                  onNavigate={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 function SidebarLink({
   page,
-  collapsed,
   onNavigate,
-}: SidebarProps & { page: WorkspacePageDefinition }) {
+}: Readonly<{ page: WorkspacePageDefinition; onNavigate?: () => void }>) {
   const { pathname } = useLocation();
   const active = isPageActive(page, pathname);
   const Icon = page.icon;
@@ -32,20 +137,16 @@ function SidebarLink({
       onClick={onNavigate}
       aria-label={page.label}
       aria-current={active ? "page" : undefined}
-      title={collapsed ? page.label : undefined}
       className={cn(
         "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
         active
           ? "bg-sidebar-accent text-sidebar-accent-foreground"
           : "text-muted-foreground hover:bg-muted hover:text-sidebar-foreground",
-        collapsed && "justify-center px-0",
       )}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className={collapsed ? "sr-only" : "min-w-0 flex-1"}>
-        {page.label}
-      </span>
-      {active && !collapsed && (
+      <span className="min-w-0 flex-1">{page.label}</span>
+      {active && (
         <span
           className="size-1.5 shrink-0 rounded-full bg-current"
           aria-hidden="true"
@@ -74,43 +175,35 @@ export function AppSidebar({
         aria-label="Điều hướng Ticket"
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
       >
-        <div className="space-y-1">
+        <div
+          className={cn(
+            collapsed ? "flex flex-col items-center gap-2" : "space-y-1",
+          )}
+        >
           {groups.map((group) => {
             const active = group.pages.some((page) =>
               isPageActive(page, pathname),
             );
             const Icon = group.icon;
+            if (collapsed) {
+              return (
+                <CollapsedSidebarGroup
+                  key={group.label}
+                  group={group}
+                  active={active}
+                  onNavigate={onNavigate}
+                />
+              );
+            }
             const links = (
-              <ul
-                className={cn(
-                  "space-y-1",
-                  !collapsed && "ml-3 border-l border-sidebar-border pl-2",
-                )}
-              >
+              <ul className="ml-3 space-y-1 border-l border-sidebar-border pl-2">
                 {group.pages.map((page) => (
                   <li key={page.path}>
-                    <SidebarLink
-                      page={page}
-                      collapsed={collapsed}
-                      onNavigate={onNavigate}
-                    />
+                    <SidebarLink page={page} onNavigate={onNavigate} />
                   </li>
                 ))}
               </ul>
             );
-
-            if (collapsed) {
-              return (
-                <section
-                  key={group.label}
-                  aria-label={group.label}
-                  className="border-t border-sidebar-border py-2"
-                >
-                  <h2 className="sr-only">{group.label}</h2>
-                  {links}
-                </section>
-              );
-            }
 
             return (
               <details
@@ -143,7 +236,10 @@ export function AppSidebar({
         </div>
       </nav>
 
-      <div className="flex min-h-12 shrink-0 items-center justify-center gap-2 border-t border-sidebar-border px-4 py-3 text-xs text-muted-foreground">
+      <div
+        title={collapsed ? "Rainscales · Internal workspace" : undefined}
+        className="flex min-h-12 shrink-0 items-center justify-center gap-2 border-t border-sidebar-border px-4 py-3 text-xs text-muted-foreground"
+      >
         <ShieldCheck className="size-3.5 shrink-0" aria-hidden="true" />
         <span className={collapsed ? "sr-only" : undefined}>
           Rainscales · Internal workspace

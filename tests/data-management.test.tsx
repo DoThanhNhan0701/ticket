@@ -235,6 +235,51 @@ it("supports multiple independent pagers and configurable page sizes without dup
   expect(pagination.onPage).not.toHaveBeenCalled();
 });
 
+it("opens the mobile page selector and submits a valid page without leaving it open", async () => {
+  const onPage = vi.fn();
+  render(<DataPagination {...pagination} count={65} onPage={onPage} />);
+  fireEvent.click(screen.getByRole("button", { name: "Chọn trang" }));
+  const popup = await screen.findByRole("dialog", { name: "Chọn trang" });
+  fireEvent.change(
+    within(popup).getByRole("spinbutton", { name: "Đến trang" }),
+    { target: { value: "4" } },
+  );
+  fireEvent.click(within(popup).getByRole("button", { name: "Đến trang" }));
+  expect(onPage).toHaveBeenCalledWith(4);
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+});
+
+it("resets search drafts without remounting the filter drawer action", async () => {
+  const actions = (
+    <DataFiltersDrawer
+      fields={fields}
+      initialValues={{}}
+      onApply={vi.fn()}
+      onClear={vi.fn()}
+    />
+  );
+  const props = {
+    initialValue: "before",
+    resetKey: "before",
+    actions,
+    onSearch: vi.fn(),
+  };
+  const { rerender } = render(<DataSearch {...props} />);
+  const trigger = screen.getByRole("button", { name: "Lọc nâng cao" });
+  fireEvent.click(trigger);
+  const drawer = await screen.findByRole("dialog", { name: "Lọc nâng cao" });
+  rerender(<DataSearch {...props} initialValue="after" resetKey="after" />);
+  expect(screen.getByRole("dialog", { name: "Lọc nâng cao" })).toBe(drawer);
+  fireEvent.click(
+    within(drawer).getByRole("button", { name: "Đóng bộ lọc nâng cao" }),
+  );
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect((screen.getByRole("searchbox") as HTMLInputElement).value).toBe(
+    "after",
+  );
+  expect(document.activeElement).toBe(trigger);
+});
+
 it("hides empty pagination and disables every paging control during updates", () => {
   const { rerender } = render(<DataPagination {...pagination} count={0} />);
   expect(screen.queryByRole("navigation")).toBeNull();

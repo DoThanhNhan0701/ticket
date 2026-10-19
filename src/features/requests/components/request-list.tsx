@@ -76,12 +76,12 @@ export function RequestList() {
     });
 
   return (
-    <div className="flex min-h-112 min-w-0 flex-1 flex-col gap-4">
-      <div className="shrink-0 rounded-xl border border-border bg-card shadow-sm">
-        <div className="flex items-center gap-3 overflow-x-auto p-4">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
+      <div className="shrink-0 space-y-3">
+        <div className="flex flex-wrap items-end gap-2 sm:items-center sm:gap-3">
           <DataSearch
             label="Tìm kiếm yêu cầu"
-            key={JSON.stringify(params)}
+            resetKey={JSON.stringify(params)}
             initialValue={params.searchAll ?? ""}
             filter={{
               label: "Trạng thái",
@@ -89,6 +89,15 @@ export function RequestList() {
               options: statusOptions,
               loading: statuses.isPending,
             }}
+            actions={
+              <DataFiltersDrawer
+                fields={requestFilterFields}
+                description="Lọc yêu cầu theo các thông tin bên dưới."
+                initialValues={advancedFilters}
+                onApply={(filters) => update(filters)}
+                onClear={clearAdvanced}
+              />
+            }
             onSearch={(value, status) =>
               update(
                 {
@@ -99,17 +108,11 @@ export function RequestList() {
               )
             }
           />
-          <DataFiltersDrawer
-            fields={requestFilterFields}
-            description="Lọc yêu cầu theo các thông tin bên dưới."
-            initialValues={advancedFilters}
-            onApply={(filters) => update(filters)}
-            onClear={clearAdvanced}
-          />
           {hasFilters && (
             <Button
               type="button"
               variant="ghost"
+              className="w-full sm:w-auto"
               onClick={() =>
                 update({}, [
                   "searchAll",
@@ -123,7 +126,7 @@ export function RequestList() {
           )}
         </div>
         {statuses.isError && (
-          <div className="space-y-2 px-4 pb-4">
+          <div className="space-y-2">
             <ErrorAlert
               message={`Không tải được trạng thái: ${statuses.error.message}`}
             />

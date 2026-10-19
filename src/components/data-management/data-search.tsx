@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { SearchInput } from "@/components/search-input";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,25 +8,30 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
-export function DataSearch({
-  label = "Tìm kiếm dữ liệu",
-  placeholder = "Tìm kiếm nhanh...",
-  initialValue,
-  filter,
-  onSearch,
-}: Readonly<{
-  label?: string;
-  placeholder?: string;
-  initialValue: string;
-  filter?: {
+interface DataSearchProps {
+  readonly label?: string;
+  readonly placeholder?: string;
+  readonly initialValue: string;
+  readonly filter?: {
     readonly label: string;
     readonly initialValue: string;
     readonly options: readonly { value: string; label: string }[];
     readonly loading?: boolean;
   };
-  onSearch: (value: string, filterValue: string) => void;
-}>) {
+  readonly resetKey?: string;
+  readonly actions?: ReactNode;
+  readonly onSearch: (value: string, filterValue: string) => void;
+}
+
+function DataSearchForm({
+  label = "Tìm kiếm dữ liệu",
+  placeholder = "Tìm kiếm nhanh...",
+  initialValue,
+  filter,
+  onSearch,
+}: Readonly<Omit<DataSearchProps, "actions" | "resetKey">>) {
   const [value, setValue] = useState(initialValue);
   const [filterValue, setFilterValue] = useState(filter?.initialValue ?? "");
   const filterId = useId();
@@ -34,7 +39,10 @@ export function DataSearch({
     <form
       role="search"
       aria-label={label}
-      className="flex min-w-[32rem] max-w-3xl flex-1 items-center gap-2"
+      className={cn(
+        "row-start-1 grid min-w-0 grid-cols-subgrid items-center gap-2 sm:flex sm:flex-1",
+        filter ? "col-span-full row-span-2" : "col-span-2",
+      )}
       onSubmit={(event) => {
         event.preventDefault();
         onSearch(value.trim(), filterValue);
@@ -45,7 +53,7 @@ export function DataSearch({
         placeholder={placeholder}
         value={value}
         onValueChange={setValue}
-        wrapperClassName="flex-1"
+        wrapperClassName={filter ? "col-span-full sm:flex-1" : "sm:flex-1"}
       />
       {filter && (
         <Select
@@ -57,7 +65,7 @@ export function DataSearch({
           <SelectTrigger
             id={filterId}
             aria-label={filter.label}
-            className="w-48 shrink-0"
+            className="min-w-0 w-full text-sm sm:w-48 sm:shrink-0"
           >
             <SelectValue />
           </SelectTrigger>
@@ -70,7 +78,44 @@ export function DataSearch({
           </SelectContent>
         </Select>
       )}
-      <Button type="submit">Tìm kiếm</Button>
+      <Button type="submit" className="px-3 sm:px-4">
+        Tìm kiếm
+      </Button>
     </form>
+  );
+}
+
+export function DataSearch({
+  resetKey,
+  actions,
+  ...props
+}: Readonly<DataSearchProps>) {
+  return (
+    <div
+      className={cn(
+        "grid min-w-0 flex-1 items-center gap-2 sm:flex sm:min-w-[28rem] sm:max-w-3xl",
+        actions
+          ? "grid-cols-[minmax(0,1fr)_auto_auto]"
+          : "grid-cols-[minmax(0,1fr)_auto]",
+      )}
+    >
+      <DataSearchForm
+        key={
+          resetKey ??
+          JSON.stringify([props.initialValue, props.filter?.initialValue])
+        }
+        {...props}
+      />
+      {actions && (
+        <div
+          className={cn(
+            "col-start-3 flex items-center",
+            props.filter ? "row-start-2" : "row-start-1",
+          )}
+        >
+          {actions}
+        </div>
+      )}
+    </div>
   );
 }

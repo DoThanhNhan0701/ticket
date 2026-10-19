@@ -78,6 +78,7 @@ export function DataFiltersDrawer<Name extends string>({
                     type="button"
                     variant="ghost"
                     size="icon"
+                    className="size-11 sm:size-9 sm:pointer-coarse:size-11"
                     aria-label="Đóng bộ lọc nâng cao"
                   />
                 }

@@ -30,7 +30,7 @@ export function DataResults<T>({
     <section
       aria-label={label}
       aria-busy={query.isFetching}
-      className="relative flex min-h-112 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:min-h-72"
+      className="relative flex min-h-64 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:min-h-72"
     >
       {query.isPending && <LoadingState message={loadingMessage} />}
       {query.isError && (

@@ -22,7 +22,7 @@ export function PrivateLayout() {
   return (
     <div className="app-dashed-background flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">
       <header className="h-16 shrink-0 border-b border-border bg-card">
-        <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.75rem,2vw,1.5rem)]">
+        <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.75rem,2vw,1.5rem)] lg:pl-3.5">
           <div className="flex min-w-0 items-center gap-2">
             <div className="flex size-11 shrink-0 items-center justify-center">
               <MobileSidebar desktopToggleRef={desktopToggleRef} />
@@ -51,7 +51,7 @@ export function PrivateLayout() {
               aria-label="Rainscales Ticket home"
               className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              <BrandLogo className="h-7 w-[clamp(6rem,calc(100vw-14rem),10rem)]" />
+              <BrandLogo className="h-7 w-[clamp(5.5rem,calc(100vw-16rem),10rem)]" />
             </Link>
             <div className="flex min-w-0 items-center gap-2 border-l border-border pl-2">
               <UserAvatar name={username} src={avatarUrl} className="h-8 w-8" />
@@ -72,7 +72,7 @@ export function PrivateLayout() {
               onClick={logout}
               aria-label="Sign Out"
               title="Sign Out"
-              className="h-9 w-9 gap-1.5 px-0 text-[0.8rem] lg:w-auto lg:px-3"
+              className="h-11 w-11 gap-1.5 px-0 text-[0.8rem] sm:h-9 sm:w-9 sm:pointer-coarse:h-11 sm:pointer-coarse:min-w-11 lg:w-auto lg:px-3"
             >
               <LogOut className="size-3.5" />
               <span className="hidden lg:inline">Sign Out</span>

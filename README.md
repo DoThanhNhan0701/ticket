@@ -52,6 +52,8 @@ The workspace uses its full available width. The table shows the request code, t
 
 In development, React StrictMode runs an additional effect setup/cleanup cycle. TanStack Query forwards that cleanup through the request's AbortSignal, so DevTools can show one canceled request followed by one successful request for each list endpoint. The production build omits this development probe. Keep cancellation enabled: changing search parameters aborts the obsolete query, and its late response cannot replace the latest results. Regression tests cover both behaviors and confirm that cancellation preserves the authentication session.
 
+Below 640px, the keyword spans the full toolbar width; the status, search and advanced-filter controls align on the second row. Wider screens keep the toolbar on one row when space allows; extra actions wrap instead of being clipped. Mobile pagination keeps the range, page-size select and compact previous/page/next controls on one row; below 400px the selected size omits its visible unit while retaining its accessible label. For multiple pages, tapping the page counter opens a page-jump popover; a single page uses a static counter. Desktop keeps the inline page-jump form for multiple pages. Header actions, drawer close buttons and paging arrows provide 44px touch targets. The request results use a smaller minimum height on narrow screens so the table and pager fit shorter viewports; landscape screens can scroll the main content when needed.
+
 ## API contracts
 
 All active API responses enter as `unknown` and pass Zod validation before application code uses them. Response types are inferred from those schemas so runtime validation and TypeScript declarations stay together. The contracts were checked against the Ticket backend; credentials and tokens are not stored in source.
@@ -120,6 +122,8 @@ Contextual URLs are `/tickets/:ticketID`, `/tickets/from-email/:ticketID`, `/set
 
 `src/app/navigation.ts` defines page metadata and access rules shared by routes and the sidebar. Menu groups are filtered using permissions from `/api/list_permission/`; opening a restricted URL directly shows an access message. Superusers can access every group. Settings accepts `can_system` or `is_system_manage`; switching ticket status requires `can_return_ticket`. Backend APIs must enforce their own permissions when those pages are implemented.
 
+The collapsed desktop sidebar shows one 44px icon per permitted group, with a hover tooltip and an active-group marker. Clicking a group or pressing Enter opens its labeled links in a popover on the right. Opening focuses the first link; Escape closes the popover and restores focus. Selecting a page closes it, and switching to the mobile breakpoint dismisses open desktop popovers. Expanded and mobile navigation retain the grouped list.
+
 ## Project structure
 
 ```text
@@ -183,7 +187,7 @@ For a new page, define a typed `DataColumn<YourRow>[]` and a readonly `DataFilte
 
 `DataResults` expects data shaped as `{ count, results }` and the loading/error flags in `DataListQuery<T>`; TanStack Query results already match that interface. Keep previous data while fetching to retain the table under the update overlay. Pass the page's size options explicitly (`/requests` uses `[100, 200]`), and map its API response in the feature if it has a different shape.
 
-URL helpers use `page` and `page_size`. Feature-specific keys and obsolete parameters are supplied by the caller. Changing filters or size resets page to 1; explicitly updating `page` overrides that reset. Key `DataSearch` by the applied parameters to restore its draft values when navigating Back/Forward. The Drawer restores applied values on reopening and discards unapplied edits.
+URL helpers use `page` and `page_size`. Feature-specific keys and obsolete parameters are supplied by the caller. Changing filters or size resets page to 1; explicitly updating `page` overrides that reset. Pass `resetKey={JSON.stringify(params)}` to `DataSearch` to restore drafts when navigating Back/Forward. Put the filter Drawer in its `actions` slot to align it with the search controls; only the inner search form remounts when `resetKey` changes, preserving the Drawer's state and trigger focus. The Drawer restores applied values on reopening and discards unapplied edits.
 
 ## Quality checks
 

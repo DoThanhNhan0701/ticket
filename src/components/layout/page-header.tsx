@@ -21,14 +21,14 @@ export function PageHeader({
   actions,
 }: Readonly<PageHeaderProps>) {
   return (
-    <header className="flex shrink-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
+    <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 sm:gap-4">
       <div className="flex min-w-0 items-center gap-2 sm:gap-3">
         {onBack && (
           <Button
             type="button"
             variant="outline"
             size="icon"
-            className="h-8 w-8 sm:h-9 sm:w-9"
+            className="size-11 sm:size-9 sm:pointer-coarse:size-11"
             aria-label="Back to home"
             onClick={onBack}
             disabled={backDisabled}
