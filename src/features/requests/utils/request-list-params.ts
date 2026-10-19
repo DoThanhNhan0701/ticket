@@ -1,7 +1,5 @@
 import {
-  requestFilterFields,
   requestPageSizes,
-  allRequestFilterFields,
   allRequestViews,
   type RequestListParams,
   type RequestListScope,
@@ -10,6 +8,7 @@ import {
   parseListPagination,
   readStringFilters,
 } from "@/components/data-management";
+import { requestListConfig } from "./request-list-config";
 
 export function parseRequestListParams(
   search: URLSearchParams,
@@ -21,9 +20,7 @@ export function parseRequestListParams(
     page_size: pageSize,
     ...readStringFilters(
       search,
-      (scope === "all" ? allRequestFilterFields : requestFilterFields).map(
-        ({ name }) => name,
-      ),
+      requestListConfig[scope].filterFields.map(({ name }) => name),
     ),
   };
   const searchAll = search.get("searchAll")?.trim();

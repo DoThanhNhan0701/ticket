@@ -154,6 +154,11 @@ it.each([
     "Danh sách yêu cầu",
   ],
   ["/chopheduyet?team=1", "/approvals/pending?team=1", "Chờ phê duyệt"],
+  [
+    "/dapheduyet?page=2#results",
+    "/approvals/approved?page=2#results",
+    "Đã phê duyệt",
+  ],
   ["/danhsachxulycanhan", "/tasks/mine", "Nhiệm vụ cá nhân"],
   [
     "/settings/vanphong?search=Da%20Nang",
@@ -273,7 +278,8 @@ it("shows ticketV2 navigation groups according to the account permissions", asyn
       .getByRole("link", { name: "Chờ phê duyệt" })
       .getAttribute("aria-current"),
   ).toBe("page");
-  expect(screen.getByText("Trang đang được chuẩn bị")).toBeTruthy();
+  expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
+  expect(screen.queryByText("Trang đang được chuẩn bị")).toBeNull();
 });
 
 it.each([

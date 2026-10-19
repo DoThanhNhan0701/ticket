@@ -23,6 +23,7 @@ export function SearchableSelect({
   disabled = false,
   invalid = false,
   describedBy,
+  className,
 }: Readonly<{
   id: string;
   label: string;
@@ -36,6 +37,7 @@ export function SearchableSelect({
   disabled?: boolean;
   invalid?: boolean;
   describedBy?: string;
+  className?: string;
 }>) {
   const [search, setSearch] = useState("");
   const { contains } = Combobox.useFilter({ sensitivity: "base" });
@@ -68,6 +70,7 @@ export function SearchableSelect({
         className={cn(
           controlClassName,
           "flex items-center justify-between gap-2 text-left data-placeholder:text-muted-foreground",
+          className,
         )}
       >
         <span className="min-w-0 flex-1 truncate">

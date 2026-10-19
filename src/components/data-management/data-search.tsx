@@ -1,6 +1,7 @@
 import { useId, useState, type ReactNode } from "react";
 import { SearchInput } from "@/components/search-input";
 import { Button } from "@/components/ui/button";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import {
   Select,
   SelectTrigger,
@@ -19,6 +20,7 @@ interface DataSearchProps {
     readonly initialValue: string;
     readonly options: readonly { value: string; label: string }[];
     readonly loading?: boolean;
+    readonly searchable?: boolean;
   };
   readonly resetKey?: string;
   readonly actions?: ReactNode;
@@ -55,29 +57,40 @@ function DataSearchForm({
         onValueChange={setValue}
         wrapperClassName={filter ? "col-span-full sm:flex-1" : "sm:flex-1"}
       />
-      {filter && (
-        <Select
-          items={filter.options}
-          value={filterValue}
-          disabled={filter.loading}
-          onValueChange={(next) => setFilterValue(next ?? "")}
-        >
-          <SelectTrigger
+      {filter &&
+        (filter.searchable ? (
+          <SearchableSelect
             id={filterId}
-            aria-label={filter.label}
-            className="min-w-0 w-full text-sm sm:w-48 sm:shrink-0"
+            label={filter.label}
+            options={filter.options}
+            value={filterValue}
+            disabled={filter.loading}
+            onValueChange={setFilterValue}
+            className="min-w-0 w-full sm:w-48 sm:shrink-0"
+          />
+        ) : (
+          <Select
+            items={filter.options}
+            value={filterValue}
+            disabled={filter.loading}
+            onValueChange={(next) => setFilterValue(next ?? "")}
           >
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent alignItemWithTrigger={false}>
-            {filter.options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
+            <SelectTrigger
+              id={filterId}
+              aria-label={filter.label}
+              className="min-w-0 w-full text-sm sm:w-48 sm:shrink-0"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {filter.options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ))}
       <Button type="submit" className="px-3 sm:px-4">
         Tìm kiếm
       </Button>

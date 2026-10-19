@@ -7,6 +7,7 @@ import {
 } from "@/components/data-management";
 import { Badge } from "@/components/ui/badge";
 import type { RequestListScope, RequestTicket } from "../types";
+import { requestListConfig } from "../utils/request-list-config";
 
 const getRequestHref = (request: RequestTicket) =>
   `/tickets/${encodeURIComponent(String(request.id))}`;
@@ -134,6 +135,28 @@ const allColumns: readonly DataColumn<RequestTicket>[] = columns
     return { ...column, width: allColumnWidths[column.id] };
   });
 
+const approvalColumns: readonly DataColumn<RequestTicket>[] = allColumns.map(
+  (column) =>
+    column.id === "handler"
+      ? {
+          id: "requester",
+          label: "Người yêu cầu",
+          width: column.width,
+          align: "center",
+          render: (request) => <DataText text={request.username_create} />,
+        }
+      : column,
+);
+
+const columnsByScope: Readonly<
+  Record<RequestListScope, readonly DataColumn<RequestTicket>[]>
+> = {
+  created: columns,
+  all: allColumns,
+  pending: approvalColumns,
+  approved: approvalColumns,
+};
+
 export function RequestTable({
   rows,
   rowOffset,
@@ -159,9 +182,9 @@ export function RequestTable({
             <DataText text={String(rowOffset + index + 1)} />
           ),
         },
-        ...(scope === "all" ? allColumns : columns),
+        ...columnsByScope[scope],
       ]}
-      label={scope === "all" ? "Tất cả yêu cầu" : "Danh sách yêu cầu"}
+      label={requestListConfig[scope].label}
       scrollLabel="Cuộn bảng yêu cầu"
       scrollResetKey={scrollResetKey}
       getRowKey={(request) => request.id}

@@ -12,12 +12,14 @@ import type {
   RequestStatus,
   RequestType,
 } from "../types";
+import { requestListConfig } from "../utils/request-list-config";
 
 export async function listRequestsRequest(
   filters: RequestListParams,
   signal?: AbortSignal,
+  scope: Exclude<RequestListScope, "all"> = "created",
 ): Promise<RequestListResponse> {
-  return fetchRequestList("created", filters, signal);
+  return fetchRequestList(scope, filters, signal);
 }
 
 export async function listAllRequestsRequest(
@@ -40,11 +42,10 @@ async function fetchRequestList(
   // The backend requires ordering parameters, even without interactive sorting.
   params.columnSort = "id";
   params.typeSort = "descend";
-  // Preserve ticketV2's scopes: the all endpoint omits typeView for all records.
-  if (scope === "created") params.typeView = "create";
-  const endpoint =
-    scope === "all" ? "/list_ticket_all_SupAD/" : "/list_ticket/";
-  const response = await getRequest<unknown>(endpoint, {
+  // Fixed views belong to the page and cannot be overridden by URL filters.
+  const config = requestListConfig[scope];
+  if (config.typeView) params.typeView = config.typeView;
+  const response = await getRequest<unknown>(config.endpoint, {
     params,
     signal,
   });

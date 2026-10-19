@@ -114,6 +114,12 @@ function LocationControls() {
       <button onClick={() => navigate(-1)}>Back</button>
       <button onClick={() => navigate("/requests")}>Open created list</button>
       <button onClick={() => navigate("/requests/all")}>Open all list</button>
+      <button onClick={() => navigate("/approvals/pending")}>
+        Open pending approvals
+      </button>
+      <button onClick={() => navigate("/approvals/approved")}>
+        Open approved approvals
+      </button>
     </>
   );
 }
@@ -151,8 +157,8 @@ function lastParams() {
   );
 }
 
-async function ready() {
-  await screen.findByRole("table", { name: "Danh sách yêu cầu" });
+async function ready(label = "Danh sách yêu cầu") {
+  await screen.findByRole("table", { name: label });
   await waitFor(() =>
     expect(
       screen
@@ -1113,3 +1119,333 @@ it("rejects malformed all-request handler data and hides pagination for empty re
     screen.queryByRole("navigation", { name: "Phân trang yêu cầu" }),
   ).toBeNull();
 });
+
+const approvalPages = [
+  {
+    path: "/approvals/pending",
+    label: "Chờ phê duyệt",
+    typeView: "pendingAccept",
+  },
+  {
+    path: "/approvals/approved",
+    label: "Đã phê duyệt",
+    typeView: "accepted",
+  },
+] as const;
+
+it.each(approvalPages)(
+  "loads $label with the fixed V2 view, requester columns and authenticated requests",
+  async ({ path, label, typeView }) => {
+    auth.permissions = { can_accept: true };
+    statusResponse = () =>
+      Response.json({
+        ...pagination,
+        count: statuses.length + 1,
+        results: [
+          { ...statuses[0], id: 1, name: "Trạng thái ban đầu" },
+          ...statuses,
+        ],
+      });
+    renderList(
+      `${path}?page=2&typeView=received&approve_user_name=wrong&list_user_received=wrong&ticket_status=9&ticket_type_id=17&columnSort=title&typeSort=ascend`,
+    );
+    await ready(label);
+    expect(lastParams()).toEqual({
+      page: "2",
+      page_size: "100",
+      columnSort: "id",
+      typeSort: "descend",
+      typeView,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    for (const [, options] of fetchMock.mock.calls) {
+      expect(options?.method).toBe("GET");
+      expect(options?.signal).toBeInstanceOf(AbortSignal);
+      expect(new Headers(options?.headers).get("Authorization")).toBe(
+        "Bearer request-access",
+      );
+    }
+    const table = within(screen.getByRole("table", { name: label }));
+    expect(
+      table.getAllByRole("columnheader").map((cell) => cell.textContent),
+    ).toEqual([
+      "#",
+      "Mã yêu cầu",
+      "Loại yêu cầu",
+      "Tiêu đề",
+      "Văn phòng",
+      "Ngày mong muốn",
+      "Người yêu cầu",
+      "Trạng thái",
+      "Cập nhật bởi",
+    ]);
+    expect(table.getByRole("cell", { name: "101" })).toBeTruthy();
+    expect(table.getByText(ticket.username_create)).toBeTruthy();
+    expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
+    fireEvent.click(screen.getByRole("combobox", { name: "Trạng thái" }));
+    expect(
+      await screen.findByRole("option", { name: "Hoàn thành" }),
+    ).toBeTruthy();
+    expect(
+      Boolean(screen.queryByRole("option", { name: "Trạng thái ban đầu" })),
+    ).toBe(typeView === "pendingAccept");
+    const completed = screen.getByRole("option", { name: "Hoàn thành" });
+    fireEvent.pointerDown(completed, { pointerType: "mouse" });
+    fireEvent.click(completed);
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+    fireEvent.click(table.getByText("Thiết bị"));
+    expect(screen.getByTestId("location").textContent).toBe("/tickets/42");
+  },
+);
+
+it.each(approvalPages)(
+  "applies draft search/status and requester filters to $label, preserving the view on clear and Back",
+  async ({ path, label, typeView }) => {
+    auth.permissions = { can_accept: true };
+    renderList(`${path}?page=2`);
+    await ready(label);
+    await selectOption("Trạng thái", "Hoàn thành");
+    fireEvent.change(screen.getByRole("searchbox"), {
+      target: { value: "  Máy & VPN  " },
+    });
+    expect(listCalls()).toHaveLength(1);
+    fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+    await ready(label);
+    expect(lastParams()).toMatchObject({
+      typeView,
+      page: "1",
+      searchAll: "Máy & VPN",
+      ticket_status_name: "Hoàn thành",
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+    const fields = {
+      "Mã yêu cầu": " RS-0042 ",
+      "Loại yêu cầu": " Thiết bị ",
+      "Tiêu đề": " máy mới ",
+      "Văn phòng": " Đà Nẵng ",
+      "Ngày mong muốn": "21/10/2026",
+      "Người yêu cầu": " Requester ",
+      "Cập nhật bởi": " Trần Bình ",
+    };
+    expect(screen.queryByLabelText("Người phê duyệt")).toBeNull();
+    for (const [name, value] of Object.entries(fields))
+      fireEvent.change(screen.getByLabelText(name), { target: { value } });
+    expect(listCalls()).toHaveLength(2);
+    fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
+    await ready(label);
+    expect(lastParams()).toMatchObject({
+      typeView,
+      page: "1",
+      ticket_code: "RS-0042",
+      ticket_type_name: "Thiết bị",
+      title: "máy mới",
+      vanphong_name: "Đà Nẵng",
+      duedate: "2026-10-21",
+      username_create: "Requester",
+      updating_user_name: "Trần Bình",
+      ticket_status_name: "Hoàn thành",
+    });
+    expect(lastParams().approve_user_name).toBeUndefined();
+    expect(
+      screen.getByRole("button", { name: "Lọc nâng cao" }).textContent,
+    ).toBe("7");
+    fireEvent.click(screen.getByRole("button", { name: "Xóa lọc" }));
+    await ready(label);
+    expect(lastParams()).toEqual({
+      typeView,
+      page: "1",
+      page_size: "100",
+      columnSort: "id",
+      typeSort: "descend",
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
+    await ready(label);
+    fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+    expect(
+      (screen.getByLabelText("Người yêu cầu") as HTMLInputElement).value,
+    ).toBe("Requester");
+    expect(screen.getByTestId("location").textContent).toContain(
+      "username_create=Requester",
+    );
+  },
+);
+
+it.each(approvalPages)(
+  "keeps $label rows under the loading overlay and resets only vertical scroll when paging",
+  async ({ path, label, typeView }) => {
+    auth.permissions = { can_accept: true };
+    renderList(path);
+    await ready(label);
+    const table = screen.getByRole("table");
+    const scroll = screen.getByRole("region", { name: "Cuộn bảng yêu cầu" });
+    scroll.scrollTop = 400;
+    scroll.scrollLeft = 180;
+    let finish!: (response: Response) => void;
+    listResponse = () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      });
+    fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+    expect(await screen.findByText("Đang cập nhật danh sách...")).toBeTruthy();
+    expect(screen.getByRole("table")).toBe(table);
+    expect(scroll.scrollTop).toBe(0);
+    expect(scroll.scrollLeft).toBe(180);
+    expect(lastParams()).toMatchObject({ page: "2", typeView });
+    await act(async () =>
+      finish(Response.json({ ...pagination, count: 250, results: [ticket] })),
+    );
+    await ready(label);
+    expect(within(table).getByRole("cell", { name: "101" })).toBeTruthy();
+    listResponse = () =>
+      Response.json({ ...pagination, count: 250, results: [ticket] });
+    await selectOption("Số yêu cầu mỗi trang", "200 / trang");
+    await ready(label);
+    expect(lastParams()).toMatchObject({
+      page: "1",
+      page_size: "200",
+      typeView,
+    });
+  },
+);
+
+it.each(approvalPages)(
+  "handles errors, malformed requesters and empty data on $label without losing the session",
+  async ({ path, label }) => {
+    auth.permissions = { can_accept: true };
+    listResponse = () =>
+      Response.json({ detail: "Không thể tải phê duyệt" }, { status: 403 });
+    renderList(path);
+    expect(
+      await screen.findByText(
+        /Không tải được yêu cầu: Không thể tải phê duyệt/,
+      ),
+    ).toBeTruthy();
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
+    listResponse = () =>
+      Response.json({
+        ...pagination,
+        count: 1,
+        results: [{ ...ticket, username_create: [] }],
+      });
+    fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(
+      await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
+    ).toBeTruthy();
+    listResponse = () =>
+      Response.json({ ...pagination, count: 0, results: [] });
+    fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
+    expect(
+      screen.queryByRole("navigation", { name: "Phân trang yêu cầu" }),
+    ).toBeNull();
+    expect(screen.queryByRole("table", { name: label })).toBeNull();
+  },
+);
+
+it.each(approvalPages)(
+  "does not fetch $label without can_accept, even with create or all-request permissions",
+  ({ path }) => {
+    auth.permissions = { can_create: true, can_allticket: true };
+    renderList(path);
+    expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
+    expect(fetchMock).not.toHaveBeenCalled();
+  },
+);
+
+it("isolates pending, approved and personal caches while switching lists and permits superusers", async () => {
+  auth.permissions = { is_superuser: true };
+  listResponse = () =>
+    Response.json({
+      ...pagination,
+      count: 1,
+      results: [{ ...ticket, ticket_code: "PENDING-42" }],
+    });
+  renderList("/approvals/pending");
+  await ready("Chờ phê duyệt");
+  let finish!: (response: Response) => void;
+  listResponse = () =>
+    new Promise((resolve) => {
+      finish = resolve;
+    });
+  fireEvent.click(
+    screen.getByRole("button", { name: "Open approved approvals" }),
+  );
+  expect(await screen.findByText("Đang tải yêu cầu...")).toBeTruthy();
+  expect(screen.queryByRole("link", { name: "PENDING-42" })).toBeNull();
+  await waitFor(() => expect(lastParams().typeView).toBe("accepted"));
+  await act(async () =>
+    finish(
+      Response.json({
+        ...pagination,
+        count: 1,
+        results: [{ ...ticket, ticket_code: "APPROVED-42" }],
+      }),
+    ),
+  );
+  await ready("Đã phê duyệt");
+  expect(screen.getByRole("link", { name: "APPROVED-42" })).toBeTruthy();
+  listResponse = () =>
+    Response.json({
+      ...pagination,
+      count: 1,
+      results: [{ ...ticket, ticket_code: "CREATED-42" }],
+    });
+  fireEvent.click(screen.getByRole("button", { name: "Open created list" }));
+  await ready();
+  expect(lastParams().typeView).toBe("create");
+  expect(screen.queryByRole("link", { name: "APPROVED-42" })).toBeNull();
+  expect(screen.getByRole("link", { name: "CREATED-42" })).toBeTruthy();
+});
+
+it.each([
+  {
+    path: "/requests",
+    label: "Danh sách yêu cầu",
+    statusKey: "ticket_status_name",
+    statusValue: "Hoàn thành",
+  },
+  {
+    path: "/requests/all",
+    label: "Tất cả yêu cầu",
+    statusKey: "ticket_status",
+    statusValue: "9",
+  },
+  ...approvalPages.map(({ path, label }) => ({
+    path,
+    label,
+    statusKey: "ticket_status_name",
+    statusValue: "Hoàn thành",
+  })),
+])(
+  "searches status options without accents on $label and applies the selected value only on submit",
+  async ({ path, label, statusKey, statusValue }) => {
+    auth.permissions = { is_superuser: true };
+    renderList(`${path}?page=2`);
+    await ready(label);
+    const readParams = path === "/requests/all" ? allListParams : lastParams;
+    const before = fetchMock.mock.calls.length;
+    fireEvent.click(screen.getByRole("combobox", { name: "Trạng thái" }));
+    const search = screen.getByRole("combobox", { name: "Tìm trạng thái" });
+    fireEvent.change(search, { target: { value: "không có trạng thái này" } });
+    expect(await screen.findByText("Không tìm thấy kết quả.")).toBeTruthy();
+    fireEvent.change(search, { target: { value: "hOAn tHaNh" } });
+    expect(
+      await screen.findByRole("option", { name: "Hoàn thành" }),
+    ).toBeTruthy();
+    expect(screen.queryByRole("option", { name: "Đang xử lý" })).toBeNull();
+    fireEvent.click(screen.getByRole("option", { name: "Hoàn thành" }));
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+    expect(fetchMock).toHaveBeenCalledTimes(before);
+    expect(readParams()[statusKey]).toBeUndefined();
+    expect(readParams().page).toBe("2");
+    fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+    await waitFor(() => expect(readParams()[statusKey]).toBe(statusValue));
+    await ready(label);
+    expect(readParams().page).toBe("1");
+    expect(
+      screen
+        .getByRole("combobox", { name: "Trạng thái" })
+        .getAttribute("title"),
+    ).toBe("Hoàn thành");
+  },
+);

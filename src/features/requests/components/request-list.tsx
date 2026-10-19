@@ -19,6 +19,7 @@ import {
 } from "../api/requests-api";
 import { requestPageSizes, type RequestListScope } from "../types";
 import { parseRequestListParams } from "../utils/request-list-params";
+import { requestListConfig } from "../utils/request-list-config";
 import {
   getRequestFilterFields,
   getRequestStatusOptions,
@@ -44,7 +45,7 @@ export function RequestList({
     params.ticket_type_id,
   );
   const filterNames = filterFields.map(({ name }) => name);
-  const statusKey = scope === "all" ? "ticket_status" : "ticket_status_name";
+  const statusKey = requestListConfig[scope].statusKey;
   const selectedStatus = params[statusKey];
   const advancedFilters = getFilterValues(filterFields, params);
   const hasAdvancedFilters = countActiveFilters(filterFields, params) > 0;
@@ -57,7 +58,7 @@ export function RequestList({
     queryFn: ({ signal }) =>
       scope === "all"
         ? listAllRequestsRequest(params, signal)
-        : listRequestsRequest(params, signal),
+        : listRequestsRequest(params, signal, scope),
     placeholderData: (previous, query) =>
       query?.queryKey[1] === scope && query.queryKey[2] === userId
         ? previous
@@ -102,6 +103,7 @@ export function RequestList({
               initialValue: selectedStatus ?? "all",
               options: statusOptions,
               loading: statuses.isPending,
+              searchable: true,
             }}
             actions={
               <DataFiltersDrawer

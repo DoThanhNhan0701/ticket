@@ -1,12 +1,11 @@
 import type { DataFilterField } from "@/components/data-management";
-import {
-  allRequestFilterFields,
-  requestFilterFields,
-  type RequestFilters,
-  type RequestListScope,
-  type RequestStatus,
-  type RequestType,
+import type {
+  RequestFilters,
+  RequestListScope,
+  RequestStatus,
+  RequestType,
 } from "../types";
+import { requestListConfig } from "./request-list-config";
 
 export function getRequestStatusOptions(
   statuses: readonly RequestStatus[],
@@ -16,7 +15,10 @@ export function getRequestStatusOptions(
   const options = [
     { value: "all", label: "Tất cả trạng thái" },
     ...statuses
-      .filter((status) => scope !== "all" || status.id !== 1)
+      .filter(
+        (status) =>
+          !requestListConfig[scope].excludeInitialStatus || status.id !== 1,
+      )
       .map((status) => ({
         value: scope === "all" ? String(status.id) : status.name,
         label: status.name,
@@ -36,7 +38,8 @@ export function getRequestFilterFields(
   isLoading: boolean,
   selectedType: string | undefined,
 ): readonly DataFilterField<keyof RequestFilters>[] {
-  if (scope === "created") return requestFilterFields;
+  const fields = requestListConfig[scope].filterFields;
+  if (scope !== "all") return fields;
   const options = [
     { value: "", label: "Tất cả loại yêu cầu" },
     ...types.map((type) => ({
@@ -49,7 +52,7 @@ export function getRequestFilterFields(
       value: selectedType,
       label: `Loại yêu cầu #${selectedType}`,
     });
-  return allRequestFilterFields.map((field) =>
+  return fields.map((field) =>
     field.name === "ticket_type_id" ? { ...field, options, isLoading } : field,
   );
 }

@@ -12,6 +12,16 @@ import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
 import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
+import type { RequestListScope } from "@/features/requests/types";
+
+const requestListScopesByPath: Readonly<
+  Partial<Record<string, RequestListScope>>
+> = {
+  [HOME_PATH]: "created",
+  "/requests/all": "all",
+  "/approvals/pending": "pending",
+  "/approvals/approved": "approved",
+};
 
 export function WorkspacePage({
   page,
@@ -27,9 +37,8 @@ export function WorkspacePage({
       className="my-auto min-h-72"
     />
   );
-  if (page.path === HOME_PATH) content = <RequestList key="created" />;
-  if (page.path === "/requests/all")
-    content = <RequestList key="all" scope="all" />;
+  const listScope = requestListScopesByPath[page.path];
+  if (listScope) content = <RequestList key={listScope} scope={listScope} />;
   if (page.path === "/requests/change-status")
     content = <RequestChangeStatus />;
 

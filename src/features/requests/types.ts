@@ -11,7 +11,7 @@ import type {
 export type RequestTicket = z.infer<typeof requestTicketSchema>;
 export type RequestStatus = z.infer<typeof requestStatusSchema>;
 export type RequestType = z.infer<typeof requestTypeSchema>;
-export type RequestListScope = "created" | "all";
+export type RequestListScope = "created" | "all" | "pending" | "approved";
 export type RequestListResponse = z.infer<typeof requestListResponseSchema>;
 export type RequestStatusesResponse = z.infer<
   typeof requestStatusesResponseSchema
@@ -52,7 +52,8 @@ export type RequestFilters = Partial<
   Record<
     | (typeof requestFilterFields)[number]["name"]
     | "ticket_type_id"
-    | "list_user_received",
+    | "list_user_received"
+    | "username_create",
     string
   >
 >;
@@ -75,6 +76,17 @@ export const allRequestFilterFields = requestFilterFields.map(
       };
     return field;
   },
+);
+
+export const approvalRequestFilterFields = requestFilterFields.map(
+  (field): DataFilterField<keyof RequestFilters> =>
+    field.name === "approve_user_name"
+      ? {
+          name: "username_create",
+          label: "Người yêu cầu",
+          placeholder: "Nhập người yêu cầu",
+        }
+      : field,
 );
 
 export const allRequestViews = [
