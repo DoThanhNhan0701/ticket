@@ -37,11 +37,12 @@ interface MultiSelectFieldProps<TFieldValues extends FieldValues> {
   disabled?: boolean;
   isLoading?: boolean;
   maxBadgeCount?: number;
+  valueFormat?: "array" | "csv";
 }
 
 type MultiSelectInputProps = Omit<
   MultiSelectFieldProps<FieldValues>,
-  "control" | "name" | "required" | "className" | "labelAddon"
+  "control" | "name" | "required" | "className" | "labelAddon" | "valueFormat"
 > & {
   value: unknown;
   onChange: (value: string[]) => void;
@@ -258,6 +259,7 @@ export function MultiSelectField<TFieldValues extends FieldValues>({
   required = false,
   className,
   labelAddon,
+  valueFormat = "array",
   ...props
 }: Readonly<MultiSelectFieldProps<TFieldValues>>) {
   return (
@@ -277,8 +279,14 @@ export function MultiSelectField<TFieldValues extends FieldValues>({
         >
           <MultiSelectInput
             {...props}
-            value={field.value}
-            onChange={field.onChange}
+            value={
+              valueFormat === "csv" && typeof field.value === "string"
+                ? field.value.split(",").filter(Boolean)
+                : field.value
+            }
+            onChange={(values) =>
+              field.onChange(valueFormat === "csv" ? values.join(",") : values)
+            }
             onBlur={field.onBlur}
             invalid={fieldState.invalid}
           />

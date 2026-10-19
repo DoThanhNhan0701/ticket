@@ -85,3 +85,15 @@ export const requestTypeSchema = z.object({
 });
 
 export const requestTypesResponseSchema = z.array(requestTypeSchema);
+
+export const requestTeamSchema = z.object({
+  id: idSchema,
+  name: z.string(),
+  bophan: nullableIdSchema,
+  is_handling: z.boolean(),
+  is_active: z.boolean(),
+  created: z.string(),
+  updated: z.string(),
+});
+
+export const requestTeamsResponseSchema = z.array(requestTeamSchema);

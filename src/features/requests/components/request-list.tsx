@@ -16,6 +16,7 @@ import {
   listRequestStatusesRequest,
   listAllRequestsRequest,
   listRequestTypesRequest,
+  listRequestTeamsRequest,
 } from "../api/requests-api";
 import { requestPageSizes, type RequestListScope } from "../types";
 import { parseRequestListParams } from "../utils/request-list-params";
@@ -32,20 +33,40 @@ export function RequestList({
   const { userId } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const params = parseRequestListParams(searchParams, scope);
+  const config = requestListConfig[scope];
   const types = useQuery({
-    queryKey: ["request-types", userId],
-    queryFn: ({ signal }) => listRequestTypesRequest(signal),
-    enabled: scope === "all",
+    queryKey: [
+      config.typeSource === "handling"
+        ? "handling-request-types"
+        : "request-types",
+      userId,
+    ],
+    queryFn: ({ signal }) => listRequestTypesRequest(signal, config.typeSource),
+    enabled: Boolean(config.typeSource),
     retry: false,
   });
-  const filterFields = getRequestFilterFields(
-    scope,
-    types.data ?? [],
-    types.isPending,
-    params.ticket_type_id,
-  );
+  const teams = useQuery({
+    queryKey: ["request-teams", userId],
+    queryFn: ({ signal }) => listRequestTeamsRequest(signal),
+    enabled: Boolean(config.teams),
+    retry: false,
+  });
+  const filterFields = getRequestFilterFields(scope, {
+    types: types.data ?? [],
+    typesLoading: types.isPending,
+    selectedType:
+      config.typeValue === "name"
+        ? params.ticket_type_name
+        : params.ticket_type_id,
+    teams: teams.data ?? [],
+    teamsLoading: teams.isPending,
+    selectedTeams: params.team_id,
+  });
   const filterNames = filterFields.map(({ name }) => name);
-  const statusKey = requestListConfig[scope].statusKey;
+  const searchFilterNames = filterNames.filter(
+    (name) => name !== "typeView" && name !== "type_option",
+  );
+  const statusKey = config.statusKey;
   const selectedStatus = params[statusKey];
   const advancedFilters = getFilterValues(filterFields, params);
   const hasAdvancedFilters = countActiveFilters(filterFields, params) > 0;
@@ -120,7 +141,7 @@ export function RequestList({
                   searchAll: value,
                   [statusKey]: status === "all" ? undefined : status,
                 },
-                filterNames,
+                searchFilterNames,
               )
             }
           />
@@ -151,7 +172,7 @@ export function RequestList({
             </Button>
           </div>
         )}
-        {scope === "all" && types.isError && (
+        {config.typeSource && types.isError && (
           <div className="space-y-2">
             <ErrorAlert
               message={`Không tải được loại yêu cầu: ${types.error.message}`}
@@ -162,6 +183,20 @@ export function RequestList({
               onClick={() => void types.refetch()}
             >
               Thử lại loại yêu cầu
+            </Button>
+          </div>
+        )}
+        {config.teams && teams.isError && (
+          <div className="space-y-2">
+            <ErrorAlert
+              message={`Không tải được Team: ${teams.error.message}`}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void teams.refetch()}
+            >
+              Thử lại Team
             </Button>
           </div>
         )}

@@ -3,17 +3,27 @@ import {
   allRequestFilterFields,
   approvalRequestFilterFields,
   requestFilterFields,
+  personalTaskFilterFields,
+  allTaskFilterFields,
   type RequestFilters,
   type RequestListScope,
 } from "../types";
 
 interface RequestListConfig {
   label: string;
-  endpoint: "/list_ticket/" | "/list_ticket_all_SupAD/";
+  endpoint:
+    | "/list_ticket/"
+    | "/list_ticket_all_SupAD/"
+    | "/list_ticket_personal/"
+    | "/list_ticket_all/";
   typeView?: "create" | "pendingAccept" | "accepted";
   statusKey: "ticket_status_name" | "ticket_status";
   excludeInitialStatus: boolean;
   filterFields: readonly DataFilterField<keyof RequestFilters>[];
+  typeSource?: "all" | "handling";
+  typeValue?: "id" | "name";
+  teams?: boolean;
+  allowViews?: boolean;
 }
 
 const createdConfig: RequestListConfig = {
@@ -35,6 +45,9 @@ export const requestListConfig: Readonly<
     statusKey: "ticket_status",
     excludeInitialStatus: true,
     filterFields: allRequestFilterFields,
+    typeSource: "all",
+    typeValue: "id",
+    allowViews: true,
   },
   pending: {
     ...createdConfig,
@@ -48,5 +61,27 @@ export const requestListConfig: Readonly<
     typeView: "accepted",
     excludeInitialStatus: true,
     filterFields: approvalRequestFilterFields,
+  },
+  "personal-tasks": {
+    label: "Nhiệm vụ cá nhân",
+    endpoint: "/list_ticket_personal/",
+    statusKey: "ticket_status",
+    excludeInitialStatus: true,
+    filterFields: personalTaskFilterFields,
+    typeSource: "handling",
+    typeValue: "name",
+    teams: true,
+    allowViews: true,
+  },
+  "all-tasks": {
+    label: "Tất cả nhiệm vụ",
+    endpoint: "/list_ticket_all/",
+    statusKey: "ticket_status",
+    excludeInitialStatus: true,
+    filterFields: allTaskFilterFields,
+    typeSource: "handling",
+    typeValue: "id",
+    teams: true,
+    allowViews: true,
   },
 };

@@ -22,6 +22,7 @@ vi.mock("@/features/requests/api/requests-api", () => ({
   listRequestStatusesRequest: vi.fn().mockResolvedValue([]),
   listAllRequestsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
   listRequestTypesRequest: vi.fn().mockResolvedValue([]),
+  listRequestTeamsRequest: vi.fn().mockResolvedValue([]),
 }));
 
 let client: QueryClient;
@@ -160,6 +161,7 @@ it.each([
     "Đã phê duyệt",
   ],
   ["/danhsachxulycanhan", "/tasks/mine", "Nhiệm vụ cá nhân"],
+  ["/danhsachxuly?page=2#results", "/tasks?page=2#results", "Tất cả nhiệm vụ"],
   [
     "/settings/vanphong?search=Da%20Nang",
     "/settings/offices?search=Da%20Nang",
@@ -286,6 +288,7 @@ it.each([
   ["/requests", "Danh sách yêu cầu", "can_create"],
   ["/approvals/approved", "Đã phê duyệt", "can_accept"],
   ["/tasks/mine", "Nhiệm vụ cá nhân", "can_process"],
+  ["/tasks", "Tất cả nhiệm vụ", "can_process"],
   ["/reports/export", "Truy xuất dữ liệu", "can_report"],
   ["/recruitment/candidates", "Quản lý ứng viên", "can_hr_rec"],
   ["/settings/users", "Người dùng", "can_system"],

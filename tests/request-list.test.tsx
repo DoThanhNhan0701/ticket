@@ -1232,6 +1232,7 @@ it.each(approvalPages)(
       fireEvent.change(screen.getByLabelText(name), { target: { value } });
     expect(listCalls()).toHaveLength(2);
     fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
+    await waitFor(() => expect(lastParams().username_create).toBe("Requester"));
     await ready(label);
     expect(lastParams()).toMatchObject({
       typeView,

@@ -2,7 +2,29 @@ import type {
   RequestStatus,
   RequestTicket,
   RequestType,
+  RequestTeam,
 } from "@/features/requests/types";
+
+export const requestTeamFixtures: RequestTeam[] = [
+  {
+    id: 1,
+    name: "Frontend",
+    bophan: 1,
+    is_active: true,
+    is_handling: true,
+    created: "2026-10-19T10:00:00+07:00",
+    updated: "2026-10-19T10:00:00+07:00",
+  },
+  {
+    id: 2,
+    name: "Backend",
+    bophan: 1,
+    is_active: true,
+    is_handling: true,
+    created: "2026-10-19T10:00:00+07:00",
+    updated: "2026-10-19T10:00:00+07:00",
+  },
+];
 
 export const requestTypeFixtures: RequestType[] = [
   {

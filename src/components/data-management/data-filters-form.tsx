@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
+import { MultiSelectField } from "@/components/form/multi-select-field";
 import { getFilterValues, normalizeFilterValues } from "./utils";
 import type { DataFilterField, DataFilterValues } from "./types";
 
@@ -56,6 +57,18 @@ export function DataFiltersForm<Name extends string>({
                 isLoading={field.isLoading}
                 searchable={field.searchable}
                 noDataText="Không có lựa chọn"
+              />
+            );
+          if (field.type === "multi-select")
+            return (
+              <MultiSelectField
+                key={field.name}
+                {...props}
+                options={[...(field.options ?? [])]}
+                isLoading={field.isLoading}
+                valueFormat="csv"
+                noDataText="Không có lựa chọn"
+                maxBadgeCount={2}
               />
             );
           return <InputField key={field.name} {...props} />;

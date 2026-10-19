@@ -19,13 +19,17 @@ function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
       ? request.color
       : undefined;
   return (
-    <Badge tone="brand" className="max-w-full leading-snug whitespace-normal">
+    <Badge
+      tone="brand"
+      title={request.ticket_status_name}
+      className="leading-snug whitespace-nowrap"
+    >
       <span
         className="size-1.5 shrink-0 rounded-full bg-current"
         style={{ backgroundColor: color }}
         aria-hidden="true"
       />
-      <DataText text={request.ticket_status_name} />
+      <span>{request.ticket_status_name}</span>
     </Badge>
   );
 }
@@ -99,7 +103,8 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   {
     id: "status",
     label: "Trạng thái",
-    width: "8%",
+    // Automatic table layout expands this column to the full badge width.
+    width: "1px",
     align: "center",
     render: (request) => <RequestStatus request={request} />,
   },
@@ -118,7 +123,7 @@ const allColumnWidths: Readonly<Record<string, string>> = {
   title: "22%",
   office: "10%",
   duedate: "9%",
-  status: "8%",
+  status: "1px",
   updater: "8%",
 };
 const allColumns: readonly DataColumn<RequestTicket>[] = columns
@@ -148,6 +153,45 @@ const approvalColumns: readonly DataColumn<RequestTicket>[] = allColumns.map(
       : column,
 );
 
+const taskColumnWidths: Readonly<Record<string, string>> = {
+  ticket_code: "12%",
+  ticket_type_name: "11%",
+  title: "18%",
+  department: "7%",
+  team: "6%",
+  office: "8%",
+  duedate: "8%",
+  approver: "7%",
+  status: "1px",
+  updater: "5%",
+};
+const personalTaskColumns: readonly DataColumn<RequestTicket>[] = [
+  ...columns.map((column) => ({
+    ...column,
+    width: taskColumnWidths[column.id],
+  })),
+  {
+    id: "created",
+    label: "Ngày tạo",
+    width: "7%",
+    align: "center",
+    className: "tabular-nums",
+    render: (request) => <DataText text={formatDataDate(request.created)} />,
+  },
+];
+const allTaskColumns: readonly DataColumn<RequestTicket>[] =
+  personalTaskColumns.map((column) =>
+    column.id === "approver"
+      ? {
+          id: "handler",
+          label: "Người xử lý",
+          width: column.width,
+          align: "center",
+          render: (request) => <DataText text={request.list_user_received} />,
+        }
+      : column,
+  );
+
 const columnsByScope: Readonly<
   Record<RequestListScope, readonly DataColumn<RequestTicket>[]>
 > = {
@@ -155,6 +199,8 @@ const columnsByScope: Readonly<
   all: allColumns,
   pending: approvalColumns,
   approved: approvalColumns,
+  "personal-tasks": personalTaskColumns,
+  "all-tasks": allTaskColumns,
 };
 
 export function RequestTable({
@@ -189,7 +235,7 @@ export function RequestTable({
       scrollResetKey={scrollResetKey}
       getRowKey={(request) => request.id}
       getRowHref={getRequestHref}
-      className="min-w-352"
+      className="min-w-352 table-auto"
     />
   );
 }

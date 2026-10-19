@@ -21,6 +21,8 @@ const requestListScopesByPath: Readonly<
   "/requests/all": "all",
   "/approvals/pending": "pending",
   "/approvals/approved": "approved",
+  "/tasks/mine": "personal-tasks",
+  "/tasks": "all-tasks",
 };
 
 export function WorkspacePage({

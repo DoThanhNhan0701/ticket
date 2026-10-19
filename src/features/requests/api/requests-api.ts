@@ -4,6 +4,7 @@ import {
   requestListResponseSchema,
   requestStatusesResponseSchema,
   requestTypesResponseSchema,
+  requestTeamsResponseSchema,
 } from "../schemas/requests-schema";
 import type {
   RequestListParams,
@@ -11,6 +12,7 @@ import type {
   RequestListScope,
   RequestStatus,
   RequestType,
+  RequestTeam,
 } from "../types";
 import { requestListConfig } from "../utils/request-list-config";
 
@@ -45,6 +47,11 @@ async function fetchRequestList(
   // Fixed views belong to the page and cannot be overridden by URL filters.
   const config = requestListConfig[scope];
   if (config.typeView) params.typeView = config.typeView;
+  // ticketV2 serializes selected tag IDs as an Axios array parameter.
+  if (scope === "all-tasks" && params.type_option) {
+    params["type_option[]"] = params.type_option;
+    delete params.type_option;
+  }
   const response = await getRequest<unknown>(config.endpoint, {
     params,
     signal,
@@ -58,14 +65,30 @@ async function fetchRequestList(
 
 export async function listRequestTypesRequest(
   signal?: AbortSignal,
+  source: "all" | "handling" = "all",
 ): Promise<RequestType[]> {
-  const response = await getRequest<unknown>("/list_handling_alltickettype/", {
+  const endpoint =
+    source === "handling"
+      ? "/list_handling_tickettype/"
+      : "/list_handling_alltickettype/";
+  const response = await getRequest<unknown>(endpoint, {
     signal,
   });
   return parseApiResponse(
     requestTypesResponseSchema,
     response,
     "Dữ liệu loại yêu cầu không hợp lệ.",
+  );
+}
+
+export async function listRequestTeamsRequest(
+  signal?: AbortSignal,
+): Promise<RequestTeam[]> {
+  const response = await getRequest<unknown>("/list_team/", { signal });
+  return parseApiResponse(
+    requestTeamsResponseSchema,
+    response,
+    "Dữ liệu Team không hợp lệ.",
   );
 }
 
