@@ -5,11 +5,16 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  cacheDir: "node_modules/.vite-dev",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    // Bundle lazy-route form dependencies before the browser requests them.
+    include: ["@hookform/resolvers/zod", "react-hook-form", "zod"],
   },
   server: {
     watch: {

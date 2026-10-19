@@ -37,16 +37,16 @@ export function PageHeader({
           </Button>
         )}
         {Icon && (
-          <span className="hidden size-8 shrink-0 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-700 sm:flex dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-700 dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200">
             <Icon className="size-4" aria-hidden="true" />
           </span>
         )}
-        <div className="flex min-h-7 min-w-0 flex-col justify-center sm:min-h-8">
-          <h1 className="text-sm leading-5 font-semibold tracking-tight text-foreground sm:text-base">
+        <div className="flex min-h-8 min-w-0 flex-1 flex-col justify-center">
+          <h1 className="text-base leading-5 font-semibold tracking-tight text-foreground">
             <TruncatedText text={title} />
           </h1>
           {description && (
-            <p className="mt-0.5 hidden text-xs leading-4 text-muted-foreground sm:block">
+            <p className="mt-0.5 text-xs leading-4 text-muted-foreground">
               <TruncatedText text={description} />
             </p>
           )}

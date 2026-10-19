@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  cacheDir: "node_modules/.vite-test",
   plugins: [react()],
   define: { "import.meta.env.VITE_API_BASE_URL": JSON.stringify("/api") },
   resolve: {

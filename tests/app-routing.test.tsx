@@ -216,6 +216,20 @@ it("enforces access rules after redirecting an old settings URL", async () => {
   );
 });
 
+it("redirects the legacy change-status link to the implemented form while preserving query and hash", async () => {
+  auth.permissions = { can_return_ticket: true };
+  renderApp("/change_status?source=legacy#form");
+  expect(
+    await screen.findByRole("heading", { name: "Chuyển trạng thái ticket" }),
+  ).toBeTruthy();
+  expect(
+    await screen.findByRole("form", { name: "Chuyển trạng thái ticket" }),
+  ).toBeTruthy();
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/requests/change-status?source=legacy#form",
+  );
+});
+
 it("shows ticketV2 navigation groups according to the account permissions", async () => {
   auth.permissions = {
     can_create: true,

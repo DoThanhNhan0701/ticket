@@ -11,6 +11,7 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
+import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
 
 export function WorkspacePage({
   page,
@@ -29,6 +30,8 @@ export function WorkspacePage({
   if (page.path === HOME_PATH) content = <RequestList key="created" />;
   if (page.path === "/requests/all")
     content = <RequestList key="all" scope="all" />;
+  if (page.path === "/requests/change-status")
+    content = <RequestChangeStatus />;
 
   return (
     <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">

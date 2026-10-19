@@ -59,7 +59,15 @@ The workspace uses its full available width. The table shows the request code, t
 
 In development, React StrictMode runs an additional effect setup/cleanup cycle. TanStack Query forwards that cleanup through the request's AbortSignal, so DevTools can show one canceled request followed by one successful request for each list endpoint. The production build omits this development probe. Keep cancellation enabled: changing search parameters aborts the obsolete query, and its late response cannot replace the latest results. Regression tests cover both behaviors and confirm that cancellation preserves the authentication session.
 
+Vite pre-bundles `@hookform/resolvers/zod`, `react-hook-form` and `zod` explicitly for lazy routes. The dev server uses `node_modules/.vite-dev`, and Vitest uses `node_modules/.vite-test`. Auxiliary `createServer` calls must set their own `cacheDir` and disable client dependency discovery when only loading SSR fixtures. Sharing the dev cache can invalidate module hashes for browsers that are already open. For an `Outdated Optimize Dep` response, reload the page after optimization finishes; `npm run dev -- --force` rebuilds dependencies when restarting is needed. A failed lazy import now shows a recovery screen with `Tải lại trang`, preserving the current URL and session when reloading.
+
 Below 640px, the keyword spans the full toolbar width; the status, search and advanced-filter controls align on the second row. Wider screens keep the toolbar on one row when space allows; extra actions wrap instead of being clipped. Pagination keeps the range, page-size select and previous/page/next controls on one row at every width. Long range text truncates with an ellipsis and exposes its full text in the browser's native tooltip. Below 400px the selected size omits its visible unit while retaining its accessible label. Both mobile and desktop display a static page counter between the previous and next buttons. Page headers and their actions are 40px high; drawer close buttons and paging arrows provide 44px touch targets on mobile. The request results use a smaller minimum height on narrow screens so the table and pager fit shorter viewports; landscape screens can scroll the main content when needed.
+
+## Change ticket status
+
+`/requests/change-status` (formerly `/change_status`) requires `can_return_ticket` or superuser access. The form uses the shared input, Select, async button and alert components. It loads `GET /api/list_ticketstatus/`, excluding status ID 1 as in `ticketV2`, and requires a ticket code and a selected status. The reason is optional. Missing, failed or empty status options block updates and can be retried when loading fails.
+
+Submitting sends `POST /api/change_status_ticket/` with JSON fields `ticket_code` (trimmed string), `ticket_status_id` (numeric ID) and `lydohuyyeucau` (trimmed string, empty when omitted). The backend accepts JSON as well as V2's form-data. Its response is `{ "message": "...", "error": "..." }`; a nonempty `error` is a failed update even with HTTP 200. Responses are validated before displaying a result. Inputs remain available after errors so the user can correct them and retry; pending updates disable editing and duplicate submissions. Successful updates invalidate both request-list caches. The operation records status history and does not send email, matching V2's description.
 
 ## API contracts
 
@@ -74,6 +82,7 @@ All active API responses enter as `unknown` and pass Zod validation before appli
 | `GET /api/list_ticket_all_SupAD/`       | Same validated ticket-list envelope, across all accessible requests                                              |
 | `GET /api/list_ticketstatus/`           | Same pagination envelope, full status records including colors, timestamps and `is_active`                       |
 | `GET /api/list_handling_alltickettype/` | Array of request types with numeric IDs, handling group, names, nullable file fields, active flag and timestamps |
+| `POST /api/change_status_ticket/`       | String `message` and `error`; nonempty business error fails the mutation even with HTTP 200                      |
 
 Missing related Department, cancellation-user and customer display names are optional; nullable foreign keys and timestamps remain explicitly nullable. The list serializer returns `list_user_received` as a string. It must not be confused with the ticket-detail response. Malformed nested fields produce a handled API error instead of reaching the UI. The unused Homepage `/list-project` lookup was removed because it does not exist on the Ticket backend.
 
