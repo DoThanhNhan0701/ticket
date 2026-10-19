@@ -1,49 +1,34 @@
 import { getRequest, postRequest } from "@/lib/api/client";
 import type {
   AuthResponse,
-  TicketUserPermissionResponse,
+  LoginRequest,
   UserPermissionResponse,
 } from "@/features/auth/types";
+import { authTokensSchema } from "@/lib/api/auth-tokens";
+import { parseApiResponse } from "@/lib/api/response-schema";
+import { ticketUserPermissionSchema } from "../schemas/account-schema";
 
 export async function loginRequest(
   username: string,
   password: string,
 ): Promise<AuthResponse> {
-  const response = await postRequest<AuthResponse>("/token/", {
-    body: {
-      username: username.trim(),
-      password,
-    },
+  const body: LoginRequest = { username: username.trim(), password };
+  const response = await postRequest<unknown>("/token/", {
+    body,
   });
-
-  if (
-    !response ||
-    typeof response.access !== "string" ||
-    !response.access.trim() ||
-    typeof response.refresh !== "string" ||
-    !response.refresh.trim()
-  ) {
-    throw new Error("Authentication tokens not received from the server.");
-  }
-
-  return response;
+  return parseApiResponse(
+    authTokensSchema,
+    response,
+    "Authentication tokens not received from the server.",
+  );
 }
 
 export async function getUserPermissionRequest(): Promise<UserPermissionResponse> {
-  const response =
-    await getRequest<TicketUserPermissionResponse>("/list_permission/");
-  if (
-    !response ||
-    !Array.isArray(response.infoUser) ||
-    typeof response.infoUser[0] !== "number" ||
-    typeof response.infoUser[1] !== "string" ||
-    !Array.isArray(response.userPermission) ||
-    !response.userPermission.every(
-      (permission) => typeof permission === "string",
-    )
-  ) {
-    throw new Error("Invalid account information received from the server.");
-  }
+  const response = parseApiResponse(
+    ticketUserPermissionSchema,
+    await getRequest<unknown>("/list_permission/"),
+    "Invalid account information received from the server.",
+  );
 
   const [userId, username, avatarUrl] = response.infoUser;
   const roles = [

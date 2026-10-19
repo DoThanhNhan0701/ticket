@@ -10,15 +10,26 @@ import { PageHeader } from "@/components/layout/page-header";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
+import { RequestList } from "@/features/requests/components/request-list";
 
 export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
   const { permissions } = useAuthContext();
   const Icon = page.icon;
+  const allowed = canAccessPage(page, permissions);
+  let content = (
+    <EmptyState
+      title="Trang đang được chuẩn bị"
+      description="Chức năng này đang được hoàn thiện. Bạn có thể chọn mục khác trong thanh điều hướng."
+      icon={<Icon className="size-6" aria-hidden="true" />}
+      className="my-auto min-h-72"
+    />
+  );
+  if (page.path === HOME_PATH) content = <RequestList />;
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col gap-5">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-5">
       <PageHeader
         title={page.label}
         description={page.description}
@@ -33,13 +44,8 @@ export function WorkspacePage({
           ) : undefined
         }
       />
-      {canAccessPage(page, permissions) ? (
-        <EmptyState
-          title="Trang đang được chuẩn bị"
-          description="Chức năng này đang được hoàn thiện. Bạn có thể chọn mục khác trong thanh điều hướng."
-          icon={<Icon className="size-6" aria-hidden="true" />}
-          className="my-auto min-h-72"
-        />
+      {allowed ? (
+        content
       ) : (
         <EmptyState
           title="Bạn chưa có quyền truy cập"

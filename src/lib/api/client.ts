@@ -13,6 +13,10 @@ import { getCookie } from "@/lib/cookies";
 import { queryClient } from "@/lib/query-client";
 import { ApiError } from "./api-error";
 import { getApiBaseUrl } from "./api-base-url";
+import {
+  tokenRefreshResponseSchema,
+  type TokenRefreshRequest,
+} from "./auth-tokens";
 
 const API_BASE_URL = getApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
 
@@ -84,13 +88,14 @@ function refreshAccessToken(version: number): Promise<string> {
   }
 
   const refreshTokens = async (): Promise<string> => {
+    const body: TokenRefreshRequest = { refresh };
     // A shared refresh must not be cancelled by one caller's AbortSignal.
     const response = await fetch(
       new URL(`${API_BASE_URL}/token/refresh/`, window.location.origin),
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refresh }),
+        body: JSON.stringify(body),
       },
     );
     const data = await readResponse(response);
@@ -114,25 +119,15 @@ function refreshAccessToken(version: number): Promise<string> {
         response.status,
       );
     }
-    if (
-      typeof data !== "object" ||
-      data === null ||
-      !("access" in data) ||
-      typeof data.access !== "string" ||
-      !data.access.trim() ||
-      ("refresh" in data &&
-        (typeof data.refresh !== "string" || !data.refresh.trim()))
-    ) {
+    const parsedTokens = tokenRefreshResponseSchema.safeParse(data);
+    if (!parsedTokens.success) {
       throw new ApiError(
         "Invalid token refresh response from the server.",
         502,
       );
     }
 
-    const tokens = {
-      access: data.access,
-      refresh: "refresh" in data ? (data.refresh as string) : undefined,
-    };
+    const tokens = parsedTokens.data;
     if (!updateAuthTokens(tokens, version)) throw sessionChangedError();
     return tokens.access;
   };

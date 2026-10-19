@@ -1,16 +1,15 @@
-export interface AuthResponse {
-  access: string;
-  refresh: string;
-}
+import type { z } from "zod";
+import type { AuthTokens } from "@/lib/api/auth-tokens";
+import type { ticketUserPermissionSchema } from "./schemas/account-schema";
 
-export interface TicketUserPermissionResponse {
-  infoUser: [userId: number, username: string, avatarUrl?: string | null];
-  userPermission: string[];
-  handlingPermission?: Record<string, string[]>;
-  is_handling?: boolean;
-  is_admin?: boolean;
-  is_superuser?: boolean;
-  can_assign?: boolean;
+export type AuthResponse = AuthTokens;
+export type TicketUserPermissionResponse = z.infer<
+  typeof ticketUserPermissionSchema
+>;
+
+export interface LoginRequest {
+  username: string;
+  password: string;
 }
 
 export interface UserPermissions {

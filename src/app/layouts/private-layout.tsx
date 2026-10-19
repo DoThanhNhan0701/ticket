@@ -92,7 +92,7 @@ export function PrivateLayout() {
           <AppSidebar collapsed={sidebarCollapsed} />
         </aside>
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-3 sm:p-6">
-          <div className="mx-auto flex min-h-full w-full max-w-[1600px] flex-1 flex-col">
+          <div className="flex h-full min-h-full min-w-0 w-full flex-1 flex-col">
             <Outlet />
           </div>
         </main>

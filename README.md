@@ -2,7 +2,9 @@
 
 Rainscales Ticket is an internal ticket workspace built with React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form and Zod.
 
-After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, themes, shared components, branding, API configuration and Docker deployment. The sidebar destinations have page shells; their forms, lists, reports and API integrations are not implemented yet.
+The theme preference is stored independently under `ticket-theme` in local storage.
+
+After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, the request-list API integration, themes, shared components, branding, API configuration and Docker deployment. Other destinations currently have page shells; their forms, lists, reports and API integrations are not implemented yet.
 
 Frontend domain: `https://ticket-new.aiminds.io.vn/`.
 
@@ -34,6 +36,33 @@ When a protected request receives `401` or an explicit `token_not_valid` error, 
 Network errors, ordinary `403` permission errors and temporary server errors preserve an existing session. During account restoration, cached account information remains available if reloading permissions fails temporarily. Signing out invalidates pending requests so a late refresh response cannot restore the session.
 
 Restart the development server after changing `.env.local`; rebuild deployed bundles when their API configuration changes.
+
+## Request list
+
+`/requests` (formerly `/danhsachyeucau`) follows the `ticketV2` API contract:
+
+- `GET /api/list_ticket/` returns `{ "count": 25, "results": [...] }`. The page always sends `typeView=create`, with defaults `page=1`, `page_size=100`, `columnSort=id` and `typeSort=descend`.
+- `GET /api/list_ticketstatus/` returns `{ "results": [{ "id": 1, "name": "..." }] }`. Status filtering sends the status **name** as `ticket_status_name`; submitting all statuses omits it. The status Select sits beside the keyword input without a visible label and retains an accessible name. Both controls are drafts: clicking `Tìm kiếm` or submitting with Enter applies them together. Changing status or clearing the keyword alone does not fetch the list.
+- Quick search sends trimmed `searchAll`, clears advanced fields and preserves the selected status. Advanced fields are `ticket_code`, `ticket_type_name`, `title`, `vanphong_name`, `duedate` (`YYYY-MM-DD`), `approve_user_name` and `updating_user_name`. Clicking `Lọc nâng cao` opens a drawer on the right with scrollable fields and fixed actions. Applying or clearing filters closes it. Closing it with the close button, Escape or backdrop discards unapplied edits and returns focus to the trigger; saved URL filters do not open the drawer automatically.
+- Pagination runs on the server. Page sizes are 100 and 200, with a default of 100. Changing filters or page size resets to page 1. Filters and pagination live in the URL, allowing reloads, bookmarks and browser Back to restore them. Column sorting is disabled; requests always send the backend's required `columnSort=id` and `typeSort=descend`, ignoring old sort parameters in bookmarked URLs.
+
+The workspace uses its full available width. The table shows the request code, type, title, Department, Team, office, due date, approver, status and last updater. Department and Team headers and cells are centered. Every cell displays at most two lines with an ellipsis and its full text in the browser's native `title` tooltip. The status and page-size controls use the shared shadcn Select. Its focusable scroll region supports horizontal and vertical scrolling, with a sticky header and pagination outside the scrolling rows. Request links open `/tickets/:ticketID`. Loading, empty results and API errors have separate states; failed requests can be retried. Failure to load status options does not block the list. Requests use the shared authenticated client and its token refresh behavior. Accounts without list access do not fetch data.
+
+## API contracts
+
+All active API responses enter as `unknown` and pass Zod validation before application code uses them. Response types are inferred from those schemas so runtime validation and TypeScript declarations stay together. The contracts were checked against the Ticket backend; credentials and tokens are not stored in source.
+
+| Endpoint                      | Contract                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `POST /api/token/`            | String `access` and `refresh` tokens                                                                    |
+| `POST /api/token/refresh/`    | String `access`, optional rotated `refresh`                                                             |
+| `GET /api/list_permission/`   | Typed `infoUser` tuple, permission flags, handling-permission arrays and configuration lists            |
+| `GET /api/list_ticket/`       | Integer `count`, nullable `next`/`previous`, full ticket-list records with numeric IDs and team objects |
+| `GET /api/list_ticketstatus/` | Same pagination envelope, full status records including colors, timestamps and `is_active`              |
+
+Missing related Department, cancellation-user and customer display names are optional; nullable foreign keys and timestamps remain explicitly nullable. The list serializer returns `list_user_received` as a string. It must not be confused with the ticket-detail response. Malformed nested fields produce a handled API error instead of reaching the UI. The unused Homepage `/list-project` lookup was removed because it does not exist on the Ticket backend.
+
+The create-request and ticket-detail routes remain page shells; their APIs are not part of this integration.
 
 ## Docker
 
@@ -102,7 +131,8 @@ src/
 ├── constants/              # Shared application constants
 ├── features/
 │   ├── auth/               # Authentication API, context, provider, hooks and schemas
-│   └── projects/           # Project API, types, cards and icon selection
+│   ├── projects/           # Shared project-card presentation and icon selection
+│   └── requests/           # Request list API, filters, table and pagination
 ├── hooks/                  # Hooks shared across features, including debounce
 ├── lib/
 │   ├── api/                # HTTP client and typed HTTP errors
@@ -146,7 +176,7 @@ Keep feature-specific actions in their feature; compose these components in page
 
 Lint rules cover hooks, explicit `any`, nested ternaries, duplicate imports and common accessibility issues. The label primitive forwards its control association through props, so label association is checked at usage sites. Semantic-role suggestions are disabled for UI primitives that use ARIA grouping.
 
-Tests cover HTTP error/status handling, Ticket sign-in and session restoration, authentication expiration, slash fallback, routing and shared form controls. API calls are mocked; tests do not contact the backend. Test API configuration is isolated from `.env.local`.
+Tests cover HTTP error/status handling, Ticket sign-in and session restoration, authentication expiration, slash fallback, routing, request-list API parameters, filtering, default ordering, pagination, retries, access rules and shared form controls. API calls are mocked; tests do not contact the backend. Test API configuration is isolated from `.env.local`.
 
 ## SonarQube
 

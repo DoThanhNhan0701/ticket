@@ -25,6 +25,10 @@ import {
 } from "@/constants/auth";
 
 const fetchMock = vi.fn<typeof fetch>();
+vi.mock("@/features/requests/api/requests-api", () => ({
+  listRequestsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
+  listRequestStatusesRequest: vi.fn().mockResolvedValue([]),
+}));
 const tokens = { access: "ticket-access", refresh: "ticket-refresh" };
 const account = {
   infoUser: [
@@ -38,6 +42,10 @@ const account = {
   is_admin: false,
   is_superuser: false,
   can_assign: true,
+  ls_permission: [],
+  ls_department: [],
+  ls_cv_status: [],
+  ls_ticket_status: [],
 };
 
 beforeEach(() => {
@@ -276,6 +284,30 @@ it("shows network errors on the login form", async () => {
   expect(await screen.findByText("Failed to fetch")).toBeTruthy();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
 });
+
+it.each([
+  { handlingPermission: { IT: "can_reply" } },
+  { ls_permission: [{ id: "1", name: "IT", team__name: "IT" }] },
+  { ls_department: [{ id: 1, name: 123 }] },
+  { is_handling: "true" },
+  { infoUser: [42, "User", { url: "/avatar.png" }] },
+])(
+  "rejects malformed nested account fields without persisting a session: %j",
+  async (invalid) => {
+    fetchMock
+      .mockResolvedValueOnce(Response.json(tokens))
+      .mockResolvedValueOnce(Response.json({ ...account, ...invalid }));
+    renderApp();
+    await submitLogin();
+    expect(
+      await screen.findByText(
+        "Invalid account information received from the server.",
+      ),
+    ).toBeTruthy();
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+    expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
+  },
+);
 
 it("restores a Ticket session and reloads account information", async () => {
   setCookie(COOKIE_TOKEN_KEY, tokens.access);

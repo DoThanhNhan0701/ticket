@@ -7,7 +7,7 @@ export function AppThemeProvider({
   return (
     <ThemeProvider
       attribute="class"
-      storageKey="homepage-theme"
+      storageKey="ticket-theme"
       defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange
