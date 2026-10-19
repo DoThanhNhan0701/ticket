@@ -5,22 +5,29 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement> & {
     wrapperClassName?: string;
+    wrapperRef?: React.Ref<HTMLDivElement>;
     scrollRegionLabel?: string;
   }
->(({ className, wrapperClassName, scrollRegionLabel, ...props }, ref) => (
-  <div
-    className={cn("relative w-full overflow-auto", wrapperClassName)}
-    role={scrollRegionLabel ? "region" : undefined}
-    aria-label={scrollRegionLabel}
-    tabIndex={scrollRegionLabel ? 0 : undefined}
-  >
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
-  </div>
-));
+>(
+  (
+    { className, wrapperClassName, wrapperRef, scrollRegionLabel, ...props },
+    ref,
+  ) => (
+    <div
+      ref={wrapperRef}
+      className={cn("relative w-full overflow-auto", wrapperClassName)}
+      role={scrollRegionLabel ? "region" : undefined}
+      aria-label={scrollRegionLabel}
+      tabIndex={scrollRegionLabel ? 0 : undefined}
+    >
+      <table
+        ref={ref}
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    </div>
+  ),
+);
 Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<

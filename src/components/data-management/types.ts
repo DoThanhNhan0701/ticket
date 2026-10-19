@@ -13,7 +13,10 @@ export interface DataFilterField<Name extends string = string> {
   readonly name: Name;
   readonly label: string;
   readonly placeholder: string;
-  readonly type?: "text" | "date";
+  readonly type?: "text" | "date" | "select";
+  readonly options?: readonly { value: string; label: string }[];
+  readonly isLoading?: boolean;
+  readonly searchable?: boolean;
 }
 
 export type DataFilterValues<Name extends string = string> = Partial<

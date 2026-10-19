@@ -3,14 +3,32 @@ import { parseApiResponse } from "@/lib/api/response-schema";
 import {
   requestListResponseSchema,
   requestStatusesResponseSchema,
+  requestTypesResponseSchema,
 } from "../schemas/requests-schema";
 import type {
   RequestListParams,
   RequestListResponse,
+  RequestListScope,
   RequestStatus,
+  RequestType,
 } from "../types";
 
 export async function listRequestsRequest(
+  filters: RequestListParams,
+  signal?: AbortSignal,
+): Promise<RequestListResponse> {
+  return fetchRequestList("created", filters, signal);
+}
+
+export async function listAllRequestsRequest(
+  filters: RequestListParams,
+  signal?: AbortSignal,
+): Promise<RequestListResponse> {
+  return fetchRequestList("all", filters, signal);
+}
+
+async function fetchRequestList(
+  scope: RequestListScope,
   filters: RequestListParams,
   signal?: AbortSignal,
 ): Promise<RequestListResponse> {
@@ -22,9 +40,11 @@ export async function listRequestsRequest(
   // The backend requires ordering parameters, even without interactive sorting.
   params.columnSort = "id";
   params.typeSort = "descend";
-  // This page always lists the current user's created requests, as in ticketV2.
-  params.typeView = "create";
-  const response = await getRequest<unknown>("/list_ticket/", {
+  // Preserve ticketV2's scopes: the all endpoint omits typeView for all records.
+  if (scope === "created") params.typeView = "create";
+  const endpoint =
+    scope === "all" ? "/list_ticket_all_SupAD/" : "/list_ticket/";
+  const response = await getRequest<unknown>(endpoint, {
     params,
     signal,
   });
@@ -32,6 +52,19 @@ export async function listRequestsRequest(
     requestListResponseSchema,
     response,
     "Dữ liệu danh sách yêu cầu không hợp lệ.",
+  );
+}
+
+export async function listRequestTypesRequest(
+  signal?: AbortSignal,
+): Promise<RequestType[]> {
+  const response = await getRequest<unknown>("/list_handling_alltickettype/", {
+    signal,
+  });
+  return parseApiResponse(
+    requestTypesResponseSchema,
+    response,
+    "Dữ liệu loại yêu cầu không hợp lệ.",
   );
 }
 

@@ -162,6 +162,50 @@ it("supports ordinary row clicks and direct detail links", () => {
   expect(screen.getByTestId("location").textContent).toBe("/employees/E-01");
 });
 
+it("resets only vertical scroll when the configured list key changes, preserving the mounted table and same-key updates", () => {
+  const props = {
+    rows: [employee],
+    columns: [
+      {
+        id: "name",
+        label: "Nhân viên",
+        render: (row: Employee) => <DataText text={row.name} />,
+      },
+    ],
+    label: "Nhân viên",
+    scrollLabel: "Cuộn nhân viên",
+    getRowKey: (row: Employee) => row.code,
+  };
+  const { rerender } = render(
+    <MemoryRouter>
+      <DataTable {...props} scrollResetKey="page-1" />
+    </MemoryRouter>,
+  );
+  const region = screen.getByRole("region", { name: "Cuộn nhân viên" });
+  const table = screen.getByRole("table");
+  region.scrollTop = 500;
+  region.scrollLeft = 160;
+  rerender(
+    <MemoryRouter>
+      <DataTable
+        {...props}
+        rows={[{ ...employee, name: "Updated employee" }]}
+        scrollResetKey="page-1"
+      />
+    </MemoryRouter>,
+  );
+  expect(region.scrollTop).toBe(500);
+  rerender(
+    <MemoryRouter>
+      <DataTable {...props} scrollResetKey="page-2" />
+    </MemoryRouter>,
+  );
+  expect(screen.getByRole("table")).toBe(table);
+  expect(screen.getByRole("region", { name: "Cuộn nhân viên" })).toBe(region);
+  expect(region.scrollTop).toBe(0);
+  expect(region.scrollLeft).toBe(160);
+});
+
 it("supports search without a select and applies draft values only on submit", () => {
   const onSearch = vi.fn();
   render(
@@ -217,36 +261,28 @@ it("supports multiple independent pagers and configurable page sizes without dup
     </>,
   );
   const sizeControls = screen.getAllByRole("combobox");
-  const jumpControls = screen.getAllByRole("spinbutton", { name: "Đến trang" });
-  const ids = [...sizeControls, ...jumpControls].map((control) => control.id);
-  expect(new Set(ids).size).toBe(4);
+  const ids = sizeControls.map((control) => control.id);
+  expect(new Set(ids).size).toBe(2);
   expect(screen.getByText("Hiển thị 1–20 trên 65 nhân viên")).toBeTruthy();
   const nav = screen.getByRole("navigation", { name: "Phân trang nhân viên" });
   fireEvent.click(within(nav).getByRole("button", { name: "Trang sau" }));
   expect(pagination.onPage).toHaveBeenCalledWith(2);
-  fireEvent.change(jumpControls[0], { target: { value: "4" } });
-  fireEvent.submit(jumpControls[0].closest("form")!);
-  expect(pagination.onPage).toHaveBeenCalledWith(4);
-  pagination.onPage.mockClear();
-  for (const invalid of ["0", "5", "1.5"]) {
-    fireEvent.change(jumpControls[0], { target: { value: invalid } });
-    fireEvent.submit(jumpControls[0].closest("form")!);
-  }
-  expect(pagination.onPage).not.toHaveBeenCalled();
 });
 
-it("opens the mobile page selector and submits a valid page without leaving it open", async () => {
+it("shows static page indicators and navigates with previous and next buttons", () => {
   const onPage = vi.fn();
-  render(<DataPagination {...pagination} count={65} onPage={onPage} />);
-  fireEvent.click(screen.getByRole("button", { name: "Chọn trang" }));
-  const popup = await screen.findByRole("dialog", { name: "Chọn trang" });
-  fireEvent.change(
-    within(popup).getByRole("spinbutton", { name: "Đến trang" }),
-    { target: { value: "4" } },
+  render(
+    <DataPagination {...pagination} page={2} count={65} onPage={onPage} />,
   );
-  fireEvent.click(within(popup).getByRole("button", { name: "Đến trang" }));
-  expect(onPage).toHaveBeenCalledWith(4);
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(screen.getByText("Trang 2 / 4")).toBeTruthy();
+  expect(screen.getByText("2/4")).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Chọn trang" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Đến trang" })).toBeNull();
+  expect(screen.queryByRole("spinbutton")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Trang trước" }));
+  expect(onPage).toHaveBeenCalledWith(1);
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  expect(onPage).toHaveBeenCalledWith(3);
 });
 
 it("resets search drafts without remounting the filter drawer action", async () => {
@@ -287,7 +323,6 @@ it("hides empty pagination and disables every paging control during updates", ()
   for (const control of screen.getAllByRole("button"))
     expect(control.hasAttribute("disabled")).toBe(true);
   expect(screen.getByRole("combobox").hasAttribute("disabled")).toBe(true);
-  expect(screen.getByRole("spinbutton").hasAttribute("disabled")).toBe(true);
 });
 
 const readyQuery: DataListQuery<Employee> = {

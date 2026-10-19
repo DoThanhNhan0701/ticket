@@ -6,7 +6,7 @@ import {
   type DataColumn,
 } from "@/components/data-management";
 import { Badge } from "@/components/ui/badge";
-import type { RequestTicket } from "../types";
+import type { RequestListScope, RequestTicket } from "../types";
 
 const getRequestHref = (request: RequestTicket) =>
   `/tickets/${encodeURIComponent(String(request.id))}`;
@@ -111,10 +111,40 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
 ];
 
+const allColumnWidths: Readonly<Record<string, string>> = {
+  ticket_code: "16%",
+  ticket_type_name: "14%",
+  title: "22%",
+  office: "10%",
+  duedate: "9%",
+  status: "8%",
+  updater: "8%",
+};
+const allColumns: readonly DataColumn<RequestTicket>[] = columns
+  .filter(({ id }) => id !== "department" && id !== "team")
+  .map((column) => {
+    if (column.id === "approver")
+      return {
+        id: "handler",
+        label: "Người xử lý",
+        width: "9%",
+        align: "center",
+        render: (request) => <DataText text={request.list_user_received} />,
+      };
+    return { ...column, width: allColumnWidths[column.id] };
+  });
+
 export function RequestTable({
   rows,
   rowOffset,
-}: Readonly<{ rows: RequestTicket[]; rowOffset: number }>) {
+  scope = "created",
+  scrollResetKey,
+}: Readonly<{
+  rows: RequestTicket[];
+  rowOffset: number;
+  scope?: RequestListScope;
+  scrollResetKey?: string;
+}>) {
   return (
     <DataTable
       rows={rows}
@@ -129,10 +159,11 @@ export function RequestTable({
             <DataText text={String(rowOffset + index + 1)} />
           ),
         },
-        ...columns,
+        ...(scope === "all" ? allColumns : columns),
       ]}
-      label="Danh sách yêu cầu"
+      label={scope === "all" ? "Tất cả yêu cầu" : "Danh sách yêu cầu"}
       scrollLabel="Cuộn bảng yêu cầu"
+      scrollResetKey={scrollResetKey}
       getRowKey={(request) => request.id}
       getRowHref={getRequestHref}
       className="min-w-352"

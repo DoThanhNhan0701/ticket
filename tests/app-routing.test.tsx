@@ -20,6 +20,8 @@ import {
 vi.mock("@/features/requests/api/requests-api", () => ({
   listRequestsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
   listRequestStatusesRequest: vi.fn().mockResolvedValue([]),
+  listAllRequestsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
+  listRequestTypesRequest: vi.fn().mockResolvedValue([]),
 }));
 
 let client: QueryClient;

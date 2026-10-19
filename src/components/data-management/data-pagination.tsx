@@ -1,13 +1,7 @@
-import { useId, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useId } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Select,
   SelectTrigger,
@@ -17,112 +11,21 @@ import {
 } from "@/components/ui/select";
 import type { DataPaginationProps } from "./types";
 
-function PageJump({
-  page,
-  totalPages,
-  disabled,
-  onPage,
-}: Readonly<{
-  page: number;
-  totalPages: number;
-  disabled: boolean;
-  onPage: (page: number) => void;
-}>) {
-  const [value, setValue] = useState(String(page));
-  const pageId = useId();
-  return (
-    <form
-      className="flex shrink-0 items-center gap-2"
-      onSubmit={(event) => {
-        event.preventDefault();
-        const next = Number(value);
-        if (Number.isSafeInteger(next) && next >= 1 && next <= totalPages)
-          onPage(next);
-      }}
-    >
-      <Label htmlFor={pageId} className="sr-only">
-        Đến trang
-      </Label>
-      <Input
-        id={pageId}
-        type="number"
-        min={1}
-        max={totalPages}
-        required
-        value={value}
-        disabled={disabled}
-        onChange={(event) => setValue(event.target.value)}
-        className="w-20"
-      />
-      <Button type="submit" variant="outline" disabled={disabled}>
-        Đến trang
-      </Button>
-    </form>
-  );
-}
-
 function PageIndicator({
   page,
   totalPages,
-  disabled,
-  onPage,
 }: Readonly<{
   page: number;
   totalPages: number;
-  disabled: boolean;
-  onPage: (page: number) => void;
 }>) {
-  const [open, setOpen] = useState(false);
   return (
     <>
       <span className="hidden min-w-24 px-2 text-center text-sm whitespace-nowrap tabular-nums sm:inline">
         Trang {page} / {totalPages}
       </span>
-      {totalPages === 1 ? (
-        <span className="min-w-11 px-1 text-center text-xs tabular-nums sm:hidden">
-          {page}/{totalPages}
-        </span>
-      ) : (
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              disabled={disabled}
-              aria-label="Chọn trang"
-              title="Đến trang"
-              className="h-11 min-w-11 gap-0.5 px-1 text-xs tabular-nums sm:hidden"
-            >
-              <span>
-                {page}/{totalPages}
-              </span>
-              <ChevronDown
-                className="size-2.5 text-muted-foreground"
-                aria-hidden="true"
-              />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            align="center"
-            side="top"
-            collisionPadding={12}
-            className="w-auto max-w-[calc(100vw-1.5rem)] p-3"
-            aria-label="Chọn trang"
-          >
-            <p className="mb-3 text-sm font-medium">Đến trang</p>
-            <PageJump
-              key={`${page}:${totalPages}`}
-              page={page}
-              totalPages={totalPages}
-              disabled={disabled}
-              onPage={(next) => {
-                onPage(next);
-                setOpen(false);
-              }}
-            />
-          </PopoverContent>
-        </Popover>
-      )}
+      <span className="min-w-11 px-1 text-center text-xs tabular-nums sm:hidden">
+        {page}/{totalPages}
+      </span>
     </>
   );
 }
@@ -143,17 +46,17 @@ export function DataPagination({
   const first = count ? (page - 1) * pageSize + 1 : 0;
   const last = Math.min(page * pageSize, count);
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-t border-border p-2 sm:flex-wrap sm:gap-4 sm:p-4">
-      <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground sm:flex-none sm:gap-3 sm:text-sm">
+    <div className="flex min-w-0 shrink-0 flex-nowrap items-center justify-between gap-2 border-t border-border p-2 sm:gap-4 sm:p-4">
+      <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground sm:gap-3 sm:text-sm">
         <p
           aria-live="polite"
           title={`Hiển thị ${first}–${last} trên ${count} ${itemLabel}`}
-          className="min-w-0 flex-1 truncate tabular-nums sm:flex-none"
+          className="min-w-0 truncate tabular-nums"
         >
           <span aria-hidden="true" className="sm:hidden">
             {first}–{last} / {count}
           </span>
-          <span className="sr-only sm:not-sr-only">
+          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
             Hiển thị {first}–{last} trên {count} {itemLabel}
           </span>
         </p>
@@ -196,7 +99,7 @@ export function DataPagination({
       </div>
       <nav
         aria-label={`Phân trang ${itemLabel}`}
-        className="flex shrink-0 items-center sm:flex-wrap sm:gap-3"
+        className="flex shrink-0 flex-nowrap items-center sm:gap-3"
       >
         <Button
           type="button"
@@ -209,12 +112,7 @@ export function DataPagination({
         >
           <ChevronLeft className="size-4" aria-hidden="true" />
         </Button>
-        <PageIndicator
-          page={page}
-          totalPages={totalPages}
-          disabled={disabled}
-          onPage={onPage}
-        />
+        <PageIndicator page={page} totalPages={totalPages} />
         <Button
           type="button"
           variant="outline"
@@ -226,17 +124,6 @@ export function DataPagination({
         >
           <ChevronRight className="size-4" aria-hidden="true" />
         </Button>
-        {totalPages > 1 && (
-          <div className="hidden sm:block">
-            <PageJump
-              key={`${page}:${totalPages}`}
-              page={page}
-              totalPages={totalPages}
-              disabled={disabled}
-              onPage={onPage}
-            />
-          </div>
-        )}
       </nav>
     </div>
   );

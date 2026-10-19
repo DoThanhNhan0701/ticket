@@ -70,3 +70,18 @@ export const requestListResponseSchema =
   paginatedResponseSchema(requestTicketSchema);
 export const requestStatusesResponseSchema =
   paginatedResponseSchema(requestStatusSchema);
+
+export const requestTypeSchema = z.object({
+  id: idSchema,
+  name: z.string(),
+  slug_name: z.string(),
+  handling_group: idSchema,
+  handling_group_name: z.string(),
+  file_name: nullableTextSchema,
+  attachment_file: nullableTextSchema,
+  is_active: z.boolean(),
+  created: z.string(),
+  updated: z.string(),
+});
+
+export const requestTypesResponseSchema = z.array(requestTypeSchema);

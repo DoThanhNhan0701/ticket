@@ -24,6 +24,7 @@ import { WorkspacePage } from "@/pages/workspace";
 import {
   requestStatusFixtures,
   requestTicketFixture,
+  requestTypeFixtures,
 } from "./fixtures/requests";
 
 const fetchMock = vi.fn<typeof fetch>();
@@ -34,6 +35,8 @@ let client: QueryClient;
 let auth: AuthContextValue;
 let listResponse: () => Response | Promise<Response>;
 let statusResponse: () => Response | Promise<Response>;
+let allResponse: () => Response | Promise<Response>;
+let typesResponse: () => Response | Promise<Response>;
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -64,12 +67,30 @@ beforeEach(() => {
     Response.json({ ...pagination, count: 250, results: [ticket] });
   statusResponse = () =>
     Response.json({ ...pagination, count: statuses.length, results: statuses });
+  allResponse = () =>
+    Response.json({
+      ...pagination,
+      count: 250,
+      results: [
+        {
+          ...ticket,
+          id: 84,
+          ticket_code: "ALL-0084",
+          list_user_received: "IT Support",
+        },
+      ],
+    });
+  typesResponse = () => Response.json(requestTypeFixtures);
   fetchMock.mockReset().mockImplementation((input) => {
     const url = new URL(String(input));
     if (url.pathname === "/api/list_ticket/")
       return Promise.resolve(listResponse());
     if (url.pathname === "/api/list_ticketstatus/")
       return Promise.resolve(statusResponse());
+    if (url.pathname === "/api/list_ticket_all_SupAD/")
+      return Promise.resolve(allResponse());
+    if (url.pathname === "/api/list_handling_alltickettype/")
+      return Promise.resolve(typesResponse());
     throw new Error(`Unexpected endpoint: ${url.pathname}`);
   });
   vi.stubGlobal("fetch", fetchMock);
@@ -91,23 +112,30 @@ function LocationControls() {
         {location.search}
       </output>
       <button onClick={() => navigate(-1)}>Back</button>
+      <button onClick={() => navigate("/requests")}>Open created list</button>
+      <button onClick={() => navigate("/requests/all")}>Open all list</button>
     </>
   );
 }
 
 function renderList(path = "/requests", strict = false) {
-  const page = workspacePages.find((item) => item.path === "/requests")!;
   const tree = (
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[path]}>
-          <WorkspacePage page={page} />
+          <CurrentListPage />
           <LocationControls />
         </MemoryRouter>
       </AuthContext.Provider>
     </QueryClientProvider>
   );
   return render(strict ? <StrictMode>{tree}</StrictMode> : tree);
+}
+
+function CurrentListPage() {
+  const location = useLocation();
+  const page = workspacePages.find((item) => item.path === location.pathname);
+  return page ? <WorkspacePage page={page} /> : null;
 }
 
 function listCalls() {
@@ -274,12 +302,59 @@ it("requests the next page and resets pagination when changing page size", async
       name: "1",
     }),
   ).toBeTruthy();
-  fireEvent.change(screen.getByLabelText("Đến trang"), {
-    target: { value: "2" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Đến trang" }));
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
   await waitFor(() => expect(lastParams().page).toBe("2"));
 });
+
+it.each(["/requests", "/requests/all"])(
+  "returns the existing table to the top on paging and size changes at %s, preserving horizontal scroll and same-page refreshes",
+  async (path) => {
+    auth.permissions = { can_create: true, can_allticket: true };
+    renderList(path);
+    const waitReady = path === "/requests" ? ready : allReady;
+    const readParams = path === "/requests" ? lastParams : allListParams;
+    await waitReady();
+    const table = screen.getByRole("table");
+    const region = screen.getByRole("region", { name: "Cuộn bảng yêu cầu" });
+    region.scrollTop = 400;
+    region.scrollLeft = 140;
+    let finish!: (response: Response) => void;
+    const initialResponse = path === "/requests" ? listResponse : allResponse;
+    const pending = () =>
+      new Promise<Response>((resolve) => {
+        finish = resolve;
+      });
+    if (path === "/requests") listResponse = pending;
+    else allResponse = pending;
+    fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+    await waitFor(() => expect(readParams().page).toBe("2"));
+    expect(await screen.findByText("Đang cập nhật danh sách...")).toBeTruthy();
+    expect(screen.getByRole("table")).toBe(table);
+    expect(region.scrollTop).toBe(0);
+    expect(region.scrollLeft).toBe(140);
+    if (path === "/requests") listResponse = initialResponse;
+    else allResponse = initialResponse;
+    await act(async () => finish(await initialResponse()));
+    await waitReady();
+    expect(region.scrollTop).toBe(0);
+    region.scrollTop = 300;
+    await selectOption("Số yêu cầu mỗi trang", "200 / trang");
+    await waitFor(() =>
+      expect(readParams()).toMatchObject({ page: "1", page_size: "200" }),
+    );
+    await waitReady();
+    expect(screen.getByRole("table")).toBe(table);
+    expect(region.scrollTop).toBe(0);
+    expect(region.scrollLeft).toBe(140);
+    region.scrollTop = 220;
+    await act(async () => {
+      await client.invalidateQueries({ queryKey: ["requests"] });
+    });
+    await waitReady();
+    expect(region.scrollTop).toBe(220);
+    expect(region.scrollLeft).toBe(140);
+  },
+);
 
 it.each(["search", "page"])(
   "keeps the table mounted under a loading overlay during %s",
@@ -511,7 +586,7 @@ it("applies advanced fields using the backend names and YYYY-MM-DD date format",
     }),
   );
   await ready();
-  fireEvent.click(screen.getByRole("button", { name: "Xóa tất cả bộ lọc" }));
+  fireEvent.click(screen.getByRole("button", { name: "Xóa lọc" }));
   await waitFor(() =>
     expect(lastParams()).toEqual({
       page: "1",
@@ -711,4 +786,330 @@ it("accepts omitted display names when their related entities are absent", async
     .getByRole("link", { name: ticket.ticket_code })
     .closest("tr")!;
   expect(within(row).getAllByRole("cell")[4].textContent).toBe("—");
+});
+
+function allListParams() {
+  const calls = fetchMock.mock.calls.filter(
+    ([url]) => new URL(String(url)).pathname === "/api/list_ticket_all_SupAD/",
+  );
+  return Object.fromEntries(
+    new URL(String(calls[calls.length - 1][0])).searchParams,
+  );
+}
+
+async function allReady() {
+  await screen.findByRole("table", { name: "Tất cả yêu cầu" });
+  await waitFor(() =>
+    expect(
+      screen
+        .getByRole("region", { name: "Kết quả yêu cầu" })
+        .getAttribute("aria-busy"),
+    ).toBe("false"),
+  );
+}
+
+it("loads the all-requests endpoint for can_allticket accounts with handler data and no create action", async () => {
+  auth.permissions = { can_allticket: true };
+  renderList("/requests/all");
+  await allReady();
+  expect(allListParams()).toEqual({
+    page: "1",
+    page_size: "100",
+    columnSort: "id",
+    typeSort: "descend",
+  });
+  expect(listCalls()).toHaveLength(0);
+  expect(fetchMock).toHaveBeenCalledTimes(3);
+  expect(screen.queryByRole("group", { name: "Nhóm yêu cầu" })).toBeNull();
+  for (const [, options] of fetchMock.mock.calls) {
+    expect(new Headers(options?.headers).get("Authorization")).toBe(
+      "Bearer request-access",
+    );
+    expect(options?.signal).toBeInstanceOf(AbortSignal);
+  }
+  const table = within(screen.getByRole("table"));
+  expect(
+    table.getAllByRole("columnheader").map((header) => header.textContent),
+  ).toEqual([
+    "#",
+    "Mã yêu cầu",
+    "Loại yêu cầu",
+    "Tiêu đề",
+    "Văn phòng",
+    "Ngày mong muốn",
+    "Người xử lý",
+    "Trạng thái",
+    "Cập nhật bởi",
+  ]);
+  expect(table.getByText("IT Support")).toBeTruthy();
+  expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
+  fireEvent.click(table.getByText("ALL-0084"));
+  expect(screen.getByTestId("location").textContent).toBe("/tickets/84");
+});
+
+it("preserves bookmarked all-request views when paging or searching and clears them with the filters", async () => {
+  auth.permissions = { can_allticket: true };
+  renderList("/requests/all?page=2&typeView=received");
+  await allReady();
+  expect(allListParams()).toMatchObject({ page: "2", typeView: "received" });
+  await selectOption("Số yêu cầu mỗi trang", "200 / trang");
+  await allReady();
+  expect(allListParams()).toMatchObject({
+    page: "1",
+    page_size: "200",
+    typeView: "received",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  await allReady();
+  expect(allListParams().page).toBe("2");
+  expect(
+    within(screen.getByRole("table")).getByRole("cell", { name: "201" }),
+  ).toBeTruthy();
+  fireEvent.change(screen.getByRole("searchbox"), {
+    target: { value: " laptop " },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await allReady();
+  expect(allListParams()).toMatchObject({
+    page: "1",
+    searchAll: "laptop",
+    typeView: "received",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Xóa lọc" }));
+  await allReady();
+  expect(allListParams().typeView).toBeUndefined();
+});
+
+it("submits real status and request-type IDs with all-request advanced fields and restores them on Back", async () => {
+  auth.permissions = { can_allticket: true };
+  renderList("/requests/all?typeView=handle");
+  await allReady();
+  const before = fetchMock.mock.calls.length;
+  await selectOption("Trạng thái", "Hoàn thành");
+  expect(fetchMock).toHaveBeenCalledTimes(before);
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await allReady();
+  expect(allListParams().ticket_status).toBe("9");
+  expect(allListParams().ticket_status_name).toBeUndefined();
+  fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+  await screen.findByRole("dialog");
+  await selectOption("Loại yêu cầu", "IT - Thiết bị");
+  fireEvent.change(screen.getByLabelText("Người xử lý"), {
+    target: { value: " Support " },
+  });
+  fireEvent.change(screen.getByLabelText("Mã yêu cầu"), {
+    target: { value: " ALL " },
+  });
+  fireEvent.change(screen.getByLabelText("Tiêu đề"), {
+    target: { value: " Máy tính " },
+  });
+  fireEvent.change(screen.getByLabelText("Văn phòng"), {
+    target: { value: " Đà Nẵng " },
+  });
+  fireEvent.change(screen.getByLabelText("Cập nhật bởi"), {
+    target: { value: " Bình " },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
+  await waitFor(() =>
+    expect(allListParams()).toMatchObject({
+      ticket_type_id: "17",
+      list_user_received: "Support",
+      ticket_code: "ALL",
+      title: "Máy tính",
+      vanphong_name: "Đà Nẵng",
+      updating_user_name: "Bình",
+      ticket_status: "9",
+      typeView: "handle",
+      page: "1",
+    }),
+  );
+  await allReady();
+  expect(screen.getByRole("button", { name: "Lọc nâng cao" }).textContent).toBe(
+    "6",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Xóa lọc" }));
+  await allReady();
+  expect(allListParams()).toEqual({
+    page: "1",
+    page_size: "100",
+    columnSort: "id",
+    typeSort: "descend",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Back" }));
+  await allReady();
+  expect(allListParams().typeView).toBe("handle");
+  expect(
+    screen.getByRole("combobox", { name: "Trạng thái" }).textContent,
+  ).toContain("Hoàn thành");
+  fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+  await screen.findByRole("dialog");
+  expect(
+    screen.getByRole("combobox", { name: "Loại yêu cầu" }).textContent,
+  ).toContain("IT - Thiết bị");
+  expect((screen.getByLabelText("Người xử lý") as HTMLInputElement).value).toBe(
+    "Support",
+  );
+});
+
+it("isolates personal and all-request query data while navigating between lists", async () => {
+  auth.permissions = { can_create: true, can_allticket: true };
+  renderList();
+  await ready();
+  let finish!: (response: Response) => void;
+  allResponse = () =>
+    new Promise((resolve) => {
+      finish = resolve;
+    });
+  fireEvent.click(screen.getByRole("button", { name: "Open all list" }));
+  await screen.findByText("Đang tải yêu cầu...");
+  expect(screen.queryByText("RS-0042")).toBeNull();
+  expect(screen.queryByRole("table")).toBeNull();
+  await act(async () =>
+    finish(
+      Response.json({
+        ...pagination,
+        count: 1,
+        results: [{ ...ticket, ticket_code: "ALL-NEW" }],
+      }),
+    ),
+  );
+  await allReady();
+  expect(screen.getByText("ALL-NEW")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Open created list" }));
+  await ready();
+  expect(screen.getByText("RS-0042")).toBeTruthy();
+  expect(screen.queryByText("ALL-NEW")).toBeNull();
+  expect(lastParams().typeView).toBe("create");
+});
+
+it("rejects unsafe or personal-only URL filters on the all-request page", async () => {
+  auth.permissions = { can_allticket: true };
+  renderList(
+    "/requests/all?page=-1&page_size=500&typeView=create&ticket_status=NaN&ticket_type_id=Thiết%20bị&ticket_type_name=test&approve_user_name=admin&columnSort=title&typeSort=ascend",
+  );
+  await allReady();
+  expect(allListParams()).toEqual({
+    page: "1",
+    page_size: "100",
+    columnSort: "id",
+    typeSort: "descend",
+  });
+});
+
+it("denies the all-request page without can_allticket and does not fetch its options or records", () => {
+  renderList("/requests/all");
+  expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("keeps all-request records available when request-type options fail and retries independently", async () => {
+  auth.permissions = { can_allticket: true };
+  typesResponse = () =>
+    Response.json([{ ...requestTypeFixtures[0], id: "17" }]);
+  renderList("/requests/all?ticket_type_id=17");
+  await allReady();
+  expect(
+    await screen.findByText(/Dữ liệu loại yêu cầu không hợp lệ/),
+  ).toBeTruthy();
+  expect(screen.getByText("ALL-0084")).toBeTruthy();
+  typesResponse = () => Response.json(requestTypeFixtures);
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại loại yêu cầu" }));
+  await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+  expect(allListParams().ticket_type_id).toBe("17");
+  fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+  await screen.findByRole("dialog");
+  expect(
+    screen.getByRole("combobox", { name: "Loại yêu cầu" }).textContent,
+  ).toContain("IT - Thiết bị");
+});
+
+it("searches request types without accents, applies only on submit and keeps the drawer open on Escape", async () => {
+  auth.permissions = { can_allticket: true };
+  typesResponse = () =>
+    Response.json([
+      ...requestTypeFixtures,
+      {
+        ...requestTypeFixtures[0],
+        id: 18,
+        name: "Nghỉ phép",
+        handling_group_name: "HR",
+      },
+    ]);
+  renderList("/requests/all?page=2");
+  await allReady();
+  fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+  const drawer = await screen.findByRole("dialog", { name: "Lọc nâng cao" });
+  const trigger = screen.getByRole("combobox", { name: "Loại yêu cầu" });
+  fireEvent.click(trigger);
+  let search = await screen.findByRole("combobox", {
+    name: "Tìm loại yêu cầu",
+  });
+  const before = fetchMock.mock.calls.length;
+  fireEvent.change(search, { target: { value: " THIET BI " } });
+  expect(
+    await screen.findByRole("option", { name: "IT - Thiết bị" }),
+  ).toBeTruthy();
+  expect(screen.queryByRole("option", { name: "HR - Nghỉ phép" })).toBeNull();
+  fireEvent.keyDown(search, { key: "ArrowDown", code: "ArrowDown" });
+  await waitFor(() =>
+    expect(search.getAttribute("aria-activedescendant")).toBeTruthy(),
+  );
+  fireEvent.keyDown(search, { key: "Enter", code: "Enter" });
+  await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+  expect(trigger.textContent).toContain("IT - Thiết bị");
+  expect(fetchMock).toHaveBeenCalledTimes(before);
+  expect(screen.getByRole("dialog", { name: "Lọc nâng cao" })).toBe(drawer);
+  fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
+  await waitFor(() =>
+    expect(allListParams()).toMatchObject({ page: "1", ticket_type_id: "17" }),
+  );
+  await allReady();
+  fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
+  await screen.findByRole("dialog", { name: "Lọc nâng cao" });
+  fireEvent.click(screen.getByRole("combobox", { name: "Loại yêu cầu" }));
+  search = await screen.findByRole("combobox", { name: "Tìm loại yêu cầu" });
+  expect((search as HTMLInputElement).value).toBe("");
+  fireEvent.change(search, { target: { value: "not-a-real-type" } });
+  expect(await screen.findByText("Không tìm thấy kết quả.")).toBeTruthy();
+  fireEvent.keyDown(search, { key: "Escape", code: "Escape" });
+  await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+  expect(screen.getByRole("dialog", { name: "Lọc nâng cao" })).toBeTruthy();
+  await waitFor(() =>
+    expect(document.activeElement).toBe(
+      screen.getByRole("combobox", { name: "Loại yêu cầu" }),
+    ),
+  );
+  fireEvent.click(screen.getByRole("combobox", { name: "Loại yêu cầu" }));
+  search = await screen.findByRole("combobox", { name: "Tìm loại yêu cầu" });
+  fireEvent.change(search, { target: { value: "hr" } });
+  expect(
+    await screen.findByRole("option", { name: "HR - Nghỉ phép" }),
+  ).toBeTruthy();
+  expect(screen.queryByRole("option", { name: "IT - Thiết bị" })).toBeNull();
+  fireEvent.change(search, { target: { value: "" } });
+  fireEvent.click(
+    await screen.findByRole("option", { name: "Tất cả loại yêu cầu" }),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
+  await waitFor(() => expect(allListParams().ticket_type_id).toBeUndefined());
+});
+
+it("rejects malformed all-request handler data and hides pagination for empty results", async () => {
+  auth.permissions = { can_allticket: true };
+  allResponse = () =>
+    Response.json({
+      ...pagination,
+      count: 1,
+      results: [{ ...ticket, list_user_received: [] }],
+    });
+  renderList("/requests/all");
+  expect(
+    await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
+  ).toBeTruthy();
+  allResponse = () => Response.json({ ...pagination, count: 0, results: [] });
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+  expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
+  expect(
+    screen.queryByRole("navigation", { name: "Phân trang yêu cầu" }),
+  ).toBeNull();
 });

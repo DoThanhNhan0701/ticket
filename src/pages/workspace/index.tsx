@@ -26,10 +26,12 @@ export function WorkspacePage({
       className="my-auto min-h-72"
     />
   );
-  if (page.path === HOME_PATH) content = <RequestList />;
+  if (page.path === HOME_PATH) content = <RequestList key="created" />;
+  if (page.path === "/requests/all")
+    content = <RequestList key="all" scope="all" />;
 
   return (
-    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-5">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
       <PageHeader
         title={page.label}
         description={page.description}

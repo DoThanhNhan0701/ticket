@@ -1,4 +1,4 @@
-import type { Key, MouseEvent } from "react";
+import { useLayoutEffect, useRef, type Key, type MouseEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TruncatedText } from "@/components/truncated-text";
 import { cn } from "@/lib/utils";
@@ -63,6 +63,7 @@ export function DataTable<T>({
   getRowKey,
   getRowHref,
   className,
+  scrollResetKey,
 }: Readonly<{
   rows: readonly T[];
   columns: readonly DataColumn<T>[];
@@ -71,8 +72,14 @@ export function DataTable<T>({
   getRowKey: (row: T) => Key;
   getRowHref?: (row: T) => string;
   className?: string;
+  scrollResetKey?: string | number;
 }>) {
   const navigate = useNavigate();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (scrollResetKey !== undefined && scrollRef.current)
+      scrollRef.current.scrollTop = 0;
+  }, [scrollResetKey]);
   return (
     <Table
       aria-label={label}
@@ -81,6 +88,7 @@ export function DataTable<T>({
         className,
       )}
       wrapperClassName="min-h-0 flex-1 overscroll-contain rounded-t-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+      wrapperRef={scrollRef}
       scrollRegionLabel={scrollLabel}
     >
       <colgroup>

@@ -5,10 +5,13 @@ import type {
   requestStatusSchema,
   requestListResponseSchema,
   requestStatusesResponseSchema,
+  requestTypeSchema,
 } from "./schemas/requests-schema";
 
 export type RequestTicket = z.infer<typeof requestTicketSchema>;
 export type RequestStatus = z.infer<typeof requestStatusSchema>;
+export type RequestType = z.infer<typeof requestTypeSchema>;
+export type RequestListScope = "created" | "all";
 export type RequestListResponse = z.infer<typeof requestListResponseSchema>;
 export type RequestStatusesResponse = z.infer<
   typeof requestStatusesResponseSchema
@@ -46,8 +49,41 @@ export const requestFilterFields = [
 ] as const satisfies readonly DataFilterField[];
 
 export type RequestFilters = Partial<
-  Record<(typeof requestFilterFields)[number]["name"], string>
+  Record<
+    | (typeof requestFilterFields)[number]["name"]
+    | "ticket_type_id"
+    | "list_user_received",
+    string
+  >
 >;
+
+export const allRequestFilterFields = requestFilterFields.map(
+  (field): DataFilterField<keyof RequestFilters> => {
+    if (field.name === "ticket_type_name")
+      return {
+        name: "ticket_type_id",
+        label: field.label,
+        placeholder: "Chọn loại yêu cầu",
+        type: "select",
+        searchable: true,
+      };
+    if (field.name === "approve_user_name")
+      return {
+        name: "list_user_received",
+        label: "Người xử lý",
+        placeholder: "Nhập người xử lý",
+      };
+    return field;
+  },
+);
+
+export const allRequestViews = [
+  { value: "all", label: "Tất cả" },
+  { value: "processing", label: "Đang xử lý" },
+  { value: "handle", label: "Cần xử lý" },
+  { value: "accepted", label: "Đã duyệt" },
+  { value: "received", label: "Đã tiếp nhận" },
+] as const;
 
 export const requestPageSizes = [100, 200] as const;
 
@@ -56,4 +92,6 @@ export interface RequestListParams extends RequestFilters {
   page_size: number;
   searchAll?: string;
   ticket_status_name?: string;
+  ticket_status?: string;
+  typeView?: Exclude<(typeof allRequestViews)[number]["value"], "all">;
 }

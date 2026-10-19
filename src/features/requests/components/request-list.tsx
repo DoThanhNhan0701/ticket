@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import {
   DataSearch,
@@ -14,26 +14,54 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
   listRequestsRequest,
   listRequestStatusesRequest,
+  listAllRequestsRequest,
+  listRequestTypesRequest,
 } from "../api/requests-api";
-import { requestFilterFields, requestPageSizes } from "../types";
+import { requestPageSizes, type RequestListScope } from "../types";
 import { parseRequestListParams } from "../utils/request-list-params";
+import {
+  getRequestFilterFields,
+  getRequestStatusOptions,
+} from "../utils/request-list-options";
 import { RequestTable } from "./request-table";
 
-export function RequestList() {
+export function RequestList({
+  scope = "created",
+}: Readonly<{ scope?: RequestListScope }>) {
   const { userId } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = parseRequestListParams(searchParams);
-  const advancedFilters = getFilterValues(requestFilterFields, params);
-  const hasAdvancedFilters =
-    countActiveFilters(requestFilterFields, params) > 0;
+  const params = parseRequestListParams(searchParams, scope);
+  const types = useQuery({
+    queryKey: ["request-types", userId],
+    queryFn: ({ signal }) => listRequestTypesRequest(signal),
+    enabled: scope === "all",
+    retry: false,
+  });
+  const filterFields = getRequestFilterFields(
+    scope,
+    types.data ?? [],
+    types.isPending,
+    params.ticket_type_id,
+  );
+  const filterNames = filterFields.map(({ name }) => name);
+  const statusKey = scope === "all" ? "ticket_status" : "ticket_status_name";
+  const selectedStatus = params[statusKey];
+  const advancedFilters = getFilterValues(filterFields, params);
+  const hasAdvancedFilters = countActiveFilters(filterFields, params) > 0;
   const hasFilters = Boolean(
-    params.searchAll || params.ticket_status_name || hasAdvancedFilters,
+    params.searchAll || selectedStatus || hasAdvancedFilters || params.typeView,
   );
 
   const requests = useQuery({
-    queryKey: ["requests", userId, params],
-    queryFn: ({ signal }) => listRequestsRequest(params, signal),
-    placeholderData: keepPreviousData,
+    queryKey: ["requests", scope, userId, params],
+    queryFn: ({ signal }) =>
+      scope === "all"
+        ? listAllRequestsRequest(params, signal)
+        : listRequestsRequest(params, signal),
+    placeholderData: (previous, query) =>
+      query?.queryKey[1] === scope && query.queryKey[2] === userId
+        ? previous
+        : undefined,
     retry: false,
   });
   const statuses = useQuery({
@@ -54,26 +82,12 @@ export function RequestList() {
       ]),
     );
   };
-  const clearAdvanced = () =>
-    update(
-      {},
-      requestFilterFields.map(({ name }) => name),
-    );
-  const knownStatus = statuses.data?.some(
-    (status) => status.name === params.ticket_status_name,
+  const clearAdvanced = () => update({}, filterNames);
+  const statusOptions = getRequestStatusOptions(
+    statuses.data ?? [],
+    selectedStatus,
+    scope,
   );
-  const statusOptions = [
-    { value: "all", label: "Tất cả trạng thái" },
-    ...(statuses.data ?? []).map((status) => ({
-      value: status.name,
-      label: status.name,
-    })),
-  ];
-  if (params.ticket_status_name && !knownStatus)
-    statusOptions.push({
-      value: params.ticket_status_name,
-      label: params.ticket_status_name,
-    });
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
@@ -85,13 +99,13 @@ export function RequestList() {
             initialValue={params.searchAll ?? ""}
             filter={{
               label: "Trạng thái",
-              initialValue: params.ticket_status_name ?? "all",
+              initialValue: selectedStatus ?? "all",
               options: statusOptions,
               loading: statuses.isPending,
             }}
             actions={
               <DataFiltersDrawer
-                fields={requestFilterFields}
+                fields={filterFields}
                 description="Lọc yêu cầu theo các thông tin bên dưới."
                 initialValues={advancedFilters}
                 onApply={(filters) => update(filters)}
@@ -102,9 +116,9 @@ export function RequestList() {
               update(
                 {
                   searchAll: value,
-                  ticket_status_name: status === "all" ? undefined : status,
+                  [statusKey]: status === "all" ? undefined : status,
                 },
-                requestFilterFields.map(({ name }) => name),
+                filterNames,
               )
             }
           />
@@ -114,14 +128,10 @@ export function RequestList() {
               variant="ghost"
               className="w-full sm:w-auto"
               onClick={() =>
-                update({}, [
-                  "searchAll",
-                  "ticket_status_name",
-                  ...requestFilterFields.map(({ name }) => name),
-                ])
+                update({}, ["searchAll", statusKey, "typeView", ...filterNames])
               }
             >
-              Xóa tất cả bộ lọc
+              Xóa lọc
             </Button>
           )}
         </div>
@@ -136,6 +146,20 @@ export function RequestList() {
               onClick={() => void statuses.refetch()}
             >
               Thử lại trạng thái
+            </Button>
+          </div>
+        )}
+        {scope === "all" && types.isError && (
+          <div className="space-y-2">
+            <ErrorAlert
+              message={`Không tải được loại yêu cầu: ${types.error.message}`}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void types.refetch()}
+            >
+              Thử lại loại yêu cầu
             </Button>
           </div>
         )}
@@ -158,7 +182,9 @@ export function RequestList() {
         }}
         renderRows={(rows) => (
           <RequestTable
+            scope={scope}
             rows={rows}
+            scrollResetKey={JSON.stringify(params)}
             rowOffset={(params.page - 1) * params.page_size}
           />
         )}

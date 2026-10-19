@@ -1,4 +1,23 @@
-import type { RequestStatus, RequestTicket } from "@/features/requests/types";
+import type {
+  RequestStatus,
+  RequestTicket,
+  RequestType,
+} from "@/features/requests/types";
+
+export const requestTypeFixtures: RequestType[] = [
+  {
+    id: 17,
+    name: "Thiết bị",
+    slug_name: "thiet-bi",
+    handling_group: 3,
+    handling_group_name: "IT",
+    file_name: null,
+    attachment_file: null,
+    is_active: true,
+    created: "2026-10-19T10:00:00+07:00",
+    updated: "2026-10-19T10:00:00+07:00",
+  },
+];
 
 export const requestTicketFixture: RequestTicket = {
   id: 42,
