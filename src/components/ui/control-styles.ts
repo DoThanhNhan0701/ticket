@@ -1,0 +1,2 @@
+export const controlClassName =
+  "min-h-11 w-full sm:min-h-10 sm:pointer-coarse:min-h-11 rounded-lg border border-input bg-card px-3 py-2 text-base sm:text-sm sm:pointer-coarse:text-base text-foreground shadow-xs outline-none scroll-mt-24 scroll-mb-24 transition-[border-color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:opacity-75 aria-invalid:border-destructive aria-invalid:ring-destructive/20";

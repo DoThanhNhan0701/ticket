@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.scannerwork/
+package-lock.json
+yarn.lock
+DESIGN-notion.md
+.agents/
+.codex/
+.aws/
+.vscode/
+.env*
+
+# Supplied brand artwork
+public/brand/
+public/favicon.svg

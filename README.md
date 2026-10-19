@@ -1,0 +1,141 @@
+# Rainscales Ticket
+
+Rainscales Ticket is an internal ticket workspace built with React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form and Zod.
+
+The protected `/` route opens the Ticket workspace. The current source includes the Ticket page shell, Rainscales account sign-in, themes, shared components, branding, API configuration and Docker deployment. Ticket creation, lists and tracking are not implemented yet.
+
+Frontend domain: `https://ticket-new.aiminds.io.vn/`.
+
+API domain: `https://ticket-api.aiminds.io.vn`. API requests use the `/api` prefix, for example `https://ticket-api.aiminds.io.vn/api/token/`.
+
+## Development
+
+Use Node.js 20.19+ on the Node 20 release line, or Node.js 22.12+.
+
+```bash
+npm ci
+npm run dev
+```
+
+Yarn is also supported through `yarn.lock`. Use one package manager consistently and update both lockfiles when changing dependencies.
+
+The development server polls for file changes every 300 ms to avoid Linux `ENOSPC` file-watcher limits. Hot reload remains enabled; polling may use more CPU than native file watching.
+
+The development server proxies `/api` and `/media` to the backend configured in `vite.config.ts`. Set `VITE_API_BASE_URL` in `.env.local` when using a different backend host. Vite environment variables are included in the browser bundle; credentials belong in the server or CI environment.
+
+The `/api` prefix is defined in `src/lib/api/api-base-url.ts` and added by the shared HTTP client. Configure only the backend host in `.env.local`.
+
+Login follows the `ticketV2` API contract: `POST /api/token/` with JSON `{ "username": "...", "password": "..." }` returns `{ "access": "...", "refresh": "..." }`. The application stores these tokens in Ticket-specific cookies and uses `Authorization: Bearer <access>` for authenticated requests.
+
+After sign-in and on page reload, `GET /api/list_permission/` loads the account and permissions. The `infoUser` tuple supplies the user ID, name and avatar; `userPermission` and `handlingPermission` supply the permission flags. Sign-in completes after account information loads. Signing out removes the Ticket session and query cache. Existing Homepage sessions are separate; sign in again after switching to this authentication flow.
+
+Restart the development server after changing `.env.local`; rebuild deployed bundles when their API configuration changes.
+
+## Docker
+
+Build and run the production web on port `5174`:
+
+```bash
+docker build --pull -t rainscales-ticket:local .
+docker run -d --name rainscales-ticket --restart unless-stopped \
+  -p 5174:5174 rainscales-ticket:local
+```
+
+Open `http://localhost:5174`. The image builds the application with Node.js and serves the generated files with unprivileged Nginx. It includes SPA routing, compressed responses, caching for hashed assets and a health check at `/healthz`.
+
+For `https://ticket-new.aiminds.io.vn/`, configure DNS and an HTTPS reverse proxy to forward requests to this container on port `5174`. The container serves HTTP; configure the TLS certificate at the reverse proxy. Vite also allows `ticket-new.aiminds.io.vn` when forwarding to the development server.
+
+Docker excludes local environment files, including `.env.local`. The browser uses the `/api` prefix defined in source; Nginx proxies `/api` and `/media` to `https://ticket-api.aiminds.io.vn` by default. To use another backend, set `API_UPSTREAM` when starting the container, using its origin only, without a path or trailing slash:
+
+```bash
+docker run -d --name rainscales-ticket --restart unless-stopped \
+  -p 5174:5174 -e API_UPSTREAM=https://backend.example.com \
+  rainscales-ticket:local
+```
+
+The backend must be reachable from inside the container. Changing `API_UPSTREAM` requires recreating the container; source changes require rebuilding the image.
+
+## Project structure
+
+```text
+src/
+├── app/                    # Application routing and route layouts
+│   ├── app.tsx
+│   └── layouts/
+├── assets/                 # Images and static design assets
+├── components/
+│   ├── form/               # Shared, accessible React Hook Form controls
+│   └── ui/                 # UI primitives
+├── constants/              # Shared application constants
+├── features/
+│   ├── auth/               # Authentication API, context, provider, hooks and schemas
+│   └── projects/           # Project API, types, cards and icon selection
+├── hooks/                  # Hooks shared across features, including debounce
+├── lib/
+│   ├── api/                # HTTP client and typed HTTP errors
+│   ├── auth-session.ts     # Shared cleanup of persisted authentication
+│   └── ...                 # Cookies, storage, query client and UI utilities
+├── pages/                  # Route screens that compose feature components
+├── index.css
+└── main.tsx
+
+tests/                      # API contracts, validation and UI behavior tests
+```
+
+Keep business rules and API calls inside their feature. Keep route pages focused on composing the screen. Share a component or hook only when multiple features use it. Use kebab-case for files, PascalCase for React components and types, and camelCase for functions and variables. Preserve backend field names at the API boundary.
+
+## Shared interface components
+
+The interface uses opaque surfaces and semantic color tokens in `src/index.css`. Use `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border` and the status tokens instead of adding separate hardcoded light/dark color classes. Primary and supporting text use the same contrast rules across screens.
+
+- `PageHeader` composes page titles, back navigation and toolbar actions.
+- `FormFieldShell` provides labels, required indicators and linked validation errors for input, date, select and multi-select fields. `controlClassName` provides their common surface, border and focus treatment.
+- `SearchInput` provides search and clear actions. `AsyncButton` provides a spinner and pending/disabled state.
+- `Badge`, `UserAvatar`, `EmptyState`, `ErrorAlert` and `LoadingState` keep repeated feedback and identity elements consistent.
+- `AppNavLink` shares navigation states. `ProjectCardContent` shares application tile content.
+
+Keep feature-specific actions in their feature; compose these components in pages and dialogs.
+
+## Quality checks
+
+| Command                 | Purpose                                                                      |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `npm run check`         | Lint, formatting, application/config/test type checking and tests            |
+| `npm run build`         | Check application/config TypeScript projects and create the production build |
+| `npm run lint`          | Run Oxlint; any warning or error fails the command                           |
+| `npm run format`        | Apply Prettier formatting                                                    |
+| `npm run format:check`  | Check formatting without changing files                                      |
+| `npm run typecheck`     | Check application, configuration and tests                                   |
+| `npm run test`          | Run Vitest regression tests                                                  |
+| `npm run test:watch`    | Run tests interactively                                                      |
+| `npm run test:coverage` | Generate text, HTML and LCOV coverage reports                                |
+| `npm run preview`       | Serve the production build locally                                           |
+
+Lint rules cover hooks, explicit `any`, nested ternaries, duplicate imports and common accessibility issues. The label primitive forwards its control association through props, so label association is checked at usage sites. Semantic-role suggestions are disabled for UI primitives that use ARIA grouping.
+
+Tests cover HTTP error/status handling, Ticket sign-in and session restoration, authentication expiration, slash fallback, routing and shared form controls. API calls are mocked; tests do not contact the backend. Test API configuration is isolated from `.env.local`.
+
+## SonarQube
+
+`sonar-project.properties` scans all application source in `src`, identifies tests in `tests`, and imports `coverage/lcov.info`. It does not exclude application UI from analysis or coverage.
+
+Install [SonarScanner CLI](https://docs.sonarsource.com/sonarqube-server/analyzing-source-code/scanners/sonarscanner), create the project on your SonarQube server, and provide `SONAR_HOST_URL` and `SONAR_TOKEN` through your shell or CI secret store. Change `sonar.projectKey` if your existing project has another key.
+
+```bash
+npm run check
+npm run build
+npm run test:coverage
+npm run sonar -- -Dsonar.qualitygate.wait=true
+```
+
+Generate coverage before scanning, as described in the [SonarQube JavaScript/TypeScript coverage documentation](https://docs.sonarsource.com/sonarqube-server/analyzing-source-code/test-coverage/javascript-typescript-test-coverage). The server's Quality Profile and Quality Gate determine acceptance; passing local lint and tests alone does not establish a passing SonarQube result. Coverage includes untested application files so the report reflects remaining gaps.
+
+## Brand assets
+
+The supplied `Logo-Rainscales-New-Colors_260717.zip` is the source for `public/brand`. SVG canvases are trimmed to remove export whitespace; the original paths and gradients are preserved. `BrandLogo` displays the color artwork in light mode and the white artwork in dark mode, with a compact emblem on mobile.
+
+The brand colors are purple `#6468AF`, cyan `#61C9D9` and blue `#263D88`. Related `brand-*` shades in `src/index.css` provide readable focus, hover and text states. The favicon and Apple touch icon use the supplied emblem; Scout illustrations remain available for login and empty states.
+
+## License
+
+Private repository. All rights reserved.
