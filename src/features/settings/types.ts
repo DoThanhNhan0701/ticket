@@ -83,6 +83,7 @@ export interface SettingsField {
   lookup?: LookupKind;
   required?: boolean;
   createOnly?: boolean;
+  maxLength?: number;
 }
 export interface SettingsConfig {
   label: string;

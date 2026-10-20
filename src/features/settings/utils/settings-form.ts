@@ -66,6 +66,8 @@ function validateField(
   lookups: SettingsLookups,
 ): string[] {
   const messages: string[] = [];
+  if (field.maxLength && value.length > field.maxLength)
+    messages.push(`Tối đa ${field.maxLength} ký tự.`);
   if (field.required && !value.length)
     messages.push(
       `Vui lòng ${field.lookup ? "chọn" : "nhập"} ${field.label.toLowerCase()}.`,

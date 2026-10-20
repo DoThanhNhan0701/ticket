@@ -105,6 +105,8 @@ export function DataTable<T>({
               className={cn(
                 "px-3 py-3 align-middle",
                 alignClasses[column.align ?? "left"],
+                column.sticky === "right" &&
+                  "right-0 z-20 sm:shadow-[-1px_0_0_var(--border)]",
               )}
             >
               <TruncatedText text={column.label} />
@@ -119,7 +121,7 @@ export function DataTable<T>({
             <TableRow
               key={getRowKey(row)}
               className={cn(
-                "h-18",
+                "h-18 bg-card",
                 path &&
                   "cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
               )}
@@ -150,6 +152,8 @@ export function DataTable<T>({
                   key={column.id}
                   className={cn(
                     alignClasses[column.align ?? "left"],
+                    column.sticky === "right" &&
+                      "sticky right-0 z-1 bg-inherit sm:shadow-[-1px_0_0_var(--border)]",
                     column.className,
                   )}
                 >

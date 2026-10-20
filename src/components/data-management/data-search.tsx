@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from "react";
+import { Search } from "lucide-react";
 import { SearchInput } from "@/components/search-input";
 import { Button } from "@/components/ui/button";
 import { SearchableSelect } from "@/components/ui/searchable-select";
@@ -26,6 +27,7 @@ interface DataSearchProps {
   readonly resetKey?: string;
   readonly actions?: ReactNode;
   readonly className?: string;
+  readonly iconOnlyOnMobile?: boolean;
   readonly onSearch: (value: string, filterValue: string) => void;
 }
 
@@ -35,6 +37,7 @@ function DataSearchForm({
   initialValue,
   filter,
   onSearch,
+  iconOnlyOnMobile = false,
 }: Readonly<Omit<DataSearchProps, "actions" | "resetKey" | "className">>) {
   const [value, setValue] = useState(initialValue);
   const [filterValue, setFilterValue] = useState(filter?.initialValue ?? "");
@@ -94,8 +97,20 @@ function DataSearchForm({
             </SelectContent>
           </Select>
         ))}
-      <Button type="submit" className="px-3 sm:px-4">
-        Tìm kiếm
+      <Button
+        type="submit"
+        aria-label="Tìm kiếm"
+        title="Tìm kiếm"
+        className={
+          iconOnlyOnMobile ? "w-11 px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
+        }
+      >
+        {iconOnlyOnMobile && (
+          <Search className="size-4 sm:hidden" aria-hidden="true" />
+        )}
+        <span className={iconOnlyOnMobile ? "hidden sm:inline" : undefined}>
+          Tìm kiếm
+        </span>
       </Button>
     </form>
   );

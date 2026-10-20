@@ -23,6 +23,7 @@ export interface InputFieldProps<TFieldValues extends FieldValues> {
   icon?: ReactNode;
   labelAddon?: ReactNode;
   inputClassName?: string;
+  maxLength?: number;
 }
 
 export function InputField<TFieldValues extends FieldValues>({
@@ -39,6 +40,7 @@ export function InputField<TFieldValues extends FieldValues>({
   icon,
   labelAddon,
   inputClassName,
+  maxLength,
 }: Readonly<InputFieldProps<TFieldValues>>) {
   return (
     <Controller
@@ -62,6 +64,7 @@ export function InputField<TFieldValues extends FieldValues>({
               type={type}
               disabled={disabled}
               placeholder={placeholder}
+              maxLength={maxLength}
               autoCapitalize="off"
               autoComplete={autoComplete}
               spellCheck={false}

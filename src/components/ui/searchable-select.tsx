@@ -108,7 +108,7 @@ export function SearchableSelect({
         >
           <Combobox.Popup
             aria-label={`Chọn ${label.toLowerCase()}`}
-            className="flex max-h-(--available-height) w-(--anchor-width) min-w-0 flex-col rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-md outline-none"
+            className="flex max-h-(--available-height) w-(--anchor-width) min-w-48 max-w-(--available-width) flex-col rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-md outline-none"
           >
             <div className="relative mb-2 shrink-0">
               <Search

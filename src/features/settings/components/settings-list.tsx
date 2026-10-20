@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Download, Plus } from "lucide-react";
+import { Download, FilterX, Plus } from "lucide-react";
 import {
   DataSearch,
   DataResults,
@@ -39,6 +39,7 @@ export function SettingsList({
       : "",
   };
   const config = settingsConfig[kind];
+  const hasFilters = Boolean(params.search || params.status);
   const [editor, setEditor] = useState<{ record?: SettingsRecord } | null>(
     createUser ? {} : null,
   );
@@ -83,6 +84,7 @@ export function SettingsList({
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
       <DataSearch
+        iconOnlyOnMobile
         className="flex-none sm:max-w-none sm:justify-between"
         label={`Tìm kiếm ${config.label}`}
         initialValue={params.search}
@@ -107,6 +109,21 @@ export function SettingsList({
         }
         actions={
           <div className="flex shrink-0 items-center gap-2">
+            {hasFilters && (
+              <Button
+                type="button"
+                variant="ghost"
+                aria-label="Xóa lọc"
+                title="Xóa lọc"
+                className="w-11 px-0 lg:w-auto lg:px-4"
+                onClick={() =>
+                  update({ search: undefined, is_active: undefined, page: 1 })
+                }
+              >
+                <FilterX className="size-4" aria-hidden="true" />
+                <span className="hidden lg:inline">Xóa lọc</span>
+              </Button>
+            )}
             <Button
               type="button"
               aria-label="Thêm mới"

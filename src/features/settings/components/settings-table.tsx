@@ -161,13 +161,14 @@ export function SettingsTable({
     {
       id: "actions",
       label: "Thao tác",
+      sticky: "right",
       width: kind === "request-types" ? "120px" : "90px",
       align: "center",
       render: (row) => (
         <div className="flex items-center justify-center gap-1">
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             size="icon"
             aria-label={`Chỉnh sửa ${row.username ?? row.name}`}
             title="Chỉnh sửa"
@@ -178,7 +179,7 @@ export function SettingsTable({
           {kind === "request-types" && (
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               size="icon"
               aria-label={`Biểu mẫu ${row.name}`}
               title="Biểu mẫu"

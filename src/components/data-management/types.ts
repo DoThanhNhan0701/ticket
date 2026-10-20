@@ -5,6 +5,7 @@ export interface DataColumn<T> {
   readonly label: string;
   readonly width?: string;
   readonly align?: "left" | "center" | "right";
+  readonly sticky?: "right";
   readonly className?: string;
   readonly render: (row: T, index: number) => ReactNode;
 }

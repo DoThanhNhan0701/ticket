@@ -31,6 +31,12 @@ export async function listSettingsRequest(
   signal?: AbortSignal,
 ): Promise<SettingsPageData> {
   const config = settingsConfig[kind];
+  // These paginated endpoints ignore is_active; filter the complete result set.
+  if (config.paginated && params.status)
+    return filterSettingsRecords(
+      await allRecords(kind, signal, params.search),
+      { ...params, search: "" },
+    );
   const response = await getRequest<unknown>(config.listEndpoint, {
     params: {
       page: String(params.page),
@@ -48,8 +54,15 @@ export async function listSettingsRequest(
     `Dữ liệu ${config.label} không hợp lệ.`,
   );
   if (!Array.isArray(parsed)) return parsed;
+  return filterSettingsRecords(parsed, params);
+}
+
+function filterSettingsRecords(
+  records: readonly SettingsRecord[],
+  params: SettingsParams,
+): SettingsPageData {
   const keyword = normalizeSearch(params.search);
-  const rows = parsed.filter((row) => {
+  const rows = records.filter((row) => {
     const values = [
       row.name,
       "username" in row ? row.username : "",
@@ -70,8 +83,12 @@ export async function listSettingsRequest(
     ),
   };
 }
-async function allRecords(kind: SettingsKind, signal?: AbortSignal) {
-  const params = { page: 1, pageSize: 1000, search: "", status: "" };
+async function allRecords(
+  kind: SettingsKind,
+  signal?: AbortSignal,
+  search = "",
+) {
+  const params = { page: 1, pageSize: 1000, search, status: "" };
   const first = await listSettingsRequest(kind, params, signal);
   const results = [...first.results];
   while (results.length < first.count) {

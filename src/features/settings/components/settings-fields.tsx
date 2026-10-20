@@ -70,6 +70,7 @@ export function SettingsFieldControl({
     <InputField
       {...shared}
       type={field.type === "email" ? "email" : "text"}
+      maxLength={field.maxLength}
       disabled={disabled || (editing && field.createOnly)}
       required={field.required && !(editing && field.createOnly)}
       placeholder={`Nhập ${field.label.toLowerCase()}`}

@@ -4,6 +4,7 @@ import {
   type FieldPath,
   type FieldValues,
 } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FormFieldShell } from "./form-field-shell";
 
 export function CheckboxField<T extends FieldValues>({
@@ -31,16 +32,16 @@ export function CheckboxField<T extends FieldValues>({
           error={fieldState.error}
         >
           <div>
-            <input
-              type="checkbox"
+            <Checkbox
               id={id}
               name={field.name}
               ref={field.ref}
               checked={field.value === true}
-              onChange={(event) => field.onChange(event.target.checked)}
+              onCheckedChange={field.onChange}
               onBlur={field.onBlur}
               disabled={disabled}
-              className="size-5 cursor-pointer rounded border-border accent-primary disabled:cursor-not-allowed"
+              aria-invalid={fieldState.invalid}
+              aria-describedby={fieldState.error ? `${id}-error` : undefined}
             />
           </div>
         </FormFieldShell>

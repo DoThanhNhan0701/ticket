@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { FormFieldShell } from "@/components/form/form-field-shell";
 import { SearchableSelect } from "@/components/ui/searchable-select";
@@ -19,13 +20,11 @@ export function TemplateCheckbox({
 }>) {
   return (
     <label htmlFor={id} className="flex min-h-10 items-center gap-2 text-sm">
-      <input
-        type="checkbox"
+      <Checkbox
         id={id}
         checked={checked}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.checked)}
-        className="size-4 shrink-0 accent-primary"
+        onCheckedChange={onChange}
       />
       {label}
     </label>

@@ -23,6 +23,7 @@ import { setCookie, getCookie } from "@/lib/cookies";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
 import { settingsKinds, type SettingsKind } from "@/features/settings/types";
 import { settingsConfig } from "@/features/settings/utils/settings-config";
+import { listSettingsRequest } from "@/features/settings/api/settings-api";
 import { downloadFile } from "@/lib/download";
 import {
   settingsFixtures,
@@ -52,6 +53,8 @@ const pagination = (results: object[]) => ({
 });
 
 beforeEach(() => {
+  // jsdom does not provide the PointerEvent constructor used by Base UI Checkbox.
+  vi.stubGlobal("PointerEvent", MouseEvent);
   vi.stubGlobal("Blob", NodeBlob);
   vi.stubGlobal(
     "ResizeObserver",
@@ -364,6 +367,21 @@ it.each(settingsKinds)(
   },
 );
 
+it("enforces the real API's 30-character requesting department name limit before writing", async () => {
+  renderPage("requesting-departments");
+  await editorReady("requesting-departments");
+  const input = screen.getByLabelText(/^Tên bộ phận/);
+  expect(input.getAttribute("maxlength")).toBe("30");
+  fireEvent.change(input, { target: { value: "A".repeat(31) } });
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("Tối đa 30 ký tự.");
+  expect(requests("/api/bophanmmanager/", "POST")).toHaveLength(0);
+  fireEvent.change(input, { target: { value: "A".repeat(30) } });
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const body = requests("/api/bophanmmanager/", "POST")[0][1]?.body;
+  expect((body as FormData).get("name")).toBe("A".repeat(30));
+});
 it("paginates array responses, searches accents and clamps an out-of-range page", async () => {
   rows.users = Array.from({ length: 201 }, (_, i) => ({
     ...settingsFixtures.users,
@@ -410,6 +428,100 @@ it("passes pagination and applied search to paginated endpoints and hides pagina
   expect(url.searchParams.get("search")).toBe("unmatched");
   expect(url.searchParams.get("page_size")).toBe("100");
 });
+it.each([
+  "requesting-departments",
+  "handling-departments",
+  "request-types",
+] as const)(
+  "filters all %s records by status before pagination when the API ignores is_active",
+  async (kind) => {
+    rows[kind] = Array.from({ length: 1005 }, (_, index) => ({
+      ...settingsFixtures[kind],
+      id: index + 1,
+      name: `Audit ${index}`,
+      is_active: index % 2 === 0,
+    }));
+    const original = fetchMock.getMockImplementation()!;
+    fetchMock.mockImplementation((input, options) => {
+      const url = new URL(String(input));
+      url.searchParams.delete("is_active");
+      return original(url, options);
+    });
+    const controller = new AbortController();
+    const data = await listSettingsRequest(
+      kind,
+      { page: 2, pageSize: 100, search: "Audit", status: "false" },
+      controller.signal,
+    );
+    expect(data.count).toBe(502);
+    expect(data.results).toHaveLength(100);
+    expect(data.results.every((row) => !row.is_active)).toBe(true);
+    expect(data.results[0].id).toBe(202);
+    const calls = requests(`/api${settingsConfig[kind].listEndpoint}`);
+    expect(calls).toHaveLength(2);
+    expect(
+      calls.map(([url]) => new URL(String(url)).searchParams.get("page")),
+    ).toEqual(["1", "2"]);
+    for (const [url, options] of calls) {
+      expect(new URL(String(url)).searchParams.get("search")).toBe("Audit");
+      expect(options?.signal).toBe(controller.signal);
+    }
+  },
+);
+it("preserves server search matches on related fields when filtering status", async () => {
+  rows["request-types"] = [
+    { ...settingsFixtures["request-types"], is_active: false },
+  ];
+  const data = await listSettingsRequest("request-types", {
+    page: 1,
+    pageSize: 100,
+    search: "ISMS",
+    status: "false",
+  });
+  expect(data.count).toBe(1);
+  expect(data.results[0].id).toBe(settingsFixtures["request-types"].id);
+});
+it.each(settingsKinds)(
+  "clears search and status filters for %s while preserving the page size",
+  async (kind) => {
+    renderPage(kind, "?search=unmatched&is_active=false&page=2&page_size=200");
+    await screen.findByText(`Không tìm thấy ${settingsConfig[kind].label}`);
+    const clear = screen.getByRole("button", { name: "Xóa lọc" });
+    fireEvent.change(
+      screen.getByRole("searchbox", {
+        name: `Tìm kiếm ${settingsConfig[kind].label}`,
+      }),
+      { target: { value: "draft keyword" } },
+    );
+    fireEvent.click(clear);
+    await ready();
+    expect(screen.queryByRole("button", { name: "Xóa lọc" })).toBeNull();
+    expect(
+      (
+        screen.getByRole("searchbox", {
+          name: `Tìm kiếm ${settingsConfig[kind].label}`,
+        }) as HTMLInputElement
+      ).value,
+    ).toBe("");
+    expect(
+      screen.getByRole("combobox", { name: "Trạng thái" }).textContent,
+    ).toContain("Tất cả trạng thái");
+    const location = new URL(
+      screen.getByTestId("location").textContent!,
+      "http://localhost",
+    );
+    expect(location.searchParams.get("page")).toBe("1");
+    expect(location.searchParams.get("page_size")).toBe("200");
+    expect(location.searchParams.has("search")).toBe(false);
+    expect(location.searchParams.has("is_active")).toBe(false);
+    const latest = requests(`/api${settingsConfig[kind].listEndpoint}`).slice(
+      -1,
+    )[0];
+    const url = new URL(String(latest![0]));
+    expect(url.searchParams.has("search")).toBe(false);
+    expect(url.searchParams.has("is_active")).toBe(false);
+  },
+);
 it("validates required user fields and email before sending mutations", async () => {
   renderPage("users");
   await editorReady("users");
@@ -491,16 +603,90 @@ it("blocks saving while a lookup fails and retries independently", async () => {
     ).toBe(false),
   );
 });
-it("retries failed details without opening an empty editable form", async () => {
+it.each([false, true])(
+  "keeps the form mounted beneath an overlay until create/edit data is ready (editing: %s)",
+  async (editing) => {
+    renderPage("request-types");
+    await ready();
+    const originalFetch = fetchMock.getMockImplementation()!;
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    fetchMock.mockImplementation(async (input, options) => {
+      const path = new URL(String(input)).pathname;
+      if (
+        options?.method === "GET" &&
+        ["/api/list_handling_group/", "/api/tickettypemmanager/186"].includes(
+          path,
+        )
+      ) {
+        await pending;
+        if (path === "/api/tickettypemmanager/186")
+          return Response.json({
+            ...settingsFixtures["request-types"],
+            name: "Tên chi tiết mới",
+            is_active: false,
+          });
+      }
+      return originalFetch(input, options);
+    });
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: editing ? "Chỉnh sửa Đăng ký từ xa" : "Thêm mới",
+      }),
+    );
+    const form = await screen.findByRole("form", {
+      name: `${editing ? "Chỉnh sửa" : "Thêm"} loại yêu cầu`,
+    });
+    const input = within(form).getByLabelText(/^Tên loại yêu cầu/);
+    const loading = screen
+      .getByText("Đang tải thông tin...")
+      .closest('[role="status"]');
+    expect(loading?.classList.contains("absolute")).toBe(true);
+    expect(form.parentElement?.getAttribute("aria-busy")).toBe("true");
+    expect(input.hasAttribute("disabled")).toBe(true);
+    expect(
+      within(form)
+        .getByRole("button", { name: "Lưu" })
+        .hasAttribute("disabled"),
+    ).toBe(true);
+    expect(
+      within(form)
+        .getByRole("checkbox", { name: "Kích hoạt" })
+        .getAttribute("aria-disabled"),
+    ).toBe("true");
+    await act(async () => release());
+    await waitFor(() => expect(input.hasAttribute("disabled")).toBe(false));
+    expect(screen.queryByText("Đang tải thông tin...")).toBeNull();
+    expect(form.parentElement?.getAttribute("aria-busy")).toBe("false");
+    expect(screen.getByLabelText(/^Tên loại yêu cầu/)).toBe(input);
+    expect((input as HTMLInputElement).value).toBe(
+      editing ? "Tên chi tiết mới" : "",
+    );
+    expect(
+      within(form)
+        .getByRole("checkbox", { name: "Kích hoạt" })
+        .getAttribute("aria-checked"),
+    ).toBe(String(!editing));
+  },
+);
+it("keeps the form disabled after failed details and enables it after retry", async () => {
   detailFailure = true;
   renderPage("users");
   await ready();
   fireEvent.click(screen.getByRole("button", { name: "Chỉnh sửa test-user" }));
   await screen.findByText("Detail offline");
-  expect(screen.queryByRole("button", { name: "Lưu" })).toBeNull();
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(true);
   detailFailure = false;
   fireEvent.click(screen.getByRole("button", { name: "Thử lại thông tin" }));
-  await screen.findByRole("form", { name: "Chỉnh sửa người dùng" });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
 });
 it("rejects non-PDF attachments and uploads a valid PDF without deleting the template", async () => {
   renderPage("request-types");
@@ -533,6 +719,18 @@ it("edits an existing template while preserving unrecognized fields and validati
   );
   await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
   const section = screen.getByRole("region", { name: "Phần 1" });
+  const groupEditable = within(section).getByRole("checkbox", {
+    name: "Cho phép chỉnh sửa phần",
+  });
+  expect(groupEditable.getAttribute("aria-checked")).toBe("true");
+  fireEvent.click(groupEditable);
+  for (const name of [
+    "Bắt buộc",
+    "Cho phép thay đổi",
+    "Chỉ người tạo và người xử lý",
+  ]) {
+    fireEvent.click(within(section).getAllByRole("checkbox", { name })[0]);
+  }
   fireEvent.change(within(section).getAllByLabelText(/^Tên trường/)[0], {
     target: { value: "Ngày bắt đầu (*)" },
   });
@@ -543,6 +741,7 @@ it("edits an existing template while preserving unrecognized fields and validati
   const payload = JSON.parse(String(write[0][1]?.body));
   expect(payload).toMatchObject({ ticket_type: 186, user: 42 });
   expect(payload.data_form.forms[0]).toMatchObject({
+    editable: false,
     preservedGroupSetting: true,
     colortitle: "#123456",
   });
@@ -550,6 +749,9 @@ it("edits an existing template while preserving unrecognized fields and validati
     fixed: "left",
     customSetting: "preserve",
     title: "Ngày bắt đầu",
+    required: false,
+    handling: true,
+    status: true,
   });
   expect(payload.data_form.forms[0].children[1].validate).toEqual({
     operator: ">=",

@@ -56,7 +56,7 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
     listEndpoint: "/list_bophan_sudung/",
     writeEndpoint: "/bophanmmanager/",
     paginated: true,
-    fields: [nameField("Tên bộ phận")],
+    fields: [{ ...nameField("Tên bộ phận"), maxLength: 30 }],
   },
   "handling-departments": {
     label: "bộ phận xử lý",
