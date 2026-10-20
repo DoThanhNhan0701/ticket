@@ -8,6 +8,11 @@ import {
   getSettingsFormSchema,
 } from "@/features/settings/utils/settings-form";
 import { templateFixture } from "./fixtures/settings";
+import {
+  updateTemplateField,
+  removeTemplateField,
+  removeTemplateGroup,
+} from "@/features/settings/utils/template";
 
 function groups() {
   return templateResponseSchema.parse(templateFixture).forms;
@@ -70,4 +75,68 @@ it("rejects a forged related ID before submitting a settings form", () => {
     expect(
       parsed.error.issues.some((issue) => issue.path[0] === "bophan"),
     ).toBe(true);
+});
+
+it("keeps date comparisons across sections when a target is renamed without mutating the original", () => {
+  const original = groups();
+  const start = original[0].children.shift()!;
+  original.unshift({ title: "Mốc ngày", children: [start] });
+  const updated = updateTemplateField(original, 0, 0, {
+    ...start,
+    title: " Ngày bắt đầu mới (*) ",
+  });
+  expect(prepareTemplate(updated)[1].children[0].validate).toEqual({
+    operator: ">=",
+    target: "Ngày bắt đầu mới",
+  });
+  expect(updated[0].children[0].customSetting).toBe("preserve");
+  expect(original[1].children[0].validate).toEqual({
+    operator: ">=",
+    target: "Ngày bắt đầu",
+  });
+});
+
+it("clears comparisons when a referenced date is deleted or changed to text", () => {
+  const original = groups();
+  const removed = removeTemplateField(original, 0, 0);
+  expect(prepareTemplate(removed)[0].children[0].validate).toBeNull();
+  const changed = updateTemplateField(original, 0, 0, {
+    ...original[0].children[0],
+    type: "text",
+  });
+  expect(prepareTemplate(changed)[0].children[1].validate).toBeNull();
+  expect(changed[0].children[0].validate).toBeNull();
+});
+
+it("clears a date field's own comparison when its type changes", () => {
+  const original = groups();
+  const changed = updateTemplateField(original, 0, 1, {
+    ...original[0].children[1],
+    type: "number",
+  });
+  expect(prepareTemplate(changed)[0].children[1].validate).toBeNull();
+});
+
+it("clears dangling cross-section comparisons when a whole section is removed", () => {
+  const original = groups();
+  const start = original[0].children.shift()!;
+  original.unshift({ title: "Mốc ngày", children: [start] });
+  const removed = removeTemplateGroup(original, 0);
+  expect(prepareTemplate(removed)[0].children[0].validate).toBeNull();
+});
+
+it("clears comparisons when a target name is erased and preserves them for non-name edits", () => {
+  const original = groups();
+  const changed = updateTemplateField(original, 0, 0, {
+    ...original[0].children[0],
+    required: false,
+  });
+  expect(changed[0].children[1].validate).toEqual(
+    original[0].children[1].validate,
+  );
+  const erased = updateTemplateField(original, 0, 0, {
+    ...original[0].children[0],
+    title: " ",
+  });
+  expect(erased[0].children[1].validate).toBeNull();
 });

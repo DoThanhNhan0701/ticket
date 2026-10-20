@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { cn } from "@/lib/utils";
 
 interface FormFieldShellProps {
   id: string;
@@ -23,7 +24,7 @@ export function FormFieldShell({
   children,
 }: Readonly<FormFieldShellProps>) {
   return (
-    <Field className={className} data-invalid={invalid}>
+    <Field className={cn("min-w-0", className)} data-invalid={invalid}>
       <FieldLabel
         htmlFor={id}
         className="text-sm font-semibold text-foreground"

@@ -719,6 +719,15 @@ it("edits an existing template while preserving unrecognized fields and validati
   );
   await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
   const section = screen.getByRole("region", { name: "Phần 1" });
+  expect(
+    within(section)
+      .getByRole("button", { name: "Mở rộng phần 1" })
+      .getAttribute("aria-expanded"),
+  ).toBe("false");
+  expect(section.querySelectorAll("details[open]")).toHaveLength(0);
+  fireEvent.click(
+    within(section).getByRole("button", { name: "Mở rộng phần 1" }),
+  );
   const groupEditable = within(section).getByRole("checkbox", {
     name: "Cho phép chỉnh sửa phần",
   });
@@ -758,6 +767,57 @@ it("edits an existing template while preserving unrecognized fields and validati
     target: "Ngày bắt đầu",
   });
 });
+it("opens only one template section and tracks it when sections are moved or removed", async () => {
+  templateData = {
+    forms: [
+      templateFixture.forms[0],
+      { title: "Phần B", children: [] },
+      { title: "Phần C", children: [] },
+    ],
+  };
+  renderPage("request-types");
+  await ready();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
+  );
+  const form = await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
+  const openSections = () =>
+    within(form).queryAllByRole("button", { name: /^Thu gọn phần/ });
+  expect(openSections()).toHaveLength(0);
+  fireEvent.click(within(form).getByRole("button", { name: "Mở rộng phần 1" }));
+  fireEvent.click(within(form).getByRole("button", { name: "Mở rộng phần 2" }));
+  expect(openSections()).toHaveLength(1);
+  expect(
+    within(form)
+      .getByRole("button", { name: "Mở rộng phần 1" })
+      .getAttribute("aria-expanded"),
+  ).toBe("false");
+  fireEvent.click(within(form).getByRole("button", { name: "Đưa phần 2 lên" }));
+  expect(openSections()[0].getAttribute("aria-label")).toBe("Thu gọn phần 1");
+  expect(
+    (
+      within(screen.getByRole("region", { name: "Phần 1" })).getByLabelText(
+        /^Tên phần/,
+      ) as HTMLInputElement
+    ).value,
+  ).toBe("Phần B");
+  fireEvent.click(within(form).getByRole("button", { name: "Mở rộng phần 3" }));
+  fireEvent.click(within(form).getByRole("button", { name: "Xóa phần 1" }));
+  expect(openSections()).toHaveLength(1);
+  expect(openSections()[0].getAttribute("aria-label")).toBe("Thu gọn phần 2");
+  expect(
+    (
+      within(screen.getByRole("region", { name: "Phần 2" })).getByLabelText(
+        /^Tên phần/,
+      ) as HTMLInputElement
+    ).value,
+  ).toBe("Phần C");
+  fireEvent.click(within(form).getByRole("button", { name: "Thu gọn phần 2" }));
+  expect(openSections()).toHaveLength(0);
+  fireEvent.click(within(form).getByRole("button", { name: "Mở rộng phần 2" }));
+  fireEvent.click(within(form).getByRole("button", { name: "Xóa phần 2" }));
+  expect(openSections()).toHaveLength(0);
+});
 it("creates a missing template and validates blank or duplicate titles", async () => {
   templateExists = false;
   renderPage("request-types");
@@ -769,6 +829,7 @@ it("creates a missing template and validates blank or duplicate titles", async (
   fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));
   await screen.findByText("Vui lòng thêm ít nhất một phần biểu mẫu.");
   fireEvent.click(screen.getByRole("button", { name: "Thêm phần" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mở rộng phần 1" }));
   change("Tên phần", "Thông tin");
   fireEvent.click(screen.getByRole("button", { name: "Thêm trường" }));
   change("Tên trường", "Nội dung");
@@ -821,6 +882,7 @@ it("keeps the template open if the save is not reflected by the server", async (
     screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
   );
   await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
+  fireEvent.click(screen.getByRole("button", { name: "Mở rộng phần 1" }));
   change("Tên phần", "Changed section");
   writeResponse = () => Response.json({ message: "Save rejected" });
   fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));

@@ -122,7 +122,7 @@ function SettingsForm({
           </div>
         )}
         {mutation.isError && <ErrorAlert message={mutation.error.message} />}
-        <div className="grid items-start gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
           {config.fields.map((field) => (
             <SettingsFieldControl
               key={field.name}
@@ -176,7 +176,7 @@ function SettingsForm({
             </FormFieldShell>
           )}
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex-nowrap [&>button]:flex-1 sm:[&>button]:flex-none">
           <Button
             type="button"
             variant="outline"

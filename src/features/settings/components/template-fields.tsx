@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { ChevronDown, Settings2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,14 +22,20 @@ export function TemplateCheckbox({
   onChange: (value: boolean) => void;
 }>) {
   return (
-    <label htmlFor={id} className="flex min-h-10 items-center gap-2 text-sm">
+    <label
+      htmlFor={id}
+      className={cn(
+        "flex min-h-11 cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2 text-xs transition-colors hover:bg-muted has-disabled:cursor-not-allowed has-disabled:opacity-60",
+        checked ? "border-primary/30 bg-primary/10" : "border-border bg-card",
+      )}
+    >
       <Checkbox
         id={id}
         checked={checked}
         disabled={disabled}
         onCheckedChange={onChange}
       />
-      {label}
+      <span className="min-w-0 leading-5">{label}</span>
     </label>
   );
 }
@@ -50,21 +59,20 @@ export function TemplateFieldControls({
   groups: readonly TemplateGroup[];
   onChange: (field: TemplateField) => void;
 }>) {
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const rule =
     typeof field.validate === "object" && field.validate !== null
       ? field.validate
       : {};
   const dateFields = groups
     .flatMap((group) => group.children)
-    .filter(
-      (other) =>
-        other !== field && other.type.includes("date") && other.title.trim(),
-    );
+    .filter((other) => other !== field && other.type.includes("date"));
   const typeOptions = fieldTypes.some((option) => option.value === field.type)
     ? fieldTypes
     : [...fieldTypes, { value: field.type, label: field.type }];
+  const canCompareDates = field.type.includes("date") && dateFields.length > 0;
   return (
-    <div className="grid min-w-0 items-start gap-3 sm:grid-cols-2">
+    <div className="grid min-w-0 grid-cols-1 items-start gap-2.5 sm:grid-cols-2">
       <FormFieldShell id={`${id}-title`} label="Tên trường" required>
         <Input
           id={`${id}-title`}
@@ -86,40 +94,7 @@ export function TemplateFieldControls({
           onValueChange={(type) => onChange({ ...field, type })}
         />
       </FormFieldShell>
-      <FormFieldShell
-        id={`${id}-options`}
-        label="Tùy chọn (mỗi dòng một giá trị)"
-      >
-        <Textarea
-          id={`${id}-options`}
-          value={(field.option ?? [])
-            .map((value) => (Array.isArray(value) ? value[1] : value))
-            .join("\n")}
-          rows={2}
-          disabled={disabled}
-          placeholder="Nhập các lựa chọn"
-          onChange={(event) =>
-            onChange({ ...field, option: event.target.value.split("\n") })
-          }
-        />
-      </FormFieldShell>
-      <FormFieldShell id={`${id}-width`} label="Độ rộng cột (px)">
-        <Input
-          id={`${id}-width`}
-          type="number"
-          min={1}
-          value={field.widthcol ?? ""}
-          disabled={disabled}
-          placeholder="Tự động"
-          onChange={(event) => {
-            const next = { ...field };
-            if (event.target.value) next.widthcol = event.target.value;
-            else delete next.widthcol;
-            onChange(next);
-          }}
-        />
-      </FormFieldShell>
-      <div className="flex flex-wrap gap-x-4 sm:col-span-2">
+      <div className="flex flex-wrap gap-2 sm:col-span-2">
         {(
           [
             { key: "required", label: "Bắt buộc" },
@@ -137,47 +112,112 @@ export function TemplateFieldControls({
           />
         ))}
       </div>
-      {field.type.includes("date") && (
-        <>
-          <FormFieldShell id={`${id}-operator`} label="Điều kiện ngày">
-            <SearchableSelect
-              id={`${id}-operator`}
-              label="Điều kiện ngày"
-              value={typeof rule.operator === "string" ? rule.operator : ""}
+      <details
+        className="group rounded-lg border border-border sm:col-span-2"
+        open={advancedOpen}
+        onToggle={(event) => setAdvancedOpen(event.currentTarget.open)}
+      >
+        <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+          <Settings2
+            className="size-4 text-muted-foreground"
+            aria-hidden="true"
+          />
+          Tùy chọn nâng cao
+          <ChevronDown
+            className="ml-auto size-4 text-muted-foreground transition-transform group-open:rotate-180"
+            aria-hidden="true"
+          />
+        </summary>
+        <div
+          className={cn(
+            "grid grid-cols-1 items-start gap-3 border-t border-border p-3 sm:grid-cols-2",
+            canCompareDates && "xl:grid-cols-3",
+          )}
+        >
+          <FormFieldShell
+            id={`${id}-options`}
+            label="Tùy chọn (mỗi dòng một giá trị)"
+            className={canCompareDates ? "xl:row-span-2" : undefined}
+          >
+            <Textarea
+              id={`${id}-options`}
+              value={(field.option ?? [])
+                .map((value) => (Array.isArray(value) ? value[1] : value))
+                .join("\n")}
+              rows={3}
               disabled={disabled}
-              options={[
-                { value: "", label: "Không áp dụng" },
-                ...[">", ">=", "<", "<="].map((value) => ({
-                  value,
-                  label: value,
-                })),
-              ]}
-              onValueChange={(operator) =>
-                onChange({
-                  ...field,
-                  validate: operator ? { ...rule, operator } : null,
-                })
+              placeholder="Nhập các lựa chọn"
+              onChange={(event) =>
+                onChange({ ...field, option: event.target.value.split("\n") })
               }
             />
           </FormFieldShell>
-          <FormFieldShell id={`${id}-target`} label="So sánh với trường">
-            <SearchableSelect
-              id={`${id}-target`}
-              label="So sánh với trường"
-              value={typeof rule.target === "string" ? rule.target : ""}
-              disabled={disabled || !rule.operator}
-              placeholder="Chọn trường ngày"
-              options={dateFields.map((other) => ({
-                value: other.title,
-                label: other.title,
-              }))}
-              onValueChange={(target) =>
-                onChange({ ...field, validate: { ...rule, target } })
-              }
+          <FormFieldShell id={`${id}-width`} label="Độ rộng cột (px)">
+            <Input
+              id={`${id}-width`}
+              type="number"
+              min={1}
+              value={field.widthcol ?? ""}
+              disabled={disabled}
+              placeholder="Tự động"
+              onChange={(event) => {
+                const next = { ...field };
+                if (event.target.value) next.widthcol = event.target.value;
+                else delete next.widthcol;
+                onChange(next);
+              }}
             />
           </FormFieldShell>
-        </>
-      )}
+          {canCompareDates && (
+            <>
+              <FormFieldShell id={`${id}-operator`} label="Điều kiện ngày">
+                <SearchableSelect
+                  id={`${id}-operator`}
+                  label="Điều kiện ngày"
+                  placeholder="Không áp dụng"
+                  value={typeof rule.operator === "string" ? rule.operator : ""}
+                  disabled={disabled}
+                  options={[
+                    { value: "", label: "Không áp dụng" },
+                    ...[">", ">=", "<", "<="].map((value) => ({
+                      value,
+                      label: value,
+                    })),
+                  ]}
+                  onValueChange={(operator) =>
+                    onChange({
+                      ...field,
+                      validate: operator ? { ...rule, operator } : null,
+                    })
+                  }
+                />
+              </FormFieldShell>
+              <FormFieldShell
+                id={`${id}-target`}
+                label="So sánh với trường"
+                className="xl:col-span-2"
+              >
+                <SearchableSelect
+                  id={`${id}-target`}
+                  label="So sánh với trường"
+                  value={typeof rule.target === "string" ? rule.target : ""}
+                  disabled={disabled || !rule.operator}
+                  placeholder="Chọn trường ngày"
+                  options={dateFields
+                    .filter((other) => other.title.trim())
+                    .map((other) => ({
+                      value: other.title,
+                      label: other.title,
+                    }))}
+                  onValueChange={(target) =>
+                    onChange({ ...field, validate: { ...rule, target } })
+                  }
+                />
+              </FormFieldShell>
+            </>
+          )}
+        </div>
+      </details>
     </div>
   );
 }

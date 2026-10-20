@@ -1,14 +1,12 @@
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
-import { FormFieldShell } from "@/components/form/form-field-shell";
 import {
   Dialog,
   DialogContent,
@@ -24,157 +22,16 @@ import {
   type TemplateGroup,
 } from "../schemas/template-schema";
 import type { SettingsRecord } from "../types";
-import { TemplateCheckbox, TemplateFieldControls } from "./template-fields";
+import { TemplateGroupFields } from "./template-group";
+import {
+  moveTemplateItem,
+  moveTemplateIndex,
+  removeTemplateIndex,
+  updateTemplateField,
+  removeTemplateField,
+  removeTemplateGroup,
+} from "../utils/template";
 
-function moveItem<T>(items: readonly T[], from: number, to: number) {
-  const copy = [...items];
-  if (to >= 0 && to < copy.length)
-    [copy[from], copy[to]] = [copy[to], copy[from]];
-  return copy;
-}
-function TemplateGroupFields({
-  group,
-  index,
-  groups,
-  disabled,
-  onChange,
-}: Readonly<{
-  group: TemplateGroup;
-  index: number;
-  groups: readonly TemplateGroup[];
-  disabled: boolean;
-  onChange: (group: TemplateGroup) => void;
-}>) {
-  return (
-    <section
-      aria-label={`Phần ${index + 1}`}
-      className="min-w-0 space-y-4 rounded-xl border border-border p-3 sm:p-4"
-    >
-      <FormFieldShell id={`template-group-${index}`} label="Tên phần" required>
-        <Input
-          id={`template-group-${index}`}
-          value={group.title}
-          disabled={disabled}
-          placeholder="Nhập tên phần"
-          onChange={(event) =>
-            onChange({ ...group, title: event.target.value })
-          }
-        />
-      </FormFieldShell>
-      <TemplateCheckbox
-        id={`template-group-edit-${index}`}
-        label="Cho phép chỉnh sửa phần"
-        checked={group.editable === true}
-        disabled={disabled}
-        onChange={(editable) => onChange({ ...group, editable })}
-      />
-      {group.children.map((field, fieldIndex) => (
-        <div
-          key={`${index}-${fieldIndex}`}
-          className="space-y-3 rounded-lg border border-border bg-muted/20 p-3"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <strong className="text-sm">Trường {fieldIndex + 1}</strong>
-            <div className="flex gap-1">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Đưa trường ${fieldIndex + 1} lên`}
-                disabled={disabled || fieldIndex === 0}
-                onClick={() =>
-                  onChange({
-                    ...group,
-                    children: moveItem(
-                      group.children,
-                      fieldIndex,
-                      fieldIndex - 1,
-                    ),
-                  })
-                }
-              >
-                <ArrowUp className="size-4" aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Đưa trường ${fieldIndex + 1} xuống`}
-                disabled={disabled || fieldIndex === group.children.length - 1}
-                onClick={() =>
-                  onChange({
-                    ...group,
-                    children: moveItem(
-                      group.children,
-                      fieldIndex,
-                      fieldIndex + 1,
-                    ),
-                  })
-                }
-              >
-                <ArrowDown className="size-4" aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Xóa trường ${fieldIndex + 1}`}
-                disabled={disabled}
-                onClick={() =>
-                  onChange({
-                    ...group,
-                    children: group.children.filter(
-                      (_, position) => position !== fieldIndex,
-                    ),
-                  })
-                }
-              >
-                <Trash2 className="size-4" aria-hidden="true" />
-              </Button>
-            </div>
-          </div>
-          <TemplateFieldControls
-            field={field}
-            id={`template-${index}-${fieldIndex}`}
-            groups={groups}
-            disabled={disabled}
-            onChange={(next) =>
-              onChange({
-                ...group,
-                children: group.children.map((old, position) =>
-                  position === fieldIndex ? next : old,
-                ),
-              })
-            }
-          />
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="outline"
-        disabled={disabled}
-        onClick={() =>
-          onChange({
-            ...group,
-            children: [
-              ...group.children,
-              {
-                key: crypto.randomUUID(),
-                title: "",
-                type: "text",
-                editable: true,
-                required: false,
-              },
-            ],
-          })
-        }
-      >
-        <Plus className="size-4" aria-hidden="true" />
-        Thêm trường
-      </Button>
-    </section>
-  );
-}
 function TemplateForm({
   record,
   initialGroups,
@@ -191,6 +48,7 @@ function TemplateForm({
   const { userId } = useAuthContext();
   const client = useQueryClient();
   const [groups, setGroups] = useState(initialGroups);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [error, setError] = useState("");
   const submitting = useRef(false);
   const mutation = useMutation({
@@ -212,7 +70,7 @@ function TemplateForm({
   return (
     <form
       aria-label="Cấu hình biểu mẫu"
-      className="space-y-4"
+      className="flex min-h-0 flex-1 flex-col"
       onSubmit={(event) => {
         event.preventDefault();
         if (submitting.current || !userId) return;
@@ -230,52 +88,75 @@ function TemplateForm({
         }
       }}
     >
-      {error && <ErrorAlert message={error} />}
-      {mutation.isError && <ErrorAlert message={mutation.error.message} />}
-      {groups.map((group, index) => (
-        <div key={index} className="min-w-0 space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <h3 className="text-sm font-semibold">Phần {index + 1}</h3>
-            <div className="flex gap-1">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Đưa phần ${index + 1} lên`}
-                disabled={busy || index === 0}
-                onClick={() => setGroups(moveItem(groups, index, index - 1))}
-              >
-                <ArrowUp className="size-4" aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Đưa phần ${index + 1} xuống`}
-                disabled={busy || index === groups.length - 1}
-                onClick={() => setGroups(moveItem(groups, index, index + 1))}
-              >
-                <ArrowDown className="size-4" aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label={`Xóa phần ${index + 1}`}
-                disabled={busy}
-                onClick={() =>
-                  setGroups(groups.filter((_, position) => position !== index))
-                }
-              >
-                <Trash2 className="size-4" aria-hidden="true" />
-              </Button>
-            </div>
+      <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border p-3 sm:px-4">
+        <div>
+          <h3 className="text-sm font-semibold">Nội dung biểu mẫu</h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {groups.length} phần ·{" "}
+            {groups.reduce((count, group) => count + group.children.length, 0)}{" "}
+            trường<span className="hidden sm:inline"> nhập liệu</span>
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={busy}
+          onClick={() =>
+            setGroups([
+              ...groups,
+              {
+                title: "",
+                editable: true,
+                colortitle: "#000000",
+                children: [],
+              },
+            ])
+          }
+        >
+          <Plus className="size-4" aria-hidden="true" />
+          Thêm phần
+        </Button>
+      </div>
+      <div
+        role="region"
+        aria-label="Nội dung biểu mẫu"
+        className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-3 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-4"
+      >
+        {error && <ErrorAlert message={error} />}
+        {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+        {!groups.length && (
+          <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border px-4 py-10 text-center">
+            <FileText
+              className="mb-1 size-8 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <p className="text-sm font-medium">Chưa có nội dung biểu mẫu</p>
+            <p className="text-sm text-muted-foreground">
+              Chọn “Thêm phần” để bắt đầu cấu hình các trường nhập liệu.
+            </p>
           </div>
+        )}
+        {groups.map((group, index) => (
           <TemplateGroupFields
+            key={index}
             group={group}
             index={index}
             groups={groups}
             disabled={busy}
+            onFieldChange={(fieldIndex, next) =>
+              setGroups((current) =>
+                updateTemplateField(current, index, fieldIndex, next),
+              )
+            }
+            onFieldRemove={(fieldIndex) =>
+              setGroups((current) =>
+                removeTemplateField(current, index, fieldIndex),
+              )
+            }
+            expanded={expandedIndex === index}
+            onToggle={() =>
+              setExpandedIndex((current) => (current === index ? null : index))
+            }
             onChange={(next) =>
               setGroups(
                 groups.map((old, position) =>
@@ -283,24 +164,22 @@ function TemplateForm({
                 ),
               )
             }
+            onMove={(direction) => {
+              setGroups(moveTemplateItem(groups, index, index + direction));
+              setExpandedIndex((current) =>
+                moveTemplateIndex(current, index, index + direction),
+              );
+            }}
+            onRemove={() => {
+              setGroups((current) => removeTemplateGroup(current, index));
+              setExpandedIndex((current) =>
+                removeTemplateIndex(current, index),
+              );
+            }}
           />
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="outline"
-        disabled={busy}
-        onClick={() =>
-          setGroups([
-            ...groups,
-            { title: "", editable: true, colortitle: "#000000", children: [] },
-          ])
-        }
-      >
-        <Plus className="size-4" aria-hidden="true" />
-        Thêm phần
-      </Button>
-      <DialogFooter>
+        ))}
+      </div>
+      <DialogFooter className="static m-0 shrink-0 flex-nowrap p-3 sm:m-0 sm:px-4 [&>button]:flex-1 sm:[&>button]:flex-none">
         <Button
           type="button"
           variant="outline"
@@ -340,19 +219,24 @@ export function RequestTemplateEditor({
         if (!open && !busy) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-4xl">
-        <DialogHeader>
+      <DialogContent className="flex h-[90dvh] max-w-none flex-col overflow-hidden p-0 sm:p-0 lg:w-63/100 lg:max-w-252">
+        <DialogHeader className="static m-0 shrink-0 p-3 sm:m-0 sm:p-4">
           <div>
-            <DialogTitle>Biểu mẫu · {record.name}</DialogTitle>
+            <DialogTitle
+              className="truncate"
+              title={`Biểu mẫu · ${record.name}`}
+            >
+              Biểu mẫu · {record.name}
+            </DialogTitle>
             <DialogDescription>
-              Cấu hình các phần, trường nhập liệu và điều kiện ngày.
+              Thêm phần, sắp xếp trường và thiết lập cách nhập liệu.
             </DialogDescription>
           </div>
           <DialogCloseButton disabled={busy} />
         </DialogHeader>
         {query.isPending && <LoadingState message="Đang tải biểu mẫu..." />}
         {query.isError && (
-          <div className="space-y-2">
+          <div className="space-y-2 p-4">
             <ErrorAlert message={query.error.message} />
             <Button variant="outline" onClick={() => void query.refetch()}>
               Thử lại biểu mẫu
