@@ -31,6 +31,8 @@ interface DatePickerFieldProps<TFieldValues extends FieldValues> {
   startYear?: number;
   endYear?: number;
   disabled?: boolean;
+  isDateDisabled?: (date: Date) => boolean;
+  disabledDateMessage?: string;
 }
 
 export function DatePickerField<TFieldValues extends FieldValues>({
@@ -44,6 +46,8 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   startYear = 1900,
   endYear = new Date().getFullYear(),
   disabled = false,
+  isDateDisabled,
+  disabledDateMessage = "Ngày này không thể chọn.",
 }: Readonly<DatePickerFieldProps<TFieldValues>>) {
   const [open, setOpen] = React.useState(false);
 
@@ -54,9 +58,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
       rules={{
         required: required ? `${label} is required.` : false,
         validate: (value) =>
-          !value ||
-          Boolean(parseDate(String(value))) ||
-          "Enter a valid date (DD/MM/YYYY).",
+          validateDate(value, isDateDisabled, disabledDateMessage),
       }}
       render={({ field, fieldState }) => {
         const value = String(field.value ?? "");
@@ -125,6 +127,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                 <Calendar
                   mode="single"
                   selected={selectedDate}
+                  disabled={disabled || isDateDisabled}
                   defaultMonth={selectedDate}
                   captionLayout="dropdown"
                   reverseYears
@@ -141,6 +144,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                   startMonth={new Date(startYear, 0)}
                   endMonth={new Date(endYear, 11)}
                   onSelect={(date) => {
+                    if (disabled || (date && isDateDisabled?.(date))) return;
                     field.onChange(date ? format(date, "dd/MM/yyyy") : "");
                     setOpen(false);
                   }}
@@ -152,6 +156,17 @@ export function DatePickerField<TFieldValues extends FieldValues>({
       }}
     />
   );
+}
+
+function validateDate(
+  value: unknown,
+  isDateDisabled: ((date: Date) => boolean) | undefined,
+  disabledDateMessage: string,
+) {
+  if (!value) return true;
+  const date = parseDate(String(value));
+  if (!date) return "Enter a valid date (DD/MM/YYYY).";
+  return !isDateDisabled?.(date) || disabledDateMessage;
 }
 
 function isDateDraft(value: string) {

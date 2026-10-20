@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useElementWidth } from "@/hooks/use-element-width";
 
 export interface MultiSelectOption {
   value: string;
@@ -67,26 +68,44 @@ function SelectedBadges({
   disabled: boolean;
   onRemove: (value: string) => void;
 }>) {
-  const visibleBadges = options.slice(0, maxBadgeCount ?? options.length);
+  const { ref, width } = useElementWidth();
+  const capacity =
+    width >= options.length * 64
+      ? options.length
+      : Math.max(0, Math.floor((width - 32) / 64));
+  const visibleBadges = options.slice(
+    0,
+    Math.min(maxBadgeCount ?? options.length, capacity),
+  );
   const hiddenCount = options.length - visibleBadges.length;
   return (
-    <div className="flex flex-wrap items-center gap-1 min-w-0">
+    <div
+      ref={ref}
+      title={options.map((option) => option.label).join(", ")}
+      className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden empty:hidden"
+    >
       {visibleBadges.map((option) => (
-        <Badge tone="brand" key={option.value} className="max-w-full">
-          <span className="break-all">{option.label}</span>
+        <Badge
+          tone="brand"
+          key={option.value}
+          className="h-7 min-w-14 max-w-full shrink gap-1 px-1.5 py-0"
+        >
+          <span title={option.label} className="min-w-0 truncate">
+            {option.label}
+          </span>
           <button
             type="button"
             disabled={disabled}
             aria-label={`Remove ${option.label}`}
             onClick={() => onRemove(option.value)}
-            className="flex h-6 w-6 items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring cursor-pointer shrink-0"
+            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring sm:size-5 sm:pointer-coarse:size-6"
           >
             <X className="h-3 w-3" />
           </button>
         </Badge>
       ))}
       {hiddenCount > 0 && (
-        <span className="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">
+        <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-xs text-foreground">
           +{hiddenCount}
         </span>
       )}
@@ -132,9 +151,10 @@ function MultiSelectInput({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverAnchor asChild>
         <div
+          data-slot="multi-select-control"
           className={cn(
             controlClassName,
-            "flex flex-wrap items-center gap-2 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25",
+            "flex h-11 min-w-0 items-center gap-1 py-0 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25 sm:h-10 sm:pointer-coarse:h-11",
             invalid && "border-destructive",
             isDisabled && "cursor-not-allowed bg-muted opacity-75",
           )}
@@ -152,12 +172,18 @@ function MultiSelectInput({
               disabled={isDisabled}
               onBlur={onBlur}
               aria-label={label}
+              title={selectedOptions.map((option) => option.label).join(", ")}
               aria-describedby={invalid ? `${id}-error` : undefined}
-              className="flex min-h-11 min-w-11 sm:min-h-5 sm:min-w-8 sm:pointer-coarse:min-h-11 sm:pointer-coarse:min-w-11 flex-1 items-center justify-between gap-2 text-left text-muted-foreground outline-none"
+              className={cn(
+                "flex min-w-0 items-center justify-between gap-2 self-stretch text-left text-muted-foreground outline-none",
+                selectedOptions.length > 0
+                  ? "w-11 shrink-0 sm:w-8 sm:pointer-coarse:w-11"
+                  : "flex-1",
+              )}
             >
-              {isLoading && <span>Loading list...</span>}
+              {isLoading && <span className="truncate">Loading list...</span>}
               {!isLoading && selectedOptions.length === 0 && (
-                <span>{placeholder}</span>
+                <span className="truncate">{placeholder}</span>
               )}
               <ChevronDown className="h-4 w-4 ml-auto shrink-0" />
             </button>
@@ -168,7 +194,7 @@ function MultiSelectInput({
               disabled={isLoading}
               onClick={() => onChange([])}
               aria-label={`Clear ${label.toLowerCase()}`}
-              className="flex h-11 w-11 sm:h-6 sm:w-6 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 items-center justify-center rounded text-muted-foreground hover:text-foreground cursor-pointer"
+              className="flex w-11 shrink-0 cursor-pointer items-center justify-center self-stretch rounded text-muted-foreground hover:text-foreground sm:w-6 sm:pointer-coarse:w-11"
             >
               <X className="h-3.5 w-3.5" />
             </button>

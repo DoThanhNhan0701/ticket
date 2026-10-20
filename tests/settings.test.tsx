@@ -711,62 +711,68 @@ it("rejects non-PDF attachments and uploads a valid PDF without deleting the tem
   ).toBeInstanceOf(FormData);
   expect(requests("/api/template_form/186", "PUT")).toHaveLength(0);
 });
-it("edits an existing template while preserving unrecognized fields and validation rules", async () => {
-  renderPage("request-types");
-  await ready();
-  fireEvent.click(
-    screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
-  );
-  await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
-  const section = screen.getByRole("region", { name: "Phần 1" });
-  expect(
-    within(section)
-      .getByRole("button", { name: "Mở rộng phần 1" })
-      .getAttribute("aria-expanded"),
-  ).toBe("false");
-  expect(section.querySelectorAll("details[open]")).toHaveLength(0);
-  fireEvent.click(
-    within(section).getByRole("button", { name: "Mở rộng phần 1" }),
-  );
-  const groupEditable = within(section).getByRole("checkbox", {
-    name: "Cho phép chỉnh sửa phần",
-  });
-  expect(groupEditable.getAttribute("aria-checked")).toBe("true");
-  fireEvent.click(groupEditable);
-  for (const name of [
-    "Bắt buộc",
-    "Cho phép thay đổi",
-    "Chỉ người tạo và người xử lý",
-  ]) {
-    fireEvent.click(within(section).getAllByRole("checkbox", { name })[0]);
-  }
-  fireEvent.change(within(section).getAllByLabelText(/^Tên trường/)[0], {
-    target: { value: "Ngày bắt đầu (*)" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  const write = requests("/api/template_form/186", "PUT");
-  expect(write).toHaveLength(1);
-  const payload = JSON.parse(String(write[0][1]?.body));
-  expect(payload).toMatchObject({ ticket_type: 186, user: 42 });
-  expect(payload.data_form.forms[0]).toMatchObject({
-    editable: false,
-    preservedGroupSetting: true,
-    colortitle: "#123456",
-  });
-  expect(payload.data_form.forms[0].children[0]).toMatchObject({
-    fixed: "left",
-    customSetting: "preserve",
-    title: "Ngày bắt đầu",
-    required: false,
-    handling: true,
-    status: true,
-  });
-  expect(payload.data_form.forms[0].children[1].validate).toEqual({
-    operator: ">=",
-    target: "Ngày bắt đầu",
-  });
-});
+it.each([true, undefined])(
+  "edits an existing template with editable=%s while preserving unrecognized fields and validation rules",
+  async (editable) => {
+    templateData = {
+      forms: templateFixture.forms.map((group) => ({ ...group, editable })),
+    };
+    renderPage("request-types");
+    await ready();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
+    );
+    await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
+    const section = screen.getByRole("region", { name: "Phần 1" });
+    expect(
+      within(section)
+        .getByRole("button", { name: "Mở rộng phần 1" })
+        .getAttribute("aria-expanded"),
+    ).toBe("false");
+    expect(section.querySelectorAll("details[open]")).toHaveLength(0);
+    fireEvent.click(
+      within(section).getByRole("button", { name: "Mở rộng phần 1" }),
+    );
+    const groupEditable = within(section).getByRole("checkbox", {
+      name: "Hiển thị khi tạo yêu cầu",
+    });
+    expect(groupEditable.getAttribute("aria-checked")).toBe("true");
+    fireEvent.click(groupEditable);
+    for (const name of [
+      "Bắt buộc",
+      "Cho phép thay đổi",
+      "Chỉ người tạo và người xử lý",
+    ]) {
+      fireEvent.click(within(section).getAllByRole("checkbox", { name })[0]);
+    }
+    fireEvent.change(within(section).getAllByLabelText(/^Tên trường/)[0], {
+      target: { value: "Ngày bắt đầu (*)" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    const write = requests("/api/template_form/186", "PUT");
+    expect(write).toHaveLength(1);
+    const payload = JSON.parse(String(write[0][1]?.body));
+    expect(payload).toMatchObject({ ticket_type: 186, user: 42 });
+    expect(payload.data_form.forms[0]).toMatchObject({
+      editable: false,
+      preservedGroupSetting: true,
+      colortitle: "#123456",
+    });
+    expect(payload.data_form.forms[0].children[0]).toMatchObject({
+      fixed: "left",
+      customSetting: "preserve",
+      title: "Ngày bắt đầu",
+      required: false,
+      handling: true,
+      status: true,
+    });
+    expect(payload.data_form.forms[0].children[1].validate).toEqual({
+      operator: ">=",
+      target: "Ngày bắt đầu",
+    });
+  },
+);
 it("opens only one template section and tracks it when sections are moved or removed", async () => {
   templateData = {
     forms: [

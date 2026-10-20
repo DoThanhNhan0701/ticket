@@ -13,6 +13,7 @@ import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
 import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
+import { RequestCreate } from "@/features/requests/components/request-create";
 import type { RequestListScope } from "@/features/requests/types";
 import { SettingsList } from "@/features/settings/components/settings-list";
 import { getSettingsKind } from "@/features/settings/utils/settings-config";
@@ -47,6 +48,7 @@ export function WorkspacePage({
   if (listScope) content = <RequestList key={listScope} scope={listScope} />;
   if (page.path === "/requests/change-status")
     content = <RequestChangeStatus />;
+  if (page.path === "/requests/new") content = <RequestCreate key={userId} />;
   if (page.path === "/reports")
     content = <ReportsPage key="report-dashboard" />;
   if (page.path === "/reports/export")

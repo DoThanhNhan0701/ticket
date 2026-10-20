@@ -40,6 +40,22 @@ vi.mock("@/features/settings/api/settings-api", () => ({
   saveSettingsRequest: vi.fn(),
 }));
 
+vi.mock("@/features/requests/api/create-request-api", () => ({
+  getCreateRequestLookups: vi.fn().mockResolvedValue({
+    groups: [],
+    departments: [],
+    teams: [],
+    offices: [],
+    approvers: [],
+    customers: [],
+  }),
+  getCreateRequestTypes: vi.fn().mockResolvedValue([]),
+  createRequest: vi.fn(),
+  uploadRequestAttachment: vi.fn(),
+  exportRequestTemplate: vi.fn(),
+  importRequestTemplate: vi.fn(),
+}));
+
 let client: QueryClient;
 let auth: AuthContextValue;
 

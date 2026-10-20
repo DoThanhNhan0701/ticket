@@ -109,8 +109,8 @@ export function TemplateGroupFields({
           </FormFieldShell>
           <TemplateCheckbox
             id={`template-group-edit-${index}`}
-            label="Cho phép chỉnh sửa phần"
-            checked={group.editable === true}
+            label="Hiển thị khi tạo yêu cầu"
+            checked={group.editable !== false}
             disabled={disabled}
             onChange={(editable) => onChange({ ...group, editable })}
           />

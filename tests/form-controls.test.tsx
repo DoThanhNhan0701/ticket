@@ -82,10 +82,14 @@ it("Escape closes the category popover while keeping its parent form open", asyn
 function BirthdayForm({
   birthday = "",
   required = true,
+  isDateDisabled,
+  disabled,
   onSubmit,
 }: Readonly<{
   birthday?: string;
   required?: boolean;
+  isDateDisabled?: (date: Date) => boolean;
+  disabled?: boolean;
   onSubmit: (birthday: string) => void;
 }>) {
   const { control, handleSubmit, reset } = useForm({
@@ -99,6 +103,8 @@ function BirthdayForm({
         id="birthday"
         label="Date of Birth"
         required={required}
+        isDateDisabled={isDateDisabled}
+        disabled={disabled}
       />
       <button type="submit">Save</button>
       <button type="button" onClick={() => reset()}>
@@ -225,6 +231,59 @@ it("opens the calendar at a typed birthday and writes the chosen day back to the
   await waitFor(() => expect(screen.queryByRole("grid")).toBeNull());
   fireEvent.click(screen.getByRole("button", { name: "Save" }));
   await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("20/10/2000"));
+});
+
+it("disables calendar days and rejects the same dates when typed manually", async () => {
+  const onSubmit = vi.fn();
+  render(
+    <BirthdayForm
+      birthday="2000-03-02"
+      isDateDisabled={(date) => date < new Date(2000, 2, 3)}
+      onSubmit={onSubmit}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
+  const blocked = (await screen.findByRole("button", {
+    name: /March 2nd, 2000/,
+  })) as HTMLButtonElement;
+  expect(blocked.disabled).toBe(true);
+  fireEvent.click(blocked);
+  expect(
+    (screen.getByRole("textbox", { name: "Date of Birth" }) as HTMLInputElement)
+      .value,
+  ).toBe("02/03/2000");
+  fireEvent.keyDown(screen.getByRole("grid"), { key: "Escape" });
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  await screen.findByText("Ngày này không thể chọn.");
+  expect(onSubmit).not.toHaveBeenCalled();
+  fireEvent.change(screen.getByRole("textbox", { name: "Date of Birth" }), {
+    target: { value: "03/03/2000" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("03/03/2000"));
+});
+
+it("locks an already open calendar when its field becomes disabled", async () => {
+  const onSubmit = vi.fn();
+  const { rerender } = render(
+    <BirthdayForm birthday="2000-03-02" onSubmit={onSubmit} />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
+  const day = (await screen.findByRole("button", {
+    name: /March 3rd, 2000/,
+  })) as HTMLButtonElement;
+  expect(day.disabled).toBe(false);
+  rerender(<BirthdayForm birthday="2000-03-02" disabled onSubmit={onSubmit} />);
+  const lockedDay = screen.getByRole("button", {
+    name: /March 3rd, 2000/,
+  }) as HTMLButtonElement;
+  expect(lockedDay.disabled).toBe(true);
+  fireEvent.click(lockedDay);
+  expect(
+    (screen.getByRole("textbox", { name: "Date of Birth" }) as HTMLInputElement)
+      .value,
+  ).toBe("02/03/2000");
+  expect(onSubmit).not.toHaveBeenCalled();
 });
 
 it("finds a birth year quickly without changing the birthday until a day is chosen", async () => {

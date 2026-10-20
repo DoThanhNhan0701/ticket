@@ -60,6 +60,7 @@ export function InputField<TFieldValues extends FieldValues>({
           <div className="relative flex items-center">
             <Input
               {...field}
+              value={field.value ?? ""}
               id={id}
               type={type}
               disabled={disabled}
