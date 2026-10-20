@@ -27,6 +27,7 @@ export interface RequestOptions {
   params?: Record<string, string>;
   body?: unknown;
   signal?: AbortSignal;
+  responseType?: "json" | "blob";
 }
 
 function sessionChangedError(): ApiError {
@@ -73,11 +74,14 @@ function isAuthenticationFailure(response: Response, data: unknown): boolean {
   return response.status === 401 || (!response.ok && hasInvalidToken(data));
 }
 
-async function readResponse(response: Response): Promise<unknown> {
-  return response.status !== 204 &&
-    response.headers.get("content-type")?.includes("application/json")
-    ? response.json()
-    : null;
+async function readResponse(
+  response: Response,
+  responseType: RequestOptions["responseType"] = "json",
+): Promise<unknown> {
+  if (response.status === 204) return null;
+  if (response.headers.get("content-type")?.includes("application/json"))
+    return response.json();
+  return response.ok && responseType === "blob" ? response.blob() : null;
 }
 
 let refreshInFlight: { version: number; promise: Promise<string> } | null =
@@ -154,9 +158,10 @@ function refreshAccessToken(version: number): Promise<string> {
 function getHeaders(
   customHeaders: RequestOptions["headers"],
   token?: string,
+  body?: unknown,
 ): Headers {
   const headers = new Headers(customHeaders);
-  if (!headers.has("Content-Type"))
+  if (!headers.has("Content-Type") && !(body instanceof FormData))
     headers.set("Content-Type", "application/json");
   if (token && !headers.has("Authorization"))
     headers.set("Authorization", `Bearer ${token}`);
@@ -184,15 +189,17 @@ async function request<T>(
       throw sessionChangedError();
     return fetch(url, {
       method,
-      headers: getHeaders(options.headers, access),
+      headers: getHeaders(options.headers, access, options.body),
       body:
-        options.body === undefined ? undefined : JSON.stringify(options.body),
+        options.body instanceof FormData
+          ? options.body
+          : JSON.stringify(options.body),
       signal: options.signal,
     });
   };
 
   let response = await send(token);
-  let data = await readResponse(response);
+  let data = await readResponse(response, options.responseType);
   if (!isPublic && isAuthenticationFailure(response, data)) {
     if (getAuthSessionVersion() !== version) throw sessionChangedError();
     const currentToken = getCookie(COOKIE_TOKEN_KEY);
@@ -201,7 +208,7 @@ async function request<T>(
         ? currentToken
         : await refreshAccessToken(version);
     response = await send(token);
-    data = await readResponse(response);
+    data = await readResponse(response, options.responseType);
     if (isAuthenticationFailure(response, data)) clearAuthAndRedirect(version);
   }
   if (!isPublic && getAuthSessionVersion() !== version && response.ok) {

@@ -6,7 +6,7 @@ The theme preference is stored independently under `ticket-theme` in local stora
 
 Session cookies use the `Secure` flag on HTTPS. Cached account data is validated before it can populate the interface or sidebar permissions.
 
-After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, the request-list API integration, themes, shared components, branding, API configuration and Docker deployment. Other destinations currently have page shells; their forms, lists, reports and API integrations are not implemented yet.
+After sign-in, the application opens `Danh sách yêu cầu` at `/requests`. The protected `/` route redirects there as well. The current source includes a responsive sidebar based on `ticketV2`, Rainscales account sign-in, request/approval/task lists, ticket status changes, reports and Excel exports, themes, shared components, branding, API configuration and Docker deployment. Remaining destinations currently have page shells; their forms, lists and API integrations are not implemented yet.
 
 Frontend domain: `https://ticket-new.aiminds.io.vn/`.
 
@@ -69,7 +69,7 @@ The approval tables follow V2's columns: row number, code, type, title, office, 
 - The drawer supports `bophansudung_name`, multiple `team_id` values from validated `GET /api/list_team/`, and `created_from`/`created_to` dates. Team selections use the shared multi-select and serialize as comma-separated IDs; dates use the shared date picker and serialize as `YYYY-MM-DD`. All tasks additionally provide the `Được gắn thẻ` filter. Its URL value `type_option=0` is sent to the API as `type_option[]=0`, matching V2's Axios array serialization; the unbracketed API parameter is ignored by the backend.
 - Quick search preserves the selected task view, status and tagged scope while clearing other advanced fields. Clearing filters returns to the default all-records view. Applied filters, paging and sizes remain in the URL; Back restores team selections and creation dates. Lookup errors can be retried independently without blocking task results. Task caches are isolated from each other and from request/approval lists; unauthorized accounts fetch neither records nor lookups.
 
-In development, React StrictMode runs an additional effect setup/cleanup cycle. TanStack Query forwards that cleanup through the request's AbortSignal, so DevTools can show one canceled request followed by one successful request for each list endpoint. The production build omits this development probe. Keep cancellation enabled: changing search parameters aborts the obsolete query, and its late response cannot replace the latest results. Regression tests cover both behaviors and confirm that cancellation preserves the authentication session.
+React StrictMode is disabled at the application entry point, so development does not run its additional effect setup/cleanup cycle. Request cancellation remains enabled: changing search parameters aborts the obsolete query, and its late response cannot replace the latest results. Regression tests also exercise StrictMode explicitly to verify that cancellation preserves the authentication session.
 
 Vite pre-bundles `@hookform/resolvers/zod`, `react-hook-form` and `zod` explicitly for lazy routes. The dev server uses `node_modules/.vite-dev`, and Vitest uses `node_modules/.vite-test`. Auxiliary `createServer` calls must set their own `cacheDir` and disable client dependency discovery when only loading SSR fixtures. Sharing the dev cache can invalidate module hashes for browsers that are already open. For an `Outdated Optimize Dep` response, reload the page after optimization finishes; `npm run dev -- --force` rebuilds dependencies when restarting is needed. A failed lazy import now shows a recovery screen with `Tải lại trang`, preserving the current URL and session when reloading.
 
@@ -81,9 +81,39 @@ Below 640px, the keyword spans the full toolbar width; the status, search and ad
 
 Submitting sends `POST /api/change_status_ticket/` with JSON fields `ticket_code` (trimmed string), `ticket_status_id` (numeric ID) and `lydohuyyeucau` (trimmed string, empty when omitted). The backend accepts JSON as well as V2's form-data. Its response is `{ "message": "...", "error": "..." }`; a nonempty `error` is a failed update even with HTTP 200. Responses are validated before displaying a result. Inputs remain available after errors so the user can correct them and retry; pending updates disable editing and duplicate submissions. Successful updates invalidate both request-list caches. The operation records status history and does not send email, matching V2's description.
 
+## Reports and data export
+
+`/reports` and `/reports/export` (formerly `/export_data`) require `can_report` or superuser access. Both load active handling groups through validated `GET /api/list_handling_group/` with `columnSort=id`, `typeSort=ascend`, `is_active=true`, `page_size=1000` and `page=1`.
+
+Both report pages initially leave the handling group unselected. The dashboard defaults to the preceding seven days through today and loads a report only after choosing a group and clicking `Tra cứu`; the export page loads request types only after a group is selected. Clicking `Tra cứu` applies draft dates and group together; submitting the same criteria refreshes the report. `POST /api/report` receives multipart fields `startdate`, `enddate` (`YYYY-MM-DD`) and `handlinggroup`. Its four validated datasets drive summary cards, responsibility shares, on-time rates and request-type rates. Clicking a summary opens a dialog with `/tickets/:id` links. The charts use CSS and SVG without additional chart dependencies. Empty datasets have explicit states; changing filters keeps existing charts under a loading overlay, and failed lookups/reports can be retried.
+
+Dashboard `Xuất Excel` sends the current valid draft filters to `POST /api/export_excel`, so users can export a selected range directly. The data-export page loads `GET /api/list_tickettype/` using `handling_group`, `page_size=1000` and `page=1`. Its searchable type selector includes active types for the selected group and `All`. Changing group clears the old type and loads a separately cached lookup. Export submits multipart `from_date`, `to_date`, `ticket_type_id` and `bophanxuly_id` to `POST /api/export_ticket_type`. Both forms validate required fields, dates, date order and group/type membership before sending requests; pending exports block duplicate submission.
+
+The dashboard exposes all active groups, matching V2. Data export is restricted to groups whose `is_manager` equals the signed-in user's ID. The `AD` handling permission enables all active export groups; this is normalized into the cached `can_report_all_groups` permission. Superusers also have all-group access. Accounts without exportable groups do not load type options or generate files. Lookups and report caches include account IDs.
+
+The authenticated client supports native `FormData` and binary responses while preserving token refresh, cancellation and session-version checks. It lets the browser set multipart boundaries and still parses JSON authentication failures during an Excel request. Successful spreadsheets must be nonempty blobs with an accepted spreadsheet/ZIP MIME type. HTTP 200 JSON no-data responses display a message instead of downloading a JSON file. The shared download helper sanitizes filenames, removes its temporary anchor and revokes the object URL after starting the download.
+
+## System settings
+
+The seven `/settings/*` pages require `can_system`, `is_system_manage` or superuser access. `/settings` opens the user list, and legacy paths redirect to English URLs. Lists use the shared table, 100/200 pagination, search, searchable status selectors and form fields. Search applies on submission; paging resets table scroll. Empty results hide pagination, and loading preserves previous results beneath an overlay.
+
+| Page                               | Read API                                | Create/update API                                               |
+| ---------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+| `/settings/users`                  | `/api/list_user_v2/` (array)            | `/api/usermmanager/`, `/api/usermmanager/:id`                   |
+| `/settings/requesting-departments` | `/api/list_bophan_sudung/` (paginated)  | `/api/bophanmmanager/`, `/api/bophanmmanager/:id`               |
+| `/settings/handling-departments`   | `/api/list_handling_group/` (paginated) | `/api/handlinggroupmmanager/`, `/api/handlinggroupmmanager/:id` |
+| `/settings/request-types`          | `/api/list_ticket_type/` (paginated)    | `/api/tickettypemmanager/`, `/api/tickettypemmanager/:id`       |
+| `/settings/teams`                  | `/api/list_team/` (array)               | `/api/teammanager/`, `/api/teammanager/:id`                     |
+| `/settings/positions`              | `/api/list_chucvu/` (array)             | `/api/chucvumanager/`, `/api/chucvumanager/:id`                 |
+| `/settings/offices`                | `/api/list_vanphong/` (array)           | `/api/vanphongmanager/`, `/api/vanphongmanager/:id`             |
+
+Array responses are searched, filtered and paginated locally. Paginated endpoints receive `search`, `is_active`, `page` and `page_size`. Related names come from validated lookups, including all pages of large catalogs. Existing inactive selections remain visible while editing. POST and PUT use V2's JSON or multipart fields. User edits preserve the superuser flag and employee code. Handling groups support manager, members, description and email; positions load permission IDs from `/api/list_position_permission/`. User export uses `/api/export_user` and the shared spreadsheet validator. Pending saves prevent duplicate submissions and dismissal; errors retain the form for correction. Successful changes invalidate affected lists/lookups and refresh account permissions when users or positions change.
+
+Request types accept optional PDF guidance; omitting an upload preserves the existing file. Metadata saves leave templates untouched. The separate `Biểu mẫu` action reads `/api/template_form/:id` and supports sections, field ordering, required/handling/visibility flags, text/number/date/range-date types, choices, widths and date comparisons. Existing template properties are retained. Template saves read the form back and confirm the submitted values before closing the editor. New templates POST to `/api/template_form/`; existing ones PUT to `/api/template_form/:id` with `ticket_type`, `data_form.forms`, `user`, `mota` and `ghichu`. Missing templates and failed lookups have explicit states and retry controls. V2's activate/lock workflow is retained.
+
 ## API contracts
 
-All active API responses enter as `unknown` and pass Zod validation before application code uses them. Response types are inferred from those schemas so runtime validation and TypeScript declarations stay together. The contracts were checked against the Ticket backend; credentials and tokens are not stored in source.
+Active JSON API responses enter as `unknown` and pass Zod validation before application code uses them. Response types are inferred from those schemas so runtime validation and TypeScript declarations stay together. Spreadsheet responses are validated as nonempty blobs with accepted MIME types. The contracts were checked against the Ticket backend; credentials and tokens are not stored in source.
 
 | Endpoint                                | Contract                                                                                                         |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -99,6 +129,11 @@ All active API responses enter as `unknown` and pass Zod validation before appli
 | `GET /api/list_handling_tickettype/`    | Same validated type array, restricted to the account's handling types                                            |
 | `GET /api/list_team/`                   | Array of teams with numeric IDs, nullable Department ID, active/handling flags and timestamps                    |
 | `POST /api/change_status_ticket/`       | String `message` and `error`; nonempty business error fails the mutation even with HTTP 200                      |
+| `GET /api/list_handling_group/`         | Paginated handling groups with numeric IDs, nullable manager ID, member IDs, active flag and timestamps          |
+| `GET /api/list_tickettype/`             | Paginated request-type records scoped to the selected handling group                                             |
+| `POST /api/report`                      | Four dictionaries: summary counts/code-ID pairs, shares, and percentage/count/total tuples                       |
+| `POST /api/export_excel`                | Validated binary spreadsheet for the report range and group                                                      |
+| `POST /api/export_ticket_type`          | Validated binary spreadsheet, or JSON status when no data is available                                           |
 
 Missing related Department, cancellation-user and customer display names are optional; nullable foreign keys and timestamps remain explicitly nullable. The list serializer returns `list_user_received` as a string. It must not be confused with the ticket-detail response. Malformed nested fields produce a handled API error instead of reaching the UI. The unused Homepage `/list-project` lookup was removed because it does not exist on the Ticket backend.
 

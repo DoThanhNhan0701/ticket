@@ -125,6 +125,7 @@ export function RequestList({
               options: statusOptions,
               loading: statuses.isPending,
               searchable: true,
+              allOptionValue: "all",
             }}
             actions={
               <DataFiltersDrawer

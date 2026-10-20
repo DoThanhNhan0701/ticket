@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { LegacyPageRedirect } from "@/app/legacy-page-redirect";
 import {
   canAccessPage,
   createTicketPage,
@@ -13,6 +14,9 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
 import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
 import type { RequestListScope } from "@/features/requests/types";
+import { SettingsList } from "@/features/settings/components/settings-list";
+import { getSettingsKind } from "@/features/settings/utils/settings-config";
+import { ReportsPage } from "@/features/reports/components/reports-page";
 
 const requestListScopesByPath: Readonly<
   Partial<Record<string, RequestListScope>>
@@ -28,7 +32,7 @@ const requestListScopesByPath: Readonly<
 export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
-  const { permissions } = useAuthContext();
+  const { permissions, userId } = useAuthContext();
   const Icon = page.icon;
   const allowed = canAccessPage(page, permissions);
   let content = (
@@ -43,6 +47,22 @@ export function WorkspacePage({
   if (listScope) content = <RequestList key={listScope} scope={listScope} />;
   if (page.path === "/requests/change-status")
     content = <RequestChangeStatus />;
+  if (page.path === "/reports")
+    content = <ReportsPage key="report-dashboard" />;
+  if (page.path === "/reports/export")
+    content = <ReportsPage key="report-export" mode="export" />;
+
+  if (page.path === "/settings")
+    content = <LegacyPageRedirect to="/settings/users" />;
+  const settingsKind = getSettingsKind(page.path);
+  if (settingsKind)
+    content = (
+      <SettingsList key={`${settingsKind}-${userId}`} kind={settingsKind} />
+    );
+  if (page.path === "/settings/users/new")
+    content = (
+      <SettingsList key={`create-user-${userId}`} kind="users" createUser />
+    );
 
   return (
     <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">

@@ -69,7 +69,7 @@ export function DataResults<T>({
               title={emptyTitle}
               description={emptyDescription}
               icon={<Inbox className="size-6" aria-hidden="true" />}
-              className="rounded-none border-0 shadow-none"
+              className="flex-1 rounded-none border-0 shadow-none"
             />
           )}
           {query.data.results.length > 0 && (

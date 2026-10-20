@@ -25,6 +25,21 @@ vi.mock("@/features/requests/api/requests-api", () => ({
   listRequestTeamsRequest: vi.fn().mockResolvedValue([]),
 }));
 
+vi.mock("@/features/reports/api/reports-api", () => ({
+  listReportGroupsRequest: vi.fn().mockResolvedValue([]),
+  listReportTypesRequest: vi.fn().mockResolvedValue([]),
+  getReportRequest: vi.fn(),
+  exportReportRequest: vi.fn(),
+  exportReportDataRequest: vi.fn(),
+}));
+
+vi.mock("@/features/settings/api/settings-api", () => ({
+  listSettingsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
+  settingsLookupsRequest: vi.fn().mockResolvedValue({}),
+  settingsDetailRequest: vi.fn(),
+  saveSettingsRequest: vi.fn(),
+}));
+
 let client: QueryClient;
 let auth: AuthContextValue;
 
@@ -161,6 +176,11 @@ it.each([
     "Đã phê duyệt",
   ],
   ["/danhsachxulycanhan", "/tasks/mine", "Nhiệm vụ cá nhân"],
+  [
+    "/export_data?group=3#filters",
+    "/reports/export?group=3#filters",
+    "Truy xuất dữ liệu",
+  ],
   ["/danhsachxuly?page=2#results", "/tasks?page=2#results", "Tất cả nhiệm vụ"],
   [
     "/settings/vanphong?search=Da%20Nang",
@@ -505,4 +525,18 @@ it.each([
   expect(screen.queryByRole("heading", { name: "Applications" })).toBeNull();
   expect(screen.queryByRole("heading", { name: "User Management" })).toBeNull();
   expect(screen.queryByRole("heading", { name: "Change Password" })).toBeNull();
+});
+
+it("opens the user list from the settings root while preserving URL state", async () => {
+  auth.permissions = { can_system: true };
+  renderApp("/settings?search=abc#records");
+  expect(
+    await screen.findByRole("heading", { name: "Người dùng" }),
+  ).toBeTruthy();
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/settings/users?search=abc#records",
+  );
+  expect(
+    screen.queryByRole("heading", { name: "Tổng quan cấu hình" }),
+  ).toBeNull();
 });

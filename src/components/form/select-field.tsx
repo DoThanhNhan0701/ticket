@@ -35,6 +35,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
   disabled?: boolean;
   isLoading?: boolean;
   searchable?: boolean;
+  allOptionValue?: string;
 }
 
 export function SelectField<TFieldValues extends FieldValues>({
@@ -51,6 +52,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   disabled = false,
   isLoading = false,
   searchable = false,
+  allOptionValue,
 }: Readonly<SelectFieldProps<TFieldValues>>) {
   return (
     <Controller
@@ -81,6 +83,7 @@ export function SelectField<TFieldValues extends FieldValues>({
               describedBy={fieldState.error ? `${id}-error` : undefined}
               placeholder={isLoading ? "Đang tải danh sách..." : placeholder}
               noDataText={noDataText}
+              allOptionValue={allOptionValue}
             />
           ) : (
             <Select

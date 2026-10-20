@@ -21,9 +21,11 @@ interface DataSearchProps {
     readonly options: readonly { value: string; label: string }[];
     readonly loading?: boolean;
     readonly searchable?: boolean;
+    readonly allOptionValue?: string;
   };
   readonly resetKey?: string;
   readonly actions?: ReactNode;
+  readonly className?: string;
   readonly onSearch: (value: string, filterValue: string) => void;
 }
 
@@ -33,7 +35,7 @@ function DataSearchForm({
   initialValue,
   filter,
   onSearch,
-}: Readonly<Omit<DataSearchProps, "actions" | "resetKey">>) {
+}: Readonly<Omit<DataSearchProps, "actions" | "resetKey" | "className">>) {
   const [value, setValue] = useState(initialValue);
   const [filterValue, setFilterValue] = useState(filter?.initialValue ?? "");
   const filterId = useId();
@@ -42,7 +44,7 @@ function DataSearchForm({
       role="search"
       aria-label={label}
       className={cn(
-        "row-start-1 grid min-w-0 grid-cols-subgrid items-center gap-2 sm:flex sm:flex-1",
+        "row-start-1 grid min-w-0 grid-cols-subgrid items-center gap-2 sm:flex sm:max-w-3xl sm:flex-1",
         filter ? "col-span-full row-span-2" : "col-span-2",
       )}
       onSubmit={(event) => {
@@ -64,6 +66,7 @@ function DataSearchForm({
             label={filter.label}
             options={filter.options}
             value={filterValue}
+            allOptionValue={filter.allOptionValue}
             disabled={filter.loading}
             onValueChange={setFilterValue}
             className="min-w-0 w-full sm:w-48 sm:shrink-0"
@@ -101,6 +104,7 @@ function DataSearchForm({
 export function DataSearch({
   resetKey,
   actions,
+  className,
   ...props
 }: Readonly<DataSearchProps>) {
   return (
@@ -110,6 +114,7 @@ export function DataSearch({
         actions
           ? "grid-cols-[minmax(0,1fr)_auto_auto]"
           : "grid-cols-[minmax(0,1fr)_auto]",
+        className,
       )}
     >
       <DataSearchForm

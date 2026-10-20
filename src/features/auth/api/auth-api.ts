@@ -47,6 +47,9 @@ export async function getUserPermissionRequest(): Promise<UserPermissionResponse
       is_handling: response.is_handling ?? false,
       can_process: response.is_handling ?? false,
       can_assign: response.can_assign ?? false,
+      can_report_all_groups: Object.keys(response.handlingPermission).includes(
+        "AD",
+      ),
     },
   };
 }

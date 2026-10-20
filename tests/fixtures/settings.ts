@@ -1,0 +1,120 @@
+import type { SettingsKind } from "@/features/settings/types";
+
+const timestamp = "2026-10-19T08:30:00+07:00";
+const named = {
+  id: 17,
+  name: "Fixture",
+  is_active: true,
+  created: timestamp,
+  updated: timestamp,
+};
+export const settingsFixtures = {
+  users: {
+    id: 42,
+    username: "test-user",
+    is_active: true,
+    is_superuser: true,
+    is_staff: true,
+    first_name: "Nhân",
+    last_name: "Đỗ",
+    msnv: "RS0042",
+    email: "user@example.com",
+    date_joined: timestamp,
+    last_login: timestamp,
+    date_lock: null,
+    updated: timestamp,
+    avatar: null,
+    birthday: null,
+    team: 11,
+    bophan: 20,
+    chucvu: 13,
+    groups: [],
+    user_permissions: [],
+    ls_permission: [6],
+    avatar_full: "",
+  },
+  "requesting-departments": {
+    ...named,
+    id: 20,
+    name: "Department AI",
+    is_handling: false,
+  },
+  "handling-departments": {
+    ...named,
+    id: 5,
+    name: "ISMS",
+    description: "Security group",
+    group_email: "isms@example.com",
+    is_manager: 42,
+    username_manager: "test-user",
+    ls_member: [42],
+  },
+  "request-types": {
+    ...named,
+    id: 186,
+    name: "Đăng ký từ xa",
+    handling_group: 5,
+    handling_group_name: "ISMS",
+    slug_name: "remote-work",
+    file_name: "Guide.pdf",
+    attachment_file: "https://example.com/guide.pdf",
+  },
+  teams: { ...named, id: 11, name: "Team AI", bophan: 20, is_handling: false },
+  positions: {
+    ...named,
+    id: 13,
+    name: "Developer",
+    description: "Software engineer",
+    permission: [1],
+  },
+  offices: { ...named, id: 3, name: "VP Huế", slug_name: "hue" },
+} satisfies Record<SettingsKind, object>;
+export const positionPermissionFixture = {
+  ...named,
+  id: 1,
+  name: "can_create",
+  description: "Create tickets",
+};
+export const settingsPermissionFixture = {
+  infoUser: [42, "test-user", null],
+  userPermission: ["can_system"],
+  handlingPermission: {},
+  is_handling: false,
+  is_superuser: true,
+  ls_permission: [{ id: 6, name: "Staff", team__name: null }],
+  ls_department: [],
+  ls_cv_status: [],
+  ls_ticket_status: [],
+};
+export const templateFixture = {
+  results: [],
+  forms: [
+    {
+      title: "Phần yêu cầu",
+      editable: true,
+      colortitle: "#123456",
+      preservedGroupSetting: true,
+      children: [
+        {
+          key: 1,
+          title: "Ngày bắt đầu",
+          type: "date-text",
+          editable: true,
+          fixed: "left",
+          required: true,
+          customSetting: "preserve",
+          option: [[1, "A"]],
+          validate: null,
+        },
+        {
+          key: 2,
+          title: "Ngày kết thúc",
+          type: "date-text",
+          editable: true,
+          required: true,
+          validate: { operator: ">=", target: "Ngày bắt đầu" },
+        },
+      ],
+    },
+  ],
+};

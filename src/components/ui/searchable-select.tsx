@@ -1,7 +1,9 @@
-import { useState, type Ref } from "react";
+import { useMemo, useState, type Ref } from "react";
 import { Combobox } from "@base-ui/react/combobox";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { normalizeSearchText } from "@/lib/search";
+import { useDebounce } from "@/hooks/use-debounce";
 import { controlClassName } from "./control-styles";
 import { Input } from "./input";
 
@@ -24,6 +26,7 @@ export function SearchableSelect({
   invalid = false,
   describedBy,
   className,
+  allOptionValue,
 }: Readonly<{
   id: string;
   label: string;
@@ -38,24 +41,39 @@ export function SearchableSelect({
   invalid?: boolean;
   describedBy?: string;
   className?: string;
+  allOptionValue?: string;
 }>) {
   const [search, setSearch] = useState("");
-  const { contains } = Combobox.useFilter({ sensitivity: "base" });
+  const [searchSession, setSearchSession] = useState(0);
+  const query = normalizeSearchText(useDebounce(search, 300, searchSession));
+  const filteredOptions = useMemo(
+    () =>
+      options.filter((option) =>
+        normalizeSearchText(option.label).includes(query),
+      ),
+    [options, query],
+  );
   const selected = value
     ? (options.find((option) => option.value === value) ?? null)
     : null;
+  const includesAll =
+    allOptionValue !== undefined && selected?.value === allOptionValue;
   return (
     <Combobox.Root
       items={options}
+      filteredItems={filteredOptions}
+      filter={null}
       value={selected}
       onValueChange={(option) => onValueChange(option?.value ?? "")}
       isItemEqualToValue={(option, current) => option.value === current.value}
       inputValue={search}
       onInputValueChange={setSearch}
       onOpenChange={(open) => {
-        if (!open) setSearch("");
+        if (!open) {
+          setSearch("");
+          setSearchSession((session) => session + 1);
+        }
       }}
-      filter={(option, query) => contains(option.label, query.trim())}
       disabled={disabled}
       autoHighlight
     >
@@ -99,6 +117,8 @@ export function SearchableSelect({
               />
               <Combobox.Input
                 render={<Input />}
+                // Base UI defers root input changes during IME composition.
+                onChange={(event) => setSearch(event.currentTarget.value)}
                 aria-label={`Tìm ${label.toLowerCase()}`}
                 placeholder={`Tìm ${label.toLowerCase()}...`}
                 className="pl-9"
@@ -120,9 +140,13 @@ export function SearchableSelect({
                   >
                     {option.label}
                   </span>
-                  <Combobox.ItemIndicator>
+                  {includesAll && option.value !== allOptionValue ? (
                     <Check className="size-4" aria-hidden="true" />
-                  </Combobox.ItemIndicator>
+                  ) : (
+                    <Combobox.ItemIndicator>
+                      <Check className="size-4" aria-hidden="true" />
+                    </Combobox.ItemIndicator>
+                  )}
                 </Combobox.Item>
               )}
             </Combobox.List>

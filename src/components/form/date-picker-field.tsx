@@ -30,6 +30,7 @@ interface DatePickerFieldProps<TFieldValues extends FieldValues> {
   className?: string;
   startYear?: number;
   endYear?: number;
+  disabled?: boolean;
 }
 
 export function DatePickerField<TFieldValues extends FieldValues>({
@@ -42,6 +43,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   className,
   startYear = 1900,
   endYear = new Date().getFullYear(),
+  disabled = false,
 }: Readonly<DatePickerFieldProps<TFieldValues>>) {
   const [open, setOpen] = React.useState(false);
 
@@ -76,6 +78,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                     {...field}
                     id={id}
                     type="text"
+                    disabled={disabled}
                     value={
                       selectedDate && value.includes("-")
                         ? format(selectedDate, "dd/MM/yyyy")
@@ -106,6 +109,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                   <PopoverTrigger asChild>
                     <Button
                       type="button"
+                      disabled={disabled}
                       variant="ghost"
                       size="icon"
                       aria-label={`Choose ${label.toLowerCase()}`}

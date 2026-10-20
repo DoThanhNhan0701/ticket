@@ -20,6 +20,7 @@ export interface UserPermissions {
   can_process?: boolean;
   can_assign?: boolean;
   can_report?: boolean;
+  can_report_all_groups?: boolean;
   can_system?: boolean;
   can_allticket?: boolean;
   can_return_ticket?: boolean;

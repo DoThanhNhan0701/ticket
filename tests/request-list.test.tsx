@@ -1055,7 +1055,9 @@ it("searches request types without accents, applies only on submit and keeps the
   expect(
     await screen.findByRole("option", { name: "IT - Thiết bị" }),
   ).toBeTruthy();
-  expect(screen.queryByRole("option", { name: "HR - Nghỉ phép" })).toBeNull();
+  await waitFor(() =>
+    expect(screen.queryByRole("option", { name: "HR - Nghỉ phép" })).toBeNull(),
+  );
   fireEvent.keyDown(search, { key: "ArrowDown", code: "ArrowDown" });
   await waitFor(() =>
     expect(search.getAttribute("aria-activedescendant")).toBeTruthy(),
@@ -1091,7 +1093,9 @@ it("searches request types without accents, applies only on submit and keeps the
   expect(
     await screen.findByRole("option", { name: "HR - Nghỉ phép" }),
   ).toBeTruthy();
-  expect(screen.queryByRole("option", { name: "IT - Thiết bị" })).toBeNull();
+  await waitFor(() =>
+    expect(screen.queryByRole("option", { name: "IT - Thiết bị" })).toBeNull(),
+  );
   fireEvent.change(search, { target: { value: "" } });
   fireEvent.click(
     await screen.findByRole("option", { name: "Tất cả loại yêu cầu" }),

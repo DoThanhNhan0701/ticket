@@ -270,6 +270,75 @@ describe("session recovery", () => {
 });
 
 describe("HTTP client", () => {
+  it("preserves multipart fields and reads a binary response without setting a JSON content type", async () => {
+    const body = new FormData();
+    body.append("handlinggroup", "3");
+    fetchMock.mockResolvedValueOnce(
+      new Response(
+        new Blob(["spreadsheet"], { type: "application/vnd.ms-excel" }),
+      ),
+    );
+    const blob = await postRequest<Blob>("/export_excel", {
+      body,
+      responseType: "blob",
+    });
+    expect(await blob.text()).toBe("spreadsheet");
+    expect(fetchMock.mock.calls[0][1]?.body).toBe(body);
+    expect(
+      new Headers(fetchMock.mock.calls[0][1]?.headers).has("Content-Type"),
+    ).toBe(false);
+  });
+
+  it("refreshes an expired binary export request using the same multipart body", async () => {
+    storedCookies.set(COOKIE_REFRESH_KEY, "refresh");
+    const body = new FormData();
+    body.append("ticket_type_id", "All");
+    fetchMock
+      .mockResolvedValueOnce(jsonResponse({ code: "token_not_valid" }, 401))
+      .mockResolvedValueOnce(jsonResponse({ access: "fresh-export-access" }))
+      .mockResolvedValueOnce(
+        new Response(new Blob(["excel"], { type: "application/vnd.ms-excel" })),
+      );
+    const file = await postRequest<Blob>("/export_ticket_type", {
+      body,
+      responseType: "blob",
+    });
+    expect(await file.text()).toBe("excel");
+    expect(fetchMock.mock.calls[0][1]?.body).toBe(body);
+    expect(fetchMock.mock.calls[2][1]?.body).toBe(body);
+    expect(
+      new Headers(fetchMock.mock.calls[2][1]?.headers).get("Authorization"),
+    ).toBe("Bearer fresh-export-access");
+    expect(
+      new Headers(fetchMock.mock.calls[2][1]?.headers).has("Content-Type"),
+    ).toBe(false);
+  });
+
+  it("keeps JSON no-data responses available to binary export callers", async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse({ status: 0 }));
+    await expect(
+      postRequest("/export_ticket_type", { responseType: "blob" }),
+    ).resolves.toEqual({ status: 0 });
+  });
+
+  it("rejects a binary response received after signing out", async () => {
+    let finish!: (response: Response) => void;
+    fetchMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const pending = postRequest("/export_excel", { responseType: "blob" });
+    const rejected = expect(pending).rejects.toMatchObject({ status: 409 });
+    clearAuthSession();
+    finish(
+      new Response(
+        new Blob(["old account data"], { type: "application/vnd.ms-excel" }),
+      ),
+    );
+    await rejected;
+  });
   it.each([
     [undefined, "/api"],
     ["", "/api"],
