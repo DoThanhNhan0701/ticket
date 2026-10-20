@@ -15,12 +15,14 @@ export function RequestDetailField({
   fields,
   row,
   disabled,
+  hideLabel = false,
 }: Readonly<{
   form: UseFormReturn<CreateRequestValues>;
   field: ReturnType<typeof detailFields>[number];
   fields: ReturnType<typeof detailFields>;
   row: number;
   disabled: boolean;
+  hideLabel?: boolean;
 }>) {
   const values =
     useWatch({ control: form.control, name: `rows.${row}.values` }) ?? {};
@@ -35,6 +37,7 @@ export function RequestDetailField({
     label: field.title,
     required: field.required,
     disabled,
+    className: hideLabel ? "[&>[data-slot=field-label]]:sr-only" : undefined,
   };
   const options = fieldOptions(field).map((value) => ({ value, label: value }));
   if (options.length)

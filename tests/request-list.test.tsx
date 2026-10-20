@@ -213,12 +213,12 @@ it("loads the ticketV2 list and status endpoints with bearer authentication and 
     expect(table.getByText(value)).toBeTruthy();
   expect(
     table.getByRole("link", { name: "RS-0042" }).getAttribute("href"),
-  ).toBe("/tickets/42");
+  ).toBe("/requests/42");
   expect(
     screen.getByRole("link", { name: "Tạo yêu cầu" }).getAttribute("href"),
   ).toBe("/requests/new");
   fireEvent.click(table.getByText("Thiết bị"));
-  expect(screen.getByTestId("location").textContent).toBe("/tickets/42");
+  expect(screen.getByTestId("location").textContent).toBe("/requests/42");
 });
 
 it("cancels the development StrictMode probe and completes one active request per endpoint without losing the session", async () => {
@@ -850,7 +850,7 @@ it("loads the all-requests endpoint for can_allticket accounts with handler data
   expect(table.getByText("IT Support")).toBeTruthy();
   expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
   fireEvent.click(table.getByText("ALL-0084"));
-  expect(screen.getByTestId("location").textContent).toBe("/tickets/84");
+  expect(screen.getByTestId("location").textContent).toBe("/requests/84");
 });
 
 it("preserves bookmarked all-request views when paging or searching and clears them with the filters", async () => {
@@ -1198,7 +1198,7 @@ it.each(approvalPages)(
     fireEvent.click(completed);
     await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
     fireEvent.click(table.getByText("Thiết bị"));
-    expect(screen.getByTestId("location").textContent).toBe("/tickets/42");
+    expect(screen.getByTestId("location").textContent).toBe("/requests/42");
   },
 );
 

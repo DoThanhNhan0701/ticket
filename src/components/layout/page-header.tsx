@@ -28,7 +28,7 @@ export function PageHeader({
             type="button"
             variant="outline"
             size="icon"
-            className="size-10"
+            className="size-8 shrink-0"
             aria-label="Back to home"
             onClick={onBack}
             disabled={backDisabled}

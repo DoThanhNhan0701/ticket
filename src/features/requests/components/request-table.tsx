@@ -10,7 +10,7 @@ import type { RequestListScope, RequestTicket } from "../types";
 import { requestListConfig } from "../utils/request-list-config";
 
 const getRequestHref = (request: RequestTicket) =>
-  `/tickets/${encodeURIComponent(String(request.id))}`;
+  `/requests/${encodeURIComponent(String(request.id))}`;
 
 function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
   if (!request.ticket_status_name) return <>—</>;

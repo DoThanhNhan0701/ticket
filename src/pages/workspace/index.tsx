@@ -14,6 +14,7 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
 import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
 import { RequestCreate } from "@/features/requests/components/request-create";
+import { RequestDetail } from "@/features/requests/components/request-detail";
 import type { RequestListScope } from "@/features/requests/types";
 import { SettingsList } from "@/features/settings/components/settings-list";
 import { getSettingsKind } from "@/features/settings/utils/settings-config";
@@ -34,6 +35,8 @@ export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
   const { permissions, userId } = useAuthContext();
+  if (page.path === "/requests/:ticketID")
+    return <RequestDetail key={userId} />;
   const Icon = page.icon;
   const allowed = canAccessPage(page, permissions);
   let content = (

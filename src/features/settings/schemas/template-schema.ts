@@ -9,6 +9,8 @@ export const templateFieldSchema = z.looseObject({
   status: z.boolean().optional(),
   editable: z.boolean().optional(),
   widthcol: z.union([z.number(), z.string()]).optional(),
+  width: z.union([z.number(), z.string()]).optional(),
+  dataIndex: z.string().optional(),
   option: z
     .array(
       z.union([

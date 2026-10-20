@@ -12,6 +12,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import App from "@/app/app";
+import { requestDetailFixture } from "./fixtures/request-detail";
+import { requestDetailSchema } from "@/features/requests/schemas/request-detail-schema";
+import { isPageActive, navigationGroups } from "@/app/navigation";
+
+vi.mock("@/features/requests/api/request-detail-api", () => ({
+  validTicketId: (id: string) => /^[1-9]\d*$/.test(id),
+  getRequestDetail: vi.fn(() =>
+    Promise.resolve(requestDetailSchema.parse(requestDetailFixture)),
+  ),
+  getTicketHistory: vi.fn().mockResolvedValue([]),
+  addTicketComment: vi.fn(),
+  updateTicketSection: vi.fn(),
+}));
 import {
   AuthContext,
   type AuthContextValue,
@@ -352,15 +365,29 @@ it.each([
 
 it("keeps the request list active while opening a ticket detail URL", async () => {
   auth.permissions = { can_create: true };
-  renderApp("/tickets/42");
+  renderApp("/tickets/42?source=legacy#details");
   expect(
     await screen.findByRole("heading", { name: "Chi tiết yêu cầu" }),
   ).toBeTruthy();
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/requests/42?source=legacy#details",
+  );
   expect(
     screen
       .getByRole("link", { name: "Danh sách yêu cầu" })
       .getAttribute("aria-current"),
   ).toBe("page");
+});
+
+it("does not activate the request list for other static request pages", () => {
+  const page = navigationGroups[0].pages[0];
+  for (const path of [
+    "/requests/new",
+    "/requests/all",
+    "/requests/change-status",
+  ])
+    expect(isPageActive(page, path)).toBe(false);
+  expect(isPageActive(page, "/requests/42")).toBe(true);
 });
 
 it("hides unavailable groups and denies unauthorized direct URLs", async () => {

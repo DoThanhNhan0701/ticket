@@ -67,7 +67,7 @@ export const navigationGroups: NavigationGroup[] = [
         description: "Theo dõi các yêu cầu bạn đã gửi.",
         icon: Inbox,
         permissions: ["can_create"],
-        activePaths: ["/tickets/:ticketID", "/tickets/from-email/:ticketID"],
+        activePaths: ["/requests/:ticketID", "/tickets/from-email/:ticketID"],
       },
       {
         path: "/requests/all",
@@ -265,11 +265,11 @@ const contextualPages: WorkspacePageDefinition[] = [
     permissions: ["can_system", "is_system_manage"],
   },
   {
-    path: "/tickets/:ticketID",
+    path: "/requests/:ticketID",
+    legacyPaths: ["/tickets/:ticketID"],
     label: "Chi tiết yêu cầu",
     description: "Xem nội dung và tiến độ xử lý yêu cầu.",
     icon: FileText,
-    permissions: ["can_create"],
   },
   {
     path: "/tickets/from-email/:ticketID",
@@ -320,6 +320,11 @@ export function isPageActive(
 ): boolean {
   return (
     pathname === page.path ||
-    (page.activePaths ?? []).some((path) => matchPath(path, pathname) !== null)
+    (page.activePaths ?? []).some((path) => {
+      const match = matchPath(path, pathname);
+      if (path === "/requests/:ticketID")
+        return /^[1-9]\d*$/.test(match?.params.ticketID ?? "");
+      return match !== null;
+    })
   );
 }

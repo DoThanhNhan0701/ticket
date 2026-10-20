@@ -61,7 +61,7 @@ export function ReportSummaryCards({
               {detail.list_code.map(([code, id]) => (
                 <li key={id}>
                   <Link
-                    to={`/tickets/${encodeURIComponent(String(id))}`}
+                    to={`/requests/${encodeURIComponent(String(id))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block rounded-lg border border-border px-3 py-2 text-sm text-brand-700 focus-visible:outline-2 focus-visible:outline-ring dark:text-brand-200"

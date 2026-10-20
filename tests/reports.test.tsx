@@ -248,7 +248,7 @@ it("opens summary details with real record IDs and handles zero-count summaries"
   );
   const dialog = await screen.findByRole("dialog", { name: "Tổng yêu cầu" });
   const link = within(dialog).getByRole("link", { name: "RS-0042" });
-  expect(link.getAttribute("href")).toBe("/tickets/42");
+  expect(link.getAttribute("href")).toBe("/requests/42");
   expect(link.getAttribute("rel")).toBe("noopener noreferrer");
   fireEvent.click(within(dialog).getByRole("button", { name: "Close dialog" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

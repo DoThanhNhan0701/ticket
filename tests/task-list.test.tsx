@@ -214,10 +214,10 @@ it.each(pages)(
     expect(table.getByText("Frontend, Backend")).toBeTruthy();
     expect(
       table.getByRole("link", { name: `${prefix}-42` }).getAttribute("href"),
-    ).toBe("/tickets/42");
+    ).toBe("/requests/42");
     expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
     fireEvent.click(table.getByText("Thiết bị"));
-    expect(screen.getByTestId("location").textContent).toBe("/tickets/42");
+    expect(screen.getByTestId("location").textContent).toBe("/requests/42");
   },
 );
 
