@@ -117,13 +117,16 @@ function CurrentLocation() {
     </output>
   );
 }
-function open(id = "42") {
+function open(id = "42", previous?: string) {
   render(
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
-        <MemoryRouter initialEntries={[`/requests/${id}`]}>
+        <MemoryRouter
+          initialEntries={[...(previous ? [previous] : []), `/requests/${id}`]}
+        >
           <Routes>
             <Route path="/requests/:ticketID" element={<RequestDetail />} />
+            <Route path="*" element={<p>Trang trước</p>} />
           </Routes>
           <CurrentLocation />
         </MemoryRouter>
@@ -431,5 +434,74 @@ it.each([true, false])(
     expect(
       screen.getByRole("tab", { name: `Trao đổi ${count} bình luận` }),
     ).toBeTruthy();
+  },
+);
+
+it("refreshes status, available actions, and history after a ticket operation", async () => {
+  let received = false;
+  fetchMock.mockImplementation(async (input, options) => {
+    const path = new URL(String(input)).pathname;
+    if (path === "/api/ticket_manager/42")
+      return json({
+        ...ticket,
+        list_button: received ? {} : { "Tiếp nhận": "#123456" },
+        ticket_status_name: received ? "Đang xử lý" : "Chờ tiếp nhận",
+      });
+    if (path === "/api/receive_ticket/" && options?.method === "POST") {
+      received = true;
+      return json({ message: "OK" });
+    }
+    if (path === "/api/list_ticket_history/") return json([]);
+    throw new Error(`Unexpected endpoint: ${path}`);
+  });
+  await ready();
+  tab("Lịch sử");
+  await screen.findByText("Chưa có lịch sử thay đổi.");
+  fireEvent.click(screen.getByRole("button", { name: "Tiếp nhận" }));
+  fireEvent.click(
+    within(screen.getByRole("dialog")).getByRole("button", {
+      name: "Tiếp nhận",
+    }),
+  );
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(screen.getByText("Đang xử lý")).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Tiếp nhận" })).toBeNull();
+  expect(
+    screen.getByRole("tab", { name: "Lịch sử" }).getAttribute("aria-selected"),
+  ).toBe("true");
+  expect(
+    fetchMock.mock.calls.filter(
+      ([input]) =>
+        new URL(String(input)).pathname === "/api/list_ticket_history/",
+    ),
+  ).toHaveLength(2);
+});
+
+it.each([
+  "/requests?page=3&searchAll=test#results",
+  "/tasks?page=2&ticket_status=3",
+  "/requests/pending-approval?page=4",
+  "/reports/summary?month=10",
+])("returns to the originating page with its filters: %s", async (previous) => {
+  vi.spyOn(window.history, "state", "get").mockReturnValue({ idx: 1 });
+  open("42", previous);
+  await screen.findByText("RS-0042");
+  tab("Trao đổi");
+  fireEvent.click(screen.getByRole("button", { name: "Quay lại" }));
+  await waitFor(() =>
+    expect(screen.getByTestId("detail-location").textContent).toBe(previous),
+  );
+});
+it.each([null, {}, { idx: 0 }])(
+  "falls back to the request list for a directly opened ticket (%j)",
+  async (state) => {
+    vi.spyOn(window.history, "state", "get").mockReturnValue(state);
+    await ready();
+    fireEvent.click(screen.getByRole("button", { name: "Quay lại" }));
+    await waitFor(() =>
+      expect(screen.getByTestId("detail-location").textContent).toBe(
+        "/requests",
+      ),
+    );
   },
 );

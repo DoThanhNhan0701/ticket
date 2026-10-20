@@ -8,6 +8,7 @@ interface PageHeaderProps {
   description?: string;
   icon?: LucideIcon;
   onBack?: () => void;
+  backLabel?: string;
   backDisabled?: boolean;
   actions?: ReactNode;
 }
@@ -17,6 +18,7 @@ export function PageHeader({
   description,
   icon: Icon,
   onBack,
+  backLabel = "Back to home",
   backDisabled,
   actions,
 }: Readonly<PageHeaderProps>) {
@@ -29,7 +31,8 @@ export function PageHeader({
             variant="outline"
             size="icon"
             className="size-8 shrink-0"
-            aria-label="Back to home"
+            aria-label={backLabel}
+            title={backLabel}
             onClick={onBack}
             disabled={backDisabled}
           >

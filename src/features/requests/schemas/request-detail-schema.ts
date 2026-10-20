@@ -50,12 +50,23 @@ export const requestDetailSchema = z.object({
   lydoxulylai: text,
   lydokhongxulylai: text,
   ticket_type_att_file: text,
+  list_button: files.nullish().transform((value) => value ?? {}),
+  list_user_not_received: z
+    .record(z.string(), z.union([z.number(), z.string()]))
+    .nullish()
+    .transform((value) => value ?? {}),
   list_name_team_use: z
     .array(z.object({ name: z.string() }))
     .nullish()
     .transform((value) => value ?? []),
   list_user_received: z
-    .array(z.object({ username: text }))
+    .array(
+      z.object({
+        username: text,
+        user_id: z.union([z.number(), z.string()]).nullish(),
+        status: text,
+      }),
+    )
     .nullish()
     .transform((value) => value ?? []),
   attachment_files: files.nullish().transform((value) => value ?? {}),

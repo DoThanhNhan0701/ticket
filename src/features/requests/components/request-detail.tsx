@@ -13,6 +13,7 @@ import { getRequestDetail, validTicketId } from "../api/request-detail-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import { TicketTemplate } from "./ticket-template";
 import { TicketGeneral } from "./ticket-general";
+import { TicketActions } from "./ticket-actions";
 import { TicketDiscussion, TicketHistory } from "./ticket-activity";
 
 const tabs = ["Thông tin chung", "Chi tiết yêu cầu", "Trao đổi", "Lịch sử"];
@@ -81,6 +82,7 @@ function DetailTabs({
         <p className="mt-2 text-sm whitespace-pre-wrap wrap-anywhere">
           {ticket.title}
         </p>
+        <TicketActions ticket={ticket} onSaved={onSaved} />
       </div>
       <div
         role="tablist"
@@ -143,6 +145,11 @@ export function RequestDetail() {
   const { ticketID = "" } = useParams();
   const navigate = useNavigate();
   const client = useQueryClient();
+  const goBack = () => {
+    const index: unknown = window.history.state?.idx;
+    if (typeof index === "number" && index > 0) void navigate(-1);
+    else void navigate("/requests", { replace: true });
+  };
   const valid = validTicketId(ticketID);
   const query = useQuery({
     queryKey: ["request-detail", ticketID],
@@ -167,7 +174,8 @@ export function RequestDetail() {
         title="Chi tiết yêu cầu"
         description="Xem nội dung và tiến độ xử lý yêu cầu."
         icon={FileText}
-        onBack={() => navigate("/requests")}
+        onBack={goBack}
+        backLabel="Quay lại"
         actions={
           <Button
             type="button"
