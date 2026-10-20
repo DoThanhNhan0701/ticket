@@ -1,0 +1,113 @@
+{
+  "source": 14134,
+  "method": "UI login, clone and validation; real API create/readback; UI cancellation of TEST ticket",
+  "checks": [
+    {
+      "name": "real-source-has-empty-required-training-range",
+      "type": 64
+    },
+    {
+      "name": "missing-both-endpoints-blocked-before-post"
+    },
+    {
+      "name": "missing-end-blocked-before-post"
+    },
+    {
+      "name": "missing-start-blocked-before-post"
+    },
+    {
+      "name": "unfinished-date-blocked-before-post"
+    },
+    {
+      "name": "impossible-date-input-rejected"
+    },
+    {
+      "name": "reversed-range-blocked-on-end-input"
+    },
+    {
+      "name": "long-validation-ellipsis-with-full-title-and-input-description",
+      "error": "Vui lòng nhập đủ khoảng ngày hợp lệ, ngày kết thúc không trước ngày bắt đầu."
+    },
+    {
+      "name": "ellipsis-and-contained-horizontal-detail-scroll-390"
+    },
+    {
+      "name": "ellipsis-and-contained-horizontal-detail-scroll-1440"
+    },
+    {
+      "name": "real-create-and-readback-preserves-same-day-and-increasing-ranges",
+      "id": 14364,
+      "code": "HR_261020_002",
+      "ranges": ["20/10/2026 - 20/10/2026", "20/10/2026 - 21/10/2026"]
+    },
+    {
+      "name": "test-ticket-canceled-through-ui"
+    },
+    {
+      "name": "source-ticket-14134-unchanged"
+    }
+  ],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14134",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/template_form/64",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14134",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/template_form/64",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14364",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14364",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/cancel_ticket/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14364",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14364",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14134",
+      "status": 200
+    }
+  ],
+  "runtimeErrors": [],
+  "created": {
+    "id": 14364,
+    "code": "HR_261020_002",
+    "status": "Hủy"
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "prefix": "TEST_UI_20261020_MVGONXUU",
+  "method": "UI only: login forms, navigation, keyboard, clicks and visible results; no direct API calls or injected app state",
+  "tickets": [
+    {
+      "scenario": "main",
+      "title": "TEST_UI_20261020_MVGONXUU Người dùng tạo mới",
+      "code": "TEST_DVGMOTY6_261020_004",
+      "href": "/requests/14361",
+      "finalStatus": "Đóng"
+    },
+    {
+      "scenario": "clone",
+      "title": "TEST_UI_20261020_MVGONXUU Bản sao để hủy",
+      "code": "TEST_DVGMOTY6_261020_005",
+      "href": "/requests/14362",
+      "finalStatus": "Hủy"
+    }
+  ],
+  "checks": [
+    {
+      "name": "login-ui-nhandt01",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/login-nhandt01-all.png"
+    },
+    {
+      "name": "create-required-fields-visible-error"
+    },
+    {
+      "name": "create-copy-remove-row-and-preview-files",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/create-filled.png"
+    },
+    {
+      "name": "create-submit-list-open-reload",
+      "scenario": "main",
+      "title": "TEST_UI_20261020_MVGONXUU Người dùng tạo mới",
+      "code": "TEST_DVGMOTY6_261020_004",
+      "href": "/requests/14361",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/ticket-created.png"
+    },
+    {
+      "name": "discussion-edit-reply-and-comment",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/discussion-saved.png"
+    },
+    {
+      "name": "login-ui-nhandt02",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/login-nhandt02-all.png"
+    },
+    {
+      "name": "approve-from-pending-list",
+      "username": "nhandt02",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/approve-from-pending-list.png"
+    },
+    {
+      "name": "login-ui-admin",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/login-admin-all.png"
+    },
+    {
+      "name": "receive-from-all-list",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/receive-from-all-list.png"
+    },
+    {
+      "name": "detail-edit-date-upload",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/general-updated.png"
+    },
+    {
+      "name": "assignment-add",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/assignment-add.png"
+    },
+    {
+      "name": "assignment-change",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/assignment-change.png"
+    },
+    {
+      "name": "assignment-add-again",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/assignment-add-again.png"
+    },
+    {
+      "name": "assignment-delete",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/assignment-delete.png"
+    },
+    {
+      "name": "forward",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/forwarded.png"
+    },
+    {
+      "name": "done-admin",
+      "username": "admin",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/done-admin.png"
+    },
+    {
+      "name": "done-nhandt02",
+      "username": "nhandt02",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/done-nhandt02.png"
+    },
+    {
+      "name": "done-nhandt01",
+      "username": "nhandt01",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/done-nhandt01.png"
+    },
+    {
+      "name": "reopen-with-reason",
+      "username": "nhandt01",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/reopen-with-reason.png"
+    },
+    {
+      "name": "decline-reprocessing-with-reason",
+      "username": "nhandt02",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/decline-reprocessing-with-reason.png"
+    },
+    {
+      "name": "reopen-second-time",
+      "username": "nhandt01",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/reopen-second-time.png"
+    },
+    {
+      "name": "receive-reopened",
+      "username": "nhandt02",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/receive-reopened.png"
+    },
+    {
+      "name": "finish-reopened",
+      "username": "nhandt02",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/finish-reopened.png"
+    },
+    {
+      "name": "close",
+      "username": "nhandt01",
+      "ticket": "TEST_DVGMOTY6_261020_004",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/close.png"
+    },
+    {
+      "name": "clone-created-through-form",
+      "scenario": "clone",
+      "title": "TEST_UI_20261020_MVGONXUU Bản sao để hủy",
+      "code": "TEST_DVGMOTY6_261020_005",
+      "href": "/requests/14362"
+    },
+    {
+      "name": "cancel-with-reason-and-file",
+      "username": "nhandt01",
+      "ticket": "TEST_DVGMOTY6_261020_005",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/cancel-with-reason-and-file.png"
+    },
+    {
+      "name": "navigation-and-saved-media",
+      "backRestoresSearch": true,
+      "savedImageLoaded": true,
+      "fileOpenedInNewTab": true,
+      "mobileMenuNavigation": true,
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/mobile-reopened-ticket.png"
+    },
+    {
+      "name": "layout-320",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/layout-320.png"
+    },
+    {
+      "name": "layout-390",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/layout-390.png"
+    },
+    {
+      "name": "layout-768",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/layout-768.png"
+    },
+    {
+      "name": "layout-1440",
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/layout-1440.png"
+    },
+    {
+      "name": "mobile-320-390-768-and-desktop"
+    },
+    {
+      "name": "logout-ui"
+    },
+    {
+      "name": "phase-all-passed"
+    }
+  ],
+  "runtimeErrors": [],
+  "failedResponses": [],
+  "videos": [
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/9a4755d0eee52b61f70309218dca3e53.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/4e3f4a8506485b1720d0a5e2e7f47d57.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/50c6d2b4f7428fd9a02bb8794ef6f908.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/ff2f59d966a1ec12db7ed3f283b14ccf.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/9f0110345404d337dc2b0fae405e50f4.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/3bb440c1ea819eb5bba89dbc7a99f956.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/3d5edae896aea28b44ad4a563466f97d.webm"
+    },
+    {
+      "username": "admin",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/d261cd8870fce15e8d776b9b1cb8e0e2.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/233fd899d678e38ec756f0a2c1caa3a4.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/e739e4ed0641c7f629cd548b34091f28.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/9ddf2a6c178b24f444e2847751de1c85.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "menu",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/f9a5a49df5176f83f0b605774517926c.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "menu",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/7dd1886d24482c15d72525960d88f3ed.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "menu",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/f7bc9e0a3bf71a59e04ebb4447d9a13e.webm"
+    },
+    {
+      "username": "nhandt02",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/ea2346a2afc6c09ca885d6df4684b8d1.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/c97b06be4ef873acf40112d9e3f1ca77.webm"
+    },
+    {
+      "username": "nhandt01",
+      "phase": "all",
+      "path": "/tmp/TEST_UI_20261020_MVGONXUU/c8dbd87eeec97332dcb97180971fa589.webm"
+    }
+  ],
+  "bugsFound": [
+    {
+      "summary": "Recently cached ticket status and allowed actions remain outdated when reopening from a list after another account processes the ticket.",
+      "reproduction": [
+        "nhandt02 approves the ticket and leaves its detail.",
+        "admin receives, assigns, forwards and completes their work.",
+        "nhandt02 opens the same ticket from the task list.",
+        "Detail still displays the cached approved status and does not show the completion action."
+      ],
+      "screenshot": "/tmp/TEST_UI_20261020_MVGONXUU/cache-status-before-fix.png",
+      "fix": "Detail refetches on every mount and window focus; history is stale when reactivated.",
+      "status": "fixed and verified through repeated cross-account navigation, reprocessing and completion"
+    }
+  ],
+  "result": "passed",
+  "date": "2026-10-20",
+  "productionURL": "http://127.0.0.1:5189",
+  "execution": "Resumed browser sessions; all state changes were performed through visible website controls, including login and creation.",
+  "developmentObservation": "A menu closing during the development run was not reproducible on the original production build. The trial sidebar refactor was removed.",
+  "uniqueChecks": 34,
+  "validation": {
+    "command": "npm run check:quality",
+    "result": "passed",
+    "testFiles": 26,
+    "tests": 570,
+    "lineCoverage": 94.07,
+    "lint": "passed",
+    "format": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "selectedEvidence": {
+    "createVideo": "/tmp/TEST_UI_20261020_MVGONXUU/ff2f59d966a1ec12db7ed3f283b14ccf.webm",
+    "processingVideo": "/tmp/TEST_UI_20261020_MVGONXUU/d261cd8870fce15e8d776b9b1cb8e0e2.webm",
+    "lifecycleAndCopyVideo": "/tmp/TEST_UI_20261020_MVGONXUU/c97b06be4ef873acf40112d9e3f1ca77.webm",
+    "mobileVideo": "/tmp/TEST_UI_20261020_MVGONXUU/c8dbd87eeec97332dcb97180971fa589.webm",
+    "mobileScreenshot": "/tmp/TEST_UI_20261020_MVGONXUU/mobile-reopened-ticket.png"
+  }
+}

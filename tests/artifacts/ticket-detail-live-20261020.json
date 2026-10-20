@@ -1,0 +1,937 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "reference": "../ticketV2/src/containers/TicketDetail.js",
+  "apiOrigin": "https://ticket-api.aiminds.io.vn",
+  "accounts": ["admin", "nhandt02", "nhandt01"],
+  "fixtures": {
+    "groupId": 23,
+    "typeId": 191,
+    "prefix": "TEST_DETAIL_20261020_MVGMOTY6"
+  },
+  "tickets": [
+    {
+      "id": 14357,
+      "code": "TEST_CW75S53_261020_010",
+      "title": "TEST_DETAIL_20261020_MVGMOTY6 Luồng đầy đủ",
+      "status": 4,
+      "statusName": "Hủy",
+      "attachments": 1,
+      "comments": 0,
+      "replies": 0,
+      "historyEntries": 3
+    },
+    {
+      "id": 14358,
+      "code": "TEST_DVGMOTY6_261020_001",
+      "title": "TEST_DETAIL_20261020_MVGMOTY6 Luồng đầy đủ",
+      "status": 7,
+      "statusName": "Đóng",
+      "attachments": 2,
+      "comments": 1,
+      "replies": 1,
+      "historyEntries": 32
+    },
+    {
+      "id": 14359,
+      "code": "TEST_DVGMOTY6_261020_002",
+      "title": "TEST_DETAIL_20261020_MVGMOTY6 Bản sao",
+      "status": 7,
+      "statusName": "Đóng",
+      "attachments": 0,
+      "comments": 0,
+      "replies": 0,
+      "historyEntries": 16
+    },
+    {
+      "id": 14360,
+      "code": "TEST_DVGMOTY6_261020_003",
+      "title": "TEST_DETAIL_20261020_MVGMOTY6 Bản sao",
+      "status": 4,
+      "statusName": "Hủy",
+      "attachments": 1,
+      "comments": 0,
+      "replies": 0,
+      "historyEntries": 3
+    }
+  ],
+  "checkedWorkflows": [
+    "create via application API",
+    "create copy via UI with current template and fresh processing data",
+    "role-specific allowed actions",
+    "approve",
+    "extend due date",
+    "upload additional files",
+    "edit later template section",
+    "comment with file",
+    "reply with file",
+    "edit comment and reply, remove old files",
+    "history",
+    "add handler",
+    "change handler with reason",
+    "remove handler with reason",
+    "forward",
+    "complete each handler",
+    "reprocess with reason",
+    "decline reprocessing with reason",
+    "receive and complete reopened request",
+    "close",
+    "remove all active handlers and assign replacements",
+    "remove all active handlers and manager completes",
+    "cancel with reason and file",
+    "image preview and public file download",
+    "mention search and selection",
+    "all four tabs at 320/390/768/1440px"
+  ],
+  "automatedChecks": {
+    "command": "npm run check:quality",
+    "testFilesPassed": 26,
+    "testsPassed": 569,
+    "coverage": {
+      "statements": 93.14,
+      "branches": 89.16,
+      "functions": 91.75,
+      "lines": 94.07
+    },
+    "lint": "passed",
+    "format": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "backendObservations": [
+    "Forwarding adds the recipient; the forwarding handler remains responsible until completing their own work.",
+    "The no-reprocess reason is persisted in history user_log. The detail response continues to return lydokhongxulylai as null."
+  ],
+  "retainedTestFixtures": true,
+  "browserRuntimeErrors": [],
+  "observations": [
+    {
+      "name": "created-real-ticket",
+      "id": 14357
+    },
+    {
+      "name": "initial-role-admin",
+      "id": 14357,
+      "status": 1,
+      "buttons": {}
+    },
+    {
+      "name": "initial-role-nhandt02",
+      "id": 14357,
+      "status": 1,
+      "buttons": {
+        "Phê duyệt": "#21610B",
+        "Hủy": "#FF0000"
+      }
+    },
+    {
+      "name": "initial-role-nhandt01",
+      "id": 14357,
+      "status": 1,
+      "buttons": {
+        "Hủy": "#FF0000"
+      }
+    },
+    {
+      "name": "created-test-group-and-type"
+    },
+    {
+      "name": "created-real-ticket",
+      "id": 14358
+    },
+    {
+      "name": "initial-role-admin",
+      "id": 14358,
+      "status": 1,
+      "buttons": {}
+    },
+    {
+      "name": "initial-role-nhandt02",
+      "id": 14358,
+      "status": 1,
+      "buttons": {
+        "Phê duyệt": "#21610B",
+        "Hủy": "#FF0000"
+      }
+    },
+    {
+      "name": "initial-role-nhandt01",
+      "id": 14358,
+      "status": 1,
+      "buttons": {
+        "Hủy": "#FF0000"
+      }
+    },
+    {
+      "name": "ui-action-Phê duyệt",
+      "user": "nhandt02",
+      "id": 14358,
+      "status": 2,
+      "buttons": {
+        "Tiếp nhận": "#1890ff"
+      },
+      "received": []
+    },
+    {
+      "name": "after-Phê duyệt-admin",
+      "id": 14358,
+      "status": 2,
+      "buttons": {
+        "Tiếp nhận": "#1890ff",
+        "Phân công": "#ff9f00",
+        "Hủy": "#FF0000"
+      },
+      "received": []
+    },
+    {
+      "name": "after-Phê duyệt-nhandt02",
+      "id": 14358,
+      "status": 2,
+      "buttons": {
+        "Tiếp nhận": "#1890ff"
+      },
+      "received": []
+    },
+    {
+      "name": "after-Phê duyệt-nhandt01",
+      "id": 14358,
+      "status": 2,
+      "buttons": {
+        "Tiếp nhận": "#1890ff"
+      },
+      "received": []
+    },
+    {
+      "name": "ui-due-date-persisted",
+      "id": 14358
+    },
+    {
+      "name": "ui-upload-two-files-persisted",
+      "id": 14358
+    },
+    {
+      "name": "ui-edit-section-persisted",
+      "id": 14358
+    },
+    {
+      "name": "ui-action-Tiếp nhận",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "buttons": {
+        "Phân công": "#ff9f00",
+        "Hủy": "#FF0000",
+        "Hoàn thành": "#0bb7af"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "after-Tiếp nhận-admin",
+      "id": 14358,
+      "status": 3,
+      "buttons": {
+        "Phân công": "#ff9f00",
+        "Hủy": "#FF0000",
+        "Hoàn thành": "#0bb7af"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "after-Tiếp nhận-nhandt02",
+      "id": 14358,
+      "status": 3,
+      "buttons": {
+        "Tiếp nhận": "#1890ff"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "after-Tiếp nhận-nhandt01",
+      "id": 14358,
+      "status": 3,
+      "buttons": {
+        "Tiếp nhận": "#1890ff"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-assignment-add",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-assignment-change",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-assignment-add-again",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-assignment-delete",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-forward",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-done-handler-admin",
+      "user": "admin",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-done-handler-02",
+      "user": "nhandt02",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "ui-done-handler-01",
+      "user": "nhandt01",
+      "id": 14358,
+      "status": 5,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-reprocess-reason",
+      "user": "nhandt01",
+      "id": 14358,
+      "status": 6,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "reopened-role-admin",
+      "id": 14358,
+      "status": 6,
+      "buttons": {
+        "Tiếp nhận": "#1890ff",
+        "Phân công": "#ff9f00",
+        "Hoàn thành": "#0bb7af"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "reopened-role-nhandt02",
+      "id": 14358,
+      "status": 6,
+      "buttons": {
+        "Tiếp nhận": "#1890ff",
+        "Hoàn thành": "#0bb7af"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "reopened-role-nhandt01",
+      "id": 14358,
+      "status": 6,
+      "buttons": {
+        "Tiếp nhận": "#1890ff",
+        "Hoàn thành": "#0bb7af"
+      },
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-edit-section-persisted",
+      "id": 14358
+    },
+    {
+      "name": "ui-comment-with-file-persisted",
+      "id": 14358
+    },
+    {
+      "name": "reply-with-file-persisted",
+      "id": 14358
+    },
+    {
+      "name": "edit-comment-reply-remove-files-persisted",
+      "id": 14358
+    },
+    {
+      "name": "history-loads-after-saves",
+      "id": 14358
+    },
+    {
+      "name": "responsive-all-tabs-320",
+      "id": 14358
+    },
+    {
+      "name": "responsive-all-tabs-390",
+      "id": 14358
+    },
+    {
+      "name": "responsive-all-tabs-768",
+      "id": 14358
+    },
+    {
+      "name": "responsive-all-tabs-1440",
+      "id": 14358
+    },
+    {
+      "name": "ui-decline-reprocess-with-reason",
+      "user": "admin",
+      "id": 14358,
+      "status": 5,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-reprocess-second-cycle",
+      "user": "nhandt01",
+      "id": 14358,
+      "status": 6,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-receive-reopened",
+      "user": "nhandt02",
+      "id": 14358,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-complete-reopened",
+      "user": "nhandt02",
+      "id": 14358,
+      "status": 5,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "ui-close-request",
+      "user": "nhandt01",
+      "id": 14358,
+      "status": 7,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "clone-form-prefills-visible-fields",
+      "sourceId": 14358
+    },
+    {
+      "name": "ui-create-clone-fresh-processing-data",
+      "id": 14359
+    },
+    {
+      "name": "manager-approve",
+      "user": "nhandt02",
+      "id": 14359,
+      "status": 2,
+      "received": []
+    },
+    {
+      "name": "manager-receive",
+      "user": "admin",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "manager-add-02",
+      "user": "admin",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "manager-done-admin",
+      "user": "admin",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "manager-delete-all-active-with-replacement",
+      "user": "admin",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "manager-add-02-again",
+      "user": "admin",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "manager-done-02",
+      "user": "nhandt02",
+      "id": 14359,
+      "status": 3,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt01",
+          "user_id": 794,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "manager-delete-all-active-manager-done",
+      "user": "admin",
+      "id": 14359,
+      "status": 5,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "manager-reopen",
+      "user": "nhandt01",
+      "id": 14359,
+      "status": 6,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "manager-decline-reprocess-non-manager",
+      "user": "nhandt02",
+      "id": 14359,
+      "status": 5,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "backend-no-reprocess-reason-readback",
+      "id": 14359
+    },
+    {
+      "name": "manager-close",
+      "user": "nhandt01",
+      "id": 14359,
+      "status": 7,
+      "received": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "nhandt02",
+          "user_id": 795,
+          "status": "Hoàn thành"
+        }
+      ]
+    },
+    {
+      "name": "clone-form-prefills-visible-fields",
+      "sourceId": 14358
+    },
+    {
+      "name": "ui-create-clone-fresh-processing-data",
+      "id": 14360
+    },
+    {
+      "name": "ui-cancel-with-file",
+      "id": 14360,
+      "status": 4
+    },
+    {
+      "name": "ui-cancel-with-file",
+      "id": 14357,
+      "status": 4
+    },
+    {
+      "name": "final-readback-all-test-tickets"
+    },
+    {
+      "name": "real-image-preview-and-file-download",
+      "id": 14358,
+      "publicMediaOrigin": true
+    },
+    {
+      "name": "real-mention-search-and-select",
+      "id": 14358
+    }
+  ]
+}

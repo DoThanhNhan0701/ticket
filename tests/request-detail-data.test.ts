@@ -47,6 +47,36 @@ it("validates the complete detail matrix, including zero quantities and an optio
   );
 });
 it.each([
+  ["", "", ["f0_start", "f0_end"]],
+  ["20/10/2026", "", ["f0_end"]],
+  ["", "21/10/2026", ["f0_start"]],
+  ["20/10/2026", "19/10/2026", ["f0_end"]],
+  ["20/10/2026", "31/02/2026", ["f0_end"]],
+  ["20/10/2026", "20/10/2026", []],
+  ["20/10/2026", "21/10/2026", []],
+])(
+  "attributes required training range errors to their endpoints (%s, %s)",
+  (start, end, keys) => {
+    const groups = [
+      {
+        title: "Phần dành cho Bộ phận yêu cầu",
+        children: [
+          {
+            title: "Thời gian đào tạo (*)",
+            type: "range-date-text",
+            required: true,
+          },
+        ],
+      },
+    ];
+    expect(
+      validateDetailRows(groups, [
+        { values: { f0_start: start, f0_end: end } },
+      ]).map((issue) => issue.path[issue.path.length - 1]),
+    ).toEqual(keys);
+  },
+);
+it.each([
   ["f0", "", "Vui lòng nhập Ghi chú chi tiết."],
   ["f1", "infinity", "Vui lòng nhập số hợp lệ."],
   ["f2", "31/02/2026", "Ngày không hợp lệ"],

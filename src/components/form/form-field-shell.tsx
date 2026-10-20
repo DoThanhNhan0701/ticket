@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
+import { TruncatedText } from "@/components/truncated-text";
 
 interface FormFieldShellProps {
   id: string;
@@ -27,11 +28,11 @@ export function FormFieldShell({
     <Field className={cn("min-w-0", className)} data-invalid={invalid}>
       <FieldLabel
         htmlFor={id}
-        className="text-sm font-semibold text-foreground"
+        className="min-w-0 max-w-full text-sm font-semibold text-foreground"
       >
-        {label}
+        <TruncatedText text={label} />
         {required && (
-          <span className="text-destructive" aria-hidden="true">
+          <span className="shrink-0 text-destructive" aria-hidden="true">
             *
           </span>
         )}
@@ -42,7 +43,8 @@ export function FormFieldShell({
         <FieldError
           id={`${id}-error`}
           errors={[error]}
-          className="text-sm text-destructive"
+          title={error?.message}
+          className="min-w-0 truncate text-sm text-destructive"
         />
       )}
     </Field>

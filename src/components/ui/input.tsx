@@ -9,7 +9,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
     <InputPrimitive
       type={type}
       data-slot="input"
-      className={cn(controlClassName, className)}
+      className={cn(controlClassName, "min-w-0 text-ellipsis", className)}
       {...props}
     />
   );

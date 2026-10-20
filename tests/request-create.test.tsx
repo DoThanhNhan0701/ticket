@@ -23,6 +23,7 @@ import { clearAuthSession } from "@/lib/auth-session";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
 import { downloadFile } from "@/lib/download";
 import { settingsFixtures } from "./fixtures/settings";
+import { requestDetailFixture } from "./fixtures/request-detail";
 import {
   createMultiSectionTemplate,
   createTemplate,
@@ -40,6 +41,7 @@ let createResponse: () => Response | Promise<Response>,
   uploadResponse: () => Response | Promise<Response>;
 let importResponse: object;
 let pendingImport: Promise<Response> | undefined;
+let cloneSource: unknown;
 const page = (results: unknown[]) => ({
   count: results.length,
   next: null,
@@ -83,6 +85,7 @@ beforeEach(() => {
   createResponse = () => Response.json({ id: 900, ticket_code: "TEST_900" });
   uploadResponse = () => Response.json({ message: "success" });
   pendingImport = undefined;
+  cloneSource = undefined;
   importResponse = {
     message: "success",
     dataform: {
@@ -103,6 +106,7 @@ beforeEach(() => {
     const url = new URL(String(input)),
       path = url.pathname;
     if (path === "/api/ticket_manager") return createResponse();
+    if (path === "/api/ticket_manager/42") return Response.json(cloneSource);
     if (path === "/api/attachmentticketfile") return uploadResponse();
     if (path === "/api/import_excel_ticket_form_data")
       return pendingImport ?? Response.json(importResponse);
@@ -169,11 +173,11 @@ afterEach(() => {
   client.clear();
   clearAuthSession();
 });
-function renderPage() {
+function renderPage(url = "/requests/new") {
   render(
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
-        <MemoryRouter initialEntries={["/requests/new"]}>
+        <MemoryRouter initialEntries={[url]}>
           <Routes>
             <Route
               path="/requests/new"
@@ -989,4 +993,117 @@ it("does not fetch any data without the create permission", async () => {
   renderPage();
   await screen.findByText("Bạn chưa có quyền truy cập");
   expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("hydrates a cloned ticket after dependent lookups load and permits changing the group", async () => {
+  cloneSource = {
+    ...requestDetailFixture,
+    handling_group: 5,
+    ticket_type: 186,
+    approve_user: 42,
+    fore_cus: 2,
+    bophansudung: 20,
+    vanphong: 3,
+    other1: "11",
+    title: "Bản sao từ ticket",
+    data_item: {
+      dataform: {
+        header: createTemplate,
+        data: [
+          {
+            key: 7,
+            "Ghi chú chi tiết": "Giữ nội dung",
+            "Số lượng": "0",
+            "Từ ngày": "20/10/2026",
+            "Đến ngày": "21/10/2026",
+            "Khoảng ngày": "20/10/2026 - 22/10/2026",
+            "Phương án": "A",
+          },
+        ],
+      },
+    },
+  };
+  renderPage("/requests/new?clone=42");
+  await waitFor(() =>
+    expect(
+      (document.getElementById("detail-0-f0") as HTMLInputElement | null)
+        ?.value,
+    ).toBe("Giữ nội dung"),
+  );
+  expect(
+    (document.getElementById("detail-0-f1") as HTMLInputElement).value,
+  ).toBe("0");
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("Bản sao từ ticket");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  await select("Bộ phận xử lý", "IT");
+  await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
+  expect(screen.queryByText(/Không thể sao chép/)).toBeNull();
+});
+
+it("blocks a cloned training ticket with an empty required range and associates errors with both date inputs", async () => {
+  template = {
+    forms: [
+      {
+        title: "Phần dành cho Bộ phận yêu cầu",
+        editable: true,
+        children: [
+          {
+            title: "Thời gian đào tạo (*)",
+            type: "range-date-text",
+            required: true,
+          },
+        ],
+      },
+    ],
+  };
+  cloneSource = {
+    ...requestDetailFixture,
+    handling_group: 5,
+    ticket_type: 186,
+    approve_user: 42,
+    fore_cus: 2,
+    bophansudung: 20,
+    vanphong: 3,
+    other1: "11",
+    title: "TEST clone training date",
+    data_item: {
+      dataform: {
+        header: (template as { forms: unknown[] }).forms,
+        data: [{ key: 1, "Thời gian đào tạo": "" }],
+      },
+    },
+  };
+  renderPage("/requests/new?clone=42");
+  await screen.findByRole("textbox", { name: "Thời gian đào tạo - Đến ngày" });
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f0-end")?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  expect(
+    document.getElementById("detail-0-f0-start")?.getAttribute("aria-invalid"),
+  ).toBe("true");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  change("detail-0-f0-start", "20/10/2026");
+  change("detail-0-f0-end", "19/10/2026");
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f0-end-error")?.textContent,
+    ).toContain("ngày kết thúc không trước ngày bắt đầu"),
+  );
+  expect(
+    document.getElementById("detail-0-f0-start")?.getAttribute("aria-invalid"),
+  ).toBe("false");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  change("detail-0-f0-end", "20/10/2026");
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Đã về danh sách");
+  const body = JSON.parse(calls("/ticket_manager")[0][1]!.body as string);
+  expect(body.formDataTicket.dataform.data[0]["Thời gian đào tạo"]).toBe(
+    "20/10/2026 - 20/10/2026",
+  );
 });

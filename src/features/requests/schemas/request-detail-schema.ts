@@ -30,6 +30,13 @@ const header = templateGroupSchema.extend({
 });
 export const requestDetailSchema = z.object({
   id: z.number().int().positive(),
+  handling_group: z.number().nullish(),
+  ticket_type: z.number().nullish(),
+  approve_user: z.number().nullish(),
+  fore_cus: z.number().nullish(),
+  bophansudung: z.number().nullish(),
+  vanphong: z.number().nullish(),
+  other1: text,
   ticket_code: text,
   title: text,
   ticket_status: z.number(),
@@ -45,10 +52,12 @@ export const requestDetailSchema = z.object({
   duedate: text,
   created: text,
   approve_date: text,
+  ticket_ngaypheduyet: text,
   description: text,
   lydohuyyeucau: text,
   lydoxulylai: text,
   lydokhongxulylai: text,
+  lydothaydoinguoixuly: text,
   ticket_type_att_file: text,
   list_button: files.nullish().transform((value) => value ?? {}),
   list_user_not_received: z

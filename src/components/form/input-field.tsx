@@ -61,6 +61,9 @@ export function InputField<TFieldValues extends FieldValues>({
             <Input
               {...field}
               value={field.value ?? ""}
+              title={
+                type === "password" ? undefined : String(field.value ?? "")
+              }
               id={id}
               type={type}
               disabled={disabled}

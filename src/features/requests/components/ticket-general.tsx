@@ -5,7 +5,8 @@ import { formatDataDate } from "@/components/data-management";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import { ticketFileUrl } from "../utils/ticket-detail";
 import { RequestFormSection } from "./request-form-section";
-import { TicketFiles } from "./ticket-files";
+import { TicketAttachments } from "./ticket-attachments";
+import { TicketDueDate } from "./ticket-due-date";
 
 function ReadField({
   label,
@@ -47,7 +48,8 @@ function ReadField({
 
 export function TicketGeneral({
   ticket,
-}: Readonly<{ ticket: RequestDetailData }>) {
+  onSaved,
+}: Readonly<{ ticket: RequestDetailData; onSaved: () => Promise<unknown> }>) {
   const manual = ticketFileUrl(ticket.ticket_type_att_file);
   return (
     <div className="min-w-0 space-y-4">
@@ -88,17 +90,16 @@ export function TicketGeneral({
               .join(", ")}
           />
           <ReadField label="Văn phòng" value={ticket.vanphong_name} />
-          <ReadField
-            label="Ngày mong muốn"
-            value={formatDataDate(ticket.duedate)}
-          />
+          <TicketDueDate ticket={ticket} onSaved={onSaved} />
         </div>
         <div className="grid min-w-0 grid-cols-1 gap-4 border-t border-border pt-4 sm:grid-cols-2 xl:grid-cols-4">
           <ReadField label="Người tạo" value={ticket.username_create} />
           <ReadField label="Ngày tạo" value={formatDataDate(ticket.created)} />
           <ReadField
             label="Ngày phê duyệt"
-            value={formatDataDate(ticket.approve_date)}
+            value={formatDataDate(
+              ticket.ticket_ngaypheduyet || ticket.approve_date,
+            )}
           />
           <ReadField
             label="Người xử lý"
@@ -107,6 +108,21 @@ export function TicketGeneral({
               .join(", ")}
           />
         </div>
+        {ticket.list_user_received.some((user) => user.status) && (
+          <ul
+            aria-label="Tình trạng xử lý"
+            className="flex flex-wrap gap-2 text-sm"
+          >
+            {ticket.list_user_received.map((user, index) => (
+              <li
+                key={user.user_id ?? index}
+                className="rounded-lg border border-border px-3 py-2"
+              >
+                {user.username}: {user.status || "—"}
+              </li>
+            ))}
+          </ul>
+        )}
       </RequestFormSection>
       <RequestFormSection
         step={4}
@@ -137,16 +153,17 @@ export function TicketGeneral({
                 multiline
               />
             )}
+            {ticket.lydothaydoinguoixuly && (
+              <ReadField
+                label="Lý do thay đổi người xử lý"
+                value={ticket.lydothaydoinguoixuly}
+                multiline
+              />
+            )}
           </div>
           <div className="min-w-0 space-y-2">
             <h3 className="text-sm font-medium">Tệp đính kèm</h3>
-            {Object.keys(ticket.attachment_files).length ? (
-              <TicketFiles files={ticket.attachment_files} />
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                Không có tệp đính kèm.
-              </p>
-            )}
+            <TicketAttachments ticket={ticket} onSaved={onSaved} />
           </div>
         </div>
       </RequestFormSection>

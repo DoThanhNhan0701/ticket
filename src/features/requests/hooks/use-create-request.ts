@@ -9,6 +9,7 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getRequestTemplate } from "@/features/settings/api/template-api";
 import { prepareTemplate } from "@/features/settings/schemas/template-schema";
 import { normalizeSearchText } from "@/lib/search";
+import { useCloneRequest } from "./use-clone-request";
 import {
   emptyDetailRow,
   getCreateRequestGroups,
@@ -114,7 +115,18 @@ export function useCreateRequest() {
     if (all && teams.length > 1 && teams.includes(String(all.id)))
       form.setValue("other1", [String(all.id)]);
   }, [lookups.data, teams, form]);
+  const clone = useCloneRequest({
+    userId,
+    form,
+    lookups: lookups.data,
+    types: types.data,
+    selectedType,
+    groups,
+    templateReady: template.isSuccess && !template.isFetching,
+  });
   const ready = Boolean(
+    !clone.error &&
+    !clone.loading &&
     userId &&
     lookups.isSuccess &&
     types.isSuccess &&
@@ -229,5 +241,6 @@ export function useCreateRequest() {
     submit,
     reset,
     retryAttachments,
+    clone,
   };
 }

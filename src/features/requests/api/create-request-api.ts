@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { assertTicketSaved } from "./ticket-response";
 import { format } from "date-fns";
 import { getRequest, postRequest } from "@/lib/api/client";
 import {
@@ -119,19 +120,15 @@ export async function createRequest(
   );
 }
 export async function uploadRequestAttachment(id: number, file: File) {
+  if (file.size > 50 * 1024 * 1024)
+    throw new Error(`Tệp “${file.name}” vượt quá 50 MB.`);
   const body = new FormData();
   body.append("ticket_id", String(id));
   body.append("att_file", file);
   const response = await postRequest<unknown>("/attachmentticketfile", {
     body,
   });
-  if (
-    typeof response === "object" &&
-    response !== null &&
-    "error" in response &&
-    response.error
-  )
-    throw new Error("Không tải được tệp đính kèm.");
+  assertTicketSaved(response);
 }
 export async function exportRequestTemplate(id: number) {
   const body = new FormData();

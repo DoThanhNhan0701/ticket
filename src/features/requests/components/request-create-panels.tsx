@@ -10,6 +10,10 @@ type Model = ReturnType<typeof useCreateRequest>;
 export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
   return (
     <>
+      {model.clone.loading && (
+        <LoadingState message="Đang tải yêu cầu cần sao chép..." />
+      )}
+      {model.clone.error && <ErrorAlert message={model.clone.error} />}
       {model.lookups.isError && (
         <div className="space-y-2">
           <ErrorAlert

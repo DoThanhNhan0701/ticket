@@ -5,16 +5,19 @@ import { LoadingState } from "@/components/loading-state";
 import { ErrorAlert } from "@/components/error-alert";
 import { formatDataDate } from "@/components/data-management";
 import { getTicketHistory } from "../api/request-detail-api";
+import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 export { TicketDiscussion } from "./ticket-discussion";
 
 export function TicketHistory({
   id,
   active,
 }: Readonly<{ id: number; active: boolean }>) {
+  const { userId } = useAuthContext();
   const history = useQuery({
-    queryKey: ["ticket-history", id],
+    queryKey: ["ticket-history", id, userId],
     queryFn: ({ signal }) => getTicketHistory(id, signal),
     enabled: active,
+    staleTime: 0,
   });
   return (
     <Card className="min-w-0 gap-4 p-4 sm:p-5">

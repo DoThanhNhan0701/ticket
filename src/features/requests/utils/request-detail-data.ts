@@ -202,20 +202,25 @@ export function validateDetailRows(
     });
   rows.forEach((row, index) =>
     fields.forEach((field) => {
-      const message =
-        fieldError(field, row) || comparisonError(field, row, fields);
-      if (message)
-        issues.push({
-          path: [
-            "rows",
-            index,
-            "values",
-            field.type === "range-date-text" && !fieldOptions(field).length
-              ? `${field.fieldKey}_start`
-              : field.fieldKey,
-          ],
-          message,
-        });
+      const error = fieldError(field, row);
+      const message = error || comparisonError(field, row, fields);
+      if (message) {
+        let keys = [field.fieldKey];
+        if (field.type === "range-date-text" && !fieldOptions(field).length) {
+          keys = ["start", "end"]
+            .map((part) => `${field.fieldKey}_${part}`)
+            .filter((key) => !parseRequestDate(row.values[key] ?? ""));
+          // Missing/invalid endpoints belong to their inputs. A reversed range
+          // belongs to the end; a template comparison constrains the start.
+          if (!keys.length)
+            keys = [`${field.fieldKey}_${error ? "end" : "start"}`];
+        }
+        for (const key of keys)
+          issues.push({
+            path: ["rows", index, "values", key],
+            message,
+          });
+      }
     }),
   );
   return issues;

@@ -52,7 +52,11 @@ export function TicketTemplate({
     onSuccess: async () => {
       setEditing(null);
       toast.success("Đã lưu chi tiết yêu cầu.");
-      await onSaved();
+      try {
+        await onSaved();
+      } catch {
+        toast.error("Đã lưu chi tiết. Vui lòng tải lại yêu cầu.");
+      }
     },
   });
   const editable =

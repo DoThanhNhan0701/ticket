@@ -9,11 +9,13 @@ import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { PageHeader } from "@/components/layout/page-header";
 import { ApiError } from "@/lib/api/api-error";
+import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getRequestDetail, validTicketId } from "../api/request-detail-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import { TicketTemplate } from "./ticket-template";
 import { TicketGeneral } from "./ticket-general";
 import { TicketActions } from "./ticket-actions";
+import { TicketCloneButton } from "./ticket-clone-button";
 import { TicketDiscussion, TicketHistory } from "./ticket-activity";
 
 const tabs = ["Thông tin chung", "Chi tiết yêu cầu", "Trao đổi", "Lịch sử"];
@@ -82,7 +84,10 @@ function DetailTabs({
         <p className="mt-2 text-sm whitespace-pre-wrap wrap-anywhere">
           {ticket.title}
         </p>
-        <TicketActions ticket={ticket} onSaved={onSaved} />
+        <div className="mt-3 flex flex-wrap items-start justify-between gap-2">
+          <TicketCloneButton ticket={ticket} />
+          <TicketActions ticket={ticket} onSaved={onSaved} />
+        </div>
       </div>
       <div
         role="tablist"
@@ -128,7 +133,7 @@ function DetailTabs({
           tabIndex={0}
           className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pb-3 -outline-offset-2"
         >
-          {index === 0 && <TicketGeneral ticket={ticket} />}
+          {index === 0 && <TicketGeneral ticket={ticket} onSaved={onSaved} />}
           {index === 1 && <TicketTemplate ticket={ticket} onSaved={onSaved} />}
           {index === 2 && (
             <TicketDiscussion ticket={ticket} onSaved={onSaved} />
@@ -143,6 +148,7 @@ function DetailTabs({
 }
 export function RequestDetail() {
   const { ticketID = "" } = useParams();
+  const { userId } = useAuthContext();
   const navigate = useNavigate();
   const client = useQueryClient();
   const goBack = () => {
@@ -152,15 +158,21 @@ export function RequestDetail() {
   };
   const valid = validTicketId(ticketID);
   const query = useQuery({
-    queryKey: ["request-detail", ticketID],
+    queryKey: ["request-detail", userId, ticketID],
     queryFn: ({ signal }) => getRequestDetail(ticketID, signal),
     enabled: valid,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
   const refresh = async () => {
-    await client.invalidateQueries({
-      queryKey: ["ticket-history", Number(ticketID)],
-    });
-    return query.refetch();
+    await Promise.all([
+      client.invalidateQueries({
+        queryKey: ["ticket-history", Number(ticketID)],
+      }),
+      client.invalidateQueries({ queryKey: ["requests"] }),
+      client.invalidateQueries({ queryKey: ["reports"] }),
+    ]);
+    return query.refetch({ throwOnError: true });
   };
   const error = query.error;
   let message = error?.message;
@@ -185,7 +197,7 @@ export function RequestDetail() {
             aria-label="Tải lại yêu cầu"
             title="Tải lại yêu cầu"
             disabled={!valid || query.isFetching}
-            onClick={() => void refresh()}
+            onClick={() => void refresh().catch(() => undefined)}
           >
             <RefreshCw
               className={`size-4 ${query.isFetching ? "animate-spin" : ""}`}
@@ -200,7 +212,7 @@ export function RequestDetail() {
       {query.isError && (
         <ErrorAlert message={message ?? "Không tải được yêu cầu."} />
       )}
-      {query.data && (
+      {query.data && !query.isError && (
         <DetailTabs key={ticketID} ticket={query.data} onSaved={refresh} />
       )}
     </div>

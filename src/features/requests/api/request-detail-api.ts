@@ -1,5 +1,8 @@
 import { getRequest, postRequest } from "@/lib/api/client";
 import { ApiError } from "@/lib/api/api-error";
+import { format } from "date-fns";
+import { parseRequestDate } from "../utils/request-detail-data";
+import { assertTicketSaved } from "./ticket-response";
 import {
   requestDetailSchema,
   ticketHistorySchema,
@@ -33,13 +36,20 @@ export async function getTicketHistory(id: number, signal?: AbortSignal) {
     }),
   );
 }
-function assertSaved(result: unknown) {
-  if (result && typeof result === "object" && "error" in result && result.error)
-    throw new Error(
-      typeof result.error === "string"
-        ? result.error
-        : "Không thể lưu thay đổi.",
-    );
+export async function updateTicketDueDate(
+  id: number,
+  value: string,
+  previous: string,
+) {
+  const date = parseRequestDate(value);
+  const oldDate = parseRequestDate(previous);
+  if (!date || (oldDate && date <= oldDate))
+    throw new Error("Ngày mong muốn mới phải sau ngày mong muốn hiện tại.");
+  assertTicketSaved(
+    await postRequest("/update_duedate/", {
+      body: { ticket_id: id, duedate: format(date, "yyyy-MM-dd") },
+    }),
+  );
 }
 export { addTicketComment } from "./ticket-discussion-api";
 export async function updateTicketSection(
@@ -47,7 +57,7 @@ export async function updateTicketSection(
   header: unknown,
   data: readonly Record<string, unknown>[],
 ) {
-  assertSaved(
+  assertTicketSaved(
     await postRequest("/edit_item_data/", {
       body: {
         ticket_id: id,

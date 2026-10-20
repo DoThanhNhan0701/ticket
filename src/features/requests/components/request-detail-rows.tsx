@@ -215,7 +215,7 @@ export function RequestDetailRows({
                     <div
                       key={field.fieldKey}
                       title={field.title}
-                      className="min-w-0 [&_label]:block [&_label]:truncate"
+                      className="min-w-0"
                       style={{
                         gridColumn: column + 1,
                         gridRow: groups.length > 1 ? 2 : 1,

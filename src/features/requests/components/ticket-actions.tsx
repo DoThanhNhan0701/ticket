@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   Check,
   CheckCheck,
@@ -77,7 +77,7 @@ export function TicketActions({
     <>
       <div
         role="group"
-        className="mt-3 flex flex-wrap justify-end gap-2"
+        className="flex flex-wrap justify-end gap-2"
         aria-label="Thao tác yêu cầu"
       >
         {actions.map((name) => {
@@ -120,7 +120,6 @@ function TicketActionDialog({
   onClose: () => void;
   onSaved: () => Promise<unknown>;
 }>) {
-  const client = useQueryClient();
   const [forward, setForward] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState("");
@@ -153,10 +152,7 @@ function TicketActionDialog({
     onSuccess: async () => {
       toast.success(`Đã thực hiện: ${operation}.`);
       try {
-        await Promise.all([
-          onSaved(),
-          client.invalidateQueries({ queryKey: ["requests"] }),
-        ]);
+        await onSaved();
       } catch {
         toast.error("Đã lưu thao tác. Vui lòng tải lại để xem trạng thái mới.");
       }

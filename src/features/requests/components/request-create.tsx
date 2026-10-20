@@ -24,7 +24,11 @@ export function RequestCreate() {
   const steps = useRequestCreateSteps(model);
   const [excelBusy, setExcelBusy] = useState(false);
   const busy = model.mutation.isPending || excelBusy;
-  const disabled = busy || model.lookups.isPending || Boolean(model.created);
+  const disabled =
+    busy ||
+    model.lookups.isPending ||
+    model.clone.loading ||
+    Boolean(model.created);
   const waitingForData =
     !model.lookups.isSuccess ||
     model.types.isFetching ||

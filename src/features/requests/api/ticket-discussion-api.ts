@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { getRequest, postRequest, putRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
+import { assertTicketSaved } from "./ticket-response";
 
 export const MAX_COMMENT_FILE_SIZE = 50 * 1024 * 1024;
 export interface DiscussionDraft {
@@ -19,14 +20,6 @@ function commentBody(content: string, files: readonly File[]) {
   if (!files.length) body.append("att_file", "");
   return body;
 }
-function assertSaved(result: unknown) {
-  if (result && typeof result === "object" && "error" in result && result.error)
-    throw new Error(
-      typeof result.error === "string"
-        ? result.error
-        : "Không thể lưu phản hồi.",
-    );
-}
 export async function addTicketComment(
   id: number,
   content: string,
@@ -35,13 +28,13 @@ export async function addTicketComment(
   const body = commentBody(content, files);
   body.append("ticket_id", String(id));
   body.append("ticket_comment", content.trim());
-  assertSaved(await postRequest("/ticket_comment", { body }));
+  assertTicketSaved(await postRequest("/ticket_comment", { body }));
 }
 export async function replyTicketComment(id: number, draft: DiscussionDraft) {
   const body = commentBody(draft.content, draft.files);
   body.append("comment_id", String(id));
   body.append("comment_content", draft.content.trim());
-  assertSaved(await postRequest("/ticket_item_comment", { body }));
+  assertTicketSaved(await postRequest("/ticket_item_comment", { body }));
 }
 export async function editTicketComment(
   id: number,
@@ -53,7 +46,7 @@ export async function editTicketComment(
   body.append("content_comment", draft.content.trim());
   for (const name of draft.removedFiles) body.append("deleted_old_files", name);
   if (!draft.removedFiles.length) body.append("deleted_old_files", "");
-  assertSaved(
+  assertTicketSaved(
     await putRequest(
       level === "comment" ? "/ticket_comment" : "/ticket_item_comment",
       { body },

@@ -384,6 +384,40 @@ it("rejects invalid identifiers without calling the API", async () => {
     "Mã yêu cầu không hợp lệ.",
   );
 });
+it("hides cached ticket controls when access is revoked and can retry loading", async () => {
+  await ready();
+  failure = 403;
+  fireEvent.click(screen.getByRole("button", { name: "Tải lại yêu cầu" }));
+  await screen.findByText("Bạn không có quyền xem yêu cầu này.");
+  expect(screen.queryByRole("tab")).toBeNull();
+  failure = 0;
+  fireEvent.click(screen.getByRole("button", { name: "Tải lại yêu cầu" }));
+  await screen.findByRole("tab", { name: "Thông tin chung" });
+});
+it("refreshes recently cached status and actions when reopening a ticket", async () => {
+  client.setDefaultOptions({ queries: { retry: false, staleTime: 300_000 } });
+  client.setQueryData(
+    ["request-detail", 1, "42"],
+    requestDetailSchema.parse({
+      ...ticket,
+      ticket_status_name: "Đã duyệt",
+      list_button: { "Tiếp nhận": "#1890ff" },
+    }),
+  );
+  fetchMock.mockResolvedValueOnce(
+    json({
+      ...ticket,
+      ticket_status: 3,
+      ticket_status_name: "Đang xử lý",
+      list_button: { "Hoàn thành": "#0bb7af" },
+    }),
+  );
+  open();
+  await screen.findByRole("button", { name: "Hoàn thành" });
+  expect(screen.getByText("Đang xử lý")).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Tiếp nhận" })).toBeNull();
+  expect(fetchMock).toHaveBeenCalledOnce();
+});
 it.each(["", null, undefined])(
   "shows tickets without a template when data_item is %s",
   async (dataItem) => {
