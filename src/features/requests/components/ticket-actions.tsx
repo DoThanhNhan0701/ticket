@@ -19,8 +19,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogDescription,
+  DialogHeading,
   DialogFooter,
   DialogCloseButton,
 } from "@/components/ui/dialog";
@@ -250,25 +249,14 @@ function TicketActionDialog({
         className={actionDialogClass(action, reasonLabel, forward)}
         aria-describedby="ticket-action-help ticket-action-description"
       >
-        <DialogHeader className="items-center border-b-0 pb-0">
-          <div className="flex min-w-0 items-center gap-3">
-            <span
-              className={`flex size-10 shrink-0 items-center justify-center rounded-xl border ${actionColors[forward ? "Tiếp nhận" : action]}`}
-            >
-              <ActionIcon className="size-5" aria-hidden="true" />
-            </span>
-            <div className="min-w-0">
-              <DialogTitle className="text-sm leading-5">
-                {operation} yêu cầu
-              </DialogTitle>
-              <DialogDescription
-                id="ticket-action-help"
-                className="mt-0 text-xs leading-4"
-              >
-                {actionDescriptions[operation]}
-              </DialogDescription>
-            </div>
-          </div>
+        <DialogHeader>
+          <DialogHeading
+            icon={<ActionIcon aria-hidden="true" />}
+            iconClassName={actionColors[forward ? "Tiếp nhận" : action]}
+            title={`${operation} yêu cầu`}
+            description={actionDescriptions[operation]}
+            descriptionId="ticket-action-help"
+          />
           <DialogCloseButton
             disabled={mutation.isPending}
             aria-label="Đóng thao tác yêu cầu"
@@ -326,7 +314,7 @@ function TicketActionDialog({
               bước đã lưu sẽ không được gửi lại.
             </p>
           )}
-          <DialogFooter className="border-t-0">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"

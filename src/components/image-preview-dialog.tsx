@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Image } from "lucide-react";
 import {
   Dialog,
   DialogCloseButton,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogHeading,
 } from "@/components/ui/dialog";
 
 export function ImagePreviewDialog({
@@ -26,14 +27,13 @@ export function ImagePreviewDialog({
         if (!open) onClose();
       }}
     >
-      <DialogContent className="max-w-5xl" aria-describedby={undefined}>
+      <DialogContent className="max-w-5xl">
         <DialogHeader>
-          <DialogTitle
-            className="min-w-0 flex-1 self-center truncate"
+          <DialogHeading
+            icon={<Image aria-hidden="true" />}
             title={file.name}
-          >
-            {file.name}
-          </DialogTitle>
+            description="Xem trước hình ảnh đính kèm."
+          />
           <DialogCloseButton aria-label="Đóng xem trước ảnh" />
         </DialogHeader>
         {failed ? (

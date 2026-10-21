@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { AlertTriangle, Info } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { AsyncButton } from "./async-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,10 +7,9 @@ import {
   DialogClose,
   DialogCloseButton,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogHeading,
 } from "@/components/ui/dialog";
 
 interface ConfirmDialogProps {
@@ -41,32 +39,21 @@ export function ConfirmDialog({
 }: Readonly<ConfirmDialogProps>) {
   const isWarning = variant === "destructive" || variant === "warning";
   const Icon = isWarning ? AlertTriangle : Info;
-  const defaultIcon = (
-    <div
-      className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
-        isWarning
-          ? "bg-warning-soft border-warning-border text-warning"
-          : "bg-accent border-border text-accent-foreground",
-      )}
-    >
-      <Icon className="h-4 w-4" />
-    </div>
-  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <div className="flex items-center gap-3">
-            {icon || defaultIcon}
-            <div>
-              <DialogTitle>{title}</DialogTitle>
-              <DialogDescription className="mt-1 text-sm text-muted-foreground">
-                {description}
-              </DialogDescription>
-            </div>
-          </div>
+          <DialogHeading
+            icon={icon || <Icon aria-hidden="true" />}
+            iconClassName={
+              isWarning
+                ? "border-warning-border bg-warning-soft text-warning"
+                : undefined
+            }
+            title={title}
+            description={description}
+          />
           <DialogCloseButton />
         </DialogHeader>
 

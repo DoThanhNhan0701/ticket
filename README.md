@@ -245,6 +245,7 @@ Keep business rules and API calls inside their feature. Keep route pages focused
 The interface uses opaque surfaces and semantic color tokens in `src/index.css`. Use `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border` and the status tokens instead of adding separate hardcoded light/dark color classes. Primary and supporting text use the same contrast rules across screens.
 
 - `PageHeader` composes page titles, back navigation and toolbar actions.
+- `DialogHeading` shares a 40px icon tile, 14px title and closely spaced 12px description across dialogs and drawers. `DialogHeader` and `DialogFooter` keep spacing, scrolling and actions consistent without divider lines; dialog content retains the width needed by each form.
 - `FormFieldShell` provides labels, required indicators and linked validation errors for input, date, select and multi-select fields. `controlClassName` provides their common surface, border and focus treatment.
 - `SearchInput` provides search and clear actions. `AsyncButton` provides a spinner and pending/disabled state.
 - `Badge`, `UserAvatar`, `EmptyState`, `ErrorAlert` and `LoadingState` keep repeated feedback and identity elements consistent.

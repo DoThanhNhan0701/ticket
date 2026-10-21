@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChartNoAxesColumn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { EmptyState } from "@/components/empty-state";
 import { TruncatedText } from "@/components/truncated-text";
@@ -7,8 +8,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogDescription,
+  DialogHeading,
   DialogCloseButton,
 } from "@/components/ui/dialog";
 import type { ReportResponse } from "../schemas/reports-schema";
@@ -48,12 +48,11 @@ export function ReportSummaryCards({
       >
         <DialogContent>
           <DialogHeader>
-            <div>
-              <DialogTitle>{selected}</DialogTitle>
-              <DialogDescription>
-                {detail?.count ?? 0} yêu cầu trong khoảng thời gian đã chọn.
-              </DialogDescription>
-            </div>
+            <DialogHeading
+              icon={<ChartNoAxesColumn aria-hidden="true" />}
+              title={selected}
+              description={`${detail?.count ?? 0} yêu cầu trong khoảng thời gian đã chọn.`}
+            />
             <DialogCloseButton />
           </DialogHeader>
           {detail && detail.list_code.length > 0 ? (

@@ -3,6 +3,7 @@ import { Dialog } from "@base-ui/react/dialog";
 import { Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DialogHeading } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { DataFiltersForm } from "./data-filters-form";
 import { countActiveFilters } from "./utils";
@@ -63,15 +64,12 @@ export function DataFiltersDrawer<Name extends string>({
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/60 transition-opacity duration-200 data-closed:opacity-0 motion-reduce:transition-none" />
         <Dialog.Viewport className="fixed inset-0 z-50 flex justify-end">
           <Dialog.Popup className="flex h-dvh min-h-0 w-full max-w-lg flex-col border-l border-border bg-card text-foreground shadow-xl outline-none transition-transform duration-200 data-closed:translate-x-full motion-reduce:transition-none">
-            <header className="flex shrink-0 items-start justify-between gap-4 border-b border-border p-4 sm:p-6">
-              <div className="space-y-1">
-                <Dialog.Title className="text-lg font-semibold">
-                  Lọc nâng cao
-                </Dialog.Title>
-                <Dialog.Description className="text-sm text-muted-foreground">
-                  {description}
-                </Dialog.Description>
-              </div>
+            <header className="flex shrink-0 items-center justify-between gap-3 p-4 sm:p-6">
+              <DialogHeading
+                icon={<Filter aria-hidden="true" />}
+                title="Lọc nâng cao"
+                description={description}
+              />
               <Dialog.Close
                 render={
                   <Button

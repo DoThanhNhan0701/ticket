@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@base-ui/react/dialog";
 import { ChevronDown, Menu, ShieldCheck, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DialogHeading } from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
@@ -305,10 +306,12 @@ export function MobileSidebar({
             }
             className="flex h-dvh w-76 max-w-[calc(100vw-2rem)] flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-xl outline-none transition-transform data-closed:-translate-x-full"
           >
-            <div className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-sidebar-border px-4">
-              <Dialog.Title className="text-base font-semibold">
-                Điều hướng Ticket
-              </Dialog.Title>
+            <div className="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-sidebar-border px-4 py-3">
+              <DialogHeading
+                icon={<Menu aria-hidden="true" />}
+                title="Điều hướng Ticket"
+                description="Chọn trang bạn muốn truy cập."
+              />
               <Dialog.Close
                 render={
                   <Button

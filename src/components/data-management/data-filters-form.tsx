@@ -74,7 +74,7 @@ export function DataFiltersForm<Name extends string>({
           return <InputField key={field.name} {...props} />;
         })}
       </div>
-      <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-border p-4 sm:p-6">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 p-4 sm:p-6">
         <Button type="submit">Áp dụng bộ lọc</Button>
         <Button type="button" variant="outline" onClick={onClear}>
           Xóa bộ lọc nâng cao

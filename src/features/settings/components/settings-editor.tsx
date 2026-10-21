@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Settings2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,8 +16,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogDescription,
+  DialogHeading,
   DialogCloseButton,
   DialogFooter,
 } from "@/components/ui/dialog";
@@ -225,14 +225,11 @@ export function SettingsEditor({
     >
       <DialogContent>
         <DialogHeader>
-          <div>
-            <DialogTitle>
-              {record ? "Chỉnh sửa" : "Thêm"} {config.label}
-            </DialogTitle>
-            <DialogDescription>
-              Cập nhật thông tin và trạng thái hoạt động.
-            </DialogDescription>
-          </div>
+          <DialogHeading
+            icon={<Settings2 aria-hidden="true" />}
+            title={`${record ? "Chỉnh sửa" : "Thêm"} ${config.label}`}
+            description="Cập nhật thông tin và trạng thái hoạt động."
+          />
           <DialogCloseButton disabled={busy} />
         </DialogHeader>
         <SettingsForm

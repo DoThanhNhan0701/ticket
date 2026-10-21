@@ -11,8 +11,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogDescription,
+  DialogHeading,
   DialogCloseButton,
   DialogFooter,
 } from "@/components/ui/dialog";
@@ -221,17 +220,11 @@ export function RequestTemplateEditor({
     >
       <DialogContent className="flex h-[90dvh] max-w-none flex-col overflow-hidden p-0 sm:p-0 lg:w-63/100 lg:max-w-252">
         <DialogHeader className="static m-0 shrink-0 p-3 sm:m-0 sm:p-4">
-          <div>
-            <DialogTitle
-              className="truncate"
-              title={`Biểu mẫu · ${record.name}`}
-            >
-              Biểu mẫu · {record.name}
-            </DialogTitle>
-            <DialogDescription>
-              Thêm phần, sắp xếp trường và thiết lập cách nhập liệu.
-            </DialogDescription>
-          </div>
+          <DialogHeading
+            icon={<FileText aria-hidden="true" />}
+            title={`Biểu mẫu · ${record.name}`}
+            description="Thêm phần, sắp xếp trường và thiết lập cách nhập liệu."
+          />
           <DialogCloseButton disabled={busy} />
         </DialogHeader>
         {query.isPending && <LoadingState message="Đang tải biểu mẫu..." />}

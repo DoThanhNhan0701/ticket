@@ -4,7 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogHeading,
   DialogCloseButton,
 } from "@/components/ui/dialog";
 import { ticketFileUrl } from "../utils/ticket-detail";
@@ -129,14 +129,13 @@ export function TicketFiles({
             if (!open) setPreview(null);
           }}
         >
-          <DialogContent className="max-w-5xl" aria-describedby={undefined}>
+          <DialogContent className="max-w-5xl">
             <DialogHeader>
-              <DialogTitle
-                className="min-w-0 flex-1 truncate"
+              <DialogHeading
+                icon={<Image aria-hidden="true" />}
                 title={preview.name}
-              >
-                {preview.name}
-              </DialogTitle>
+                description="Xem trước hình ảnh đính kèm."
+              />
               <DialogCloseButton aria-label="Đóng xem trước ảnh" />
             </DialogHeader>
             {failed ? (

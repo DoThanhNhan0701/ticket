@@ -9,7 +9,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  DialogHeading,
   DialogCloseButton,
 } from "@/components/ui/dialog";
 import type {
@@ -141,9 +141,13 @@ function EditCommentDialog({
         if (!open && !busy) onClose();
       }}
     >
-      <DialogContent className="max-w-2xl" aria-describedby={undefined}>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Chỉnh sửa bình luận</DialogTitle>
+          <DialogHeading
+            icon={<Pencil aria-hidden="true" />}
+            title="Chỉnh sửa bình luận"
+            description="Cập nhật nội dung và tệp đính kèm của bình luận."
+          />
           <DialogCloseButton
             disabled={busy}
             aria-label="Đóng chỉnh sửa bình luận"
