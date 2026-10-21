@@ -33,6 +33,7 @@ interface DatePickerFieldProps<TFieldValues extends FieldValues> {
   disabled?: boolean;
   isDateDisabled?: (date: Date) => boolean;
   disabledDateMessage?: string;
+  inputActions?: React.ReactNode;
 }
 
 export function DatePickerField<TFieldValues extends FieldValues>({
@@ -48,6 +49,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   disabled = false,
   isDateDisabled,
   disabledDateMessage = "Ngày này không thể chọn.",
+  inputActions,
 }: Readonly<DatePickerFieldProps<TFieldValues>>) {
   const [open, setOpen] = React.useState(false);
 
@@ -75,52 +77,55 @@ export function DatePickerField<TFieldValues extends FieldValues>({
           >
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverAnchor asChild>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    id={id}
-                    type="text"
-                    disabled={disabled}
-                    value={
-                      selectedDate && value.includes("-")
-                        ? format(selectedDate, "dd/MM/yyyy")
-                        : value
-                    }
-                    placeholder={placeholder}
-                    autoComplete="off"
-                    spellCheck={false}
-                    aria-required={required}
-                    aria-invalid={fieldState.invalid}
-                    aria-describedby={
-                      fieldState.error ? `${id}-error` : undefined
-                    }
-                    className="pl-11"
-                    onChange={(event) => {
-                      const nextValue = event.target.value;
-                      if (isDateDraft(nextValue)) {
-                        field.onChange(nextValue);
-                      }
-                    }}
-                    onBlur={() => {
-                      if (selectedDate) {
-                        field.onChange(format(selectedDate, "dd/MM/yyyy"));
-                      }
-                      field.onBlur();
-                    }}
-                  />
-                  <PopoverTrigger asChild>
-                    <Button
-                      type="button"
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="relative min-w-0 flex-1">
+                    <Input
+                      {...field}
+                      id={id}
+                      type="text"
                       disabled={disabled}
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`Choose ${label.toLowerCase()}`}
-                      title={`Choose ${label.toLowerCase()}`}
-                      className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
-                    >
-                      <CalendarIcon className="h-4 w-4" />
-                    </Button>
-                  </PopoverTrigger>
+                      value={
+                        selectedDate && value.includes("-")
+                          ? format(selectedDate, "dd/MM/yyyy")
+                          : value
+                      }
+                      placeholder={placeholder}
+                      autoComplete="off"
+                      spellCheck={false}
+                      aria-required={required}
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={
+                        fieldState.error ? `${id}-error` : undefined
+                      }
+                      className="pl-11"
+                      onChange={(event) => {
+                        const nextValue = event.target.value;
+                        if (isDateDraft(nextValue)) {
+                          field.onChange(nextValue);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (selectedDate) {
+                          field.onChange(format(selectedDate, "dd/MM/yyyy"));
+                        }
+                        field.onBlur();
+                      }}
+                    />
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        disabled={disabled}
+                        variant="ghost"
+                        size="icon"
+                        aria-label={`Choose ${label.toLowerCase()}`}
+                        title={`Choose ${label.toLowerCase()}`}
+                        className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
+                      >
+                        <CalendarIcon className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                  </div>
+                  {inputActions}
                 </div>
               </PopoverAnchor>
               <PopoverContent className="w-auto p-0" align="start">

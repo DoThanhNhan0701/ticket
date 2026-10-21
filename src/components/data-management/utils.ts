@@ -85,7 +85,23 @@ const dateFormat = new Intl.DateTimeFormat("vi-VN", {
 });
 
 export function formatDataDate(value?: string | null): string {
-  if (!value) return "—";
+  if (!value) return "";
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "—" : dateFormat.format(date);
+  return Number.isNaN(date.getTime()) ? "" : dateFormat.format(date);
+}
+
+const timeFormat = new Intl.DateTimeFormat("vi-VN", {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23",
+  timeZone: "Asia/Ho_Chi_Minh",
+});
+
+export function formatDataDateTime(value?: string | null): string {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? ""
+    : `${dateFormat.format(date)} ${timeFormat.format(date)}`;
 }

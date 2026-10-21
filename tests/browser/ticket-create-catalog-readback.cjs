@@ -166,7 +166,7 @@ let browser;
             );
             assert.equal(
               tables[group][index][column],
-              value || "—",
+              value,
               "UI cell differs: " + clean(field.title) + " row " + (index + 1),
             );
             cells++;

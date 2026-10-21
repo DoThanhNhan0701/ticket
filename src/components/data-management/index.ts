@@ -6,6 +6,7 @@ export { DataTable, DataText, DataRowLink } from "./data-table";
 export {
   countActiveFilters,
   formatDataDate,
+  formatDataDateTime,
   getFilterValues,
   normalizeFilterValues,
   parseListPagination,

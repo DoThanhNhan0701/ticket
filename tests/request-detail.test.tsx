@@ -83,7 +83,7 @@ beforeEach(() => {
         {
           id: 1,
           username: "handler",
-          created: "2026-10-20",
+          created: "2026-10-20T18:04:05Z",
           system_log: "Đã tiếp nhận",
           user_log: "",
           comment_content: "",
@@ -138,6 +138,31 @@ async function ready() {
   open();
   await screen.findByText("RS-0042");
 }
+
+it("leaves missing general fields, dates and detail cells blank", async () => {
+  ticket.bophansudung_name = "";
+  ticket.approve_date = "";
+  ticket.list_user_received = [];
+  ticket.list_name_team_use = [];
+  ticket.description = "";
+  ticket.data_item.dataform.data[0]["old-key"] = "";
+  await ready();
+  for (const label of [
+    "Department",
+    "Team sử dụng",
+    "Ngày phê duyệt",
+    "Người xử lý",
+    "Ghi chú",
+  ]) {
+    expect((screen.getByLabelText(label) as HTMLInputElement).value).toBe("");
+  }
+  expect(screen.queryByText("—")).toBeNull();
+  tab("Chi tiết yêu cầu");
+  await screen.findByRole("heading", { name: "Phần tạo" });
+  const section = screen.getByRole("group", { name: "Dữ liệu Phần tạo" });
+  expect(within(section).getAllByRole("cell")[1].textContent).toBe("");
+  expect(screen.queryByText("—")).toBeNull();
+});
 function tab(name: string) {
   fireEvent.click(screen.getByRole("tab", { name: new RegExp(name) }));
 }
@@ -225,6 +250,7 @@ it("supports keyboard tab navigation and lazy-loads history", async () => {
     key: "End",
   });
   expect(await screen.findByText("Đã tiếp nhận")).toBeTruthy();
+  expect(screen.getByText("- cập nhật lúc 21/10/2026 01:04:05")).toBeTruthy();
   expect(document.activeElement?.getAttribute("aria-selected")).toBe("true");
   fireEvent.keyDown(document.activeElement!, { key: "ArrowRight" });
   expect(screen.getByRole("heading", { name: "Loại yêu cầu" })).toBeTruthy();

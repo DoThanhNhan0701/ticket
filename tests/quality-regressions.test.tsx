@@ -69,5 +69,5 @@ it("normalizes long trailing-slash inputs without backtracking", () => {
 it("keeps calendar dates independent of time-zone conversion", () => {
   expect(formatDate("2026-10-21T23:30:00-08:00")).toBe("21/10/2026");
   expect(formatDate("21/10/2026")).toBe("21/10/2026");
-  expect(formatDate(null)).toBe("—");
+  expect(formatDate(null)).toBe("");
 });

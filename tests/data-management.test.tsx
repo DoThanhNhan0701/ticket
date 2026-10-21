@@ -24,6 +24,7 @@ import {
   readStringFilters,
   updateListSearchParams,
   formatDataDate,
+  formatDataDateTime,
   type DataColumn,
   type DataFilterField,
   type DataListQuery,
@@ -38,6 +39,33 @@ beforeEach(() => {
   );
 });
 afterEach(cleanup);
+
+it("formats history timestamps with seconds in Vietnam time and blanks missing dates", () => {
+  expect(formatDataDateTime("2026-10-20T18:04:05Z")).toBe(
+    "21/10/2026 01:04:05",
+  );
+  expect(formatDataDateTime("2026-10-21T00:00:00+07:00")).toBe(
+    "21/10/2026 00:00:00",
+  );
+  for (const value of [undefined, null, "", "invalid"])
+    expect(formatDataDateTime(value)).toBe("");
+});
+
+it("leaves missing text blank while preserving zero and false display values", () => {
+  const view = render(
+    <>
+      <DataText />
+      <DataText text={null} />
+      <DataText text="" />
+      <DataText text="0" />
+      <DataText text="false" />
+    </>,
+  );
+  expect(
+    [...view.container.children].map((element) => element.textContent),
+  ).toEqual(["", "", "", "0", "false"]);
+  expect(screen.queryByText("—")).toBeNull();
+});
 
 // A different domain verifies that shared components do not depend on ticket fields or APIs.
 interface Employee {
@@ -468,5 +496,5 @@ it("formats API dates consistently, including timestamps crossing the local midn
   expect(formatDataDate("2026-10-20T18:00:00Z")).toBe("21/10/2026");
   expect(formatDataDate("2026-10-21")).toBe("21/10/2026");
   for (const value of [undefined, null, "", "invalid"])
-    expect(formatDataDate(value)).toBe("—");
+    expect(formatDataDate(value)).toBe("");
 });

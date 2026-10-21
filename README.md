@@ -66,6 +66,7 @@ The approval tables follow V2's columns: row number, code, type, title, office, 
 
 - Personal tasks use `GET /api/list_ticket_personal/`; all tasks use `GET /api/list_ticket_all/`. Both default to all records without `typeView`. The drawer's searchable `Nhóm nhiệm vụ` selector sends the supported `processing`, `handle`, `accepted` or `received` views without adding toolbar tabs. Ordering and 100/200 pagination follow the shared list behavior.
 - Both tables include Department, Team and creation date. Personal tasks show the approver; all tasks show the handler. Status filters send actual IDs as `ticket_status` and exclude ID 1. Type options come from the separately cached `GET /api/list_handling_tickettype/`: personal tasks submit `ticket_type_name`, while all tasks submit `ticket_type_id`, matching V2.
+- Personal and all-task rows use a soft red background adapted to the light/dark theme, following V2's rule: highlight when the due timestamp is at or before the current time and status is not 4, 5 or 7. A date-only deadline starts at local midnight, so tickets due today also qualify. Invalid dates stay unhighlighted; hovering retains the red background.
 - The drawer supports `bophansudung_name`, multiple `team_id` values from validated `GET /api/list_team/`, and `created_from`/`created_to` dates. Team selections use the shared multi-select and serialize as comma-separated IDs; dates use the shared date picker and serialize as `YYYY-MM-DD`. All tasks additionally provide the `Được gắn thẻ` filter. Its URL value `type_option=0` is sent to the API as `type_option[]=0`, matching V2's Axios array serialization; the unbracketed API parameter is ignored by the backend.
 - Quick search preserves the selected task view, status and tagged scope while clearing other advanced fields. Clearing filters returns to the default all-records view. Applied filters, paging and sizes remain in the URL; Back restores team selections and creation dates. Lookup errors can be retried independently without blocking task results. Task caches are isolated from each other and from request/approval lists; unauthorized accounts fetch neither records nor lookups.
 
@@ -205,7 +206,7 @@ Contextual URLs are `/tickets/:ticketID`, `/tickets/from-email/:ticketID`, `/set
 
 `src/app/navigation.ts` defines page metadata and access rules shared by routes and the sidebar. Menu groups are filtered using permissions from `/api/list_permission/`; opening a restricted URL directly shows an access message. Superusers can access every group. Settings accepts `can_system` or `is_system_manage`; switching ticket status requires `can_return_ticket`. Backend APIs must enforce their own permissions when those pages are implemented.
 
-The collapsed desktop sidebar shows one 44px icon per permitted group, with a hover tooltip and an active-group marker. Clicking a group or pressing Enter opens its labeled links in a popover on the right. Opening focuses the first link; Escape closes the popover and restores focus. Selecting a page closes it, and switching to the mobile breakpoint dismisses open desktop popovers. Expanded and mobile navigation retain the grouped list.
+The collapsed desktop sidebar shows one 44px icon per permitted group, with a hover tooltip and an active-group marker. Clicking a group or pressing Enter opens its labeled links in a popover on the right. Opening focuses the first link; Escape closes the popover and restores focus. Selecting a page closes it, and switching to the mobile breakpoint dismisses open desktop popovers. Expanded and mobile navigation retain the grouped list. Sidebar width and explicitly opened/closed groups persist in localStorage under `ticket.sidebar` across reloads; desktop and mobile share the group preferences. Invalid or unavailable storage falls back to usable navigation defaults.
 
 ## Project structure
 
@@ -250,6 +251,8 @@ The interface uses opaque surfaces and semantic color tokens in `src/index.css`.
 - `AppNavLink` shares navigation states. `ProjectCardContent` shares application tile content.
 
 Keep feature-specific actions in their feature; compose these components in pages and dialogs.
+
+Missing field values render as empty content across tables and ticket details. Shared text/date formatters use an empty string for missing values; preserve actual values such as `0` and `false`. Empty-list messages and form hints remain separate from field values.
 
 ## Reusable management lists
 

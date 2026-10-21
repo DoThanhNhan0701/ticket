@@ -73,6 +73,7 @@ let client: QueryClient;
 let auth: AuthContextValue;
 
 beforeEach(() => {
+  localStorage.clear();
   vi.stubGlobal(
     "ResizeObserver",
     vi.fn(function () {
@@ -445,6 +446,41 @@ it("collapses the desktop sidebar while retaining accessible navigation", async 
       .getByRole("button", { name: "Thu gọn sidebar" })
       .getAttribute("aria-expanded"),
   ).toBe("true");
+});
+
+it("restores sidebar width and explicitly opened or closed groups after remount", async () => {
+  auth.permissions = { can_create: true, can_report: true };
+  const view = renderApp();
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  const sidebar = screen.getByRole("complementary", { name: "Sidebar Ticket" });
+  const requests = within(sidebar).getByText("Yêu cầu").closest("details")!;
+  const reports = within(sidebar)
+    .getByText("Báo cáo & dữ liệu")
+    .closest("details")!;
+  requests.open = false;
+  fireEvent(requests, new Event("toggle"));
+  reports.open = true;
+  fireEvent(reports, new Event("toggle"));
+  fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
+  view.unmount();
+  renderApp();
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  fireEvent.click(screen.getByRole("button", { name: "Mở rộng sidebar" }));
+  const restored = within(
+    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+  );
+  expect(restored.getByText("Yêu cầu").closest("details")!.open).toBe(false);
+  expect(restored.getByText("Báo cáo & dữ liệu").closest("details")!.open).toBe(
+    true,
+  );
+});
+
+it("uses default navigation when saved sidebar preferences are malformed", async () => {
+  localStorage.setItem("ticket.sidebar", "invalid-json");
+  renderApp();
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  expect(screen.getByRole("button", { name: "Thu gọn sidebar" })).toBeTruthy();
+  expect(screen.getByRole("link", { name: "Danh sách yêu cầu" })).toBeTruthy();
 });
 
 it("keeps collapsed flyouts permission-filtered and highlights the list for ticket details", async () => {

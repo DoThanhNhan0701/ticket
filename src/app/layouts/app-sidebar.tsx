@@ -26,6 +26,8 @@ import {
 interface SidebarProps {
   collapsed?: boolean;
   onNavigate?: () => void;
+  groupsOpen: Record<string, boolean>;
+  onGroupToggle: (label: string, open: boolean) => void;
 }
 
 function CollapsedSidebarGroup({
@@ -159,6 +161,8 @@ function SidebarLink({
 export function AppSidebar({
   collapsed = false,
   onNavigate,
+  groupsOpen,
+  onGroupToggle,
 }: Readonly<SidebarProps>) {
   const { permissions } = useAuthContext();
   const { pathname } = useLocation();
@@ -185,6 +189,8 @@ export function AppSidebar({
               isPageActive(page, pathname),
             );
             const Icon = group.icon;
+            const open =
+              groupsOpen[group.label] ?? (active || group.label === "Yêu cầu");
             if (collapsed) {
               return (
                 <CollapsedSidebarGroup
@@ -207,8 +213,12 @@ export function AppSidebar({
 
             return (
               <details
-                key={`${group.label}:${active}`}
-                open={active || group.label === "Yêu cầu"}
+                key={group.label}
+                open={open}
+                onToggle={(event) => {
+                  if (event.currentTarget.open !== open)
+                    onGroupToggle(group.label, event.currentTarget.open);
+                }}
                 className="group/sidebar-section"
               >
                 <summary
@@ -251,7 +261,14 @@ export function AppSidebar({
 
 export function MobileSidebar({
   desktopToggleRef,
-}: Readonly<{ desktopToggleRef: RefObject<HTMLButtonElement | null> }>) {
+  groupsOpen,
+  onGroupToggle,
+}: Readonly<
+  { desktopToggleRef: RefObject<HTMLButtonElement | null> } & Pick<
+    SidebarProps,
+    "groupsOpen" | "onGroupToggle"
+  >
+>) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -305,7 +322,11 @@ export function MobileSidebar({
                 <X className="size-4" aria-hidden="true" />
               </Dialog.Close>
             </div>
-            <AppSidebar onNavigate={() => setOpen(false)} />
+            <AppSidebar
+              groupsOpen={groupsOpen}
+              onGroupToggle={onGroupToggle}
+              onNavigate={() => setOpen(false)}
+            />
           </Dialog.Popup>
         </Dialog.Viewport>
       </Dialog.Portal>

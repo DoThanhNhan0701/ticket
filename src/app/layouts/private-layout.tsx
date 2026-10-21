@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
@@ -10,9 +10,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { HOME_PATH } from "@/constants/auth";
 import { AppSidebar, MobileSidebar } from "./app-sidebar";
+import { useSidebarPreferences } from "./use-sidebar-preferences";
 
 export function PrivateLayout() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const {
+    collapsed: sidebarCollapsed,
+    groups,
+    toggleCollapsed,
+    toggleGroup,
+  } = useSidebarPreferences();
   const desktopToggleRef = useRef<HTMLButtonElement>(null);
   const { token, isInitializing, username, avatarUrl, logout } =
     useAuthContext();
@@ -25,7 +31,11 @@ export function PrivateLayout() {
         <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.75rem,2vw,1.5rem)] lg:pl-3.5">
           <div className="flex min-w-0 items-center gap-2">
             <div className="flex size-11 shrink-0 items-center justify-center">
-              <MobileSidebar desktopToggleRef={desktopToggleRef} />
+              <MobileSidebar
+                desktopToggleRef={desktopToggleRef}
+                groupsOpen={groups}
+                onGroupToggle={toggleGroup}
+              />
               <Button
                 ref={desktopToggleRef}
                 variant="outline"
@@ -37,7 +47,7 @@ export function PrivateLayout() {
                 title={sidebarCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
                 aria-expanded={!sidebarCollapsed}
                 aria-controls="desktop-sidebar"
-                onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+                onClick={toggleCollapsed}
               >
                 {sidebarCollapsed ? (
                   <PanelLeftOpen className="size-4" aria-hidden="true" />
@@ -89,7 +99,11 @@ export function PrivateLayout() {
             sidebarCollapsed ? "w-18" : "w-72",
           )}
         >
-          <AppSidebar collapsed={sidebarCollapsed} />
+          <AppSidebar
+            collapsed={sidebarCollapsed}
+            groupsOpen={groups}
+            onGroupToggle={toggleGroup}
+          />
         </aside>
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-3 sm:p-6">
           <div className="flex h-full min-h-full min-w-0 w-full flex-1 flex-col">

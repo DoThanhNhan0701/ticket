@@ -20,6 +20,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
   DialogCloseButton,
 } from "@/components/ui/dialog";
@@ -34,6 +35,7 @@ import {
   availableUsers,
   buildTicketActionPlan,
   type TicketAction,
+  type TicketActionOperation,
   type TicketActionValues,
   type TicketActionStep,
 } from "../utils/ticket-actions";
@@ -48,6 +50,16 @@ const icons: Record<TicketAction, LucideIcon> = {
   Đóng: LockKeyhole,
   Hủy: CircleX,
   "Xử lý lại": RotateCcw,
+};
+const actionDescriptions: Record<TicketActionOperation, string> = {
+  "Phê duyệt": "Phê duyệt để yêu cầu được chuyển sang bước xử lý.",
+  "Tiếp nhận": "Xác nhận nhận yêu cầu để bắt đầu xử lý.",
+  "Phân công": "Thêm, thay thế hoặc gỡ người xử lý yêu cầu.",
+  "Hoàn thành": "Xác nhận bạn đã hoàn tất phần việc được giao.",
+  Đóng: "Đóng yêu cầu sau khi đã kiểm tra kết quả xử lý.",
+  Hủy: "Nhập lý do để hủy yêu cầu này.",
+  "Xử lý lại": "Nhập lý do để yêu cầu được xử lý lại.",
+  "Chuyển tiếp": "Chọn người nhận để chuyển tiếp yêu cầu.",
 };
 const actionColors: Record<TicketAction, string> = {
   "Phê duyệt":
@@ -109,6 +121,45 @@ export function TicketActions({
     </>
   );
 }
+function actionDialogClass(
+  action: TicketAction,
+  reasonLabel: string | undefined,
+  forward: boolean,
+) {
+  return action === "Phân công" || reasonLabel || forward
+    ? "max-w-xl shadow-xl"
+    : "max-w-md shadow-xl";
+}
+
+function actionSubmitVariant(action: TicketAction) {
+  return action === "Hủy" ? "destructive" : "default";
+}
+
+function TicketActionSummary({
+  ticket,
+  operation,
+}: Readonly<{ ticket: RequestDetailData; operation: string }>) {
+  return (
+    <div className="space-y-2 rounded-xl border border-border bg-muted/40 p-4">
+      <p
+        id="ticket-action-description"
+        className="text-sm leading-relaxed text-muted-foreground"
+      >
+        Xác nhận {operation.toLowerCase()} yêu cầu{" "}
+        <strong className="font-semibold text-foreground wrap-anywhere">
+          {ticket.ticket_code || `#${ticket.id}`}
+        </strong>
+        .
+      </p>
+      {ticket.title && (
+        <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap wrap-anywhere">
+          {ticket.title}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function TicketActionDialog({
   ticket,
   action,
@@ -196,11 +247,28 @@ function TicketActionDialog({
       }}
     >
       <DialogContent
-        className="max-w-xl"
-        aria-describedby="ticket-action-description"
+        className={actionDialogClass(action, reasonLabel, forward)}
+        aria-describedby="ticket-action-help ticket-action-description"
       >
-        <DialogHeader>
-          <DialogTitle>{operation} yêu cầu</DialogTitle>
+        <DialogHeader className="items-center border-b-0 pb-0">
+          <div className="flex min-w-0 items-center gap-3">
+            <span
+              className={`flex size-10 shrink-0 items-center justify-center rounded-xl border ${actionColors[forward ? "Tiếp nhận" : action]}`}
+            >
+              <ActionIcon className="size-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0">
+              <DialogTitle className="text-sm leading-5">
+                {operation} yêu cầu
+              </DialogTitle>
+              <DialogDescription
+                id="ticket-action-help"
+                className="mt-0 text-xs leading-4"
+              >
+                {actionDescriptions[operation]}
+              </DialogDescription>
+            </div>
+          </div>
           <DialogCloseButton
             disabled={mutation.isPending}
             aria-label="Đóng thao tác yêu cầu"
@@ -212,16 +280,7 @@ function TicketActionDialog({
           className="min-w-0 space-y-4"
           onSubmit={form.handleSubmit(submit)}
         >
-          <p
-            id="ticket-action-description"
-            className="text-sm text-muted-foreground"
-          >
-            Xác nhận {operation.toLowerCase()} yêu cầu{" "}
-            <strong className="text-foreground">
-              {ticket.ticket_code || `#${ticket.id}`}
-            </strong>
-            .
-          </p>
+          <TicketActionSummary ticket={ticket} operation={operation} />
           {action === "Phân công" && (
             <TicketAssignmentFields
               ticket={ticket}
@@ -267,7 +326,7 @@ function TicketActionDialog({
               bước đã lưu sẽ không được gửi lại.
             </p>
           )}
-          <DialogFooter>
+          <DialogFooter className="border-t-0">
             <Button
               type="button"
               variant="outline"
@@ -294,8 +353,8 @@ function TicketActionDialog({
             )}
             <AsyncButton
               type="submit"
-              variant="outline"
-              className={actionColors[forward ? "Tiếp nhận" : action]}
+              variant={actionSubmitVariant(action)}
+              className="shadow-xs"
               loading={mutation.isPending}
               loadingText="Đang xử lý..."
               icon={<ActionIcon className="size-4" aria-hidden="true" />}

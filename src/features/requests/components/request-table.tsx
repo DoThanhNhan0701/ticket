@@ -8,12 +8,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import type { RequestListScope, RequestTicket } from "../types";
 import { requestListConfig } from "../utils/request-list-config";
+import { isRequestOverdue } from "../utils/request-overdue";
 
 const getRequestHref = (request: RequestTicket) =>
   `/requests/${encodeURIComponent(String(request.id))}`;
 
 function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
-  if (!request.ticket_status_name) return <>—</>;
+  if (!request.ticket_status_name) return null;
   const color =
     request.color && /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(request.color)
       ? request.color
@@ -235,6 +236,14 @@ export function RequestTable({
       scrollResetKey={scrollResetKey}
       getRowKey={(request) => request.id}
       getRowHref={getRequestHref}
+      getRowClassName={
+        scope === "personal-tasks" || scope === "all-tasks"
+          ? (request) =>
+              isRequestOverdue(request)
+                ? "bg-danger-soft hover:bg-danger-soft"
+                : undefined
+          : undefined
+      }
       className="min-w-352 table-auto"
     />
   );

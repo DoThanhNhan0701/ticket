@@ -29,7 +29,7 @@ function ReadField({
         <Textarea
           id={id}
           readOnly
-          value={value || "—"}
+          value={value}
           rows={3}
           className="field-sizing-content min-h-22 min-w-0 resize-none overflow-x-hidden font-normal whitespace-pre-wrap wrap-anywhere sm:min-h-20 sm:pointer-coarse:min-h-22"
         />
@@ -37,8 +37,8 @@ function ReadField({
         <Input
           id={id}
           readOnly
-          value={value || "—"}
-          title={value || "—"}
+          value={value}
+          title={value || undefined}
           className="font-normal"
         />
       )}
@@ -91,8 +91,6 @@ export function TicketGeneral({
           />
           <ReadField label="Văn phòng" value={ticket.vanphong_name} />
           <TicketDueDate ticket={ticket} onSaved={onSaved} />
-        </div>
-        <div className="grid min-w-0 grid-cols-1 gap-4 border-t border-border pt-4 sm:grid-cols-2 xl:grid-cols-4">
           <ReadField label="Người tạo" value={ticket.username_create} />
           <ReadField label="Ngày tạo" value={formatDataDate(ticket.created)} />
           <ReadField
@@ -118,7 +116,7 @@ export function TicketGeneral({
                 key={user.user_id ?? index}
                 className="rounded-lg border border-border px-3 py-2"
               >
-                {user.username}: {user.status || "—"}
+                {[user.username, user.status].filter(Boolean).join(": ")}
               </li>
             ))}
           </ul>

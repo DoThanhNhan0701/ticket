@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LoadingState } from "@/components/loading-state";
 import { ErrorAlert } from "@/components/error-alert";
-import { formatDataDate } from "@/components/data-management";
+import { formatDataDateTime } from "@/components/data-management";
 import { getTicketHistory } from "../api/request-detail-api";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 export { TicketDiscussion } from "./ticket-discussion";
@@ -38,24 +38,27 @@ export function TicketHistory({
         </p>
       )}
       <ol className="space-y-3">
-        {history.data?.map((entry, index) => (
-          <li
-            key={entry.id ?? index}
-            className="space-y-2 rounded-lg border border-border p-3 text-sm"
-          >
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <strong>{entry.username}</strong>
-              <time className="text-xs text-muted-foreground">
-                {formatDataDate(entry.created)}
-              </time>
-            </div>
-            <p className="whitespace-pre-wrap wrap-anywhere">
-              {[entry.system_log, entry.user_log, entry.comment_content]
-                .filter(Boolean)
-                .join("\n")}
-            </p>
-          </li>
-        ))}
+        {history.data?.map((entry, index) => {
+          const timestamp = formatDataDateTime(entry.created);
+          return (
+            <li
+              key={entry.id ?? index}
+              className="space-y-2 rounded-lg border border-border p-3 text-sm"
+            >
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <strong>{entry.username}</strong>
+                <time className="text-xs text-muted-foreground">
+                  {timestamp && `- cập nhật lúc ${timestamp}`}
+                </time>
+              </div>
+              <p className="whitespace-pre-wrap wrap-anywhere">
+                {[entry.system_log, entry.user_log, entry.comment_content]
+                  .filter(Boolean)
+                  .join("\n")}
+              </p>
+            </li>
+          );
+        })}
       </ol>
     </Card>
   );

@@ -791,7 +791,7 @@ it("accepts omitted display names when their related entities are absent", async
   const row = screen
     .getByRole("link", { name: ticket.ticket_code })
     .closest("tr")!;
-  expect(within(row).getAllByRole("cell")[4].textContent).toBe("—");
+  expect(within(row).getAllByRole("cell")[4].textContent).toBe("");
 });
 
 function allListParams() {

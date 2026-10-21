@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileText, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { TruncatedText } from "@/components/truncated-text";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
@@ -20,6 +19,33 @@ import { TicketDiscussion, TicketHistory } from "./ticket-activity";
 
 const tabs = ["Thông tin chung", "Chi tiết yêu cầu", "Trao đổi", "Lịch sử"];
 const tabKeys = ["general", "details", "discussion", "history"];
+function TicketStatusSummary({
+  ticket,
+}: Readonly<{ ticket: RequestDetailData }>) {
+  if (!ticket.ticket_status_name) return null;
+  const color = /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(ticket.color)
+    ? ticket.color
+    : "var(--primary)";
+  return (
+    <div
+      role="group"
+      aria-label="Trạng thái yêu cầu"
+      className="flex h-10 min-w-0 max-w-[40vw] items-center justify-center rounded-lg border px-3 sm:max-w-xs"
+      style={{
+        borderColor: `color-mix(in srgb, ${color} 50%, var(--card))`,
+        backgroundColor: `color-mix(in srgb, ${color} 12%, var(--card))`,
+      }}
+    >
+      <span
+        className="truncate text-xs font-medium sm:text-sm"
+        title={ticket.ticket_status_name}
+      >
+        {ticket.ticket_status_name}
+      </span>
+    </div>
+  );
+}
+
 function DetailTabs({
   ticket,
   onSaved,
@@ -77,17 +103,14 @@ function DetailTabs({
           <span className="min-w-0 flex-1 font-semibold">
             <TruncatedText text={ticket.ticket_code || `#${ticket.id}`} />
           </span>
-          <Badge tone="brand" className="shrink-0 whitespace-nowrap">
-            {ticket.ticket_status_name}
-          </Badge>
+          <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2">
+            <TicketCloneButton ticket={ticket} />
+            <TicketActions ticket={ticket} onSaved={onSaved} />
+          </div>
         </div>
-        <p className="mt-2 text-sm whitespace-pre-wrap wrap-anywhere">
+        <p className="mt-2 min-w-0 text-sm whitespace-pre-wrap wrap-anywhere">
           {ticket.title}
         </p>
-        <div className="mt-3 flex flex-wrap items-start justify-end gap-2">
-          <TicketCloneButton ticket={ticket} />
-          <TicketActions ticket={ticket} onSaved={onSaved} />
-        </div>
       </div>
       <div
         role="tablist"
@@ -108,7 +131,7 @@ function DetailTabs({
             tabIndex={active === index ? 0 : -1}
             onKeyDown={(event) => switchWithKeyboard(event, index)}
             onClick={() => setActive(index)}
-            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-3 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+            className={`flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring pointer-coarse:min-h-11 ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
           >
             {label}
             {tabKeys[index] === "discussion" && (
@@ -189,20 +212,25 @@ export function RequestDetail() {
         onBack={goBack}
         backLabel="Quay lại"
         actions={
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="size-10"
-            aria-label="Tải lại yêu cầu"
-            title="Tải lại yêu cầu"
-            disabled={!valid || query.isFetching}
-            onClick={() => void refresh().catch(() => undefined)}
-          >
-            <RefreshCw
-              className={`size-4 ${query.isFetching ? "animate-spin" : ""}`}
-            />
-          </Button>
+          <>
+            {query.data && !query.isError && (
+              <TicketStatusSummary ticket={query.data} />
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-10"
+              aria-label="Tải lại yêu cầu"
+              title="Tải lại yêu cầu"
+              disabled={!valid || query.isFetching}
+              onClick={() => void refresh().catch(() => undefined)}
+            >
+              <RefreshCw
+                className={`size-4 ${query.isFetching ? "animate-spin" : ""}`}
+              />
+            </Button>
+          </>
         }
       />
       {!valid && <ErrorAlert message="Mã yêu cầu không hợp lệ." />}

@@ -268,7 +268,7 @@ export function TicketTemplate({
                                       ? field.dataIndex
                                       : field.title
                                   ] ?? "",
-                                ) || "—"}
+                                )}
                               </p>
                             )}
                           </td>

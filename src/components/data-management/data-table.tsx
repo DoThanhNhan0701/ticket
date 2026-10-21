@@ -34,7 +34,7 @@ function canNavigateRow(event: MouseEvent<HTMLTableRowElement>): boolean {
 }
 
 export function DataText({ text }: Readonly<{ text?: string | null }>) {
-  return <TruncatedText text={text || "—"} lines={2} />;
+  return <TruncatedText text={text ?? ""} lines={2} />;
 }
 
 export function DataRowLink({
@@ -62,6 +62,7 @@ export function DataTable<T>({
   scrollLabel,
   getRowKey,
   getRowHref,
+  getRowClassName,
   className,
   scrollResetKey,
 }: Readonly<{
@@ -71,6 +72,7 @@ export function DataTable<T>({
   scrollLabel: string;
   getRowKey: (row: T) => Key;
   getRowHref?: (row: T) => string;
+  getRowClassName?: (row: T) => string | undefined;
   className?: string;
   scrollResetKey?: string | number;
 }>) {
@@ -124,6 +126,7 @@ export function DataTable<T>({
                 "h-18 bg-card",
                 path &&
                   "cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+                getRowClassName?.(row),
               )}
               tabIndex={path ? 0 : undefined}
               onClick={

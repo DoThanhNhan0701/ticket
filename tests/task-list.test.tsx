@@ -11,6 +11,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { addDays, format, startOfToday } from "date-fns";
 import { workspacePages } from "@/app/navigation";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
 import {
@@ -20,6 +21,7 @@ import {
 import { clearAuthSession } from "@/lib/auth-session";
 import { getCookie, setCookie } from "@/lib/cookies";
 import { WorkspacePage } from "@/pages/workspace";
+import { RequestTable } from "@/features/requests/components/request-table";
 import {
   requestTicketFixture as ticket,
   requestStatusFixtures as statuses,
@@ -173,6 +175,70 @@ async function select(label: string, name: string) {
   fireEvent.click(await screen.findByRole("option", { name }));
   await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
 }
+
+it.each(pages)(
+  "highlights active tasks due today or earlier on $path using the V2 rule",
+  async ({ path, label, endpoint }) => {
+    const today = startOfToday();
+    const cases = [
+      ...[1, 2, 3, 6].map((status) => ({
+        status,
+        date: format(addDays(today, -1), "yyyy-MM-dd"),
+        red: true,
+      })),
+      ...[4, 5, 7].map((status) => ({
+        status,
+        date: format(addDays(today, -1), "yyyy-MM-dd"),
+        red: false,
+      })),
+      { status: 2, date: format(today, "yyyy-MM-dd"), red: true },
+      { status: 2, date: format(addDays(today, 1), "yyyy-MM-dd"), red: false },
+      { status: 2, date: "", red: false },
+      { status: 2, date: "invalid", red: false },
+    ];
+    responses[endpoint] = () =>
+      Response.json({
+        count: cases.length,
+        next: null,
+        previous: null,
+        results: cases.map((test, index) => ({
+          ...ticket,
+          id: 100 + index,
+          ticket_code: `DUE-${index}`,
+          ticket_status: test.status,
+          duedate: test.date,
+        })),
+      });
+    renderPage(path);
+    await ready(label);
+    for (const [index, test] of cases.entries()) {
+      const row = screen
+        .getByRole("link", { name: `DUE-${index}` })
+        .closest("tr")!;
+      expect(row.classList.contains("bg-danger-soft")).toBe(test.red);
+      if (test.red)
+        expect(row.classList.contains("hover:bg-danger-soft")).toBe(true);
+    }
+  },
+);
+
+it("keeps the created-request list styling unchanged for an overdue active ticket", () => {
+  render(
+    <MemoryRouter>
+      <RequestTable
+        rows={[{ ...ticket, ticket_status: 2, duedate: "2000-01-01" }]}
+        rowOffset={0}
+        scope="created"
+      />
+    </MemoryRouter>,
+  );
+  expect(
+    screen
+      .getByRole("link", { name: ticket.ticket_code })
+      .closest("tr")
+      ?.classList.contains("bg-danger-soft"),
+  ).toBe(false);
+});
 
 it.each(pages)(
   "loads $label through its V2 endpoint, handling lookups and twelve columns",
