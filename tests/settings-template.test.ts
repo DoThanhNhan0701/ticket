@@ -174,3 +174,26 @@ it("clears comparisons when a target name is erased and preserves them for non-n
   });
   expect(erased[0].children[1].validate).toBeNull();
 });
+
+it("blocks new inactive permission grants but preserves existing ones on edit", () => {
+  const lookups = {
+    "position-permissions": [{ id: 4, name: "can_view", is_active: false }],
+  };
+  const record = {
+    id: 99,
+    name: "Inactive grant",
+    is_active: true,
+    permission: [4],
+  };
+  const values = getSettingsDefaults(record);
+  expect(
+    getPositionPermissionOptions(lookups["position-permissions"], []),
+  ).toEqual([]);
+  expect(
+    getSettingsFormSchema("positions", false, lookups).safeParse(values)
+      .success,
+  ).toBe(false);
+  const editing = getSettingsFormSchema("positions", true, lookups, record);
+  expect(editing.safeParse(values).success).toBe(true);
+  expect(editing.safeParse({ ...values, permission: [] }).success).toBe(true);
+});

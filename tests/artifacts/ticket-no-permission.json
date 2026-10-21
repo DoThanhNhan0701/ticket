@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-21",
+  "base": "http://127.0.0.1:5189",
+  "username": "test_p261021_none",
+  "method": "Browser UI with real API, read-only",
+  "checks": [
+    {
+      "case": "Login without permissions",
+      "result": "passed"
+    },
+    {
+      "case": "Reload preserves denied state",
+      "result": "passed"
+    },
+    {
+      "case": "Stable fallback from /",
+      "result": "passed"
+    },
+    {
+      "case": "Stable fallback from /login",
+      "result": "passed"
+    },
+    {
+      "case": "Stable fallback from /unknown-permission-page",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /requests",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /requests/new",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /requests/all",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /requests/change-status",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /requests/14361",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /tickets/from-email/14361",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /approvals/pending",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /approvals/approved",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /tasks/mine",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /tasks",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /reports",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /reports/export",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /recruitment/requests",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /recruitment/candidates",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /recruitment/interviews",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /recruitment/reports",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /recruitment/interviews/TEST_QC_PERMISSION",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/users",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/requesting-departments",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/handling-departments",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/request-types",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/teams",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/positions",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/offices",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings/users/new",
+      "result": "passed"
+    },
+    {
+      "case": "Direct URL /settings",
+      "result": "passed"
+    },
+    {
+      "case": "Legacy URL preserves query/hash and remains denied",
+      "result": "passed"
+    },
+    {
+      "case": "Brand link has a stable denied destination",
+      "result": "passed"
+    },
+    {
+      "case": "Collapsed empty sidebar survives reload",
+      "result": "passed"
+    },
+    {
+      "case": "Mobile empty menu, Escape and focus restoration",
+      "result": "passed"
+    },
+    {
+      "case": "Sign out and browser Back cannot reopen private content",
+      "result": "passed"
+    }
+  ],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/token/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/"
+    }
+  ],
+  "blockedWrites": [],
+  "pageErrors": [],
+  "result": "passed",
+  "account": {
+    "userId": 810,
+    "userPermission": [],
+    "handlingPermission": {},
+    "is_handling": false,
+    "is_superuser": false
+  },
+  "businessDataRequests": []
+}

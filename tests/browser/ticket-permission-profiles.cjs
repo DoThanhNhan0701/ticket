@@ -235,6 +235,7 @@ async function verify(profile, password, full) {
     viewport: { width: 1440, height: 1000 },
   });
   try {
+    const pageErrors = [];
     context.on("request", (request) => {
       if (request.method() !== "GET")
         assert(
@@ -248,6 +249,7 @@ async function verify(profile, password, full) {
       username: profile.username,
       password,
     });
+    page.on("pageerror", (error) => pageErrors.push(error.message));
     const actual = [
       ...new Set([
         ...account.userPermission,
@@ -320,6 +322,7 @@ async function verify(profile, password, full) {
       );
       await page.goto(base + path);
       await restored;
+      await page.waitForLoadState("networkidle");
       const expected = roles.has(permission);
       if (!expected) {
         await page
@@ -346,7 +349,14 @@ async function verify(profile, password, full) {
           0,
         );
       }
-      await page.waitForLoadState("networkidle");
+      assert.equal(
+        await page
+          .getByRole("heading", { name: "Không tải được trang", exact: true })
+          .count(),
+        0,
+        "Page crashed: " + path,
+      );
+      assert.deepEqual(pageErrors, [], "Browser errors: " + path);
       page.off("request", observe);
       page.off("response", observeResponse);
       profile.pages.push({

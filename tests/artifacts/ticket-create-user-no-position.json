@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-21",
+  "method": "Real browser UI and real API lookups. Submit create form with every required field except position.",
+  "checks": [
+    {
+      "surface": "list-modal",
+      "case": "All other required fields completed, position omitted",
+      "result": "blocked-by-field-validation",
+      "message": "Vui lòng chọn chức vụ.",
+      "userCreateRequests": 0
+    },
+    {
+      "surface": "list-modal",
+      "case": "Selecting a position clears the validation error",
+      "result": "passed"
+    },
+    {
+      "surface": "create-url",
+      "case": "All other required fields completed, position omitted",
+      "result": "blocked-by-field-validation",
+      "message": "Vui lòng chọn chức vụ.",
+      "userCreateRequests": 0
+    },
+    {
+      "surface": "create-url",
+      "case": "Selecting a position clears the validation error",
+      "result": "passed"
+    }
+  ],
+  "writes": [],
+  "pageErrors": [],
+  "result": "passed",
+  "existingTestUsersWithoutPosition": []
+}

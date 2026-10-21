@@ -5,57 +5,79 @@
     {
       "id": 1,
       "code": "can_create",
-      "label": "Tạo yêu cầu"
+      "label": "Tạo yêu cầu",
+      "retired": false,
+      "active": true
     },
     {
       "id": 2,
       "code": "can_report",
-      "label": "Xem báo cáo"
+      "label": "Xem báo cáo",
+      "retired": false,
+      "active": true
     },
     {
       "id": 3,
       "code": "can_system",
-      "label": "Cấu hình hệ thống"
+      "label": "Cấu hình hệ thống",
+      "retired": false,
+      "active": true
     },
     {
       "id": 4,
       "code": "can_view",
-      "label": "Xem yêu cầu"
+      "label": "Xem yêu cầu",
+      "retired": false,
+      "active": true
     },
     {
       "id": 5,
       "code": "can_search",
-      "label": "Tìm kiếm yêu cầu"
+      "label": "Tìm kiếm yêu cầu",
+      "retired": true,
+      "active": true
     },
     {
       "id": 6,
       "code": "can_accept",
-      "label": "Phê duyệt yêu cầu"
+      "label": "Phê duyệt yêu cầu",
+      "retired": false,
+      "active": true
     },
     {
       "id": 7,
       "code": "can_delete",
-      "label": "Xóa yêu cầu"
+      "label": "Xóa yêu cầu",
+      "retired": true,
+      "active": true
     },
     {
       "id": 8,
       "code": "can_export",
-      "label": "Xuất dữ liệu"
+      "label": "Xuất dữ liệu",
+      "retired": false,
+      "active": true
     },
     {
       "id": 9,
       "code": "can_allticket",
-      "label": "Xem tất cả yêu cầu"
+      "label": "Xem tất cả yêu cầu",
+      "retired": false,
+      "active": true
     },
     {
       "id": 10,
       "code": "can_cv_interview",
-      "label": "Xem hồ sơ phỏng vấn"
+      "label": "Xem hồ sơ phỏng vấn",
+      "retired": false,
+      "active": true
     },
     {
       "id": 11,
       "code": "can_return_ticket",
-      "label": "Chuyển trạng thái yêu cầu"
+      "label": "Chuyển trạng thái yêu cầu",
+      "retired": false,
+      "active": true
     }
   ],
   "profiles": [
@@ -3310,5 +3332,40 @@
     "allowed": 40,
     "denied": 298,
     "apiErrorResponses": 1
+  },
+  "latestRegressionRun": {
+    "date": "2026-10-21",
+    "environment": "Local production build at 127.0.0.1:5189; real Ticket API; browser UI interactions only.",
+    "mode": "Read-only verification; no account, role or ticket mutations.",
+    "automatedTests": {
+      "total": 744,
+      "passed": 744,
+      "addedEdgeCases": 67,
+      "testFiles": 28,
+      "coverage": {
+        "statements": 93.63,
+        "branches": 89.67,
+        "functions": 92.39,
+        "lines": 94.5
+      },
+      "command": "npm run test:coverage -- --maxWorkers=2"
+    },
+    "managerAccount": {
+      "username": "test_20261020_g3ccbk",
+      "effectivePermissions": ["can_process", "can_report", "can_export"],
+      "allowedPages": ["/tasks/mine", "/tasks", "/reports", "/reports/export"],
+      "deniedPages": ["/requests", "/requests/new", "/settings/positions"],
+      "defaultLanding": "/tasks/mine",
+      "rootLoginUnknownRedirect": "passed",
+      "logoNavigation": "passed",
+      "mobileSidebar": "passed",
+      "pageErrors": [],
+      "result": "passed"
+    },
+    "fixes": [
+      "Preserve explicit API can_process grants when is_handling is false.",
+      "Reject new inactive permission assignments while retaining existing assignments on edit.",
+      "Keep login and logout usable when browser storage reads, writes or removals fail."
+    ]
   }
 }

@@ -134,8 +134,8 @@ function CurrentPath() {
   );
 }
 
-function renderApp(path = "/") {
-  return render(
+function appElement(path = "/") {
+  return (
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[path]}>
@@ -143,8 +143,12 @@ function renderApp(path = "/") {
           <CurrentPath />
         </MemoryRouter>
       </AuthContext.Provider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   );
+}
+
+function renderApp(path = "/") {
+  return render(appElement(path));
 }
 
 it("redirects the root to the request list with no overview navigation", async () => {
@@ -738,4 +742,65 @@ it("opens the user list from the settings root while preserving URL state", asyn
   expect(
     screen.queryByRole("heading", { name: "Tổng quan cấu hình" }),
   ).toBeNull();
+});
+
+it.each(
+  workspacePages.flatMap((page) => [page.path, ...(page.legacyPaths ?? [])]),
+)(
+  "denies the canonical or legacy URL %s without fetching page data",
+  async (path) => {
+    auth.permissions = {
+      is_superuser: true,
+      is_admin: true,
+      is_handling: true,
+      can_search: true,
+      can_delete: true,
+    };
+    renderApp(
+      path.replace(":ticketID", "42").replace(":codeInterview", "TEST-42"),
+    );
+    await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+    expect(client.getQueryCache().getAll()).toHaveLength(0);
+    expect(
+      screen
+        .getByRole("complementary", { name: "Sidebar Ticket" })
+        .querySelectorAll("a[href]"),
+    ).toHaveLength(0);
+  },
+);
+
+it.each(["/", "/login", "/unknown-page"])(
+  "waits for fresh permissions before choosing a default from %s",
+  async (path) => {
+    auth.isInitializing = true;
+    auth.permissions = { can_view: true };
+    const view = renderApp(path);
+    expect(screen.getByTestId("current-path").textContent).toBe(path);
+    expect(
+      screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+    ).toBeNull();
+    expect(client.getQueryCache().getAll()).toHaveLength(0);
+    auth = {
+      ...auth,
+      isInitializing: false,
+      permissions: { can_export: true },
+    };
+    view.rerender(appElement(path));
+    await screen.findByRole("heading", { name: "Truy xuất dữ liệu" });
+    expect(screen.getByTestId("current-path").textContent).toBe(
+      "/reports/export",
+    );
+  },
+);
+
+it("removes sidebar links and blocks the current page immediately after its permission is revoked", async () => {
+  auth.permissions = { can_view: true };
+  const view = renderApp("/requests");
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  expect(screen.getByRole("link", { name: "Danh sách yêu cầu" })).toBeTruthy();
+  auth = { ...auth, permissions: {} };
+  view.rerender(appElement("/requests"));
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(screen.queryByRole("link", { name: "Danh sách yêu cầu" })).toBeNull();
+  expect(screen.queryByRole("table")).toBeNull();
 });

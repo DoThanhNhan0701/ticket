@@ -31,7 +31,7 @@ The `/api` prefix is defined in `src/lib/api/api-base-url.ts` and added by the s
 
 Login follows the `ticketV2` API contract: `POST /api/token/` with JSON `{ "username": "...", "password": "..." }` returns `{ "access": "...", "refresh": "..." }`. The application stores these tokens in Ticket-specific cookies and uses `Authorization: Bearer <access>` for authenticated requests.
 
-After sign-in and on page reload, `GET /api/list_permission/` loads the account and permissions. The `infoUser` tuple supplies the user ID, name and avatar; `userPermission` and `handlingPermission` supply the permission flags. Sign-in completes after account information loads. Signing out removes the Ticket session and query cache. Existing Homepage sessions are separate; sign in again after switching to this authentication flow.
+After sign-in and on page reload, `GET /api/list_permission/` loads the account and permissions. The `infoUser` tuple supplies the user ID, name and avatar; `userPermission` and `handlingPermission` supply the permission flags. Sign-in completes after account information loads. Signing out removes the Ticket session and query cache. Existing Homepage sessions are separate; sign in again after switching to this authentication flow. If localStorage is blocked or full, login and logout still work using the in-memory account and session cookies; account information is reloaded from the API on the next visit.
 
 When a protected request receives `401` or an explicit `token_not_valid` error, the client posts `{ "refresh": "..." }` to `/api/token/refresh/` and retries the request once. Concurrent requests share one refresh. If the server returns a rotated refresh token, it replaces the saved one. A missing access cookie can also be recovered using the refresh cookie. Rejected refresh credentials or a second authentication failure end the session.
 
@@ -208,20 +208,19 @@ Contextual URLs are `/tickets/:ticketID`, `/tickets/from-email/:ticketID`, `/set
 
 `src/app/navigation.ts` defines page metadata and access rules shared by routes and the sidebar. Menu groups are filtered using permissions from `/api/list_permission/`; opening a restricted URL directly shows an access message. Each page declares exactly one required functional permission in `WorkspacePageDefinition.permission`. Django flags (`is_superuser`, `is_staff`, `is_admin`) and `is_system_manage` do not bypass page access. Settings requires `can_system`; switching ticket status requires `can_return_ticket`. Unauthorized pages do not mount their data components or fetch their data. Backend APIs remain responsible for enforcing access to individual records and actions.
 
-| Pages | Required permission |
-| --- | --- |
-| Request list, ticket detail and email ticket | `can_view` |
-| Create ticket and copy action | `can_create` |
-| All requests | `can_allticket` |
-| Change ticket status | `can_return_ticket` |
-| Pending/approved requests | `can_accept` |
-| Personal/all tasks | `can_process` (normalized from the API's `is_handling`) |
-| Reports | `can_report` |
-| Data export | `can_export` |
-| Recruitment pages | `can_hr_rec` |
-| Interview CV detail | `can_cv_interview` |
-| Settings and user creation | `can_system` |
-
+| Pages                                        | Required permission                             |
+| -------------------------------------------- | ----------------------------------------------- |
+| Request list, ticket detail and email ticket | `can_view`                                      |
+| Create ticket and copy action                | `can_create`                                    |
+| All requests                                 | `can_allticket`                                 |
+| Change ticket status                         | `can_return_ticket`                             |
+| Pending/approved requests                    | `can_accept`                                    |
+| Personal/all tasks                           | `can_process` (API permission or `is_handling`) |
+| Reports                                      | `can_report`                                    |
+| Data export                                  | `can_export`                                    |
+| Recruitment pages                            | `can_hr_rec`                                    |
+| Interview CV detail                          | `can_cv_interview`                              |
+| Settings and user creation                   | `can_system`                                    |
 
 The collapsed desktop sidebar shows one 44px icon per permitted group, with a hover tooltip and an active-group marker. Clicking a group or pressing Enter opens its labeled links in a popover on the right. Opening focuses the first link; Escape closes the popover and restores focus. Selecting a page closes it, and switching to the mobile breakpoint dismisses open desktop popovers. Expanded and mobile navigation retain the grouped list. Sidebar width and explicitly opened/closed groups persist in localStorage under `ticket.sidebar` across reloads; desktop and mobile share the group preferences. Invalid or unavailable storage falls back to usable navigation defaults.
 
@@ -310,6 +309,8 @@ URL helpers use `page` and `page_size`. Feature-specific keys and obsolete param
 | `npm run preview`       | Serve the production build locally                                           |
 
 Lint rules cover hooks, explicit `any`, nested ternaries, duplicate imports and common accessibility issues. Application functions are limited to a cyclomatic complexity of 20 and a nesting depth of 4. The label primitive forwards its control association through props, so label association is checked at usage sites. Semantic-role suggestions are disabled for UI primitives that use ARIA grouping.
+
+Permission regressions cover canonical and legacy URLs, loading before account restoration, revoked cached rights, empty accounts, duplicate position/handling rights, Django flags without functional grants, inactive/retired permission assignments, and blocked browser storage. To reduce worker contention during coverage runs, use `npm run test:coverage -- --maxWorkers=2`.
 
 Coverage checks require at least 80% statements, 80% lines, 70% branches and 75% functions across the full application source. These local regression thresholds do not replace the SonarQube server's Quality Gate or its new-code coverage calculation. Asynchronous UI assertions allow three seconds for cold lazy-route imports under coverage instrumentation; tests still fail on assertion timeouts.
 

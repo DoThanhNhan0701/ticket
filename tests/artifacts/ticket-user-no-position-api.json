@@ -1,0 +1,126 @@
+{
+  "testedAt": "2026-10-21T03:34:09.576Z",
+  "method": "Direct real API requests; no browser/form validation",
+  "cases": [
+    {
+      "variant": "omitted",
+      "username": "test_api_nopos_261021_omitted",
+      "create": {
+        "status": 200,
+        "nonJsonResponse": false,
+        "error": null,
+        "message": null,
+        "reusedExistingTestAccount": true
+      },
+      "persisted": true,
+      "user": {
+        "id": 812,
+        "username": "test_api_nopos_261021_omitted",
+        "chucvu": null,
+        "team": 90,
+        "bophan": 32,
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "ls_permission": []
+      },
+      "readback": {
+        "status": 200,
+        "chucvu": null
+      },
+      "login": {
+        "status": 200
+      },
+      "accountPermission": {
+        "status": 500,
+        "nonJsonResponse": true
+      },
+      "result": "permission-api-failed"
+    },
+    {
+      "variant": "empty",
+      "username": "test_api_nopos_261021_empty",
+      "create": {
+        "status": 200,
+        "nonJsonResponse": false,
+        "error": null,
+        "message": null,
+        "reusedExistingTestAccount": true
+      },
+      "persisted": true,
+      "user": {
+        "id": 813,
+        "username": "test_api_nopos_261021_empty",
+        "chucvu": null,
+        "team": 90,
+        "bophan": 32,
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "ls_permission": []
+      },
+      "readback": {
+        "status": 200,
+        "chucvu": null
+      },
+      "login": {
+        "status": 200
+      },
+      "accountPermission": {
+        "status": 500,
+        "nonJsonResponse": true
+      },
+      "result": "permission-api-failed"
+    },
+    {
+      "variant": "null",
+      "username": "test_api_nopos_261021_null",
+      "create": {
+        "status": 200,
+        "nonJsonResponse": false,
+        "error": null,
+        "message": null,
+        "reusedExistingTestAccount": true
+      },
+      "persisted": true,
+      "user": {
+        "id": 814,
+        "username": "test_api_nopos_261021_null",
+        "chucvu": null,
+        "team": 90,
+        "bophan": 32,
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "ls_permission": []
+      },
+      "readback": {
+        "status": 200,
+        "chucvu": null
+      },
+      "login": {
+        "status": 200
+      },
+      "accountPermission": {
+        "status": 500,
+        "nonJsonResponse": true
+      },
+      "result": "permission-api-failed"
+    }
+  ],
+  "fixtures": {
+    "teamId": 90,
+    "departmentId": 32
+  },
+  "control": {
+    "username": "test_p261021_none",
+    "description": "Position assigned, but no permission grants",
+    "loginStatus": 200,
+    "permissionStatus": 200,
+    "userPermission": [],
+    "handlingPermission": {},
+    "is_handling": false
+  },
+  "completed": true,
+  "result": "failed"
+}

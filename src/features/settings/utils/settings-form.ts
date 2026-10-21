@@ -100,7 +100,8 @@ export function getSettingsFormSchema(
         );
         return (
           permission &&
-          getPositionPermissionInfo(permission.name).retired &&
+          (!permission.is_active ||
+            getPositionPermissionInfo(permission.name).retired) &&
           !(editing && record?.permission?.includes(permission.id))
         );
       })
@@ -108,7 +109,7 @@ export function getSettingsFormSchema(
       context.addIssue({
         code: "custom",
         path: ["permission"],
-        message: "Quyền đã ngừng sử dụng, không thể cấp mới.",
+        message: "Quyền đã ngừng sử dụng hoặc bị khóa, không thể cấp mới.",
       });
     for (const field of settingsConfig[kind].fields) {
       if (editing && field.createOnly) continue;

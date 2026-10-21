@@ -1015,3 +1015,32 @@ it("keeps the template open if the save is not reflected by the server", async (
   ).toBeTruthy();
   expect(screen.getByRole("dialog")).toBeTruthy();
 });
+
+it("blocks creating a user without a position and clears the error when one is selected", async () => {
+  renderPage("users");
+  await editorReady("users");
+  change("Tên đăng nhập", "test-without-position");
+  change("Mã số nhân viên", "TEST-NOROLE");
+  change("Họ", "TEST QC");
+  change("Tên", "Không chức vụ");
+  change("Email", "test-without-position@example.invalid");
+  await select("Department", "Department AI");
+  await select("Team", "Team AI");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("Vui lòng chọn chức vụ.");
+  const position = screen.getByRole("combobox", { name: "Chức vụ" });
+  expect(position.getAttribute("aria-invalid")).toBe("true");
+  expect(requests("/api/usermmanager/", "POST")).toHaveLength(0);
+  expect(screen.getByRole("dialog")).toBeTruthy();
+  await select("Chức vụ", "Developer");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn chức vụ.")).toBeNull(),
+  );
+  expect(position.getAttribute("aria-invalid")).not.toBe("true");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const writes = requests("/api/usermmanager/", "POST");
+  expect(writes).toHaveLength(1);
+  const body = writes[0][1]!.body as FormData;
+  expect(body.get("chucvu")).toBe("13");
+});

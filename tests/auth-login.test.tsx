@@ -512,3 +512,59 @@ it("does not recreate the session when a refresh finishes after logout", async (
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
 });
+
+it("replaces cached access with fresh revoked permissions before opening a page", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  localStorage.setItem(
+    STORAGE_USER_PERMISSION_KEY,
+    JSON.stringify({
+      username: "Cached admin",
+      userId: 42,
+      permission: { can_view: true, can_system: true },
+    }),
+  );
+  let finish!: (response: Response) => void;
+  fetchMock.mockImplementationOnce(
+    () =>
+      new Promise<Response>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  renderApp("/settings/users");
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+  expect(screen.queryByRole("heading", { name: "Người dùng" })).toBeNull();
+  await act(async () =>
+    finish(
+      Response.json({
+        ...account,
+        userPermission: [],
+        handlingPermission: {},
+        is_handling: false,
+      }),
+    ),
+  );
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(screen.queryByText("Cấu hình hệ thống")).toBeNull();
+  expect(fetchMock).toHaveBeenCalledOnce();
+  expect(
+    JSON.parse(localStorage.getItem(STORAGE_USER_PERMISSION_KEY) ?? "{}")
+      .permission.can_system,
+  ).toBeUndefined();
+});
+
+it.each(["getItem", "setItem", "removeItem"] as const)(
+  "keeps login and logout usable when browser storage blocks %s",
+  async (method) => {
+    vi.spyOn(Storage.prototype, method).mockImplementation(() => {
+      throw new DOMException("Storage blocked", "SecurityError");
+    });
+    mockSuccessfulLogin();
+    renderApp();
+    await submitLogin();
+    await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+    fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+    await screen.findByRole("button", { name: "Sign In to Ticket" });
+    expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  },
+);

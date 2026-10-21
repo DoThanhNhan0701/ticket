@@ -45,7 +45,7 @@ export async function getUserPermissionRequest(): Promise<UserPermissionResponse
       is_admin: response.is_admin ?? false,
       is_superuser: response.is_superuser ?? false,
       is_handling: response.is_handling ?? false,
-      can_process: response.is_handling ?? false,
+      can_process: response.is_handling || roles.includes("can_process"),
       can_assign: response.can_assign ?? false,
       can_report_all_groups: Object.keys(response.handlingPermission).includes(
         "AD",
