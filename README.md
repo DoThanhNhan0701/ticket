@@ -224,6 +224,27 @@ Contextual URLs are `/tickets/:ticketID`, `/tickets/from-email/:ticketID`, `/set
 
 The collapsed desktop sidebar shows one 44px icon per permitted group, with a hover tooltip and an active-group marker. Clicking a group or pressing Enter opens its labeled links in a popover on the right. Opening focuses the first link; Escape closes the popover and restores focus. Selecting a page closes it, and switching to the mobile breakpoint dismisses open desktop popovers. Expanded and mobile navigation retain the grouped list. Sidebar width and explicitly opened/closed groups persist in localStorage under `ticket.sidebar` across reloads; desktop and mobile share the group preferences. Invalid or unavailable storage falls back to usable navigation defaults.
 
+## Recruitment
+
+The four recruitment screens use the ticketV2 API contracts:
+
+- `/recruitment/requests`: date, department, owner, title and status filters; pagination; editable recruitment details, attachments, public CV-link copying, candidate creation and Excel export. Ticket-owned fields remain read-only when updating recruitment details.
+- `/recruitment/candidates`: search and advanced filters, candidate details/files, status changes, duplicate checks, notes, individual/bulk interview assignment, deletion and Excel export.
+- `/recruitment/interviews`: month/week/day calendar with time slots, overlapping schedules, interviewer username filtering, creation, editing, deletion and contextual candidate navigation.
+- `/recruitment/reports`: eight report tabs with tables, count charts, date filtering (up to six months) and Excel export.
+
+The contextual interview screen supports search, gender/status filters, profile viewing and feedback. `can_cv_interview` permits access; editing profiles, setting candidate times and removing assignments additionally require `can_hr_rec`. Viewing a profile does not load HR user directories or expose save controls. API access must also be enforced by the backend.
+
+Forms reject invalid dates, future birthdays, invalid phone/email values, unknown options and reversed interview times. Dependent district/schedule lists must finish loading before submission. After a failed submit, correcting a field clears its validation error. Candidate creation requires a district, as confirmed against the live API; education and source are optional. CV uploads are limited to 10 MB and note uploads to 50 MB. Note files use the authenticated download endpoint.
+
+Regression tests are `tests/recruitment*.test.ts*`. `tests/browser/ticket-recruitment-workflows.cjs` performs live browser QC against the preview at `BASE_URL` (default `http://127.0.0.1:5189`), using JSON credentials on stdin. Configure `PLAYWRIGHT_MODULE` and `BROWSER_EXECUTABLE` for the local browser installation. This script creates/updates isolated `TEST QC` records, exports files and removes its temporary boundary-test candidates. It reuses the named TEST candidate and schedule on repeated runs. `tests/browser/ticket-recruitment-readback.cjs` checks the calendar, reports and access denial with separate admin, interview-only and no-permission accounts, supplied in its documented stdin shape. The checked-in artifacts record the 2026-10-21 run; `ticket-recruitment-qc-summary.json` documents retained TEST records, cleanup and validation limits. Credentials are not stored in them.
+
+`tests/browser/ticket-recruitment-ui-boundaries.cjs` checks responsive light/dark layouts at 1440, 768, 390 and 320px, date and candidate validation recovery, independent upload errors, calendar action visibility and selected-date defaults. Supply `{ "admin": { "username": "...", "password": "..." } }` on stdin; invalid-form QC blocks all business mutations. The UI/code review results and local SonarJS audit are recorded in `tests/artifacts/ticket-recruitment-ui-review.json`.
+
+The 20-candidate live QC run is recorded in `tests/artifacts/ticket-recruitment-20-summary.json` (detailed evidence: `ticket-recruitment-20-records.json`). It created `TEST_REC20_261021` candidates 412–431, deleted 430–431 through the UI and retained 18 candidates plus TEST schedules 60–62. Two diagnostic candidates and schedule 63 were removed. `tests/browser/ticket-recruitment-20-records.cjs` / `ticket-recruitment-20-scenarios.cjs` contain the run-specific UI scenarios; `QC_PHASE` selects a phase and credentials are read from stdin. These fixtures are tied to 2026-10-21 and recruitment request 84; do not reuse them as a generic seed script. Creation now requires address, and stored timestamps use Vietnam dates in the editor. General-list gender/city filters are excluded to match ticketV2's disabled controls and API support; contextual interview gender filtering remains. The summary distinguishes resolved frontend issues from three outstanding API issues: empty candidate searches (500), schedule notes that do not persist despite a 200 response, and report export for 2026-10-21 (500).
+
+Known live backend issue: `/api/list_cv/` can return HTTP 500 when filters have no matching candidates. The screen exposes the error and retry action; it does not misreport a server failure as an empty successful result. The public CV application form remains hosted on the legacy backend and is outside these four screens.
+
 ## Project structure
 
 ```text
@@ -240,6 +261,7 @@ src/
 ├── constants/              # Shared application constants
 ├── features/
 │   ├── auth/               # Authentication API, context, provider, hooks and schemas
+│   ├── recruitment/        # Recruitment lists, candidate forms, interview calendar and reports
 │   ├── projects/           # Shared project-card presentation and icon selection
 │   └── requests/           # Request API, schemas, column/filter configuration and list composition
 ├── hooks/                  # Hooks shared across features, including debounce

@@ -1,0 +1,382 @@
+{
+  "checks": [
+    {
+      "case": "requests: responsive light/dark UI at 1440, 768, 390, 320px",
+      "result": "passed"
+    },
+    {
+      "case": "Date range errors clear after correction; drafts never fetch; identical Search refreshes the list",
+      "result": "passed"
+    },
+    {
+      "case": "Candidate required/phone/email errors recover on change; create modal fits 320px; cancel creates no data",
+      "result": "passed"
+    },
+    {
+      "case": "candidates: responsive light/dark UI at 1440, 768, 390, 320px",
+      "result": "passed"
+    },
+    {
+      "case": "Oversized CV remains invalid after selecting a valid note; clearing the CV clears its own error",
+      "result": "passed"
+    },
+    {
+      "case": "Status change requires an explicit different status and never writes a blank status",
+      "result": "passed"
+    },
+    {
+      "case": "interviews: responsive light/dark UI at 1440, 768, 390, 320px",
+      "result": "passed"
+    },
+    {
+      "case": "One-hour calendar events expose all action buttons without internal scrolling",
+      "result": "passed"
+    },
+    {
+      "case": "Create uses the selected date and reversed interview times recover after correction",
+      "result": "passed"
+    },
+    {
+      "case": "interview-candidates: responsive light/dark UI at 1440, 768, 390, 320px",
+      "result": "passed"
+    },
+    {
+      "case": "Interview candidate gender selection uses the shared control and sends the real API filter",
+      "result": "passed"
+    },
+    {
+      "case": "reports: responsive light/dark UI at 1440, 768, 390, 320px",
+      "result": "passed"
+    },
+    {
+      "case": "Report six-month range validation recovers after correction",
+      "result": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "mutations": [],
+  "layouts": [
+    {
+      "page": "requests",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "requests",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "requests",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "requests",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "requests",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "requests",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "requests",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "requests",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "candidates",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "candidates",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "candidates",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "candidates",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "candidates",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "candidates",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "candidates",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "candidates",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interviews",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interviews",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interviews",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interviews",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interviews",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interviews",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interviews",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interviews",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "interview-candidates",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "reports",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "reports",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "reports",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "reports",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "reports",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "reports",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "searchHeight": 40,
+      "resetHeight": 40
+    },
+    {
+      "page": "reports",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    },
+    {
+      "page": "reports",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "searchHeight": 44,
+      "resetHeight": 44
+    }
+  ],
+  "apiErrors": [],
+  "result": "passed"
+}

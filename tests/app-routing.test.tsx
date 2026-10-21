@@ -76,6 +76,18 @@ vi.mock("@/features/requests/api/create-request-api", () => ({
   importRequestTemplate: vi.fn(),
 }));
 
+vi.mock("@/features/recruitment/api/recruitment-api", () => ({
+  listRecruitment: vi.fn().mockResolvedValue({ count: 0, results: [] }),
+  recruitmentLookups: vi.fn().mockResolvedValue({}),
+  recruitmentArray: vi.fn().mockResolvedValue([]),
+  recruitmentObject: vi.fn().mockResolvedValue({}),
+  interviewDetail: vi.fn().mockResolvedValue([]),
+  recruitmentDetail: vi.fn(),
+  recruitmentWrite: vi.fn(),
+  recruitmentMultipart: vi.fn(),
+  exportRecruitment: vi.fn(),
+}));
+
 let client: QueryClient;
 let auth: AuthContextValue;
 

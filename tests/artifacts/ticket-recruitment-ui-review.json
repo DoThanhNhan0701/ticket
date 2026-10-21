@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-21",
+  "scope": [
+    "/recruitment/requests",
+    "/recruitment/candidates",
+    "/recruitment/interviews",
+    "/recruitment/reports",
+    "/recruitment/interviews/:codeInterview"
+  ],
+  "changes": [
+    "Shared typed row actions replace tuple casts and duplicate button rendering.",
+    "Interview CV filters now use the same labeled controls and search/reset buttons as the four recruitment pages; filters remain mounted during loading.",
+    "Date range errors revalidate as either date changes, without fetching unapplied drafts.",
+    "Search refetches unchanged filters; pagination recovers to page 1 on zero results; candidate selection clears on URL and browser-history changes.",
+    "List actions, selection and bulk interview assignment are disabled while rows refresh.",
+    "Oversized upload errors are independent for CV and note files.",
+    "Interview creation uses the selected calendar date.",
+    "Calendar slots expose action buttons; disjoint groups restore full event width after overlapping schedules.",
+    "Payload normalization and assignee defaults were split into focused helpers without changing the live API contract."
+  ],
+  "uiQc": {
+    "result": "passed",
+    "groupsPassed": 13,
+    "layoutCombinations": 40,
+    "viewportWidths": [1440, 768, 390, 320],
+    "themes": ["light", "dark"],
+    "pageErrors": [],
+    "invalidFormMutations": [],
+    "details": "ticket-recruitment-ui-boundaries.json"
+  },
+  "livePermissionQc": {
+    "result": "passed",
+    "accounts": ["admin", "test_p261021_cv_interview", "test_p261021_none"],
+    "checksPassed": 18,
+    "details": "ticket-recruitment-readback.json"
+  },
+  "liveWorkflowRegression": {
+    "result": "passed",
+    "details": "ticket-recruitment-ui-workflows.json",
+    "note": "Uses retained TEST records; original creation evidence remains in ticket-recruitment-workflows.json."
+  },
+  "localCodeAudit": {
+    "method": "SonarJS recommended rules, local code analysis only",
+    "filesAnalyzed": 22,
+    "findingsBefore": 3,
+    "findingsAfter": 0,
+    "sonarQubeServerScan": "Not run, as requested by the user. This is not a server Quality Gate result."
+  },
+  "automatedChecks": {
+    "testFiles": 32,
+    "passedTests": 816,
+    "recruitmentTests": 71,
+    "statementsCoverage": 91.4,
+    "branchesCoverage": 87.42,
+    "functionsCoverage": 88.91,
+    "linesCoverage": 92.1,
+    "lint": "passed",
+    "format": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "retainedTestRecords": {
+    "candidate": "CV_261021_409",
+    "interview": "TEST QC Interview 261021"
+  },
+  "knownBackendLimitation": "The previously recorded /api/list_cv/ HTTP 500 for filters without matching candidates requires a backend fix; no generic server failures are converted into successful empty results."
+}

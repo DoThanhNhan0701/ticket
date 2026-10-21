@@ -1,0 +1,137 @@
+{
+  "prefix": "TEST_REC_261021",
+  "candidateName": "TEST QC Recruitment 261021",
+  "interviewTitle": "TEST QC Interview 261021",
+  "checks": [
+    {
+      "case": "Create, validate and edit TEST candidate with file",
+      "result": "passed"
+    },
+    {
+      "case": "Change CV status",
+      "result": "passed"
+    },
+    {
+      "case": "Check duplicate profiles",
+      "result": "passed"
+    },
+    {
+      "case": "Edit interview and reload persisted schedule",
+      "result": "passed"
+    },
+    {
+      "case": "Attach candidate to interview",
+      "result": "passed"
+    },
+    {
+      "case": "View assigned CV and add interview feedback",
+      "result": "passed"
+    },
+    {
+      "case": "Set candidate interview time and read back",
+      "result": "passed"
+    },
+    {
+      "case": "Read-only candidate detail and persisted feedback",
+      "result": "passed"
+    },
+    {
+      "case": "Remove TEST candidate from interview",
+      "result": "passed"
+    },
+    {
+      "case": "Delete TEST attachments and boundary candidate records",
+      "result": "passed",
+      "ids": [411, 410]
+    },
+    {
+      "case": "Export Yêu cầu Excel with applied filters",
+      "result": "passed"
+    },
+    {
+      "case": "Export Ứng viên Excel with applied filters",
+      "result": "passed"
+    }
+  ],
+  "result": "passed",
+  "candidateRequestValues": {
+    "first_name": "TEST QC Recruitment 261021",
+    "birthday": "2000-01-01",
+    "gender": "Nam",
+    "numberphone": "0900000000",
+    "city_code": "01",
+    "district_code": "001",
+    "address": "TEST QC address",
+    "email": "test-recruitment-261021@example.invalid",
+    "education_level": 1,
+    "education_major": "TEST QC",
+    "language_skill": "TEST English",
+    "candidate_source": 1,
+    "note": "TEST QC candidate creation",
+    "department_recruited": "13"
+  },
+  "candidate": {
+    "id": 409,
+    "code": "CV_261021_409"
+  },
+  "interview": {
+    "id": 58,
+    "startDate": "2026-10-22"
+  },
+  "pageErrors": [],
+  "writes": [
+    {
+      "method": "PUT",
+      "path": "/api/detail_cv/409"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/add-cv-interview/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/del-cv-interview/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/del-file-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/del-file-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/export-recruitment/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/export-cv/"
+    },
+    {
+      "method": "POST",
+      "path": "/api/add-cv-interview/"
+    }
+  ],
+  "finalState": "Primary TEST candidate retained and attached to TEST interview; auxiliary candidates removed."
+}

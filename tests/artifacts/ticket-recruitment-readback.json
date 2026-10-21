@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "case": "Read request detail with correct editable and ticket-owned fields",
+      "result": "passed"
+    },
+    {
+      "case": "Calendar view Tháng",
+      "result": "passed"
+    },
+    {
+      "case": "Calendar view Ngày",
+      "result": "passed"
+    },
+    {
+      "case": "Calendar view Tuần",
+      "result": "passed"
+    },
+    {
+      "case": "Report Theo yêu cầu tuyển dụng",
+      "result": "passed"
+    },
+    {
+      "case": "Report Theo bộ phận",
+      "result": "passed"
+    },
+    {
+      "case": "Report Theo người phụ trách",
+      "result": "passed"
+    },
+    {
+      "case": "Report Thời gian tuyển dụng",
+      "result": "passed"
+    },
+    {
+      "case": "Report Theo nguồn ứng viên",
+      "result": "passed"
+    },
+    {
+      "case": "Report Tỷ lệ chuyển đổi CV",
+      "result": "passed"
+    },
+    {
+      "case": "Report Trạng thái CV",
+      "result": "passed"
+    },
+    {
+      "case": "Report Bộ phận theo tháng",
+      "result": "passed"
+    },
+    {
+      "case": "Export report Excel",
+      "result": "passed"
+    },
+    {
+      "case": "Report fits mobile viewport",
+      "result": "passed"
+    },
+    {
+      "case": "viewer cannot mount or fetch the four HR pages",
+      "result": "passed"
+    },
+    {
+      "case": "Unassigned interview-only real account preserves backend record access denial",
+      "result": "passed"
+    },
+    {
+      "case": "none cannot mount or fetch the four HR pages",
+      "result": "passed"
+    },
+    {
+      "case": "No-permission account cannot access interview detail",
+      "result": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "exportBytes": 22261,
+  "result": "passed"
+}

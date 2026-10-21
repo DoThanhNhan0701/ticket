@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-21",
+  "prefix": "TEST_REC20_261021",
+  "result": "completed-with-backend-issues",
+  "method": "Real browser UI only; live API responses observed, never mocked. Mutations restricted to this run's TEST records.",
+  "summary": {
+    "mainCreated": 20,
+    "mainDeleted": 2,
+    "mainRetained": 18,
+    "auxiliaryCreatedAndDeleted": 2,
+    "retainedCodes": [
+      "CV_261021_412",
+      "CV_261021_413",
+      "CV_261021_414",
+      "CV_261021_415",
+      "CV_261021_416",
+      "CV_261021_417",
+      "CV_261021_418",
+      "CV_261021_419",
+      "CV_261021_420",
+      "CV_261021_421",
+      "CV_261021_422",
+      "CV_261021_423",
+      "CV_261021_424",
+      "CV_261021_425",
+      "CV_261021_426",
+      "CV_261021_427",
+      "CV_261021_428",
+      "CV_261021_429"
+    ],
+    "retainedSchedules": [60, 61, 62],
+    "openBackendIssues": 3,
+    "checkResults": {
+      "failed": 15,
+      "passed": 221
+    }
+  },
+  "phases": {
+    "create": {
+      "result": "passed",
+      "at": "2026-10-21T05:23:44.921Z"
+    },
+    "verify": {
+      "result": "passed",
+      "at": "2026-10-21T05:45:26.184Z"
+    },
+    "probes": {
+      "result": "passed",
+      "at": "2026-10-21T05:30:22.118Z"
+    },
+    "repair": {
+      "result": "passed",
+      "at": "2026-10-21T05:32:36.730Z"
+    },
+    "interviews": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:38:22.785Z"
+    },
+    "statuses": {
+      "result": "passed",
+      "at": "2026-10-21T05:39:25.383Z"
+    },
+    "filters": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:45:00.858Z"
+    },
+    "reports": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:46:32.227Z"
+    },
+    "edges": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:47:16.826Z"
+    },
+    "cleanup": {
+      "result": "passed",
+      "at": "2026-10-21T05:47:26.300Z"
+    }
+  },
+  "issues": [
+    {
+      "id": "required-create-address",
+      "state": "fixed-and-retested",
+      "evidence": [
+        "probe-MIN_ADDRESS-initial",
+        "required-address-blocks-before-api-and-recovers"
+      ],
+      "description": "API requires address when creating a CV. The create form now requires it, blocks invalid submission and clears errors after correction."
+    },
+    {
+      "id": "application-date-utc",
+      "state": "fixed-and-retested",
+      "evidence": ["readback-12", "readback-13"],
+      "description": "Convert API timestamp to Vietnam business date before populating form; repaired both TEST records and verified UI dates after reload."
+    },
+    {
+      "id": "unsupported-list-filters",
+      "state": "removed-and-retested",
+      "description": "Live gender=Nam returned all 20 CVs, including female CVs. ticketV2 disables gender/city filters in the general CV list. Removed these unsupported general-list controls and query parameters; contextual interview gender filtering remains."
+    },
+    {
+      "id": "empty-candidate-search",
+      "state": "open-backend",
+      "endpoint": "GET /api/list_cv/",
+      "status": 500,
+      "evidence": ["search-with-no-results"]
+    },
+    {
+      "id": "interview-note-update",
+      "state": "open-backend",
+      "endpoint": "PUT /api/regis-interview/",
+      "status": 200,
+      "evidence": ["interview-edit-reload", "interview-note-delayed-readback"],
+      "description": "TEST schedule 60: edited note is sent, but both immediate and delayed live list reloads return the original note."
+    },
+    {
+      "id": "report-export-one-day",
+      "state": "open-backend",
+      "endpoint": "POST /api/export_rect/",
+      "status": 500,
+      "range": ["2026-10-21", "2026-10-21"],
+      "evidence": ["export-report-real-created-day"],
+      "description": "One-day report export fails; historical-range report export succeeded in the separate readback run."
+    }
+  ],
+  "limitations": [
+    "The 20 records are candidate profiles, not 20 recruitment requests. Existing recruitment request 84 is read-only; detail viewing and export were tested, live request-detail updates were not performed.",
+    "Schedules have no assigned interviewers; no real staff invitations were sent. Positive access for an assigned interview-only user was not tested; forbidden routes and unassigned-user denial were tested.",
+    "Checks cover the enumerated scenarios, not every possible input or backend condition. Initial failed probes are preserved as historical evidence; resolved issues and subsequent successful checks identify the final state."
+  ],
+  "verification": {
+    "fullSuite": {
+      "passed": 826,
+      "files": 32,
+      "statementCoverage": 91.38
+    },
+    "afterFinalFilterChange": {
+      "passed": 105,
+      "files": 5
+    },
+    "readOnlyBrowser": {
+      "passed": 18
+    },
+    "uiBoundariesBrowser": {
+      "passed": 13,
+      "viewportWidths": [1440, 768, 390, 320],
+      "themes": ["light", "dark"]
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "sonarjsLocal": {
+      "errors": 0,
+      "warnings": 0,
+      "serverScan": false
+    }
+  },
+  "detailArtifact": "tests/artifacts/ticket-recruitment-20-records.json"
+}

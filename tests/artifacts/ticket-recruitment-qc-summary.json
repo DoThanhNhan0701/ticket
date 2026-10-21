@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-21",
+  "reference": "Local ticketV2 recruitment screens and live ticket API",
+  "browser": {
+    "workflows": "ticket-recruitment-workflows.json",
+    "readbackAndPermissions": "ticket-recruitment-readback.json",
+    "calendarCreationAndDeletion": {
+      "title": "TEST QC Delete Interview 261021",
+      "checks": [
+        {
+          "case": "Create temporary TEST interview with no interviewers",
+          "result": "passed"
+        },
+        {
+          "case": "Delete temporary TEST interview and verify after reload",
+          "result": "passed"
+        }
+      ],
+      "createdStatus": 200,
+      "deletedStatus": 200,
+      "result": "passed"
+    }
+  },
+  "retainedTestRecords": {
+    "candidate": {
+      "id": 409,
+      "code": "CV_261021_409"
+    },
+    "interview": {
+      "id": 58,
+      "title": "TEST QC Interview 261021",
+      "date": "2026-10-22"
+    }
+  },
+  "cleanup": "Boundary TEST candidates 410 and 411, their CV files and the temporary deletion-test interview were removed through the UI. Primary TEST candidate and interview retained for manual review.",
+  "backendObservations": [
+    {
+      "endpoint": "/api/list_cv/",
+      "case": "No candidates match the applied filters",
+      "status": 500,
+      "handling": "Show server error with retry; do not conceal it as a successful empty result."
+    },
+    {
+      "endpoint": "/api/regis-interview/:code",
+      "case": "Last assigned candidate was removed",
+      "status": 400,
+      "message": "Không tìm thấy ứng viên.",
+      "handling": "Recognize only this exact domain response as an empty interview candidate list; preserve other errors."
+    },
+    {
+      "endpoint": "/api/regis-interview/:code",
+      "case": "Interview-only TEST account is not assigned to the schedule",
+      "status": 400,
+      "message": "Không có quyền truy cập. Vui lòng liên hệ bộ phận nhân sự.",
+      "handling": "Preserve backend record access denial; no editing actions exposed."
+    }
+  ],
+  "validationLimits": [
+    "Recruitment request update payload and readonly-field protection are covered by unit tests. Live browser QC opened existing request details and exported them; it did not modify an existing real recruitment request.",
+    "The interview-only positive profile/feedback UI is covered by component tests; the live unassigned TEST account correctly received backend record access denial."
+  ],
+  "automatedChecks": {
+    "testFiles": 32,
+    "passedTests": 808,
+    "statementsCoverage": 90.65,
+    "branchesCoverage": 86.65,
+    "functionsCoverage": 87.83,
+    "linesCoverage": 91.38
+  }
+}

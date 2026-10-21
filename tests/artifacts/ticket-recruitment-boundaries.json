@@ -1,0 +1,25 @@
+{
+  "method": "Real API optional-field boundary probes using the same valid TEST candidate payload and PDF",
+  "recruitmentId": 84,
+  "cases": [
+    {
+      "omitted": "candidate_source",
+      "first_name": "TEST QC Missing Source 261021",
+      "status": 200,
+      "reused": true,
+      "id": 410
+    },
+    {
+      "omitted": "education_level",
+      "first_name": "TEST QC Missing Education 261021",
+      "status": 200,
+      "message": "Tạo CV thành công"
+    },
+    {
+      "omitted": "district_code",
+      "first_name": "TEST QC Missing District 261021",
+      "status": 400,
+      "message": "Tạo CV thất bại."
+    }
+  ]
+}

@@ -19,6 +19,10 @@ import type { RequestListScope } from "@/features/requests/types";
 import { SettingsList } from "@/features/settings/components/settings-list";
 import { getSettingsKind } from "@/features/settings/utils/settings-config";
 import { ReportsPage } from "@/features/reports/components/reports-page";
+import { RecruitmentList } from "@/features/recruitment/components/recruitment-list";
+import { RecruitmentCalendar } from "@/features/recruitment/components/recruitment-calendar";
+import { RecruitmentReport } from "@/features/recruitment/components/recruitment-report";
+import { InterviewCandidates } from "@/features/recruitment/components/interview-candidates";
 
 const requestListScopesByPath: Readonly<
   Partial<Record<string, RequestListScope>>
@@ -56,6 +60,23 @@ export function WorkspacePage({
     content = <ReportsPage key="report-dashboard" />;
   if (page.path === "/reports/export")
     content = <ReportsPage key="report-export" mode="export" />;
+  if (page.path === "/recruitment/requests")
+    content = (
+      <RecruitmentList key={`recruitment-requests-${userId}`} kind="requests" />
+    );
+  if (page.path === "/recruitment/candidates")
+    content = (
+      <RecruitmentList
+        key={`recruitment-candidates-${userId}`}
+        kind="candidates"
+      />
+    );
+  if (page.path === "/recruitment/interviews")
+    content = <RecruitmentCalendar key={`recruitment-calendar-${userId}`} />;
+  if (page.path === "/recruitment/reports")
+    content = <RecruitmentReport key={`recruitment-reports-${userId}`} />;
+  if (page.path === "/recruitment/interviews/:codeInterview")
+    content = <InterviewCandidates key={`recruitment-interview-${userId}`} />;
 
   if (page.path === "/settings")
     content = <LegacyPageRedirect to="/settings/users" />;

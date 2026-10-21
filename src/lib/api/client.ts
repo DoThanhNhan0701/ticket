@@ -20,7 +20,7 @@ import {
 
 const API_BASE_URL = getApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
 
-type HttpMethod = "GET" | "POST" | "PUT";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface RequestOptions {
   headers?: Record<string, string>;
@@ -238,6 +238,13 @@ export function putRequest<T>(
   options: RequestOptions = {},
 ): Promise<T> {
   return request<T>("PUT", endpoint, options);
+}
+
+export function deleteRequest<T>(
+  endpoint: string,
+  options: RequestOptions = {},
+): Promise<T> {
+  return request<T>("DELETE", endpoint, options);
 }
 
 export async function postWithSlashFallback<T>(

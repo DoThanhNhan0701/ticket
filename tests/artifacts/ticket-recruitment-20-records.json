@@ -1,0 +1,3382 @@
+{
+  "prefix": "TEST_REC20_261021",
+  "date": "2026-10-21",
+  "method": "Real browser UI only; live API responses observed, never mocked. Mutations restricted to this run's TEST records.",
+  "records": [
+    {
+      "index": 1,
+      "key": "TEST_REC20_261021_01",
+      "name": "TEST_REC20_261021_01 Ứng viên Nam",
+      "id": 412,
+      "code": "CV_261021_412",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_01 TEST address",
+        "email": "qc20-1@example.invalid",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_01.pdf",
+        "bytes": 559,
+        "sha256": "366f5adfae22e5fd6f546836e933f87f47ab7ed7a02f6713068efc3d7b9fbce0"
+      },
+      "currentStatus": 1,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_01 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_01 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:00",
+      "targetStatus": 1
+    },
+    {
+      "index": 2,
+      "key": "TEST_REC20_261021_02",
+      "name": "TEST_REC20_261021_02 Ứng viên Nữ",
+      "id": 413,
+      "code": "CV_261021_413",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_02 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "09000000002",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_02 Địa chỉ TEST",
+        "email": "qc20-2@example.invalid",
+        "education_level": 3,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 3,
+        "note": "TEST_REC20_261021_02 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_02.pdf",
+        "bytes": 559,
+        "sha256": "708f833dea33276c33f85793af50480c2a4849e0b2f85b9d3b2679014bc4db9c"
+      },
+      "currentStatus": 2,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_02 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_02 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:03",
+      "targetStatus": 2
+    },
+    {
+      "index": 3,
+      "key": "TEST_REC20_261021_03",
+      "name": "TEST_REC20_261021_03 Ứng viên Nam",
+      "id": 414,
+      "code": "CV_261021_414",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_03 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "090000000003",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_03 Địa chỉ TEST",
+        "email": "qc20-3@example.invalid",
+        "education_level": 4,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 4,
+        "note": "TEST_REC20_261021_03 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_03.pdf",
+        "bytes": 559,
+        "sha256": "97cbef2736b77701cd9a9941056a537420176243ec7981478c0b116eda55596c"
+      },
+      "currentStatus": 3,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_03 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_03 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:06",
+      "targetStatus": 3
+    },
+    {
+      "index": 4,
+      "key": "TEST_REC20_261021_04",
+      "name": "TEST_REC20_261021_04 Ứng viên Nữ",
+      "id": 415,
+      "code": "CV_261021_415",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_04 Ứng viên Nữ",
+        "birthday": "2000-02-29",
+        "gender": "Nữ",
+        "numberphone": "0900000004",
+        "city_code": "02",
+        "district_code": "024",
+        "address": "TEST_REC20_261021_04 Địa chỉ TEST",
+        "email": "qc20-4@example.invalid",
+        "education_level": 1,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 5,
+        "note": "TEST_REC20_261021_04 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_04.pdf",
+        "bytes": 559,
+        "sha256": "fe3f152b04674f20bb80ebe7aa52de953f405e6f292568f09240bd8290c02081"
+      },
+      "currentStatus": 4,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_04 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_04 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:09",
+      "targetStatus": 4
+    },
+    {
+      "index": 5,
+      "key": "TEST_REC20_261021_05",
+      "name": "TEST_REC20_261021_05 ĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐ",
+      "id": 416,
+      "code": "CV_261021_416",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_05 ĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐĐ",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000005",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_05 Địa chỉ TEST",
+        "email": "qc20-5@example.invalid",
+        "education_level": 2,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 1,
+        "note": "TEST_REC20_261021_05 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_05.pdf",
+        "bytes": 559,
+        "sha256": "dd773691b891aa5722dc9c679f6cc0f7afed0cac0a776b8ca3dd98b818354ae8"
+      },
+      "currentStatus": 5,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_05 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_05 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:12",
+      "targetStatus": 5
+    },
+    {
+      "index": 6,
+      "key": "TEST_REC20_261021_06",
+      "name": "TEST_REC20_261021_06 Ứng viên Nữ",
+      "id": 417,
+      "code": "CV_261021_417",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_06 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000006",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_06 Địa chỉ TEST",
+        "email": "QC20+plus@example.invalid",
+        "education_level": 3,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 2,
+        "note": "TEST_REC20_261021_06 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_06.pdf",
+        "bytes": 559,
+        "sha256": "a501eb03a76ac7c6e81dda98c2b4ed6ad51e3fc0262342888c0055eeb2367dbd"
+      },
+      "currentStatus": 6,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_06 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_06 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:15",
+      "targetStatus": 6
+    },
+    {
+      "index": 7,
+      "key": "TEST_REC20_261021_07",
+      "name": "TEST_REC20_261021_07 Ứng viên Nam",
+      "id": 418,
+      "code": "CV_261021_418",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_07 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000007",
+        "city_code": "02",
+        "district_code": "024",
+        "address": "TEST_REC20_261021_07 Địa chỉ TEST",
+        "email": "qc20-7@example.invalid",
+        "education_level": 4,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 3,
+        "note": "TEST_REC20_261021_07 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_07.pdf",
+        "bytes": 559,
+        "sha256": "c037a596641fe1035c786b3d09713dcf63ec45c2c9d541facc407c91f95263c9"
+      },
+      "currentStatus": 8,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_07 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_07 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:18",
+      "targetStatus": 8
+    },
+    {
+      "index": 8,
+      "key": "TEST_REC20_261021_08",
+      "name": "TEST_REC20_261021_08 Ứng viên Nữ",
+      "id": 419,
+      "code": "CV_261021_419",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_08 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000008",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_08 Địa chỉ TEST",
+        "email": "qc20-8@example.invalid",
+        "education_level": 1,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 4,
+        "note": "TEST_REC20_261021_08 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_08.pdf",
+        "bytes": 10485760,
+        "sha256": "2d24cd77e753ec4609871ff09355f27a20b80b82dbfba88ac5d94489ab6ba1fa"
+      },
+      "currentStatus": 9,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_08 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_08 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:21",
+      "targetStatus": 9
+    },
+    {
+      "index": 9,
+      "key": "TEST_REC20_261021_09",
+      "name": "TEST_REC20_261021_09 Ứng viên Nam",
+      "id": 420,
+      "code": "CV_261021_420",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_09 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000009",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_09 Địa chỉ TEST",
+        "email": "qc20-9@example.invalid",
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 5,
+        "note": "TEST_REC20_261021_09 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_09.pdf",
+        "bytes": 559,
+        "sha256": "58568c9434d4dc7565f75dc0954039233445a328911aced96a952ff3df726e4b"
+      },
+      "currentStatus": 10,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_09 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_09 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:24",
+      "targetStatus": 10
+    },
+    {
+      "index": 10,
+      "key": "TEST_REC20_261021_10",
+      "name": "TEST_REC20_261021_10 Ứng viên Nữ",
+      "id": 421,
+      "code": "CV_261021_421",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_10 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000010",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_10 Địa chỉ TEST",
+        "email": "qc20-10@example.invalid",
+        "education_level": 3,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "note": "TEST_REC20_261021_10 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_10.pdf",
+        "bytes": 559,
+        "sha256": "50fdead432ff6df1c12bc4f0c60404aeac441d10f2e8e35c390ce4382244fa98"
+      },
+      "currentStatus": 1,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_10 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_10 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:27",
+      "targetStatus": 1
+    },
+    {
+      "index": 11,
+      "key": "TEST_REC20_261021_11",
+      "name": "TEST_REC20_261021_11 Ứng viên Nam",
+      "id": 422,
+      "code": "CV_261021_422",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_11 TEST address",
+        "email": "qc20-11@example.invalid",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_11.pdf",
+        "bytes": 559,
+        "sha256": "07c370d651bbfca1c5a3121fc61d73b3bf10599b6a6144f35d27d597f9c50c51"
+      },
+      "currentStatus": 2,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_11 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_11 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:30",
+      "targetStatus": 2
+    },
+    {
+      "index": 12,
+      "key": "TEST_REC20_261021_12",
+      "name": "TEST_REC20_261021_12 Ứng viên Nữ",
+      "id": 423,
+      "code": "CV_261021_423",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_12 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000012",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_12 Địa chỉ TEST",
+        "email": "qc20-12@example.invalid",
+        "education_level": 1,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "application_date": "2019-12-31T17:00:00.000Z",
+        "candidate_source": 3,
+        "note": "TEST_REC20_261021_12 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_12.pdf",
+        "bytes": 559,
+        "sha256": "2c141cc92f824b0f6e97e950e105b435f170a59347b35c276b53ef6b14c41699"
+      },
+      "currentStatus": 3,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_12 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_12 địa chỉ UPDATED"
+      },
+      "dateRepair": {
+        "expected": "01/01/2020",
+        "verified": true
+      },
+      "interviewTime": "13:33",
+      "targetStatus": 3,
+      "historicalReadbackMismatches": [
+        {
+          "field": "application_date",
+          "expected": "2020-01-01",
+          "actual": "2019-12-31T17:00:00Z"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "key": "TEST_REC20_261021_13",
+      "name": "TEST_REC20_261021_13 Ứng viên Nam",
+      "id": 424,
+      "code": "CV_261021_424",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_13 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000013",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_13 Địa chỉ TEST",
+        "email": "qc20-13@example.invalid",
+        "education_level": 2,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "application_date": "2026-10-20T17:00:00.000Z",
+        "candidate_source": 4,
+        "note": "TEST_REC20_261021_13 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_13.pdf",
+        "bytes": 559,
+        "sha256": "d1a6503c633b4b5e85493cc0050a3ac0ba93566474fea0e4847eb93da1d874fd"
+      },
+      "currentStatus": 4,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_13 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_13 địa chỉ UPDATED"
+      },
+      "dateRepair": {
+        "expected": "21/10/2026",
+        "verified": true
+      },
+      "interviewTime": "13:36",
+      "targetStatus": 4,
+      "historicalReadbackMismatches": [
+        {
+          "field": "application_date",
+          "expected": "2026-10-21",
+          "actual": "2026-10-20T17:00:00Z"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "key": "TEST_REC20_261021_14",
+      "name": "TEST_REC20_261021_14 Ứng viên Nữ",
+      "id": 425,
+      "code": "CV_261021_425",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_14 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000014",
+        "city_code": "01",
+        "district_code": "002",
+        "address": "TEST_REC20_261021_14 Địa chỉ TEST",
+        "email": "qc20-14@example.invalid",
+        "education_level": 3,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 5,
+        "note": "TEST_REC20_261021_14 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_14.pdf",
+        "bytes": 559,
+        "sha256": "c8434fc3b406d545c32569997f89f1c7ea17b6467cde13bd16ecafe85f3b26ff"
+      },
+      "currentStatus": 5,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_14 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_14 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:39",
+      "targetStatus": 5
+    },
+    {
+      "index": 15,
+      "key": "TEST_REC20_261021_15",
+      "name": "TEST_REC20_261021_15 Ứng viên Nam",
+      "id": 426,
+      "code": "CV_261021_426",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_15 Ứng viên Nam",
+        "birthday": "2026-10-20",
+        "gender": "Nam",
+        "numberphone": "0900000015",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_15 Địa chỉ TEST",
+        "email": "qc20-15@example.invalid",
+        "education_level": 4,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 1,
+        "note": "TEST_REC20_261021_15 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_15.pdf",
+        "bytes": 559,
+        "sha256": "a9e4f60e529d9c04fea75f5f8aa3ff18601f5cb6fbb00da958f08f69416a53ad"
+      },
+      "currentStatus": 6,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_15 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_15 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:42",
+      "targetStatus": 6
+    },
+    {
+      "index": 16,
+      "key": "TEST_REC20_261021_16",
+      "name": "TEST_REC20_261021_16 Ứng viên Nữ",
+      "id": 427,
+      "code": "CV_261021_427",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_16 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000016",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_16 Địa chỉ TEST",
+        "email": "qc20-16@example.invalid",
+        "education_level": 1,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 2,
+        "note": "TEST_REC20_261021_16 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST CV tiếng Việt 261021.pdf",
+        "bytes": 559,
+        "sha256": "efc9d829dbd8c876fc08279b8b691127893c70669c7a0c78293e4ff97e7b83ff"
+      },
+      "currentStatus": 8,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_16 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_16 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:45",
+      "targetStatus": 8
+    },
+    {
+      "index": 17,
+      "key": "TEST_REC20_261021_17",
+      "name": "TEST_REC20_261021_17 Ứng viên Nam",
+      "id": 428,
+      "code": "CV_261021_428",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_17 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000017",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_17 Địa chỉ TEST",
+        "email": "qc20-17@example.invalid",
+        "education_level": 2,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 3,
+        "note": "TEST_REC20_261021_17 Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_Nội_dung_TEST_",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_17.pdf",
+        "bytes": 559,
+        "sha256": "e95a816fdd2dd2c77443782ccdc3388314d2b71cccaad83d48251421dbf2a5c3"
+      },
+      "currentStatus": 9,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_17 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_17 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:48",
+      "targetStatus": 9
+    },
+    {
+      "index": 18,
+      "key": "TEST_REC20_261021_18",
+      "name": "TEST_REC20_261021_18 Ứng viên Nữ",
+      "id": 429,
+      "code": "CV_261021_429",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_18 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "0900000018",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_18 Địa chỉ TEST",
+        "email": "qc20-18@example.invalid",
+        "education_level": 3,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 4,
+        "note": "TEST_REC20_261021_18 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_18.pdf",
+        "bytes": 559,
+        "sha256": "50e249da63c205de98b2ef064f9fbeb477d94ad36f08ebea5d0a510bb305557e"
+      },
+      "currentStatus": 10,
+      "deleted": false,
+      "edited": {
+        "note": "TEST_REC20_261021_18 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_18 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:51",
+      "targetStatus": 10
+    },
+    {
+      "index": 19,
+      "key": "TEST_REC20_261021_19",
+      "name": "TEST_REC20_261021_19 Ứng viên Nam",
+      "id": 430,
+      "code": "CV_261021_430",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_19 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_19 Địa chỉ TEST",
+        "email": "qc20-19@example.invalid",
+        "education_level": 4,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 5,
+        "note": "TEST_REC20_261021_19 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_19.pdf",
+        "bytes": 559,
+        "sha256": "2c4eb1d6529825411bad745c8951d56caceb0869185dc13097265e6732d0c524"
+      },
+      "currentStatus": 1,
+      "deleted": true,
+      "edited": {
+        "note": "TEST_REC20_261021_19 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_19 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:54",
+      "targetStatus": 1
+    },
+    {
+      "index": 20,
+      "key": "TEST_REC20_261021_20",
+      "name": "TEST_REC20_261021_20 Ứng viên Nữ",
+      "id": 431,
+      "code": "CV_261021_431",
+      "createStatus": 200,
+      "createdValues": {
+        "first_name": "TEST_REC20_261021_20 Ứng viên Nữ",
+        "birthday": "2000-01-01",
+        "gender": "Nữ",
+        "numberphone": "09000000002",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_20 Địa chỉ TEST",
+        "email": "qc20-2@example.invalid",
+        "education_level": 1,
+        "education_major": "TEST QC",
+        "language_skill": "TEST English",
+        "candidate_source": 1,
+        "note": "TEST_REC20_261021_20 tạo qua giao diện",
+        "department_recruited": "13"
+      },
+      "file": {
+        "name": "TEST_REC20_261021_20.pdf",
+        "bytes": 559,
+        "sha256": "239f3ee0fa5315ca71d33e3fe1aca8337449f76c5b96fb35dec560c15424d0fc"
+      },
+      "currentStatus": 2,
+      "deleted": true,
+      "edited": {
+        "note": "TEST_REC20_261021_20 UPDATED qua giao diện",
+        "address": "TEST_REC20_261021_20 địa chỉ UPDATED"
+      },
+      "interviewTime": "13:57",
+      "targetStatus": 2
+    }
+  ],
+  "checks": [
+    {
+      "id": "empty-search-backend",
+      "result": "failed",
+      "layer": "backend",
+      "status": 500,
+      "message": "No matching candidate search returns HTTP 500 instead of an empty list."
+    },
+    {
+      "id": "create-invalid-fields-no-write",
+      "result": "passed",
+      "cases": [
+        "required",
+        "name-too-short",
+        "invalid-phone",
+        "invalid-email",
+        "future-birthday"
+      ]
+    },
+    {
+      "id": "minimal-1-backend-rejection",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "sent": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "gender": "Nam",
+        "numberphone": "0002610001",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "create-1-initial-rejection",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "sent": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-1-rejected-after-file_upload",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-1-rejected-after-birthday",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-1-rejected-after-email",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "email": "qc20-1@example.invalid",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-1-accepted-after-address",
+      "result": "passed",
+      "observation": "Last field added in a progressive optional-field probe.",
+      "values": {
+        "first_name": "TEST_REC20_261021_01 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000001",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_01 TEST address",
+        "email": "qc20-1@example.invalid",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "create-01",
+      "result": "passed",
+      "code": "CV_261021_412",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": true,
+      "fileBytes": 559,
+      "recordId": 412
+    },
+    {
+      "id": "create-02",
+      "result": "passed",
+      "code": "CV_261021_413",
+      "phoneLength": 11,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 413
+    },
+    {
+      "id": "create-03",
+      "result": "passed",
+      "code": "CV_261021_414",
+      "phoneLength": 12,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 414
+    },
+    {
+      "id": "create-04",
+      "result": "passed",
+      "code": "CV_261021_415",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 415
+    },
+    {
+      "id": "create-05",
+      "result": "passed",
+      "code": "CV_261021_416",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 416
+    },
+    {
+      "id": "create-06",
+      "result": "passed",
+      "code": "CV_261021_417",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 417
+    },
+    {
+      "id": "city-change-resets-district",
+      "result": "passed"
+    },
+    {
+      "id": "create-07",
+      "result": "passed",
+      "code": "CV_261021_418",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 418
+    },
+    {
+      "id": "create-08",
+      "result": "passed",
+      "code": "CV_261021_419",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 10485760,
+      "recordId": 419
+    },
+    {
+      "id": "create-09",
+      "result": "passed",
+      "code": "CV_261021_420",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 420
+    },
+    {
+      "id": "create-10",
+      "result": "passed",
+      "code": "CV_261021_421",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 421
+    },
+    {
+      "id": "create-11-initial-rejection",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "sent": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-11-rejected-after-file_upload",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-11-rejected-after-birthday",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-11-rejected-after-email",
+      "result": "failed",
+      "layer": "backend-contract",
+      "status": 400,
+      "values": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "email": "qc20-11@example.invalid",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "minimal-11-accepted-after-address",
+      "result": "passed",
+      "observation": "Last field added in a progressive optional-field probe.",
+      "values": {
+        "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+        "birthday": "2000-01-01",
+        "gender": "Nam",
+        "numberphone": "0900000011",
+        "city_code": "01",
+        "district_code": "001",
+        "address": "TEST_REC20_261021_11 TEST address",
+        "email": "qc20-11@example.invalid",
+        "department_recruited": "13"
+      }
+    },
+    {
+      "id": "create-11",
+      "result": "passed",
+      "code": "CV_261021_422",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": true,
+      "fileBytes": 559,
+      "recordId": 422
+    },
+    {
+      "id": "create-12",
+      "result": "passed",
+      "code": "CV_261021_423",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 423
+    },
+    {
+      "id": "create-13",
+      "result": "passed",
+      "code": "CV_261021_424",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 424
+    },
+    {
+      "id": "create-14",
+      "result": "passed",
+      "code": "CV_261021_425",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 425
+    },
+    {
+      "id": "create-15",
+      "result": "passed",
+      "code": "CV_261021_426",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 426
+    },
+    {
+      "id": "create-16",
+      "result": "passed",
+      "code": "CV_261021_427",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 427
+    },
+    {
+      "id": "create-17",
+      "result": "passed",
+      "code": "CV_261021_428",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 428
+    },
+    {
+      "id": "create-18",
+      "result": "passed",
+      "code": "CV_261021_429",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 429
+    },
+    {
+      "id": "create-19",
+      "result": "passed",
+      "code": "CV_261021_430",
+      "phoneLength": 10,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 430
+    },
+    {
+      "id": "create-20",
+      "result": "passed",
+      "code": "CV_261021_431",
+      "phoneLength": 11,
+      "optionalFieldsOmitted": false,
+      "fileBytes": 559,
+      "recordId": 431
+    },
+    {
+      "id": "twenty-created-reloaded",
+      "result": "passed",
+      "count": 20
+    },
+    {
+      "id": "readback-1",
+      "result": "passed",
+      "recordId": 412,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-1",
+      "result": "passed",
+      "recordId": 412
+    },
+    {
+      "id": "readback-2",
+      "result": "passed",
+      "recordId": 413,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-2",
+      "result": "passed",
+      "recordId": 413
+    },
+    {
+      "id": "readback-3",
+      "result": "passed",
+      "recordId": 414,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-3",
+      "result": "passed",
+      "recordId": 414
+    },
+    {
+      "id": "readback-4",
+      "result": "passed",
+      "recordId": 415,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-4",
+      "result": "passed",
+      "recordId": 415
+    },
+    {
+      "id": "readback-5",
+      "result": "passed",
+      "recordId": 416,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-5",
+      "result": "passed",
+      "recordId": 416
+    },
+    {
+      "id": "readback-6",
+      "result": "passed",
+      "recordId": 417,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-6",
+      "result": "passed",
+      "recordId": 417
+    },
+    {
+      "id": "readback-7",
+      "result": "passed",
+      "recordId": 418,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-7",
+      "result": "passed",
+      "recordId": 418
+    },
+    {
+      "id": "readback-8",
+      "result": "passed",
+      "recordId": 419,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-8",
+      "result": "passed",
+      "recordId": 419
+    },
+    {
+      "id": "readback-9",
+      "result": "passed",
+      "recordId": 420,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-9",
+      "result": "passed",
+      "recordId": 420
+    },
+    {
+      "id": "readback-10",
+      "result": "passed",
+      "recordId": 421,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-10",
+      "result": "passed",
+      "recordId": 421
+    },
+    {
+      "id": "readback-11",
+      "result": "passed",
+      "recordId": 422,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-11",
+      "result": "passed",
+      "recordId": 422
+    },
+    {
+      "id": "readback-12",
+      "result": "passed",
+      "recordId": 423,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-12",
+      "result": "passed",
+      "recordId": 423
+    },
+    {
+      "id": "readback-13",
+      "result": "passed",
+      "recordId": 424,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-13",
+      "result": "passed",
+      "recordId": 424
+    },
+    {
+      "id": "readback-14",
+      "result": "passed",
+      "recordId": 425,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-14",
+      "result": "passed",
+      "recordId": 425
+    },
+    {
+      "id": "readback-15",
+      "result": "passed",
+      "recordId": 426,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-15",
+      "result": "passed",
+      "recordId": 426
+    },
+    {
+      "id": "readback-16",
+      "result": "passed",
+      "recordId": 427,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-16",
+      "result": "passed",
+      "recordId": 427
+    },
+    {
+      "id": "readback-17",
+      "result": "passed",
+      "recordId": 428,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-17",
+      "result": "passed",
+      "recordId": 428
+    },
+    {
+      "id": "readback-18",
+      "result": "passed",
+      "recordId": 429,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-18",
+      "result": "passed",
+      "recordId": 429
+    },
+    {
+      "id": "readback-19",
+      "result": "passed",
+      "recordId": 430,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-19",
+      "result": "passed",
+      "recordId": 430
+    },
+    {
+      "id": "readback-20",
+      "result": "passed",
+      "recordId": 431,
+      "mismatches": []
+    },
+    {
+      "id": "edit-readback-20",
+      "result": "passed",
+      "recordId": 431
+    },
+    {
+      "id": "duplicate-positive-1",
+      "result": "passed",
+      "originalId": 412,
+      "duplicateId": 430
+    },
+    {
+      "id": "duplicate-positive-2",
+      "result": "passed",
+      "originalId": 413,
+      "duplicateId": 431
+    },
+    {
+      "id": "probe-MIN_ADDRESS-initial",
+      "result": "passed",
+      "status": 200,
+      "observation": "Address supplied; birthday, email, education, source and CV file omitted."
+    },
+    {
+      "id": "probe-MISSING_ADDRESS-initial",
+      "result": "failed",
+      "status": 400,
+      "observation": "Only address omitted from an otherwise valid full candidate payload."
+    },
+    {
+      "id": "probe-MISSING_ADDRESS-recovery",
+      "result": "passed",
+      "status": 200
+    },
+    {
+      "id": "diagnostic-fixtures-cleaned",
+      "result": "passed",
+      "created": 2,
+      "retainedMain": 20
+    },
+    {
+      "id": "application-date-regression-12",
+      "result": "passed",
+      "recordId": 423,
+      "expected": "01/01/2020"
+    },
+    {
+      "id": "application-date-regression-13",
+      "result": "passed",
+      "recordId": 424,
+      "expected": "21/10/2026"
+    },
+    {
+      "id": "required-address-blocks-before-api-and-recovers",
+      "result": "passed"
+    },
+    {
+      "id": "interview-create-A",
+      "result": "passed",
+      "recordId": 60,
+      "title": "TEST_REC20_261021 Interview A"
+    },
+    {
+      "id": "interview-create-B",
+      "result": "passed",
+      "recordId": 61,
+      "title": "TEST_REC20_261021 Interview B"
+    },
+    {
+      "id": "interview-create-C",
+      "result": "passed",
+      "recordId": 62,
+      "title": "TEST_REC20_261021 Interview C"
+    },
+    {
+      "id": "interview-create-DELETE",
+      "result": "passed",
+      "recordId": 63,
+      "title": "TEST_REC20_261021 Interview DELETE"
+    },
+    {
+      "id": "interview-edit-reload",
+      "result": "failed",
+      "layer": "backend",
+      "status": 200,
+      "actual": "TEST_REC20_261021 no interviewers; isolated UI QC",
+      "requested": "TEST_REC20_261021 edited calendar",
+      "payload": "{\"title\":\"TEST_REC20_261021 Interview A\",\"start_date\":\"2026-10-22\",\"time_start\":\"13:00\",\"time_end\":\"14:00\",\"note\":\"TEST_REC20_261021 edited calendar\",\"id_interview\":60}"
+    },
+    {
+      "id": "status-1-2",
+      "result": "passed",
+      "recordId": 412,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-2-2",
+      "result": "passed",
+      "recordId": 413,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-3-2",
+      "result": "passed",
+      "recordId": 414,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-4-2",
+      "result": "passed",
+      "recordId": 415,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-5-2",
+      "result": "passed",
+      "recordId": 416,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-6-2",
+      "result": "passed",
+      "recordId": 417,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-7-2",
+      "result": "passed",
+      "recordId": 418,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-8-2",
+      "result": "passed",
+      "recordId": 419,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-9-2",
+      "result": "passed",
+      "recordId": 420,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-10-2",
+      "result": "passed",
+      "recordId": 421,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-11-2",
+      "result": "passed",
+      "recordId": 422,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-12-2",
+      "result": "passed",
+      "recordId": 423,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-13-2",
+      "result": "passed",
+      "recordId": 424,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-14-2",
+      "result": "passed",
+      "recordId": 425,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-15-2",
+      "result": "passed",
+      "recordId": 426,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-16-2",
+      "result": "passed",
+      "recordId": 427,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-17-2",
+      "result": "passed",
+      "recordId": 428,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-18-2",
+      "result": "passed",
+      "recordId": 429,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-19-2",
+      "result": "passed",
+      "recordId": 430,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "status-20-2",
+      "result": "passed",
+      "recordId": 431,
+      "status": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": "bulk-assign-20",
+      "result": "passed",
+      "interviewId": 60
+    },
+    {
+      "id": "bulk-readback-20-in-interview",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-1",
+      "result": "passed",
+      "time": "13:00"
+    },
+    {
+      "id": "note-readonly-readback-1",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-2",
+      "result": "passed",
+      "time": "13:03"
+    },
+    {
+      "id": "note-readonly-readback-2",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-3",
+      "result": "passed",
+      "time": "13:06"
+    },
+    {
+      "id": "note-readonly-readback-3",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-4",
+      "result": "passed",
+      "time": "13:09"
+    },
+    {
+      "id": "note-readonly-readback-4",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-5",
+      "result": "passed",
+      "time": "13:12"
+    },
+    {
+      "id": "note-file-download-5",
+      "result": "passed",
+      "bytes": 559
+    },
+    {
+      "id": "note-readonly-readback-5",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-6",
+      "result": "passed",
+      "time": "13:15"
+    },
+    {
+      "id": "note-readonly-readback-6",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-7",
+      "result": "passed",
+      "time": "13:18"
+    },
+    {
+      "id": "note-readonly-readback-7",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-8",
+      "result": "passed",
+      "time": "13:21"
+    },
+    {
+      "id": "note-readonly-readback-8",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-9",
+      "result": "passed",
+      "time": "13:24"
+    },
+    {
+      "id": "note-readonly-readback-9",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-10",
+      "result": "passed",
+      "time": "13:27"
+    },
+    {
+      "id": "note-file-download-10",
+      "result": "passed",
+      "bytes": 559
+    },
+    {
+      "id": "note-readonly-readback-10",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-11",
+      "result": "passed",
+      "time": "13:30"
+    },
+    {
+      "id": "note-readonly-readback-11",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-12",
+      "result": "passed",
+      "time": "13:33"
+    },
+    {
+      "id": "note-readonly-readback-12",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-13",
+      "result": "passed",
+      "time": "13:36"
+    },
+    {
+      "id": "note-readonly-readback-13",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-14",
+      "result": "passed",
+      "time": "13:39"
+    },
+    {
+      "id": "note-readonly-readback-14",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-15",
+      "result": "passed",
+      "time": "13:42"
+    },
+    {
+      "id": "note-file-download-15",
+      "result": "passed",
+      "bytes": 559
+    },
+    {
+      "id": "note-readonly-readback-15",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-16",
+      "result": "passed",
+      "time": "13:45"
+    },
+    {
+      "id": "note-readonly-readback-16",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-17",
+      "result": "passed",
+      "time": "13:48"
+    },
+    {
+      "id": "note-readonly-readback-17",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-18",
+      "result": "passed",
+      "time": "13:51"
+    },
+    {
+      "id": "note-readonly-readback-18",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-19",
+      "result": "passed",
+      "time": "13:54"
+    },
+    {
+      "id": "note-readonly-readback-19",
+      "result": "passed"
+    },
+    {
+      "id": "candidate-slot-20",
+      "result": "passed",
+      "time": "13:57"
+    },
+    {
+      "id": "note-file-download-20",
+      "result": "passed",
+      "bytes": 559
+    },
+    {
+      "id": "note-readonly-readback-20",
+      "result": "passed"
+    },
+    {
+      "id": "all-slots-persist-after-reload",
+      "result": "passed"
+    },
+    {
+      "id": "remove-from-interview-19",
+      "result": "passed"
+    },
+    {
+      "id": "remove-from-interview-20",
+      "result": "passed"
+    },
+    {
+      "id": "interview-delete-reload",
+      "result": "passed",
+      "recordId": 63
+    },
+    {
+      "id": "status-1-1",
+      "result": "passed",
+      "recordId": 412,
+      "status": 1,
+      "name": "Chờ duyệt"
+    },
+    {
+      "id": "status-3-3",
+      "result": "passed",
+      "recordId": 414,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-4-3",
+      "result": "passed",
+      "recordId": 415,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-4-4",
+      "result": "passed",
+      "recordId": 415,
+      "status": 4,
+      "name": "Không đạt"
+    },
+    {
+      "id": "status-5-3",
+      "result": "passed",
+      "recordId": 416,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-5-5",
+      "result": "passed",
+      "recordId": 416,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-6-3",
+      "result": "passed",
+      "recordId": 417,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-6-6",
+      "result": "passed",
+      "recordId": 417,
+      "status": 6,
+      "name": "Tiềm năng"
+    },
+    {
+      "id": "status-7-3",
+      "result": "passed",
+      "recordId": 418,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-7-5",
+      "result": "passed",
+      "recordId": 418,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-7-8",
+      "result": "passed",
+      "recordId": 418,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-8-3",
+      "result": "passed",
+      "recordId": 419,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-8-5",
+      "result": "passed",
+      "recordId": 419,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-8-8",
+      "result": "passed",
+      "recordId": 419,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-8-9",
+      "result": "passed",
+      "recordId": 419,
+      "status": 9,
+      "name": "Không nhận việc"
+    },
+    {
+      "id": "status-9-3",
+      "result": "passed",
+      "recordId": 420,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-9-5",
+      "result": "passed",
+      "recordId": 420,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-9-8",
+      "result": "passed",
+      "recordId": 420,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-9-10",
+      "result": "passed",
+      "recordId": 420,
+      "status": 10,
+      "name": "Đã nhận việc"
+    },
+    {
+      "id": "status-10-1",
+      "result": "passed",
+      "recordId": 421,
+      "status": 1,
+      "name": "Chờ duyệt"
+    },
+    {
+      "id": "status-12-3",
+      "result": "passed",
+      "recordId": 423,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-13-3",
+      "result": "passed",
+      "recordId": 424,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-13-4",
+      "result": "passed",
+      "recordId": 424,
+      "status": 4,
+      "name": "Không đạt"
+    },
+    {
+      "id": "status-14-3",
+      "result": "passed",
+      "recordId": 425,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-14-5",
+      "result": "passed",
+      "recordId": 425,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-15-3",
+      "result": "passed",
+      "recordId": 426,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-15-6",
+      "result": "passed",
+      "recordId": 426,
+      "status": 6,
+      "name": "Tiềm năng"
+    },
+    {
+      "id": "status-16-3",
+      "result": "passed",
+      "recordId": 427,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-16-5",
+      "result": "passed",
+      "recordId": 427,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-16-8",
+      "result": "passed",
+      "recordId": 427,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-17-3",
+      "result": "passed",
+      "recordId": 428,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-17-5",
+      "result": "passed",
+      "recordId": 428,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-17-8",
+      "result": "passed",
+      "recordId": 428,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-17-9",
+      "result": "passed",
+      "recordId": 428,
+      "status": 9,
+      "name": "Không nhận việc"
+    },
+    {
+      "id": "status-18-3",
+      "result": "passed",
+      "recordId": 429,
+      "status": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": "status-18-5",
+      "result": "passed",
+      "recordId": 429,
+      "status": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": "status-18-8",
+      "result": "passed",
+      "recordId": 429,
+      "status": 8,
+      "name": "Offer"
+    },
+    {
+      "id": "status-18-10",
+      "result": "passed",
+      "recordId": 429,
+      "status": 10,
+      "name": "Đã nhận việc"
+    },
+    {
+      "id": "status-19-1",
+      "result": "passed",
+      "recordId": 430,
+      "status": 1,
+      "name": "Chờ duyệt"
+    },
+    {
+      "id": "all-statuses-persisted",
+      "result": "passed",
+      "represented": [1, 2, 3, 4, 5, 6, 8, 9, 10],
+      "count": 20
+    },
+    {
+      "id": "pagination-20-and-clear-selection",
+      "result": "passed"
+    },
+    {
+      "id": "filter-status-1",
+      "result": "passed",
+      "expectedCount": 3
+    },
+    {
+      "id": "filter-status-2",
+      "result": "passed",
+      "expectedCount": 3
+    },
+    {
+      "id": "filter-status-3",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-4",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-5",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-6",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-8",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-9",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "filter-status-10",
+      "result": "passed",
+      "expectedCount": 2
+    },
+    {
+      "id": "advanced-ticket-code-supported-filter",
+      "result": "passed"
+    },
+    {
+      "id": "clear-advanced-preserves-prefix",
+      "result": "passed"
+    },
+    {
+      "id": "equal-creation-date-range-includes-historical-application",
+      "result": "passed",
+      "count": 20,
+      "dateFilter": "creation date"
+    },
+    {
+      "id": "search-with-no-results",
+      "result": "failed",
+      "status": 500,
+      "layer": "backend"
+    },
+    {
+      "id": "export-20-filtered-candidates",
+      "result": "passed",
+      "filename": "Recruitment_candidates_2020-01-01_2026-10-21.xlsx",
+      "bytes": 7915
+    },
+    {
+      "id": "export-requests",
+      "result": "passed",
+      "filename": "Recruitment_requests_2020-01-01_2026-10-21.xlsx",
+      "bytes": 8342
+    },
+    {
+      "id": "export-candidates",
+      "result": "passed",
+      "filename": "Recruitment_candidates_2020-01-01_2026-10-21.xlsx",
+      "bytes": 7914
+    },
+    {
+      "id": "report-tab-Theo yêu cầu tuyển dụng",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Theo bộ phận",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Theo người phụ trách",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Thời gian tuyển dụng",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Theo nguồn ứng viên",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Tỷ lệ chuyển đổi CV",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Trạng thái CV",
+      "result": "passed"
+    },
+    {
+      "id": "report-tab-Bộ phận theo tháng",
+      "result": "passed"
+    },
+    {
+      "id": "export-report-real-created-day",
+      "result": "failed",
+      "status": 500,
+      "layer": "backend",
+      "from": "2026-10-21",
+      "to": "2026-10-21"
+    },
+    {
+      "id": "report-max-range-validation",
+      "result": "passed"
+    },
+    {
+      "id": "interview-note-delayed-readback",
+      "result": "failed",
+      "actual": "TEST_REC20_261021 no interviewers; isolated UI QC",
+      "requested": "TEST_REC20_261021 edited calendar",
+      "layer": "backend"
+    },
+    {
+      "id": "long-note-mobile-dialog",
+      "result": "passed",
+      "width": 372,
+      "scroll": 372
+    },
+    {
+      "id": "phone-9-13-alpha-rejected-recovery",
+      "result": "passed"
+    },
+    {
+      "id": "cv-10mb-plus-one-byte-rejected-recovery",
+      "result": "passed"
+    },
+    {
+      "id": "note-50mb-plus-one-byte-rejected-no-write",
+      "result": "passed"
+    },
+    {
+      "id": "delete-file-19",
+      "result": "passed"
+    },
+    {
+      "id": "delete-candidate-19",
+      "result": "passed",
+      "recordId": 430
+    },
+    {
+      "id": "delete-file-20",
+      "result": "passed"
+    },
+    {
+      "id": "delete-candidate-20",
+      "result": "passed",
+      "recordId": 431
+    },
+    {
+      "id": "final-retained-18-of-20",
+      "result": "passed",
+      "created": 20,
+      "deleted": 2,
+      "retained": 18
+    }
+  ],
+  "writes": [
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "create",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/412"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/412"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/412"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/413"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/414"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/415"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/416"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/417"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/418"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/419"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/420"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/421"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/422"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/423"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/424"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/425"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/426"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/427"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/428"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/429"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/430"
+    },
+    {
+      "phase": "verify",
+      "method": "PUT",
+      "path": "/api/detail_cv/431"
+    },
+    {
+      "phase": "probes",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "probes",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "probes",
+      "method": "POST",
+      "path": "/api/detail_cv/84"
+    },
+    {
+      "phase": "probes",
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    },
+    {
+      "phase": "probes",
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    },
+    {
+      "phase": "repair",
+      "method": "PUT",
+      "path": "/api/detail_cv/423"
+    },
+    {
+      "phase": "repair",
+      "method": "PUT",
+      "path": "/api/detail_cv/424"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/regis-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/412"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/413"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/414"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/415"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/416"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/417"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/418"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/419"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/420"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/421"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/422"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/423"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/424"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/425"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/426"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/427"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/428"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/429"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/430"
+    },
+    {
+      "phase": "interviews",
+      "method": "PUT",
+      "path": "/api/change_status_cv/431"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/add-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/detail-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "POST",
+      "path": "/api/note-cv/"
+    },
+    {
+      "phase": "interviews",
+      "method": "DELETE",
+      "path": "/api/del-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "DELETE",
+      "path": "/api/del-cv-interview/"
+    },
+    {
+      "phase": "interviews",
+      "method": "DELETE",
+      "path": "/api/regis-interview/63"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/412"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/414"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/415"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/415"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/416"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/416"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/417"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/417"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/418"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/418"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/418"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/419"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/419"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/419"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/419"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/420"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/420"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/420"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/420"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/421"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/423"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/424"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/424"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/425"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/425"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/426"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/426"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/427"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/427"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/427"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/428"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/428"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/428"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/428"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/429"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/429"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/429"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/429"
+    },
+    {
+      "phase": "statuses",
+      "method": "PUT",
+      "path": "/api/change_status_cv/430"
+    },
+    {
+      "phase": "filters",
+      "method": "POST",
+      "path": "/api/export-cv/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export-recruitment/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export-cv/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export_rect/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export-recruitment/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export-cv/"
+    },
+    {
+      "phase": "reports",
+      "method": "POST",
+      "path": "/api/export_rect/"
+    },
+    {
+      "phase": "cleanup",
+      "method": "POST",
+      "path": "/api/del-file-cv/"
+    },
+    {
+      "phase": "cleanup",
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    },
+    {
+      "phase": "cleanup",
+      "method": "POST",
+      "path": "/api/del-file-cv/"
+    },
+    {
+      "phase": "cleanup",
+      "method": "POST",
+      "path": "/api/del-data-cv/"
+    }
+  ],
+  "pageErrors": [],
+  "issues": [
+    {
+      "id": "required-create-address",
+      "state": "fixed-and-retested",
+      "evidence": [
+        "probe-MIN_ADDRESS-initial",
+        "required-address-blocks-before-api-and-recovers"
+      ],
+      "description": "API requires address when creating a CV. The create form now requires it, blocks invalid submission and clears errors after correction."
+    },
+    {
+      "id": "application-date-utc",
+      "state": "fixed-and-retested",
+      "evidence": ["readback-12", "readback-13"],
+      "description": "Convert API timestamp to Vietnam business date before populating form; repaired both TEST records and verified UI dates after reload."
+    },
+    {
+      "id": "unsupported-list-filters",
+      "state": "removed-and-retested",
+      "description": "Live gender=Nam returned all 20 CVs, including female CVs. ticketV2 disables gender/city filters in the general CV list. Removed these unsupported general-list controls and query parameters; contextual interview gender filtering remains."
+    },
+    {
+      "id": "empty-candidate-search",
+      "state": "open-backend",
+      "endpoint": "GET /api/list_cv/",
+      "status": 500,
+      "evidence": ["search-with-no-results"]
+    },
+    {
+      "id": "interview-note-update",
+      "state": "open-backend",
+      "endpoint": "PUT /api/regis-interview/",
+      "status": 200,
+      "evidence": ["interview-edit-reload", "interview-note-delayed-readback"],
+      "description": "TEST schedule 60: edited note is sent, but both immediate and delayed live list reloads return the original note."
+    },
+    {
+      "id": "report-export-one-day",
+      "state": "open-backend",
+      "endpoint": "POST /api/export_rect/",
+      "status": 500,
+      "range": ["2026-10-21", "2026-10-21"],
+      "evidence": ["export-report-real-created-day"],
+      "description": "One-day report export fails; historical-range report export succeeded in the separate readback run."
+    }
+  ],
+  "phases": {
+    "create": {
+      "result": "passed",
+      "at": "2026-10-21T05:23:44.921Z"
+    },
+    "verify": {
+      "result": "passed",
+      "at": "2026-10-21T05:45:26.184Z"
+    },
+    "probes": {
+      "result": "passed",
+      "at": "2026-10-21T05:30:22.118Z"
+    },
+    "repair": {
+      "result": "passed",
+      "at": "2026-10-21T05:32:36.730Z"
+    },
+    "interviews": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:38:22.785Z"
+    },
+    "statuses": {
+      "result": "passed",
+      "at": "2026-10-21T05:39:25.383Z"
+    },
+    "filters": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:45:00.858Z"
+    },
+    "reports": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:46:32.227Z"
+    },
+    "edges": {
+      "result": "completed-with-backend-issues",
+      "at": "2026-10-21T05:47:16.826Z"
+    },
+    "cleanup": {
+      "result": "passed",
+      "at": "2026-10-21T05:47:26.300Z"
+    }
+  },
+  "recruitment": {
+    "id": 84,
+    "code": "HR_260313_003",
+    "note": "Existing recruitment request is read-only; only isolated TEST candidates are created under it."
+  },
+  "lastFailure": {
+    "phase": "create",
+    "path": "/api/detail_cv/84",
+    "method": "POST",
+    "status": 400,
+    "data": {
+      "message": "Tạo CV thất bại."
+    },
+    "values": {
+      "first_name": "TEST_REC20_261021_11 Ứng viên Nam",
+      "birthday": "2000-01-01",
+      "gender": "Nam",
+      "numberphone": "0900000011",
+      "city_code": "01",
+      "district_code": "001",
+      "email": "qc20-11@example.invalid",
+      "department_recruited": "13"
+    }
+  },
+  "extraRecords": [
+    {
+      "id": 432,
+      "code": "CV_261021_432",
+      "name": "TEST_REC20_261021_AUX_MIN_ADDRESS",
+      "kind": "MIN_ADDRESS",
+      "deleted": true
+    },
+    {
+      "id": 433,
+      "code": "CV_261021_433",
+      "name": "TEST_REC20_261021_AUX_MISSING_ADDRESS",
+      "kind": "MISSING_ADDRESS",
+      "deleted": true
+    }
+  ],
+  "interviews": [
+    {
+      "key": "A",
+      "date": "22/10/2026",
+      "start": "13:00",
+      "end": "14:00",
+      "id": 60,
+      "title": "TEST_REC20_261021 Interview A"
+    },
+    {
+      "key": "B",
+      "date": "22/10/2026",
+      "start": "14:00",
+      "end": "15:00",
+      "id": 61,
+      "title": "TEST_REC20_261021 Interview B"
+    },
+    {
+      "key": "C",
+      "date": "23/10/2026",
+      "start": "14:00",
+      "end": "15:00",
+      "id": 62,
+      "title": "TEST_REC20_261021 Interview C"
+    },
+    {
+      "key": "DELETE",
+      "date": "24/10/2026",
+      "start": "15:00",
+      "end": "16:00",
+      "id": 63,
+      "title": "TEST_REC20_261021 Interview DELETE",
+      "deleted": true
+    }
+  ],
+  "interviewUrl": "/recruitment/interviews/PV_261021_060",
+  "reportCounts": {
+    "result_rect": 0,
+    "result_hr": 0,
+    "result_candidate_source": 0,
+    "result_time_recruitment": 0,
+    "result_cv_conversion_rate": 0,
+    "result_cv_status": 0,
+    "result_department": 0,
+    "result_department_month": 0
+  },
+  "result": "completed-with-backend-issues",
+  "limitations": [
+    "The 20 records are candidate profiles, not 20 recruitment requests. Existing recruitment request 84 is read-only; detail viewing and export were tested, live request-detail updates were not performed.",
+    "Schedules have no assigned interviewers; no real staff invitations were sent. Positive access for an assigned interview-only user was not tested; forbidden routes and unassigned-user denial were tested.",
+    "Checks cover the enumerated scenarios, not every possible input or backend condition. Initial failed probes are preserved as historical evidence; resolved issues and subsequent successful checks identify the final state."
+  ],
+  "summary": {
+    "mainCreated": 20,
+    "mainDeleted": 2,
+    "mainRetained": 18,
+    "auxiliaryCreatedAndDeleted": 2,
+    "retainedCodes": [
+      "CV_261021_412",
+      "CV_261021_413",
+      "CV_261021_414",
+      "CV_261021_415",
+      "CV_261021_416",
+      "CV_261021_417",
+      "CV_261021_418",
+      "CV_261021_419",
+      "CV_261021_420",
+      "CV_261021_421",
+      "CV_261021_422",
+      "CV_261021_423",
+      "CV_261021_424",
+      "CV_261021_425",
+      "CV_261021_426",
+      "CV_261021_427",
+      "CV_261021_428",
+      "CV_261021_429"
+    ],
+    "retainedSchedules": [60, 61, 62],
+    "openBackendIssues": 3,
+    "checkResults": {
+      "failed": 15,
+      "passed": 221
+    }
+  }
+}
