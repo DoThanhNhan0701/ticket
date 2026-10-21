@@ -3,14 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
+  DataClientResults,
   DataTable,
   DataText,
   formatDataDate,
   type DataColumn,
 } from "@/components/data-management";
 import { ErrorAlert } from "@/components/error-alert";
-import { LoadingState } from "@/components/loading-state";
-import { Button } from "@/components/ui/button";
 import type { RecruitmentRow, RecruitmentEditorState } from "../types";
 import { interviewDetail, recruitmentArray } from "../api/recruitment-api";
 import {
@@ -27,6 +26,7 @@ export function InterviewCandidates() {
   const { codeInterview = "" } = useParams();
   const { userId, permissions } = useAuthContext();
   const canManage = permissions?.can_hr_rec === true;
+  const [paginationReset, resetPagination] = useState(0);
   const [applied, setApplied] = useState({
     search: "",
     gender: "",
@@ -116,52 +116,48 @@ export function InterviewCandidates() {
         statuses={recruitmentOptions(statuses.data)}
         busy={query.isFetching}
         onApply={(next) => {
+          resetPagination((current) => current + 1);
           if (JSON.stringify(applied) === JSON.stringify(next))
             void query.refetch();
           else setApplied(next);
         }}
       />
-      {query.isPending && <LoadingState message="Đang tải CV phỏng vấn..." />}
-      {query.isError && (
-        <div className="space-y-3">
-          <ErrorAlert message={query.error.message} />
-          <Button onClick={() => void query.refetch()}>
-            Thử lại lịch phỏng vấn
-          </Button>
+      {!query.isPending && !query.isError && interview && (
+        <div className="grid gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-2">
+          <p className="font-semibold">{text(interview.title)}</p>
+          <p>
+            {formatDataDate(text(interview.start_date))} ·{" "}
+            {text(interview.time_start).slice(0, 5)} –{" "}
+            {text(interview.time_end).slice(0, 5)}
+          </p>
+          <p>Người phỏng vấn: {names(interview.data_user_interview)}</p>
+          <p className="whitespace-pre-wrap wrap-anywhere">
+            {text(interview.note)}
+          </p>
         </div>
       )}
-      {!query.isPending && !query.isError && (
-        <>
-          {interview && (
-            <div className="grid gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-2">
-              <p className="font-semibold">{text(interview.title)}</p>
-              <p>
-                {formatDataDate(text(interview.start_date))} ·{" "}
-                {text(interview.time_start).slice(0, 5)} –{" "}
-                {text(interview.time_end).slice(0, 5)}
-              </p>
-              <p>Người phỏng vấn: {names(interview.data_user_interview)}</p>
-              <p className="whitespace-pre-wrap">{text(interview.note)}</p>
-            </div>
-          )}
-
-          <div className="flex min-h-64 flex-1 flex-col rounded-xl border bg-card">
-            {rows.length ? (
-              <DataTable
-                scrollLabel="Cuộn bảng tuyển dụng"
-                rows={rows}
-                columns={columns}
-                label="CV phỏng vấn"
-                getRowKey={(row) => String(row.id)}
-              />
-            ) : (
-              <p className="my-auto p-4 text-center text-sm text-muted-foreground">
-                Không có ứng viên trong lịch phỏng vấn.
-              </p>
-            )}
-          </div>
-        </>
-      )}
+      <DataClientResults
+        scopeKey={JSON.stringify([codeInterview, applied, paginationReset])}
+        query={{
+          ...query,
+          data: query.data ? { results: rows, count: rows.length } : undefined,
+        }}
+        label="Danh sách CV phỏng vấn"
+        itemLabel="ứng viên"
+        loadingMessage="Đang tải CV phỏng vấn..."
+        errorPrefix="Không tải được CV phỏng vấn"
+        emptyTitle="Không có ứng viên trong lịch phỏng vấn."
+        renderRows={(visibleRows, offset) => (
+          <DataTable
+            scrollLabel="Cuộn bảng tuyển dụng"
+            rows={visibleRows}
+            columns={columns}
+            label="CV phỏng vấn"
+            getRowKey={(row) => String(row.id)}
+            scrollResetKey={`${offset}:${visibleRows.length}`}
+          />
+        )}
+      />
       {statuses.isError && <ErrorAlert message={statuses.error.message} />}
       {lookups.isError && <ErrorAlert message={lookups.error.message} />}
       {editor && (

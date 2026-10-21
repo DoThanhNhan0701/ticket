@@ -1,0 +1,332 @@
+{
+  "base": "http://127.0.0.1:5196",
+  "checkedAt": "2026-10-21T07:17:42.115Z",
+  "checks": [
+    {
+      "mode": "month",
+      "width": 1440,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 107,
+        "width": 140.421875,
+        "scrollHeight": 105,
+        "clientHeight": 105,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "week",
+      "width": 1440,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 144.421875,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "day",
+      "width": 1440,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 1041,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "month",
+      "width": 1440,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 107,
+        "width": 140.421875,
+        "scrollHeight": 105,
+        "clientHeight": 105,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "week",
+      "width": 1440,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 144.421875,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "day",
+      "width": 1440,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 1041,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "month",
+      "width": 390,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 107,
+        "width": 123,
+        "scrollHeight": 105,
+        "clientHeight": 105,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "week",
+      "width": 390,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 127,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "day",
+      "width": 390,
+      "theme": "light",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 303,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "month",
+      "width": 390,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 107,
+        "width": 123,
+        "scrollHeight": 105,
+        "clientHeight": 105,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "week",
+      "width": 390,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 127,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "mode": "day",
+      "width": 390,
+      "theme": "dark",
+      "result": "passed",
+      "bounds": {
+        "height": 126,
+        "width": 303,
+        "scrollHeight": 124,
+        "clientHeight": 124,
+        "actions": [
+          {
+            "label": "Sửa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xóa lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          },
+          {
+            "label": "Xem CV lịch TEST_REC20_261021 Interview A",
+            "inside": true
+          }
+        ]
+      }
+    },
+    {
+      "case": "Open and cancel edit from Tháng",
+      "result": "passed"
+    },
+    {
+      "case": "Open and cancel edit from Tuần",
+      "result": "passed"
+    },
+    {
+      "case": "Open and cancel edit from Ngày",
+      "result": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": []
+}

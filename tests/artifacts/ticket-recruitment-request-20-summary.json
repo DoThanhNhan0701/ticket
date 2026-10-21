@@ -1,0 +1,305 @@
+{
+  "date": "2026-10-21",
+  "prefix": "TEST_HRREQ20_261021",
+  "result": "completed-with-one-open-route-issue",
+  "method": "Real browser UI only: create HR tickets, approve through the UI, then inspect and update generated recruitment requests. No direct HTTP writes or mocks.",
+  "summary": {
+    "successfulTickets": 20,
+    "approvedTickets": 20,
+    "recruitmentRequests": 24,
+    "editedRequests": 24,
+    "verifiedTransferredCells": 312,
+    "failedFixtureCancelled": 1,
+    "newCandidates": [
+      {
+        "index": 1,
+        "id": 434,
+        "name": "TEST_HRREQ20_261021_01 CV tuyển dụng",
+        "ticketCode": "HR_261021_002",
+        "requestId": 86,
+        "code": "CV_261021_434"
+      },
+      {
+        "index": 20,
+        "id": 435,
+        "name": "TEST_HRREQ20_261021_20 CV tuyển dụng",
+        "ticketCode": "HR_261021_021",
+        "requestId": 109,
+        "code": "CV_261021_435"
+      }
+    ],
+    "ticketCodes": [
+      "HR_261021_002",
+      "HR_261021_003",
+      "HR_261021_004",
+      "HR_261021_005",
+      "HR_261021_006",
+      "HR_261021_007",
+      "HR_261021_008",
+      "HR_261021_009",
+      "HR_261021_010",
+      "HR_261021_011",
+      "HR_261021_012",
+      "HR_261021_013",
+      "HR_261021_014",
+      "HR_261021_015",
+      "HR_261021_016",
+      "HR_261021_017",
+      "HR_261021_018",
+      "HR_261021_019",
+      "HR_261021_020",
+      "HR_261021_021"
+    ],
+    "checkResults": {
+      "passed": 131,
+      "observed": 3,
+      "failed": 1,
+      "skipped": 2
+    }
+  },
+  "issues": [
+    {
+      "id": "hr-approval-legacy-keys",
+      "state": "fixed-and-live-retested",
+      "before": {
+        "endpoint": "POST /api/accept_ticket/",
+        "status": 500,
+        "exceptionKey": "Vị trí tuyển dụng (*)",
+        "failedTicket": 14445
+      },
+      "fix": "Recruitment ticket type 99 sends legacy (*) aliases alongside clean keys; clean UI headers and other ticket types are preserved.",
+      "evidence": [
+        "approve-1",
+        "approve-2",
+        "approve-3",
+        "approve-4",
+        "approve-5",
+        "approve-6",
+        "approve-7",
+        "approve-8",
+        "approve-9",
+        "approve-10",
+        "approve-11",
+        "approve-12",
+        "approve-13",
+        "approve-14",
+        "approve-15",
+        "approve-16",
+        "approve-17",
+        "approve-18",
+        "approve-19",
+        "approve-20"
+      ],
+      "cleanup": "Ticket 14445 cancelled through UI; replaced by successful TEST ticket 14446."
+    },
+    {
+      "id": "attachment-directory-link",
+      "state": "fixed-and-live-retested",
+      "before": {
+        "href": "https://ticket-api.aiminds.io.vn/media/recruitment/90/",
+        "status": 404
+      },
+      "fix": "Join API directory with encoded filename; resolve media files against the public API origin, including old internal media hosts.",
+      "evidence": ["request-attachment-download"]
+    },
+    {
+      "id": "request-metadata-parity",
+      "state": "fixed-and-live-retested",
+      "fix": "Show readonly other_skill and user_update_name as in ticketV2; display the readonly due date as DD/MM/YYYY. The values remain excluded from the update payload."
+    },
+    {
+      "id": "public-cv-link-404",
+      "state": "open-external-route",
+      "status": 404,
+      "url": "https://ticket-api.aiminds.io.vn/cv/y5dwahfx9nh8bsfrh3gc266519",
+      "evidence": ["request-public-cv-link"],
+      "description": "Opening the copied public CV URL on the API host returns Page not found (404). The externally hosted public application form was not submitted."
+    }
+  ],
+  "limitations": [
+    "The supplied admin account receives no HR receive/complete actions from the API for TEST tickets 17/18. Those two lifecycle cases were skipped; no permission or handling-group configuration was changed. Approval was exercised using nhandt02.",
+    "The public CV URL returns 404. Candidate creation was verified instead through the authenticated Add candidate action on two new recruitment requests.",
+    "The initial approval-failure fixture was cancelled, not deleted. The 20 successful tickets, their 24 generated recruitment records, two TEST CVs and one TEST attachment are retained.",
+    "Coverage is the enumerated live/UI and automated scenarios, not every possible backend condition. Historical HTTP 500 and file 404 observations are retained alongside successful regression evidence."
+  ],
+  "caseMatrix": [
+    {
+      "case": 1,
+      "ticketId": 14446,
+      "ticketCode": "HR_261021_002",
+      "detailRows": 1,
+      "recruitmentIds": [86],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 2,
+      "ticketId": 14447,
+      "ticketCode": "HR_261021_003",
+      "detailRows": 1,
+      "recruitmentIds": [87],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 3,
+      "ticketId": 14448,
+      "ticketCode": "HR_261021_004",
+      "detailRows": 1,
+      "recruitmentIds": [88],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 4,
+      "ticketId": 14449,
+      "ticketCode": "HR_261021_005",
+      "detailRows": 1,
+      "recruitmentIds": [89],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 5,
+      "ticketId": 14450,
+      "ticketCode": "HR_261021_006",
+      "detailRows": 1,
+      "recruitmentIds": [90],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 6,
+      "ticketId": 14451,
+      "ticketCode": "HR_261021_007",
+      "detailRows": 1,
+      "recruitmentIds": [91],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 7,
+      "ticketId": 14452,
+      "ticketCode": "HR_261021_008",
+      "detailRows": 1,
+      "recruitmentIds": [92],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 8,
+      "ticketId": 14453,
+      "ticketCode": "HR_261021_009",
+      "detailRows": 1,
+      "recruitmentIds": [93],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 9,
+      "ticketId": 14454,
+      "ticketCode": "HR_261021_010",
+      "detailRows": 1,
+      "recruitmentIds": [94],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 10,
+      "ticketId": 14455,
+      "ticketCode": "HR_261021_011",
+      "detailRows": 1,
+      "recruitmentIds": [95],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 11,
+      "ticketId": 14456,
+      "ticketCode": "HR_261021_012",
+      "detailRows": 1,
+      "recruitmentIds": [96],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 12,
+      "ticketId": 14457,
+      "ticketCode": "HR_261021_013",
+      "detailRows": 1,
+      "recruitmentIds": [97],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 13,
+      "ticketId": 14458,
+      "ticketCode": "HR_261021_014",
+      "detailRows": 1,
+      "recruitmentIds": [98],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 14,
+      "ticketId": 14459,
+      "ticketCode": "HR_261021_015",
+      "detailRows": 1,
+      "recruitmentIds": [99],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 15,
+      "ticketId": 14460,
+      "ticketCode": "HR_261021_016",
+      "detailRows": 1,
+      "recruitmentIds": [100],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 16,
+      "ticketId": 14461,
+      "ticketCode": "HR_261021_017",
+      "detailRows": 1,
+      "recruitmentIds": [101],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 17,
+      "ticketId": 14462,
+      "ticketCode": "HR_261021_018",
+      "detailRows": 1,
+      "recruitmentIds": [102],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 18,
+      "ticketId": 14463,
+      "ticketCode": "HR_261021_019",
+      "detailRows": 1,
+      "recruitmentIds": [103],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 19,
+      "ticketId": 14464,
+      "ticketCode": "HR_261021_020",
+      "detailRows": 1,
+      "recruitmentIds": [104],
+      "createdApprovedReadbackEdited": true
+    },
+    {
+      "case": 20,
+      "ticketId": 14465,
+      "ticketCode": "HR_261021_021",
+      "detailRows": 5,
+      "recruitmentIds": [109, 108, 107, 106, 105],
+      "createdApprovedReadbackEdited": true
+    }
+  ],
+  "verification": {
+    "fullSuitePassed": 839,
+    "testFiles": 33,
+    "statementCoverage": 91.57,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "localSonarJs": {
+      "errors": 0,
+      "warnings": 0,
+      "serverScan": false
+    },
+    "presentation": {
+      "themes": ["light", "dark"],
+      "widths": [1440, 390, 320]
+    }
+  },
+  "detailArtifact": "tests/artifacts/ticket-recruitment-request-20.json"
+}

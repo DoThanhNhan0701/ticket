@@ -739,3 +739,88 @@ it("keeps report dates visible without an empty advanced-search section", () => 
   expect(screen.getByRole("textbox", { name: /^Đến ngày/ })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Lọc nâng cao" })).toBeNull();
 });
+
+it("uses shared pagination for interview CVs without refetching the full API dataset", async () => {
+  const rows = Array.from({ length: 101 }, (_, index) => ({
+    ...candidate,
+    id: index + 1000,
+    first_name: `TEST-PAGE-${index + 1}`,
+  }));
+  vi.mocked(api.interviewDetail).mockResolvedValue([
+    { id: 58, title: "TEST interview", ls_cv_interview: rows },
+  ]);
+  mount(<InterviewCandidates />);
+  const table = await screen.findByRole("table", { name: "CV phỏng vấn" });
+  expect(within(table).getByText("TEST-PAGE-100")).toBeTruthy();
+  expect(within(table).queryByText("TEST-PAGE-101")).toBeNull();
+  const calls = vi.mocked(api.interviewDetail).mock.calls.length;
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  expect(within(table).getByText("TEST-PAGE-101")).toBeTruthy();
+  expect(api.interviewDetail).toHaveBeenCalledTimes(calls);
+  fireEvent.change(screen.getByLabelText("Tìm ứng viên phỏng vấn"), {
+    target: { value: "TEST" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await waitFor(() =>
+    expect(
+      screen
+        .getByRole("button", { name: "Trang trước" })
+        .hasAttribute("disabled"),
+    ).toBe(true),
+  );
+});
+
+it("paginates report tables while totals and charts use the complete dataset", async () => {
+  vi.mocked(api.recruitmentObject).mockResolvedValue({
+    result_rect: Array.from({ length: 101 }, (_, index) => ({
+      id: index + 1,
+      ticket_code: `TEST-REPORT-${index + 1}`,
+      number_cv_all: 1,
+    })),
+  });
+  mount(<RecruitmentReport />);
+  const table = await screen.findByRole("table", {
+    name: "Bảng báo cáo tuyển dụng",
+  });
+  expect(within(table).queryByText("TEST-REPORT-101")).toBeNull();
+  expect(screen.getByText("101")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  expect(within(table).getByText("TEST-REPORT-101")).toBeTruthy();
+  fireEvent.click(screen.getByRole("tab", { name: "Theo bộ phận" }));
+  await screen.findByText(
+    "Không có dữ liệu báo cáo trong khoảng thời gian đã chọn.",
+  );
+  expect(screen.queryByRole("button", { name: "Trang sau" })).toBeNull();
+});
+
+it("shows V2 recruitment metadata and Vietnam-style due dates without allowing ticket fields to be overwritten", async () => {
+  vi.mocked(api.recruitmentDetail).mockResolvedValue({
+    row: {
+      ...request,
+      other_skill: "TEST kỹ năng khác",
+      user_update_name: "test-editor",
+    },
+    reasons: [],
+  });
+  mount(
+    <RecruitmentEditor
+      state={{ action: "request", row: request }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  const due = await screen.findByLabelText("Ngày hết hạn");
+  await waitFor(() =>
+    expect((due as HTMLInputElement).value).toBe("01/11/2026"),
+  );
+  expect(due.hasAttribute("disabled")).toBe(true);
+  expect(
+    (screen.getByLabelText("Kỹ năng khác") as HTMLInputElement).value,
+  ).toBe("TEST kỹ năng khác");
+  expect(screen.getByLabelText("Kỹ năng khác").hasAttribute("disabled")).toBe(
+    true,
+  );
+  expect(
+    (screen.getByLabelText("Người cập nhật") as HTMLInputElement).value,
+  ).toBe("test-editor");
+});

@@ -110,7 +110,11 @@ export async function createRequest(
     description: values.description.trim(),
     duedate: format(date, "yyyy-MM-dd"),
     ticket_status: 1,
-    formDataTicket: serializeCreateRequestDetails(groups, values.rows),
+    formDataTicket: serializeCreateRequestDetails(
+      groups,
+      values.rows,
+      Number(values.ticket_type),
+    ),
   };
   const response = await postRequest<unknown>("/ticket_manager", { body });
   return parseApiResponse(

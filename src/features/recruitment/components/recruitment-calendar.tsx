@@ -94,7 +94,7 @@ export function RecruitmentCalendar() {
         }}
       />
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="icon"
@@ -114,7 +114,11 @@ export function RecruitmentCalendar() {
           >
             <ChevronRight className="size-4" />
           </Button>
-          <span className="text-sm font-medium">{format(day, "MM/yyyy")}</span>
+          <span className="text-sm font-medium" aria-live="polite">
+            {view === "week"
+              ? `${format(start, "dd/MM/yyyy")} – ${format(end, "dd/MM/yyyy")}`
+              : format(day, view === "day" ? "dd/MM/yyyy" : "MM/yyyy")}
+          </span>
         </div>
         <div className="flex flex-wrap gap-2">
           {(

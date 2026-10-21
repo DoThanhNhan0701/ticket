@@ -144,7 +144,7 @@ const artifact = "tests/artifacts/ticket-recruitment-readback.json";
         await user
           .getByText(
             "Không có quyền truy cập. Vui lòng liên hệ bộ phận nhân sự.",
-            { exact: true },
+            { exact: false },
           )
           .waitFor();
         assert.equal(

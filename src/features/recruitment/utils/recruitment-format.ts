@@ -57,7 +57,10 @@ export function recruitmentStoredDate(value: unknown): string {
     .map((type) => parts.find((part) => part.type === type)?.value)
     .join("-");
 }
-export function recruitmentFileHref(value: unknown): string | undefined {
+export function recruitmentFileHref(
+  value: unknown,
+  filename?: unknown,
+): string | undefined {
   const path = recruitmentText(value);
   if (!path) return;
   try {
@@ -67,7 +70,13 @@ export function recruitmentFileHref(value: unknown): string | undefined {
         : window.location.origin;
     const base = new URL(import.meta.env.VITE_API_BASE_URL || "/", origin);
     const url = new URL(path, base.origin);
-    return ["http:", "https:"].includes(url.protocol) ? url.href : undefined;
+    if (!["http:", "https:"].includes(url.protocol)) return;
+    const name = recruitmentText(filename);
+    if (name && url.pathname.endsWith("/"))
+      url.pathname += encodeURIComponent(name);
+    return url.pathname.startsWith("/media/")
+      ? new URL(`${url.pathname}${url.search}${url.hash}`, base.origin).href
+      : url.href;
   } catch {
     return;
   }

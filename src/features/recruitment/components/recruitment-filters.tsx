@@ -188,7 +188,7 @@ export function RecruitmentFilters({
                 apply(next);
               }}
             >
-              {mode !== "interviews" && <RecruitmentDateRange {...shared} />}
+              <RecruitmentDateRange {...shared} />
               {["requests", "candidates"].includes(mode) && (
                 <MultiSelectField
                   {...shared}

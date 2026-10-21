@@ -69,7 +69,7 @@ export function RecruitmentFormExtras({
         ["path_file_cv", "name_file_cv"],
         ["path_file_interview", "name_file_interview"],
       ].map(([path, name]) => {
-        const href = recruitmentFileHref(state.row[path]);
+        const href = recruitmentFileHref(state.row[path], state.row[name]);
         return href ? (
           <a
             key={path}
@@ -130,9 +130,12 @@ export function RecruitmentFormExtras({
               {recruitmentText(file.file_name) || "Tải tệp ghi chú"}
             </Button>
           ))}
-          {recruitmentFileHref(note.path_file_note) && (
+          {recruitmentFileHref(note.path_file_note, note.name_file_note) && (
             <a
-              href={recruitmentFileHref(note.path_file_note)}
+              href={recruitmentFileHref(
+                note.path_file_note,
+                note.name_file_note,
+              )}
               target="_blank"
               rel="noreferrer"
               className="text-primary underline"

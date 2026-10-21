@@ -1,3 +1,4 @@
+export { DataClientResults } from "./data-client-results";
 export { DataFiltersDrawer } from "./data-filters-drawer";
 export { DataPagination } from "./data-pagination";
 export { DataResults } from "./data-results";

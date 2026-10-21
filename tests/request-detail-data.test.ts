@@ -521,3 +521,40 @@ it.each([
       ]);
   },
 );
+
+it("preserves recruitment approval's legacy keys without changing UI columns or unrelated ticket payloads", () => {
+  const groups = [
+    {
+      title: "HR",
+      children: [
+        { title: "Vị trí tuyển dụng  (*)", type: "text", required: true },
+        { title: "Số lượng (*)", type: "text", required: true },
+        { title: "Bằng cấp", type: "text", required: true },
+      ],
+    },
+  ];
+  const rows = Array.from({ length: 5 }, (_, index) => ({
+    values: {
+      f0: `TEST Position ${index}`,
+      f1: String(index + 1),
+      f2: "Đại học",
+    },
+  }));
+  const saved = serializeCreateRequestDetails(groups, rows, 99).dataform!;
+  expect(saved.data).toHaveLength(5);
+  expect(saved.data[0]).toMatchObject({
+    "Vị trí tuyển dụng": "TEST Position 0",
+    "Vị trí tuyển dụng (*)": "TEST Position 0",
+    "Số lượng": "1",
+    "Số lượng (*)": "1",
+    "Bằng cấp (*)": "Đại học",
+  });
+  expect(saved.header[0].children.map((field) => field.title)).toEqual([
+    "Vị trí tuyển dụng",
+    "Số lượng",
+    "Bằng cấp",
+  ]);
+  expect(
+    serializeCreateRequestDetails(groups, rows, 186).dataform!.data[0],
+  ).not.toHaveProperty("Vị trí tuyển dụng (*)");
+});

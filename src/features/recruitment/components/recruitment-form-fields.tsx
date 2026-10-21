@@ -1,4 +1,4 @@
-import { Controller, type UseFormReturn } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
 
 import { InputField } from "@/components/form/input-field";
 import { DatePickerField } from "@/components/form/date-picker-field";
@@ -6,8 +6,7 @@ import { SelectField } from "@/components/form/select-field";
 import { MultiSelectField } from "@/components/form/multi-select-field";
 import { TextareaField } from "@/components/form/textarea-field";
 
-import { FormFieldShell } from "@/components/form/form-field-shell";
-import { Input } from "@/components/ui/input";
+import { TimePickerField } from "@/components/form/time-picker-field";
 
 import type {
   RecruitmentField,
@@ -86,34 +85,7 @@ export function RecruitmentFormFields({
             />
           );
         if (field.type === "time")
-          return (
-            <Controller
-              key={field.name}
-              name={field.name}
-              control={form.control}
-              render={({ field: input, fieldState }) => (
-                <FormFieldShell
-                  id={shared.id}
-                  label={field.label}
-                  required={field.required}
-                  invalid={fieldState.invalid}
-                  error={fieldState.error}
-                >
-                  <Input
-                    {...input}
-                    value={String(input.value ?? "").slice(0, 5)}
-                    id={shared.id}
-                    type="time"
-                    disabled={shared.disabled}
-                    aria-invalid={fieldState.invalid}
-                    aria-describedby={
-                      fieldState.error ? `${shared.id}-error` : undefined
-                    }
-                  />
-                </FormFieldShell>
-              )}
-            />
-          );
+          return <TimePickerField key={field.name} {...shared} />;
         return (
           <InputField
             key={field.name}

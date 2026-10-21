@@ -72,7 +72,12 @@ export function recruitmentFields(
           readonly: true,
         },
         { name: "rec_position", label: "Vị trí tuyển dụng", readonly: true },
-        { name: "duedate", label: "Ngày hết hạn", readonly: true },
+        {
+          name: "duedate",
+          label: "Ngày hết hạn",
+          type: "date",
+          readonly: true,
+        },
         { name: "work_location", label: "Địa điểm làm việc", readonly: true },
         {
           name: "reason_recr_id",
@@ -83,6 +88,8 @@ export function recruitmentFields(
         { name: "user_new_quits", label: "Tuyển thay thế nhân viên" },
         { name: "language_skill", label: "Trình độ ngoại ngữ" },
         { name: "computer_skill", label: "Trình độ tin học" },
+        { name: "other_skill", label: "Kỹ năng khác", readonly: true },
+        { name: "user_update_name", label: "Người cập nhật", readonly: true },
         {
           name: "job_description",
           label: "Mô tả công việc",

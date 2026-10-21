@@ -259,6 +259,7 @@ export function serializeRequestDetails(
 export function serializeCreateRequestDetails(
   groups: readonly TemplateGroup[],
   rows: readonly DetailRow[],
+  ticketType?: number,
 ) {
   const blank = serializeRequestDetails(
     groups,
@@ -270,12 +271,23 @@ export function serializeCreateRequestDetails(
   return {
     dataform: {
       ...dataform,
-      data: rows.map((row, index) => ({
-        ...dataform.data[index],
-        ...Object.fromEntries(
+      data: rows.map((row, index) => {
+        const values = Object.fromEntries(
           fields.map((field) => [field.title, detailValue(field, row)]),
-        ),
-      })),
+        );
+        // Recruitment approval still reads canonical names with the legacy (*)
+        // suffix. Keep clean keys for rendering/imports and aliases at this API boundary.
+        const legacy =
+          ticketType === 99
+            ? Object.fromEntries(
+                Object.entries(values).map(([key, value]) => [
+                  `${key} (*)`,
+                  value,
+                ]),
+              )
+            : {};
+        return { ...dataform.data[index], ...values, ...legacy };
+      }),
     },
   };
 }

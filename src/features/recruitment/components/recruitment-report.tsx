@@ -3,13 +3,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Download } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
+  DataClientResults,
   DataTable,
   DataText,
   formatDataDate,
   type DataColumn,
 } from "@/components/data-management";
 import { ErrorAlert } from "@/components/error-alert";
-import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { downloadFile } from "@/lib/download";
@@ -59,6 +59,7 @@ const labels: Record<string, string> = {
 };
 export function RecruitmentReport() {
   const { userId } = useAuthContext();
+  const [paginationReset, resetPagination] = useState(0);
   const [filters, setFilters] = useState(defaultRecruitmentDates);
   const [tab, setTab] = useState<string>(sections[0][0]);
   const query = useQuery({
@@ -131,6 +132,7 @@ export function RecruitmentReport() {
         mode="reports"
         busy={query.isFetching}
         onApply={(values) => {
+          resetPagination((current) => current + 1);
           if (
             values.from_date === filters.from_date &&
             values.to_date === filters.to_date
@@ -142,7 +144,10 @@ export function RecruitmentReport() {
               to_date: values.to_date,
             });
         }}
-        onReset={() => setFilters(defaultRecruitmentDates())}
+        onReset={() => {
+          resetPagination((current) => current + 1);
+          setFilters(defaultRecruitmentDates());
+        }}
         actions={
           <AsyncButton
             type="button"
@@ -195,64 +200,64 @@ export function RecruitmentReport() {
           </Button>
         ))}
       </div>
-      {query.isPending && (
-        <LoadingState message="Đang tải báo cáo tuyển dụng..." />
-      )}
-      {query.isError && (
-        <div className="space-y-3">
-          <ErrorAlert message={query.error.message} />
-          <Button onClick={() => void query.refetch()}>Thử lại báo cáo</Button>
-        </div>
-      )}
-      {!query.isPending && !query.isError && (
-        <section
-          id="recruitment-report-panel"
-          role="tabpanel"
-          aria-label={sections.find(([key]) => key === tab)?.[1]}
-          className="flex min-h-64 flex-1 flex-col gap-4 rounded-xl border bg-card p-4"
-        >
-          {rows.length ? (
-            <>
-              <div className="flex flex-wrap gap-3">
-                {["number_cv_all", "quantity", "number_cv_pass"]
-                  .filter((key) =>
-                    rows.some((row) => Number.isFinite(Number(row[key]))),
-                  )
-                  .map((key) => (
-                    <div
-                      key={key}
-                      className="min-w-40 rounded-xl border bg-muted/30 p-4"
-                    >
-                      <p className="text-xs text-muted-foreground">
-                        {labels[key]}
-                      </p>
-                      <p className="text-2xl font-semibold tabular-nums">
-                        {rows.reduce(
-                          (total, row) => total + (Number(row[key]) || 0),
-                          0,
-                        )}
-                      </p>
-                    </div>
-                  ))}
-              </div>
-              <RecruitmentChart rows={rows} />
-              <div className="min-h-64 flex-1">
-                <DataTable
-                  scrollLabel="Cuộn bảng tuyển dụng"
-                  rows={rows}
-                  columns={columns}
-                  label="Bảng báo cáo tuyển dụng"
-                  getRowKey={(row) => JSON.stringify(row)}
-                />
-              </div>
-            </>
-          ) : (
-            <p className="my-auto text-center text-sm text-muted-foreground">
-              Không có dữ liệu báo cáo trong khoảng thời gian đã chọn.
-            </p>
+      <section
+        id="recruitment-report-panel"
+        role="tabpanel"
+        aria-label={sections.find(([key]) => key === tab)?.[1]}
+        className="flex min-h-64 flex-1 flex-col gap-4 rounded-xl border bg-card p-4"
+      >
+        {!query.isPending && !query.isError && rows.length > 0 && (
+          <>
+            <div className="flex flex-wrap gap-3">
+              {["number_cv_all", "quantity", "number_cv_pass"]
+                .filter((key) =>
+                  rows.some((row) => Number.isFinite(Number(row[key]))),
+                )
+                .map((key) => (
+                  <div
+                    key={key}
+                    className="min-w-40 rounded-xl border bg-muted/30 p-4"
+                  >
+                    <p className="text-xs text-muted-foreground">
+                      {labels[key]}
+                    </p>
+                    <p className="text-2xl font-semibold tabular-nums">
+                      {rows.reduce(
+                        (total, row) => total + (Number(row[key]) || 0),
+                        0,
+                      )}
+                    </p>
+                  </div>
+                ))}
+            </div>
+            <RecruitmentChart rows={rows} />
+          </>
+        )}
+        <DataClientResults
+          scopeKey={JSON.stringify([tab, filters, paginationReset])}
+          query={{
+            ...query,
+            data: query.data
+              ? { results: rows, count: rows.length }
+              : undefined,
+          }}
+          label="Kết quả báo cáo tuyển dụng"
+          itemLabel="bản ghi"
+          loadingMessage="Đang tải báo cáo tuyển dụng..."
+          errorPrefix="Không tải được báo cáo tuyển dụng"
+          emptyTitle="Không có dữ liệu báo cáo trong khoảng thời gian đã chọn."
+          renderRows={(visibleRows, offset) => (
+            <DataTable
+              scrollLabel="Cuộn bảng tuyển dụng"
+              rows={visibleRows}
+              columns={columns}
+              label="Bảng báo cáo tuyển dụng"
+              getRowKey={(row) => JSON.stringify(row)}
+              scrollResetKey={`${offset}:${visibleRows.length}`}
+            />
           )}
-        </section>
-      )}
+        />
+      </section>
     </div>
   );
 }

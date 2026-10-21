@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "case": "Popover selects exact minute, equal start/end is rejected before API",
+      "result": "passed"
+    },
+    {
+      "case": "Correcting end time clears the form error",
+      "result": "passed"
+    },
+    {
+      "case": "light 1440px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "light 390px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "light 320px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "dark 1440px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "dark 390px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "dark 320px popup fits viewport; Escape retains parent modal",
+      "result": "passed"
+    },
+    {
+      "case": "Clear time resets field",
+      "result": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "businessWrites": [],
+  "result": "passed"
+}

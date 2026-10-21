@@ -17,6 +17,7 @@ import {
   DataFiltersDrawer,
   DataPagination,
   DataResults,
+  DataClientResults,
   countActiveFilters,
   getFilterValues,
   normalizeFilterValues,
@@ -497,4 +498,93 @@ it("formats API dates consistently, including timestamps crossing the local midn
   expect(formatDataDate("2026-10-21")).toBe("21/10/2026");
   for (const value of [undefined, null, "", "invalid"])
     expect(formatDataDate(value)).toBe("");
+});
+
+it("paginates complete API results with shared controls and clamps after deletion", async () => {
+  const rows = Array.from({ length: 201 }, (_, index) => ({ id: index + 1 }));
+  const query = {
+    data: { count: rows.length, results: rows },
+    error: null,
+    isPending: false,
+    isError: false,
+    isFetching: false,
+    isPlaceholderData: false,
+    refetch: vi.fn(),
+  };
+  const props = {
+    label: "Kết quả thử",
+    itemLabel: "bản ghi",
+    query,
+    renderRows: (visible: { id: number }[], offset: number) => (
+      <div aria-label="Dòng hiển thị" data-offset={offset}>
+        {visible.map((row) => (
+          <p key={row.id}>Dòng {row.id}</p>
+        ))}
+      </div>
+    ),
+  };
+  const view = render(<DataClientResults {...props} />);
+  expect(screen.getByText("Dòng 100")).toBeTruthy();
+  expect(screen.queryByText("Dòng 101")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  expect(screen.getByText("Dòng 101")).toBeTruthy();
+  expect(screen.queryByText("Dòng 1")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  expect(screen.getByText("Dòng 201")).toBeTruthy();
+  view.rerender(
+    <DataClientResults
+      {...props}
+      query={{ ...query, data: { count: 100, results: rows.slice(0, 100) } }}
+    />,
+  );
+  expect(screen.getByText("Dòng 1")).toBeTruthy();
+  expect(
+    screen.getByRole("button", { name: "Trang sau" }).hasAttribute("disabled"),
+  ).toBe(true);
+  view.rerender(
+    <DataClientResults {...props} query={{ ...query, isFetching: true }} />,
+  );
+  expect(
+    screen.getByRole("button", { name: "Trang sau" }).hasAttribute("disabled"),
+  ).toBe(true);
+});
+
+it("resets client pagination when page size changes and on a new result scope", async () => {
+  const rows = Array.from({ length: 201 }, (_, index) => ({ id: index + 1 }));
+  const props = {
+    query: {
+      data: { count: rows.length, results: rows },
+      error: null,
+      isPending: false,
+      isError: false,
+      isFetching: false,
+      isPlaceholderData: false,
+      refetch: vi.fn(),
+    },
+    label: "Kết quả thử",
+    itemLabel: "bản ghi",
+    renderRows: (visible: { id: number }[]) => (
+      <div>
+        {visible.map((row) => (
+          <p key={row.id}>Dòng {row.id}</p>
+        ))}
+      </div>
+    ),
+  };
+  const view = render(<DataClientResults scopeKey="first" {...props} />);
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  fireEvent.click(
+    screen.getByRole("combobox", { name: "Số bản ghi mỗi trang" }),
+  );
+  const sizeOption = await screen.findByRole("option", { name: "200 / trang" });
+  fireEvent.pointerDown(sizeOption, { pointerType: "mouse" });
+  fireEvent.click(sizeOption);
+  expect(screen.getByText("Dòng 1")).toBeTruthy();
+  expect(screen.getByText("Dòng 200")).toBeTruthy();
+  expect(screen.queryByText("Dòng 201")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  view.rerender(<DataClientResults scopeKey="second" {...props} />);
+  expect(screen.getByText("Dòng 1")).toBeTruthy();
+  expect(screen.getByText("Dòng 200")).toBeTruthy();
+  expect(screen.queryByText("Dòng 201")).toBeNull();
 });

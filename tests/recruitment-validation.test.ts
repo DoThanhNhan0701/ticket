@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { recruitmentFields } from "@/features/recruitment/utils/recruitment-fields";
 import {
   recruitmentDefaults,
@@ -186,4 +186,30 @@ it("restores application and birth dates in create/edit forms without changing s
     }),
   ).toMatchObject({ application_date: "2026-10-21", birthday: "2000-01-01" });
   expect(recruitmentDate("2026-10-20T17:00:00Z")).toBe("");
+});
+
+it("joins recruitment attachment directories with encoded filenames and uses the public media host", () => {
+  vi.stubEnv("VITE_API_BASE_URL", "https://ticket-api.example.test");
+  try {
+    expect(recruitmentFileHref("media/recruitment/90/", "Đặng JD #1.txt")).toBe(
+      "https://ticket-api.example.test/media/recruitment/90/%C4%90%E1%BA%B7ng%20JD%20%231.txt",
+    );
+    expect(
+      recruitmentFileHref(
+        "http://192.168.1.10:8000/media/recruitment/90/",
+        "JD.txt",
+      ),
+    ).toBe("https://ticket-api.example.test/media/recruitment/90/JD.txt");
+    expect(recruitmentFileHref("/media/recruitment/90/JD.txt", "JD.txt")).toBe(
+      "https://ticket-api.example.test/media/recruitment/90/JD.txt",
+    );
+    expect(recruitmentFileHref("https://example.test/JD.pdf", "JD.pdf")).toBe(
+      "https://example.test/JD.pdf",
+    );
+    expect(
+      recruitmentFileHref("javascript:alert(1)", "JD.pdf"),
+    ).toBeUndefined();
+  } finally {
+    vi.unstubAllEnvs();
+  }
 });

@@ -34,7 +34,7 @@ import { useRecruitmentLookups } from "../hooks/use-recruitment-lookups";
 import { RecruitmentEditor } from "./recruitment-editor";
 import { RecruitmentRowActions } from "./recruitment-row-actions";
 import { RecruitmentFilters } from "./recruitment-filters";
-const pageSizes = [10, 20, 50, 100] as const;
+const pageSizes = [100, 200] as const;
 export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
   const { userId } = useAuthContext();
   const [params, setParams] = useSearchParams();

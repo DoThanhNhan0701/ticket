@@ -245,6 +245,8 @@ The 20-candidate live QC run is recorded in `tests/artifacts/ticket-recruitment-
 
 Known live backend issue: `/api/list_cv/` can return HTTP 500 when filters have no matching candidates. The screen exposes the error and retry action; it does not misreport a server failure as an empty successful result. The public CV application form remains hosted on the legacy backend and is outside these four screens.
 
+The ticket-to-recruitment live QC run is documented in `tests/artifacts/ticket-recruitment-request-20-summary.json`, with detailed UI/API evidence in `ticket-recruitment-request-20.json`. It created and approved 20 HR tickets (`HR_261021_002`–`HR_261021_021`) through the UI, generating 24 recruitment requests because the final ticket has five detail rows. All 24 were edited and read back; two TEST candidates were added from the new requests. Search by `TEST_HRREQ20_261021`. The initial approval-failure ticket `HR_261021_001` was cancelled. The run fixed recruitment approval compatibility with legacy `(*)` field keys, attachment links missing filenames, readonly metadata parity and due-date formatting. The copied public CV URL still returns HTTP 404; HR receiving/completion cases are marked skipped because the API grants no corresponding actions to the supplied admin. The phase-based browser scripts `ticket-recruitment-request-20.cjs` and `ticket-recruitment-request-20-scenarios.cjs` use stdin credentials, resume their run-specific records and restrict mutations to TEST fixtures. They are tied to the 2026-10-21 dataset.
+
 ## Project structure
 
 ```text
