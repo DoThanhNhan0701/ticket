@@ -190,7 +190,7 @@ export const interviewCandidates = (row: RecruitmentRow) =>
 
 export async function downloadRecruitmentNote(id: number) {
   const result = await getRequest<unknown>(`/download-note-cv/${id}`, {
-    responseType: "blob",
+    responseType: "file",
   });
   if (!(result instanceof Blob) || result.size === 0)
     throw new Error("Không tải được tệp ghi chú.");

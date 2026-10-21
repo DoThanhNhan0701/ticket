@@ -1,0 +1,75 @@
+{
+  "result": "completed-with-backend-issues",
+  "account": {
+    "id": 815,
+    "username": "TEST_REC30_261021_QA",
+    "superuser": false
+  },
+  "dataset": {
+    "prefix": "TEST_REC30_MVI3YC9L",
+    "profiles": 30,
+    "candidateIds": [
+      438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452,
+      453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467
+    ],
+    "interview": {
+      "id": 65,
+      "day": "2026-11-25",
+      "title": "TEST_REC30_MVI3YC9L Interview",
+      "code": "PV_261021_065"
+    },
+    "preservedForReview": true,
+    "deletionControlCleaned": true
+  },
+  "localChecks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "testFiles": 38,
+    "testsPassed": 966,
+    "coverage": {
+      "statements": 93.56,
+      "branches": 89.85,
+      "functions": 91.56,
+      "lines": 94.37
+    }
+  },
+  "liveChecks": {
+    "result": "completed-with-backend-issues",
+    "profiles": 30,
+    "checksPassed": 287,
+    "openIssues": [
+      {
+        "name": "calendar-update-readback",
+        "result": "failed",
+        "layer": "backend",
+        "endpoint": "PUT /api/regis-interview/",
+        "httpStatus": 200,
+        "recordId": 66,
+        "expected": {
+          "time_end": "18:30",
+          "note": "TEST_REC30_MVI3YC9L UPDATED calendar"
+        },
+        "actual": {
+          "time_end": "18:00",
+          "note": "TEST_REC30_MVI3YC9L TEMP"
+        }
+      }
+    ],
+    "pageErrors": 0
+  },
+  "fixedIssues": [
+    {
+      "layer": "frontend",
+      "description": "JSON note downloads were parsed as API JSON. Explicit file response handling now preserves bytes even when CORS hides Content-Disposition. Retested with live JSON preview.",
+      "evidence": "ui-history-preview-4"
+    }
+  ],
+  "statusColors": {
+    "statuses": 9,
+    "themes": ["light", "dark"],
+    "pages": ["candidates", "interview-candidates"],
+    "fixtureBrowserChecks": 4
+  },
+  "evidence": "tests/artifacts/ticket-recruitment-30-records.json"
+}

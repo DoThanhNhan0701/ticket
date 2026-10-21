@@ -15,6 +15,7 @@ export function DataClientResults<T>({
   emptyTitle,
   emptyDescription,
   renderRows,
+  refreshStyle,
 }: Readonly<{
   query: DataListQuery<T>;
   scopeKey?: string;
@@ -25,6 +26,7 @@ export function DataClientResults<T>({
   emptyTitle?: string;
   emptyDescription?: string;
   renderRows: (rows: T[], offset: number) => ReactNode;
+  refreshStyle?: "overlay" | "subtle";
 }>) {
   const [selection, setSelection] = useState({ scopeKey, page: 1 });
   const requestedPage = selection.scopeKey === scopeKey ? selection.page : 1;
@@ -46,6 +48,7 @@ export function DataClientResults<T>({
 
   return (
     <DataResults
+      refreshStyle={refreshStyle}
       query={{
         ...query,
         data: query.data ? { count: rows.length, results: rows } : undefined,

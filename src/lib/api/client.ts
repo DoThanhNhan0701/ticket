@@ -27,7 +27,7 @@ export interface RequestOptions {
   params?: Record<string, string>;
   body?: unknown;
   signal?: AbortSignal;
-  responseType?: "json" | "blob";
+  responseType?: "json" | "blob" | "file";
 }
 
 function sessionChangedError(): ApiError {
@@ -79,6 +79,9 @@ async function readResponse(
   responseType: RequestOptions["responseType"] = "json",
 ): Promise<unknown> {
   if (response.status === 204) return null;
+  // File endpoints can serve JSON attachments without exposing download headers
+  // through CORS. Failed downloads still use the JSON error handling below.
+  if (response.ok && responseType === "file") return response.blob();
   if (response.headers.get("content-type")?.includes("application/json"))
     return response.json();
   return response.ok && responseType === "blob" ? response.blob() : null;

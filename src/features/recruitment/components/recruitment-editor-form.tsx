@@ -26,6 +26,7 @@ import {
   recruitmentFormSchema,
 } from "../utils/recruitment-validation";
 import { saveRecruitmentAction } from "../utils/recruitment-actions";
+import { refreshRecruitmentAction } from "../utils/recruitment-refresh";
 import { RecruitmentFormFields } from "./recruitment-form-fields";
 import { RecruitmentFormExtras } from "./recruitment-form-extras";
 import { RecruitmentNoteComposer } from "./recruitment-note-composer";
@@ -122,10 +123,7 @@ export function RecruitmentEditorForm({
       saveRecruitmentAction(state, values, files),
     onMutate: () => onBusy(true),
     onSuccess: async () => {
-      await client.invalidateQueries({
-        predicate: (query) =>
-          String(query.queryKey[0]).startsWith("recruitment"),
-      });
+      await refreshRecruitmentAction(client, state, userId);
       if (state.action === "note") {
         form.reset({ note: "" });
         setFiles({});

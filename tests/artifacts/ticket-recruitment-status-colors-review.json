@@ -1,0 +1,310 @@
+{
+  "method": "Chromium UI with delayed fixture APIs. No real backend writes.",
+  "checks": [
+    {
+      "path": "/recruitment/candidates",
+      "theme": "light",
+      "colors": [
+        {
+          "label": "Chờ duyệt",
+          "color": "oklch(0.5 0.134 242.749)",
+          "background": "oklch(0.977 0.013 236.62)",
+          "border": "oklch(0.901 0.058 230.902)"
+        },
+        {
+          "label": "Chờ phỏng vấn",
+          "color": "oklch(0.52 0.105 223.128)",
+          "background": "oklch(0.984 0.019 200.873)",
+          "border": "oklch(0.917 0.08 205.041)"
+        },
+        {
+          "label": "Chờ kết quả",
+          "color": "oklch(0.553 0.195 38.402)",
+          "background": "oklch(0.98 0.016 73.684)",
+          "border": "oklch(0.901 0.076 70.697)"
+        },
+        {
+          "label": "Không đạt",
+          "color": "rgb(180, 35, 24)",
+          "background": "rgb(255, 240, 238)",
+          "border": "rgb(239, 176, 170)"
+        },
+        {
+          "label": "Đạt",
+          "color": "rgb(17, 107, 75)",
+          "background": "rgb(230, 246, 238)",
+          "border": "rgb(163, 214, 189)"
+        },
+        {
+          "label": "Tiềm năng",
+          "color": "oklch(0.491 0.27 292.581)",
+          "background": "oklch(0.969 0.016 293.756)",
+          "border": "oklch(0.894 0.057 293.283)"
+        },
+        {
+          "label": "Offer",
+          "color": "rgb(138, 75, 15)",
+          "background": "rgb(255, 242, 219)",
+          "border": "rgb(237, 203, 141)"
+        },
+        {
+          "label": "Không nhận việc",
+          "color": "rgb(82, 96, 120)",
+          "background": "rgb(234, 240, 246)",
+          "border": "rgb(203, 213, 225)"
+        },
+        {
+          "label": "Đã nhận việc",
+          "color": "oklch(0.511 0.096 186.391)",
+          "background": "oklch(0.984 0.014 180.72)",
+          "border": "oklch(0.91 0.096 180.426)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/candidates",
+      "theme": "dark",
+      "colors": [
+        {
+          "label": "Chờ duyệt",
+          "color": "oklch(0.828 0.111 230.318)",
+          "background": "oklch(0.293 0.066 243.157)",
+          "border": "oklch(0.443 0.11 240.79)"
+        },
+        {
+          "label": "Chờ phỏng vấn",
+          "color": "oklch(0.865 0.127 207.078)",
+          "background": "oklch(0.302 0.056 229.695)",
+          "border": "oklch(0.45 0.085 224.283)"
+        },
+        {
+          "label": "Chờ kết quả",
+          "color": "oklch(0.837 0.128 66.29)",
+          "background": "oklch(0.266 0.079 36.259)",
+          "border": "oklch(0.47 0.157 37.304)"
+        },
+        {
+          "label": "Không đạt",
+          "color": "rgb(255, 180, 171)",
+          "background": "rgb(60, 36, 46)",
+          "border": "rgb(146, 82, 98)"
+        },
+        {
+          "label": "Đạt",
+          "color": "rgb(146, 226, 181)",
+          "background": "rgb(23, 60, 50)",
+          "border": "rgb(57, 122, 93)"
+        },
+        {
+          "label": "Tiềm năng",
+          "color": "oklch(0.811 0.111 293.571)",
+          "background": "oklch(0.283 0.141 291.089)",
+          "border": "oklch(0.432 0.232 292.759)"
+        },
+        {
+          "label": "Offer",
+          "color": "rgb(255, 214, 138)",
+          "background": "rgb(59, 48, 32)",
+          "border": "rgb(135, 108, 58)"
+        },
+        {
+          "label": "Không nhận việc",
+          "color": "rgb(175, 189, 210)",
+          "background": "rgb(34, 46, 67)",
+          "border": "rgb(54, 70, 94)"
+        },
+        {
+          "label": "Đã nhận việc",
+          "color": "oklch(0.855 0.138 181.071)",
+          "background": "oklch(0.277 0.046 192.524)",
+          "border": "oklch(0.437 0.078 188.216)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/interviews/INT_TEST",
+      "theme": "light",
+      "colors": [
+        {
+          "label": "Chờ duyệt",
+          "color": "oklch(0.5 0.134 242.749)",
+          "background": "oklch(0.977 0.013 236.62)",
+          "border": "oklch(0.901 0.058 230.902)"
+        },
+        {
+          "label": "Chờ phỏng vấn",
+          "color": "oklch(0.52 0.105 223.128)",
+          "background": "oklch(0.984 0.019 200.873)",
+          "border": "oklch(0.917 0.08 205.041)"
+        },
+        {
+          "label": "Chờ kết quả",
+          "color": "oklch(0.553 0.195 38.402)",
+          "background": "oklch(0.98 0.016 73.684)",
+          "border": "oklch(0.901 0.076 70.697)"
+        },
+        {
+          "label": "Không đạt",
+          "color": "rgb(180, 35, 24)",
+          "background": "rgb(255, 240, 238)",
+          "border": "rgb(239, 176, 170)"
+        },
+        {
+          "label": "Đạt",
+          "color": "rgb(17, 107, 75)",
+          "background": "rgb(230, 246, 238)",
+          "border": "rgb(163, 214, 189)"
+        },
+        {
+          "label": "Tiềm năng",
+          "color": "oklch(0.491 0.27 292.581)",
+          "background": "oklch(0.969 0.016 293.756)",
+          "border": "oklch(0.894 0.057 293.283)"
+        },
+        {
+          "label": "Offer",
+          "color": "rgb(138, 75, 15)",
+          "background": "rgb(255, 242, 219)",
+          "border": "rgb(237, 203, 141)"
+        },
+        {
+          "label": "Không nhận việc",
+          "color": "rgb(82, 96, 120)",
+          "background": "rgb(234, 240, 246)",
+          "border": "rgb(203, 213, 225)"
+        },
+        {
+          "label": "Đã nhận việc",
+          "color": "oklch(0.511 0.096 186.391)",
+          "background": "oklch(0.984 0.014 180.72)",
+          "border": "oklch(0.91 0.096 180.426)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/interviews/INT_TEST",
+      "theme": "dark",
+      "colors": [
+        {
+          "label": "Chờ duyệt",
+          "color": "oklch(0.828 0.111 230.318)",
+          "background": "oklch(0.293 0.066 243.157)",
+          "border": "oklch(0.443 0.11 240.79)"
+        },
+        {
+          "label": "Chờ phỏng vấn",
+          "color": "oklch(0.865 0.127 207.078)",
+          "background": "oklch(0.302 0.056 229.695)",
+          "border": "oklch(0.45 0.085 224.283)"
+        },
+        {
+          "label": "Chờ kết quả",
+          "color": "oklch(0.837 0.128 66.29)",
+          "background": "oklch(0.266 0.079 36.259)",
+          "border": "oklch(0.47 0.157 37.304)"
+        },
+        {
+          "label": "Không đạt",
+          "color": "rgb(255, 180, 171)",
+          "background": "rgb(60, 36, 46)",
+          "border": "rgb(146, 82, 98)"
+        },
+        {
+          "label": "Đạt",
+          "color": "rgb(146, 226, 181)",
+          "background": "rgb(23, 60, 50)",
+          "border": "rgb(57, 122, 93)"
+        },
+        {
+          "label": "Tiềm năng",
+          "color": "oklch(0.811 0.111 293.571)",
+          "background": "oklch(0.283 0.141 291.089)",
+          "border": "oklch(0.432 0.232 292.759)"
+        },
+        {
+          "label": "Offer",
+          "color": "rgb(255, 214, 138)",
+          "background": "rgb(59, 48, 32)",
+          "border": "rgb(135, 108, 58)"
+        },
+        {
+          "label": "Không nhận việc",
+          "color": "rgb(175, 189, 210)",
+          "background": "rgb(34, 46, 67)",
+          "border": "rgb(54, 70, 94)"
+        },
+        {
+          "label": "Đã nhận việc",
+          "color": "oklch(0.855 0.138 181.071)",
+          "background": "oklch(0.277 0.046 192.524)",
+          "border": "oklch(0.437 0.078 188.216)"
+        }
+      ],
+      "result": "passed"
+    }
+  ],
+  "reads": [
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    }
+  ],
+  "writes": [],
+  "errors": [],
+  "result": "passed"
+}

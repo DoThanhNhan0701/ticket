@@ -1,0 +1,5061 @@
+{
+  "prefix": "TEST_REC30_MVI3YC9L",
+  "method": "Live browser login and UI actions with real API CRUD/readback. No mocks. Writes restricted to this run’s TEST profiles and schedules.",
+  "records": [
+    {
+      "index": 1,
+      "id": 438,
+      "code": "CV_261021_438",
+      "name": "TEST_REC30_MVI3YC9L_01 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_1.txt",
+        "bytes": 35,
+        "sha256": "c86a534d4bf126f7518e19dfaf90c9ec5973aa74224bbcb3f7b466cb576a7e62"
+      },
+      "status": "Chờ duyệt",
+      "interviewTime": "09:00"
+    },
+    {
+      "index": 2,
+      "id": 439,
+      "code": "CV_261021_439",
+      "name": "TEST_REC30_MVI3YC9L_02 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_2.png",
+        "bytes": 67,
+        "sha256": "f1e807844376f4c1c506537eaa843799eaeef77e86e90c10a06cda0d42d47072"
+      },
+      "status": "Chờ phỏng vấn",
+      "interviewTime": "09:15"
+    },
+    {
+      "index": 3,
+      "id": 440,
+      "code": "CV_261021_440",
+      "name": "TEST_REC30_MVI3YC9L_03 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_3.csv",
+        "bytes": 24,
+        "sha256": "c1fa25084eb2eb9e5398986d8cd37547f9d8d8f58dc4931905250a8628f527e7"
+      },
+      "status": "Chờ kết quả",
+      "interviewTime": "09:30"
+    },
+    {
+      "index": 4,
+      "id": 441,
+      "code": "CV_261021_441",
+      "name": "TEST_REC30_MVI3YC9L_04 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_4.json",
+        "bytes": 13,
+        "sha256": "6fd977db9b2afe87a9ceee48432881299a6aaf83d935fbbe83007660287f9c2e"
+      },
+      "status": "Không đạt",
+      "interviewTime": "09:45"
+    },
+    {
+      "index": 5,
+      "id": 442,
+      "code": "CV_261021_442",
+      "name": "TEST_REC30_MVI3YC9L_05 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_5.md",
+        "bytes": 19,
+        "sha256": "b3572c4554bdf0864a37eaad0245e69781d72dadba2a5ec6565d7e40c0ad20bf"
+      },
+      "status": "Đạt",
+      "interviewTime": "10:00"
+    },
+    {
+      "index": 6,
+      "id": 443,
+      "code": "CV_261021_443",
+      "name": "TEST_REC30_MVI3YC9L_06 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_6",
+        "bytes": 29,
+        "sha256": "f14850c2188fb718225907b8d5cf72e2fb0474ef8f58e7f7fbba9f78f2a02d7f"
+      },
+      "status": "Tiềm năng",
+      "interviewTime": "10:15"
+    },
+    {
+      "index": 7,
+      "id": 444,
+      "code": "CV_261021_444",
+      "name": "TEST_REC30_MVI3YC9L_07 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_7.zip",
+        "bytes": 22,
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+      },
+      "status": "Offer",
+      "interviewTime": "10:30"
+    },
+    {
+      "index": 8,
+      "id": 445,
+      "code": "CV_261021_445",
+      "name": "TEST_REC30_MVI3YC9L_08 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_8.txt",
+        "bytes": 35,
+        "sha256": "c86a534d4bf126f7518e19dfaf90c9ec5973aa74224bbcb3f7b466cb576a7e62"
+      },
+      "status": "Không nhận việc",
+      "interviewTime": "10:45"
+    },
+    {
+      "index": 9,
+      "id": 446,
+      "code": "CV_261021_446",
+      "name": "TEST_REC30_MVI3YC9L_09 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_9.png",
+        "bytes": 67,
+        "sha256": "f1e807844376f4c1c506537eaa843799eaeef77e86e90c10a06cda0d42d47072"
+      },
+      "status": "Đã nhận việc",
+      "interviewTime": "11:00"
+    },
+    {
+      "index": 10,
+      "id": 447,
+      "code": "CV_261021_447",
+      "name": "TEST_REC30_MVI3YC9L_10 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_10.csv",
+        "bytes": 24,
+        "sha256": "c1fa25084eb2eb9e5398986d8cd37547f9d8d8f58dc4931905250a8628f527e7"
+      },
+      "status": "Chờ duyệt",
+      "interviewTime": "11:15"
+    },
+    {
+      "index": 11,
+      "id": 448,
+      "code": "CV_261021_448",
+      "name": "TEST_REC30_MVI3YC9L_11 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_11.json",
+        "bytes": 13,
+        "sha256": "6fd977db9b2afe87a9ceee48432881299a6aaf83d935fbbe83007660287f9c2e"
+      },
+      "status": "Chờ phỏng vấn",
+      "interviewTime": "11:30"
+    },
+    {
+      "index": 12,
+      "id": 449,
+      "code": "CV_261021_449",
+      "name": "TEST_REC30_MVI3YC9L_12 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_12.md",
+        "bytes": 19,
+        "sha256": "b3572c4554bdf0864a37eaad0245e69781d72dadba2a5ec6565d7e40c0ad20bf"
+      },
+      "status": "Chờ kết quả",
+      "interviewTime": "11:45"
+    },
+    {
+      "index": 13,
+      "id": 450,
+      "code": "CV_261021_450",
+      "name": "TEST_REC30_MVI3YC9L_13 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_13",
+        "bytes": 29,
+        "sha256": "f14850c2188fb718225907b8d5cf72e2fb0474ef8f58e7f7fbba9f78f2a02d7f"
+      },
+      "status": "Không đạt",
+      "interviewTime": "12:00"
+    },
+    {
+      "index": 14,
+      "id": 451,
+      "code": "CV_261021_451",
+      "name": "TEST_REC30_MVI3YC9L_14 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_14.zip",
+        "bytes": 22,
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+      },
+      "status": "Đạt",
+      "interviewTime": "12:15"
+    },
+    {
+      "index": 15,
+      "id": 452,
+      "code": "CV_261021_452",
+      "name": "TEST_REC30_MVI3YC9L_15 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_15.txt",
+        "bytes": 35,
+        "sha256": "c86a534d4bf126f7518e19dfaf90c9ec5973aa74224bbcb3f7b466cb576a7e62"
+      },
+      "status": "Tiềm năng",
+      "interviewTime": "12:30"
+    },
+    {
+      "index": 16,
+      "id": 453,
+      "code": "CV_261021_453",
+      "name": "TEST_REC30_MVI3YC9L_16 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_16.png",
+        "bytes": 67,
+        "sha256": "f1e807844376f4c1c506537eaa843799eaeef77e86e90c10a06cda0d42d47072"
+      },
+      "status": "Offer",
+      "interviewTime": "12:45"
+    },
+    {
+      "index": 17,
+      "id": 454,
+      "code": "CV_261021_454",
+      "name": "TEST_REC30_MVI3YC9L_17 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_17.csv",
+        "bytes": 24,
+        "sha256": "c1fa25084eb2eb9e5398986d8cd37547f9d8d8f58dc4931905250a8628f527e7"
+      },
+      "status": "Không nhận việc",
+      "interviewTime": "13:00"
+    },
+    {
+      "index": 18,
+      "id": 455,
+      "code": "CV_261021_455",
+      "name": "TEST_REC30_MVI3YC9L_18 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_18.json",
+        "bytes": 13,
+        "sha256": "6fd977db9b2afe87a9ceee48432881299a6aaf83d935fbbe83007660287f9c2e"
+      },
+      "status": "Đã nhận việc",
+      "interviewTime": "13:15"
+    },
+    {
+      "index": 19,
+      "id": 456,
+      "code": "CV_261021_456",
+      "name": "TEST_REC30_MVI3YC9L_19 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_19.md",
+        "bytes": 19,
+        "sha256": "b3572c4554bdf0864a37eaad0245e69781d72dadba2a5ec6565d7e40c0ad20bf"
+      },
+      "status": "Chờ duyệt",
+      "interviewTime": "13:30"
+    },
+    {
+      "index": 20,
+      "id": 457,
+      "code": "CV_261021_457",
+      "name": "TEST_REC30_MVI3YC9L_20 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_20",
+        "bytes": 29,
+        "sha256": "f14850c2188fb718225907b8d5cf72e2fb0474ef8f58e7f7fbba9f78f2a02d7f"
+      },
+      "status": "Chờ phỏng vấn",
+      "interviewTime": "13:45"
+    },
+    {
+      "index": 21,
+      "id": 458,
+      "code": "CV_261021_458",
+      "name": "TEST_REC30_MVI3YC9L_21 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_21.zip",
+        "bytes": 22,
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+      },
+      "status": "Chờ kết quả",
+      "interviewTime": "14:00"
+    },
+    {
+      "index": 22,
+      "id": 459,
+      "code": "CV_261021_459",
+      "name": "TEST_REC30_MVI3YC9L_22 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_22.txt",
+        "bytes": 35,
+        "sha256": "c86a534d4bf126f7518e19dfaf90c9ec5973aa74224bbcb3f7b466cb576a7e62"
+      },
+      "status": "Không đạt",
+      "interviewTime": "14:15"
+    },
+    {
+      "index": 23,
+      "id": 460,
+      "code": "CV_261021_460",
+      "name": "TEST_REC30_MVI3YC9L_23 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_23.png",
+        "bytes": 67,
+        "sha256": "f1e807844376f4c1c506537eaa843799eaeef77e86e90c10a06cda0d42d47072"
+      },
+      "status": "Đạt",
+      "interviewTime": "14:30"
+    },
+    {
+      "index": 24,
+      "id": 461,
+      "code": "CV_261021_461",
+      "name": "TEST_REC30_MVI3YC9L_24 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_24.csv",
+        "bytes": 24,
+        "sha256": "c1fa25084eb2eb9e5398986d8cd37547f9d8d8f58dc4931905250a8628f527e7"
+      },
+      "status": "Tiềm năng",
+      "interviewTime": "14:45"
+    },
+    {
+      "index": 25,
+      "id": 462,
+      "code": "CV_261021_462",
+      "name": "TEST_REC30_MVI3YC9L_25 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_25.json",
+        "bytes": 13,
+        "sha256": "6fd977db9b2afe87a9ceee48432881299a6aaf83d935fbbe83007660287f9c2e"
+      },
+      "status": "Offer",
+      "interviewTime": "15:00"
+    },
+    {
+      "index": 26,
+      "id": 463,
+      "code": "CV_261021_463",
+      "name": "TEST_REC30_MVI3YC9L_26 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_26.md",
+        "bytes": 19,
+        "sha256": "b3572c4554bdf0864a37eaad0245e69781d72dadba2a5ec6565d7e40c0ad20bf"
+      },
+      "status": "Không nhận việc",
+      "interviewTime": "15:15"
+    },
+    {
+      "index": 27,
+      "id": 464,
+      "code": "CV_261021_464",
+      "name": "TEST_REC30_MVI3YC9L_27 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_27",
+        "bytes": 29,
+        "sha256": "f14850c2188fb718225907b8d5cf72e2fb0474ef8f58e7f7fbba9f78f2a02d7f"
+      },
+      "status": "Đã nhận việc",
+      "interviewTime": "15:30"
+    },
+    {
+      "index": 28,
+      "id": 465,
+      "code": "CV_261021_465",
+      "name": "TEST_REC30_MVI3YC9L_28 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_28.zip",
+        "bytes": 22,
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+      },
+      "status": "Chờ duyệt",
+      "interviewTime": "15:45"
+    },
+    {
+      "index": 29,
+      "id": 466,
+      "code": "CV_261021_466",
+      "name": "TEST_REC30_MVI3YC9L_29 Ứng viên Nam",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_29.txt",
+        "bytes": 35,
+        "sha256": "c86a534d4bf126f7518e19dfaf90c9ec5973aa74224bbcb3f7b466cb576a7e62"
+      },
+      "status": "Chờ phỏng vấn",
+      "interviewTime": "16:00"
+    },
+    {
+      "index": 30,
+      "id": 467,
+      "code": "CV_261021_467",
+      "name": "TEST_REC30_MVI3YC9L_30 Ứng viên Nữ",
+      "file": {
+        "name": "TEST_REC30_MVI3YC9L_30.png",
+        "bytes": 67,
+        "sha256": "f1e807844376f4c1c506537eaa843799eaeef77e86e90c10a06cda0d42d47072"
+      },
+      "status": "Chờ kết quả",
+      "interviewTime": "16:15"
+    }
+  ],
+  "checks": [
+    {
+      "name": "create-readback-1",
+      "result": "passed",
+      "recordId": 438,
+      "file": "TEST_REC30_MVI3YC9L_1.txt"
+    },
+    {
+      "name": "create-readback-2",
+      "result": "passed",
+      "recordId": 439,
+      "file": "TEST_REC30_MVI3YC9L_2.png"
+    },
+    {
+      "name": "create-readback-3",
+      "result": "passed",
+      "recordId": 440,
+      "file": "TEST_REC30_MVI3YC9L_3.csv"
+    },
+    {
+      "name": "create-readback-4",
+      "result": "passed",
+      "recordId": 441,
+      "file": "TEST_REC30_MVI3YC9L_4.json"
+    },
+    {
+      "name": "create-readback-5",
+      "result": "passed",
+      "recordId": 442,
+      "file": "TEST_REC30_MVI3YC9L_5.md"
+    },
+    {
+      "name": "create-readback-6",
+      "result": "passed",
+      "recordId": 443,
+      "file": "TEST_REC30_MVI3YC9L_6"
+    },
+    {
+      "name": "create-readback-7",
+      "result": "passed",
+      "recordId": 444,
+      "file": "TEST_REC30_MVI3YC9L_7.zip"
+    },
+    {
+      "name": "create-readback-8",
+      "result": "passed",
+      "recordId": 445,
+      "file": "TEST_REC30_MVI3YC9L_8.txt"
+    },
+    {
+      "name": "create-readback-9",
+      "result": "passed",
+      "recordId": 446,
+      "file": "TEST_REC30_MVI3YC9L_9.png"
+    },
+    {
+      "name": "create-readback-10",
+      "result": "passed",
+      "recordId": 447,
+      "file": "TEST_REC30_MVI3YC9L_10.csv"
+    },
+    {
+      "name": "create-readback-11",
+      "result": "passed",
+      "recordId": 448,
+      "file": "TEST_REC30_MVI3YC9L_11.json"
+    },
+    {
+      "name": "create-readback-12",
+      "result": "passed",
+      "recordId": 449,
+      "file": "TEST_REC30_MVI3YC9L_12.md"
+    },
+    {
+      "name": "create-readback-13",
+      "result": "passed",
+      "recordId": 450,
+      "file": "TEST_REC30_MVI3YC9L_13"
+    },
+    {
+      "name": "create-readback-14",
+      "result": "passed",
+      "recordId": 451,
+      "file": "TEST_REC30_MVI3YC9L_14.zip"
+    },
+    {
+      "name": "create-readback-15",
+      "result": "passed",
+      "recordId": 452,
+      "file": "TEST_REC30_MVI3YC9L_15.txt"
+    },
+    {
+      "name": "create-readback-16",
+      "result": "passed",
+      "recordId": 453,
+      "file": "TEST_REC30_MVI3YC9L_16.png"
+    },
+    {
+      "name": "create-readback-17",
+      "result": "passed",
+      "recordId": 454,
+      "file": "TEST_REC30_MVI3YC9L_17.csv"
+    },
+    {
+      "name": "create-readback-18",
+      "result": "passed",
+      "recordId": 455,
+      "file": "TEST_REC30_MVI3YC9L_18.json"
+    },
+    {
+      "name": "create-readback-19",
+      "result": "passed",
+      "recordId": 456,
+      "file": "TEST_REC30_MVI3YC9L_19.md"
+    },
+    {
+      "name": "create-readback-20",
+      "result": "passed",
+      "recordId": 457,
+      "file": "TEST_REC30_MVI3YC9L_20"
+    },
+    {
+      "name": "create-readback-21",
+      "result": "passed",
+      "recordId": 458,
+      "file": "TEST_REC30_MVI3YC9L_21.zip"
+    },
+    {
+      "name": "create-readback-22",
+      "result": "passed",
+      "recordId": 459,
+      "file": "TEST_REC30_MVI3YC9L_22.txt"
+    },
+    {
+      "name": "create-readback-23",
+      "result": "passed",
+      "recordId": 460,
+      "file": "TEST_REC30_MVI3YC9L_23.png"
+    },
+    {
+      "name": "create-readback-24",
+      "result": "passed",
+      "recordId": 461,
+      "file": "TEST_REC30_MVI3YC9L_24.csv"
+    },
+    {
+      "name": "create-readback-25",
+      "result": "passed",
+      "recordId": 462,
+      "file": "TEST_REC30_MVI3YC9L_25.json"
+    },
+    {
+      "name": "create-readback-26",
+      "result": "passed",
+      "recordId": 463,
+      "file": "TEST_REC30_MVI3YC9L_26.md"
+    },
+    {
+      "name": "create-readback-27",
+      "result": "passed",
+      "recordId": 464,
+      "file": "TEST_REC30_MVI3YC9L_27"
+    },
+    {
+      "name": "create-readback-28",
+      "result": "passed",
+      "recordId": 465,
+      "file": "TEST_REC30_MVI3YC9L_28.zip"
+    },
+    {
+      "name": "create-readback-29",
+      "result": "passed",
+      "recordId": 466,
+      "file": "TEST_REC30_MVI3YC9L_29.txt"
+    },
+    {
+      "name": "create-readback-30",
+      "result": "passed",
+      "recordId": 467,
+      "file": "TEST_REC30_MVI3YC9L_30.png"
+    },
+    {
+      "name": "created-30-profiles",
+      "result": "passed"
+    },
+    {
+      "name": "update-readback-1",
+      "result": "passed",
+      "recordId": 438
+    },
+    {
+      "name": "update-readback-2",
+      "result": "passed",
+      "recordId": 439
+    },
+    {
+      "name": "update-readback-3",
+      "result": "passed",
+      "recordId": 440
+    },
+    {
+      "name": "status-readback-1",
+      "result": "passed",
+      "recordId": 438,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "status-readback-3",
+      "result": "passed",
+      "recordId": 440,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "status-readback-2",
+      "result": "passed",
+      "recordId": 439,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "note-file-readback-3",
+      "result": "passed",
+      "recordId": 440,
+      "notes": 1,
+      "downloadBytes": 24
+    },
+    {
+      "name": "note-file-readback-2",
+      "result": "passed",
+      "recordId": 439,
+      "notes": 1,
+      "downloadBytes": 67
+    },
+    {
+      "name": "note-file-readback-1",
+      "result": "passed",
+      "recordId": 438,
+      "notes": 1,
+      "downloadBytes": 35
+    },
+    {
+      "name": "update-readback-5",
+      "result": "passed",
+      "recordId": 442
+    },
+    {
+      "name": "update-readback-6",
+      "result": "passed",
+      "recordId": 443
+    },
+    {
+      "name": "update-readback-4",
+      "result": "passed",
+      "recordId": 441
+    },
+    {
+      "name": "status-readback-6",
+      "result": "passed",
+      "recordId": 443,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "status-readback-5",
+      "result": "passed",
+      "recordId": 442,
+      "status": "Đạt"
+    },
+    {
+      "name": "status-readback-4",
+      "result": "passed",
+      "recordId": 441,
+      "status": "Không đạt"
+    },
+    {
+      "name": "note-file-readback-6",
+      "result": "passed",
+      "recordId": 443,
+      "notes": 1,
+      "downloadBytes": 29
+    },
+    {
+      "name": "note-file-readback-5",
+      "result": "passed",
+      "recordId": 442,
+      "notes": 1,
+      "downloadBytes": 19
+    },
+    {
+      "name": "note-file-readback-4",
+      "result": "passed",
+      "recordId": 441,
+      "notes": 1,
+      "downloadBytes": 13
+    },
+    {
+      "name": "update-readback-7",
+      "result": "passed",
+      "recordId": 444
+    },
+    {
+      "name": "update-readback-9",
+      "result": "passed",
+      "recordId": 446
+    },
+    {
+      "name": "update-readback-8",
+      "result": "passed",
+      "recordId": 445
+    },
+    {
+      "name": "status-readback-7",
+      "result": "passed",
+      "recordId": 444,
+      "status": "Offer"
+    },
+    {
+      "name": "status-readback-8",
+      "result": "passed",
+      "recordId": 445,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "status-readback-9",
+      "result": "passed",
+      "recordId": 446,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "note-file-readback-7",
+      "result": "passed",
+      "recordId": 444,
+      "notes": 1,
+      "downloadBytes": 22
+    },
+    {
+      "name": "note-file-readback-8",
+      "result": "passed",
+      "recordId": 445,
+      "notes": 1,
+      "downloadBytes": 35
+    },
+    {
+      "name": "note-file-readback-9",
+      "result": "passed",
+      "recordId": 446,
+      "notes": 1,
+      "downloadBytes": 67
+    },
+    {
+      "name": "update-readback-12",
+      "result": "passed",
+      "recordId": 449
+    },
+    {
+      "name": "update-readback-11",
+      "result": "passed",
+      "recordId": 448
+    },
+    {
+      "name": "update-readback-10",
+      "result": "passed",
+      "recordId": 447
+    },
+    {
+      "name": "status-readback-11",
+      "result": "passed",
+      "recordId": 448,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "status-readback-12",
+      "result": "passed",
+      "recordId": 449,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "status-readback-10",
+      "result": "passed",
+      "recordId": 447,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "note-file-readback-12",
+      "result": "passed",
+      "recordId": 449,
+      "notes": 1,
+      "downloadBytes": 19
+    },
+    {
+      "name": "note-file-readback-11",
+      "result": "passed",
+      "recordId": 448,
+      "notes": 1,
+      "downloadBytes": 13
+    },
+    {
+      "name": "note-file-readback-10",
+      "result": "passed",
+      "recordId": 447,
+      "notes": 1,
+      "downloadBytes": 24
+    },
+    {
+      "name": "update-readback-14",
+      "result": "passed",
+      "recordId": 451
+    },
+    {
+      "name": "update-readback-15",
+      "result": "passed",
+      "recordId": 452
+    },
+    {
+      "name": "update-readback-13",
+      "result": "passed",
+      "recordId": 450
+    },
+    {
+      "name": "status-readback-14",
+      "result": "passed",
+      "recordId": 451,
+      "status": "Đạt"
+    },
+    {
+      "name": "status-readback-13",
+      "result": "passed",
+      "recordId": 450,
+      "status": "Không đạt"
+    },
+    {
+      "name": "status-readback-15",
+      "result": "passed",
+      "recordId": 452,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "note-file-readback-14",
+      "result": "passed",
+      "recordId": 451,
+      "notes": 1,
+      "downloadBytes": 22
+    },
+    {
+      "name": "note-file-readback-13",
+      "result": "passed",
+      "recordId": 450,
+      "notes": 1,
+      "downloadBytes": 29
+    },
+    {
+      "name": "note-file-readback-15",
+      "result": "passed",
+      "recordId": 452,
+      "notes": 1,
+      "downloadBytes": 35
+    },
+    {
+      "name": "update-readback-16",
+      "result": "passed",
+      "recordId": 453
+    },
+    {
+      "name": "update-readback-17",
+      "result": "passed",
+      "recordId": 454
+    },
+    {
+      "name": "update-readback-18",
+      "result": "passed",
+      "recordId": 455
+    },
+    {
+      "name": "status-readback-16",
+      "result": "passed",
+      "recordId": 453,
+      "status": "Offer"
+    },
+    {
+      "name": "status-readback-17",
+      "result": "passed",
+      "recordId": 454,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "status-readback-18",
+      "result": "passed",
+      "recordId": 455,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "note-file-readback-17",
+      "result": "passed",
+      "recordId": 454,
+      "notes": 1,
+      "downloadBytes": 24
+    },
+    {
+      "name": "note-file-readback-16",
+      "result": "passed",
+      "recordId": 453,
+      "notes": 1,
+      "downloadBytes": 67
+    },
+    {
+      "name": "note-file-readback-18",
+      "result": "passed",
+      "recordId": 455,
+      "notes": 1,
+      "downloadBytes": 13
+    },
+    {
+      "name": "update-readback-19",
+      "result": "passed",
+      "recordId": 456
+    },
+    {
+      "name": "update-readback-20",
+      "result": "passed",
+      "recordId": 457
+    },
+    {
+      "name": "update-readback-21",
+      "result": "passed",
+      "recordId": 458
+    },
+    {
+      "name": "status-readback-20",
+      "result": "passed",
+      "recordId": 457,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "status-readback-19",
+      "result": "passed",
+      "recordId": 456,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "status-readback-21",
+      "result": "passed",
+      "recordId": 458,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "note-file-readback-20",
+      "result": "passed",
+      "recordId": 457,
+      "notes": 1,
+      "downloadBytes": 29
+    },
+    {
+      "name": "note-file-readback-21",
+      "result": "passed",
+      "recordId": 458,
+      "notes": 1,
+      "downloadBytes": 22
+    },
+    {
+      "name": "note-file-readback-19",
+      "result": "passed",
+      "recordId": 456,
+      "notes": 1,
+      "downloadBytes": 19
+    },
+    {
+      "name": "update-readback-23",
+      "result": "passed",
+      "recordId": 460
+    },
+    {
+      "name": "update-readback-22",
+      "result": "passed",
+      "recordId": 459
+    },
+    {
+      "name": "update-readback-24",
+      "result": "passed",
+      "recordId": 461
+    },
+    {
+      "name": "status-readback-22",
+      "result": "passed",
+      "recordId": 459,
+      "status": "Không đạt"
+    },
+    {
+      "name": "status-readback-24",
+      "result": "passed",
+      "recordId": 461,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "status-readback-23",
+      "result": "passed",
+      "recordId": 460,
+      "status": "Đạt"
+    },
+    {
+      "name": "note-file-readback-22",
+      "result": "passed",
+      "recordId": 459,
+      "notes": 1,
+      "downloadBytes": 35
+    },
+    {
+      "name": "note-file-readback-24",
+      "result": "passed",
+      "recordId": 461,
+      "notes": 1,
+      "downloadBytes": 24
+    },
+    {
+      "name": "note-file-readback-23",
+      "result": "passed",
+      "recordId": 460,
+      "notes": 1,
+      "downloadBytes": 67
+    },
+    {
+      "name": "update-readback-27",
+      "result": "passed",
+      "recordId": 464
+    },
+    {
+      "name": "update-readback-26",
+      "result": "passed",
+      "recordId": 463
+    },
+    {
+      "name": "status-readback-26",
+      "result": "passed",
+      "recordId": 463,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "update-readback-25",
+      "result": "passed",
+      "recordId": 462
+    },
+    {
+      "name": "status-readback-27",
+      "result": "passed",
+      "recordId": 464,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "status-readback-25",
+      "result": "passed",
+      "recordId": 462,
+      "status": "Offer"
+    },
+    {
+      "name": "note-file-readback-26",
+      "result": "passed",
+      "recordId": 463,
+      "notes": 1,
+      "downloadBytes": 19
+    },
+    {
+      "name": "note-file-readback-25",
+      "result": "passed",
+      "recordId": 462,
+      "notes": 1,
+      "downloadBytes": 13
+    },
+    {
+      "name": "note-file-readback-27",
+      "result": "passed",
+      "recordId": 464,
+      "notes": 1,
+      "downloadBytes": 29
+    },
+    {
+      "name": "update-readback-29",
+      "result": "passed",
+      "recordId": 466
+    },
+    {
+      "name": "update-readback-28",
+      "result": "passed",
+      "recordId": 465
+    },
+    {
+      "name": "update-readback-30",
+      "result": "passed",
+      "recordId": 467
+    },
+    {
+      "name": "status-readback-29",
+      "result": "passed",
+      "recordId": 466,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "status-readback-30",
+      "result": "passed",
+      "recordId": 467,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "status-readback-28",
+      "result": "passed",
+      "recordId": 465,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "note-file-readback-29",
+      "result": "passed",
+      "recordId": 466,
+      "notes": 1,
+      "downloadBytes": 35
+    },
+    {
+      "name": "note-file-readback-30",
+      "result": "passed",
+      "recordId": 467,
+      "notes": 1,
+      "downloadBytes": 67
+    },
+    {
+      "name": "note-file-readback-28",
+      "result": "passed",
+      "recordId": 465,
+      "notes": 1,
+      "downloadBytes": 22
+    },
+    {
+      "name": "calendar-create-readback",
+      "result": "passed",
+      "id": 65,
+      "day": "2026-11-25",
+      "title": "TEST_REC30_MVI3YC9L Interview"
+    },
+    {
+      "name": "attach-30-readback",
+      "result": "passed",
+      "count": 30,
+      "code": "PV_261021_065"
+    },
+    {
+      "name": "time-write-1",
+      "result": "passed",
+      "recordId": 438,
+      "time": "09:00"
+    },
+    {
+      "name": "time-write-3",
+      "result": "passed",
+      "recordId": 440,
+      "time": "09:30"
+    },
+    {
+      "name": "time-write-2",
+      "result": "passed",
+      "recordId": 439,
+      "time": "09:15"
+    },
+    {
+      "name": "time-write-5",
+      "result": "passed",
+      "recordId": 442,
+      "time": "10:00"
+    },
+    {
+      "name": "time-write-6",
+      "result": "passed",
+      "recordId": 443,
+      "time": "10:15"
+    },
+    {
+      "name": "time-write-4",
+      "result": "passed",
+      "recordId": 441,
+      "time": "09:45"
+    },
+    {
+      "name": "time-write-9",
+      "result": "passed",
+      "recordId": 446,
+      "time": "11:00"
+    },
+    {
+      "name": "time-write-8",
+      "result": "passed",
+      "recordId": 445,
+      "time": "10:45"
+    },
+    {
+      "name": "time-write-7",
+      "result": "passed",
+      "recordId": 444,
+      "time": "10:30"
+    },
+    {
+      "name": "time-write-10",
+      "result": "passed",
+      "recordId": 447,
+      "time": "11:15"
+    },
+    {
+      "name": "time-write-11",
+      "result": "passed",
+      "recordId": 448,
+      "time": "11:30"
+    },
+    {
+      "name": "time-write-12",
+      "result": "passed",
+      "recordId": 449,
+      "time": "11:45"
+    },
+    {
+      "name": "time-write-15",
+      "result": "passed",
+      "recordId": 452,
+      "time": "12:30"
+    },
+    {
+      "name": "time-write-13",
+      "result": "passed",
+      "recordId": 450,
+      "time": "12:00"
+    },
+    {
+      "name": "time-write-14",
+      "result": "passed",
+      "recordId": 451,
+      "time": "12:15"
+    },
+    {
+      "name": "time-write-16",
+      "result": "passed",
+      "recordId": 453,
+      "time": "12:45"
+    },
+    {
+      "name": "time-write-18",
+      "result": "passed",
+      "recordId": 455,
+      "time": "13:15"
+    },
+    {
+      "name": "time-write-17",
+      "result": "passed",
+      "recordId": 454,
+      "time": "13:00"
+    },
+    {
+      "name": "time-write-21",
+      "result": "passed",
+      "recordId": 458,
+      "time": "14:00"
+    },
+    {
+      "name": "time-write-20",
+      "result": "passed",
+      "recordId": 457,
+      "time": "13:45"
+    },
+    {
+      "name": "time-write-19",
+      "result": "passed",
+      "recordId": 456,
+      "time": "13:30"
+    },
+    {
+      "name": "time-write-22",
+      "result": "passed",
+      "recordId": 459,
+      "time": "14:15"
+    },
+    {
+      "name": "time-write-24",
+      "result": "passed",
+      "recordId": 461,
+      "time": "14:45"
+    },
+    {
+      "name": "time-write-23",
+      "result": "passed",
+      "recordId": 460,
+      "time": "14:30"
+    },
+    {
+      "name": "time-write-26",
+      "result": "passed",
+      "recordId": 463,
+      "time": "15:15"
+    },
+    {
+      "name": "time-write-25",
+      "result": "passed",
+      "recordId": 462,
+      "time": "15:00"
+    },
+    {
+      "name": "time-write-27",
+      "result": "passed",
+      "recordId": 464,
+      "time": "15:30"
+    },
+    {
+      "name": "time-write-29",
+      "result": "passed",
+      "recordId": 466,
+      "time": "16:00"
+    },
+    {
+      "name": "time-write-28",
+      "result": "passed",
+      "recordId": 465,
+      "time": "15:45"
+    },
+    {
+      "name": "time-write-30",
+      "result": "passed",
+      "recordId": 467,
+      "time": "16:15"
+    },
+    {
+      "name": "time-readback-1",
+      "result": "passed",
+      "recordId": 438,
+      "time": "09:00"
+    },
+    {
+      "name": "time-readback-2",
+      "result": "passed",
+      "recordId": 439,
+      "time": "09:15"
+    },
+    {
+      "name": "time-readback-3",
+      "result": "passed",
+      "recordId": 440,
+      "time": "09:30"
+    },
+    {
+      "name": "time-readback-4",
+      "result": "passed",
+      "recordId": 441,
+      "time": "09:45"
+    },
+    {
+      "name": "time-readback-5",
+      "result": "passed",
+      "recordId": 442,
+      "time": "10:00"
+    },
+    {
+      "name": "time-readback-6",
+      "result": "passed",
+      "recordId": 443,
+      "time": "10:15"
+    },
+    {
+      "name": "time-readback-7",
+      "result": "passed",
+      "recordId": 444,
+      "time": "10:30"
+    },
+    {
+      "name": "time-readback-8",
+      "result": "passed",
+      "recordId": 445,
+      "time": "10:45"
+    },
+    {
+      "name": "time-readback-9",
+      "result": "passed",
+      "recordId": 446,
+      "time": "11:00"
+    },
+    {
+      "name": "time-readback-10",
+      "result": "passed",
+      "recordId": 447,
+      "time": "11:15"
+    },
+    {
+      "name": "time-readback-11",
+      "result": "passed",
+      "recordId": 448,
+      "time": "11:30"
+    },
+    {
+      "name": "time-readback-12",
+      "result": "passed",
+      "recordId": 449,
+      "time": "11:45"
+    },
+    {
+      "name": "time-readback-13",
+      "result": "passed",
+      "recordId": 450,
+      "time": "12:00"
+    },
+    {
+      "name": "time-readback-14",
+      "result": "passed",
+      "recordId": 451,
+      "time": "12:15"
+    },
+    {
+      "name": "time-readback-15",
+      "result": "passed",
+      "recordId": 452,
+      "time": "12:30"
+    },
+    {
+      "name": "time-readback-16",
+      "result": "passed",
+      "recordId": 453,
+      "time": "12:45"
+    },
+    {
+      "name": "time-readback-17",
+      "result": "passed",
+      "recordId": 454,
+      "time": "13:00"
+    },
+    {
+      "name": "time-readback-18",
+      "result": "passed",
+      "recordId": 455,
+      "time": "13:15"
+    },
+    {
+      "name": "time-readback-19",
+      "result": "passed",
+      "recordId": 456,
+      "time": "13:30"
+    },
+    {
+      "name": "time-readback-20",
+      "result": "passed",
+      "recordId": 457,
+      "time": "13:45"
+    },
+    {
+      "name": "time-readback-21",
+      "result": "passed",
+      "recordId": 458,
+      "time": "14:00"
+    },
+    {
+      "name": "time-readback-22",
+      "result": "passed",
+      "recordId": 459,
+      "time": "14:15"
+    },
+    {
+      "name": "time-readback-23",
+      "result": "passed",
+      "recordId": 460,
+      "time": "14:30"
+    },
+    {
+      "name": "time-readback-24",
+      "result": "passed",
+      "recordId": 461,
+      "time": "14:45"
+    },
+    {
+      "name": "time-readback-25",
+      "result": "passed",
+      "recordId": 462,
+      "time": "15:00"
+    },
+    {
+      "name": "time-readback-26",
+      "result": "passed",
+      "recordId": 463,
+      "time": "15:15"
+    },
+    {
+      "name": "time-readback-27",
+      "result": "passed",
+      "recordId": 464,
+      "time": "15:30"
+    },
+    {
+      "name": "time-readback-28",
+      "result": "passed",
+      "recordId": 465,
+      "time": "15:45"
+    },
+    {
+      "name": "time-readback-29",
+      "result": "passed",
+      "recordId": 466,
+      "time": "16:00"
+    },
+    {
+      "name": "time-readback-30",
+      "result": "passed",
+      "recordId": 467,
+      "time": "16:15"
+    },
+    {
+      "name": "final-status-readback-3",
+      "result": "passed",
+      "recordId": 440,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "final-status-readback-2",
+      "result": "passed",
+      "recordId": 439,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "final-status-readback-1",
+      "result": "passed",
+      "recordId": 438,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "final-status-readback-5",
+      "result": "passed",
+      "recordId": 442,
+      "status": "Đạt"
+    },
+    {
+      "name": "final-status-readback-6",
+      "result": "passed",
+      "recordId": 443,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "final-status-readback-4",
+      "result": "passed",
+      "recordId": 441,
+      "status": "Không đạt"
+    },
+    {
+      "name": "final-status-readback-7",
+      "result": "passed",
+      "recordId": 444,
+      "status": "Offer"
+    },
+    {
+      "name": "final-status-readback-9",
+      "result": "passed",
+      "recordId": 446,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "final-status-readback-8",
+      "result": "passed",
+      "recordId": 445,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "final-status-readback-12",
+      "result": "passed",
+      "recordId": 449,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "final-status-readback-10",
+      "result": "passed",
+      "recordId": 447,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "final-status-readback-11",
+      "result": "passed",
+      "recordId": 448,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "final-status-readback-15",
+      "result": "passed",
+      "recordId": 452,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "final-status-readback-13",
+      "result": "passed",
+      "recordId": 450,
+      "status": "Không đạt"
+    },
+    {
+      "name": "final-status-readback-14",
+      "result": "passed",
+      "recordId": 451,
+      "status": "Đạt"
+    },
+    {
+      "name": "final-status-readback-17",
+      "result": "passed",
+      "recordId": 454,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "final-status-readback-18",
+      "result": "passed",
+      "recordId": 455,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "final-status-readback-16",
+      "result": "passed",
+      "recordId": 453,
+      "status": "Offer"
+    },
+    {
+      "name": "final-status-readback-20",
+      "result": "passed",
+      "recordId": 457,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "final-status-readback-21",
+      "result": "passed",
+      "recordId": 458,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "final-status-readback-19",
+      "result": "passed",
+      "recordId": 456,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "final-status-readback-22",
+      "result": "passed",
+      "recordId": 459,
+      "status": "Không đạt"
+    },
+    {
+      "name": "final-status-readback-24",
+      "result": "passed",
+      "recordId": 461,
+      "status": "Tiềm năng"
+    },
+    {
+      "name": "final-status-readback-23",
+      "result": "passed",
+      "recordId": 460,
+      "status": "Đạt"
+    },
+    {
+      "name": "final-status-readback-26",
+      "result": "passed",
+      "recordId": 463,
+      "status": "Không nhận việc"
+    },
+    {
+      "name": "final-status-readback-27",
+      "result": "passed",
+      "recordId": 464,
+      "status": "Đã nhận việc"
+    },
+    {
+      "name": "final-status-readback-25",
+      "result": "passed",
+      "recordId": 462,
+      "status": "Offer"
+    },
+    {
+      "name": "final-status-readback-29",
+      "result": "passed",
+      "recordId": 466,
+      "status": "Chờ phỏng vấn"
+    },
+    {
+      "name": "final-status-readback-30",
+      "result": "passed",
+      "recordId": 467,
+      "status": "Chờ kết quả"
+    },
+    {
+      "name": "final-status-readback-28",
+      "result": "passed",
+      "recordId": 465,
+      "status": "Chờ duyệt"
+    },
+    {
+      "name": "all-30-workflows-read-back",
+      "result": "passed"
+    },
+    {
+      "name": "duplicate-positive-readback",
+      "result": "passed",
+      "recordId": 468
+    },
+    {
+      "name": "delete-file-preserves-profile",
+      "result": "passed",
+      "recordId": 468
+    },
+    {
+      "name": "remove-member-preserves-profile",
+      "result": "passed",
+      "recordId": 468,
+      "remainingMembers": 30
+    },
+    {
+      "name": "delete-profile-readback",
+      "result": "passed",
+      "recordId": 468
+    },
+    {
+      "name": "calendar-update-readback",
+      "result": "failed",
+      "layer": "backend",
+      "endpoint": "PUT /api/regis-interview/",
+      "httpStatus": 200,
+      "recordId": 66,
+      "expected": {
+        "time_end": "18:30",
+        "note": "TEST_REC30_MVI3YC9L UPDATED calendar"
+      },
+      "actual": {
+        "time_end": "18:00",
+        "note": "TEST_REC30_MVI3YC9L TEMP"
+      }
+    },
+    {
+      "name": "calendar-delete-readback",
+      "result": "passed",
+      "recordId": 66
+    },
+    {
+      "name": "destructive-controls-cleaned-30-profiles-preserved",
+      "result": "passed"
+    },
+    {
+      "name": "ui-30-candidate-rows",
+      "result": "passed"
+    },
+    {
+      "name": "ui-cv-preview-1",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_1.txt"
+    },
+    {
+      "name": "ui-profile-1",
+      "result": "passed",
+      "recordId": 438
+    },
+    {
+      "name": "ui-cv-preview-2",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_2.png"
+    },
+    {
+      "name": "ui-profile-2",
+      "result": "passed",
+      "recordId": 439
+    },
+    {
+      "name": "ui-cv-preview-3",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_3.csv"
+    },
+    {
+      "name": "ui-profile-3",
+      "result": "passed",
+      "recordId": 440
+    },
+    {
+      "name": "ui-cv-preview-4",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_4.json"
+    },
+    {
+      "name": "ui-profile-4",
+      "result": "passed",
+      "recordId": 441
+    },
+    {
+      "name": "ui-cv-preview-5",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_5.md"
+    },
+    {
+      "name": "ui-profile-5",
+      "result": "passed",
+      "recordId": 442
+    },
+    {
+      "name": "ui-cv-preview-6",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_6"
+    },
+    {
+      "name": "ui-profile-6",
+      "result": "passed",
+      "recordId": 443
+    },
+    {
+      "name": "ui-cv-preview-7",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_7.zip"
+    },
+    {
+      "name": "ui-profile-7",
+      "result": "passed",
+      "recordId": 444
+    },
+    {
+      "name": "ui-profile-8",
+      "result": "passed",
+      "recordId": 445
+    },
+    {
+      "name": "ui-profile-9",
+      "result": "passed",
+      "recordId": 446
+    },
+    {
+      "name": "ui-profile-10",
+      "result": "passed",
+      "recordId": 447
+    },
+    {
+      "name": "ui-profile-11",
+      "result": "passed",
+      "recordId": 448
+    },
+    {
+      "name": "ui-profile-12",
+      "result": "passed",
+      "recordId": 449
+    },
+    {
+      "name": "ui-profile-13",
+      "result": "passed",
+      "recordId": 450
+    },
+    {
+      "name": "ui-profile-14",
+      "result": "passed",
+      "recordId": 451
+    },
+    {
+      "name": "ui-profile-15",
+      "result": "passed",
+      "recordId": 452
+    },
+    {
+      "name": "ui-profile-16",
+      "result": "passed",
+      "recordId": 453
+    },
+    {
+      "name": "ui-profile-17",
+      "result": "passed",
+      "recordId": 454
+    },
+    {
+      "name": "ui-profile-18",
+      "result": "passed",
+      "recordId": 455
+    },
+    {
+      "name": "ui-profile-19",
+      "result": "passed",
+      "recordId": 456
+    },
+    {
+      "name": "ui-profile-20",
+      "result": "passed",
+      "recordId": 457
+    },
+    {
+      "name": "ui-profile-21",
+      "result": "passed",
+      "recordId": 458
+    },
+    {
+      "name": "ui-profile-22",
+      "result": "passed",
+      "recordId": 459
+    },
+    {
+      "name": "ui-profile-23",
+      "result": "passed",
+      "recordId": 460
+    },
+    {
+      "name": "ui-profile-24",
+      "result": "passed",
+      "recordId": 461
+    },
+    {
+      "name": "ui-profile-25",
+      "result": "passed",
+      "recordId": 462
+    },
+    {
+      "name": "ui-profile-26",
+      "result": "passed",
+      "recordId": 463
+    },
+    {
+      "name": "ui-profile-27",
+      "result": "passed",
+      "recordId": 464
+    },
+    {
+      "name": "ui-profile-28",
+      "result": "passed",
+      "recordId": 465
+    },
+    {
+      "name": "ui-profile-29",
+      "result": "passed",
+      "recordId": 466
+    },
+    {
+      "name": "ui-profile-30",
+      "result": "passed",
+      "recordId": 467
+    },
+    {
+      "name": "ui-history-preview-1",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_1.txt"
+    },
+    {
+      "name": "ui-history-preview-2",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_2.png"
+    },
+    {
+      "name": "ui-history-preview-3",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_3.csv"
+    },
+    {
+      "name": "ui-candidate-export",
+      "result": "passed"
+    },
+    {
+      "name": "ui-history-preview-4",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_4.json"
+    },
+    {
+      "name": "ui-history-preview-5",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_5.md"
+    },
+    {
+      "name": "ui-history-preview-6",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_6"
+    },
+    {
+      "name": "ui-history-preview-7",
+      "result": "passed",
+      "file": "TEST_REC30_MVI3YC9L_7.zip"
+    },
+    {
+      "name": "ui-note-stays-open-no-table-remount-no-jump",
+      "result": "passed"
+    },
+    {
+      "name": "ui-30-interview-members",
+      "result": "passed"
+    },
+    {
+      "name": "ui-calendar-Tháng",
+      "result": "passed"
+    },
+    {
+      "name": "ui-calendar-Ngày",
+      "result": "passed"
+    },
+    {
+      "name": "ui-calendar-Tuần",
+      "result": "passed"
+    },
+    {
+      "name": "ui-request-detail-field-ownership",
+      "result": "passed"
+    },
+    {
+      "name": "ui-request-export",
+      "result": "passed"
+    },
+    {
+      "name": "ui-report-Theo yêu cầu tuyển dụng",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Theo bộ phận",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Theo người phụ trách",
+      "result": "passed",
+      "state": "empty"
+    },
+    {
+      "name": "ui-report-Thời gian tuyển dụng",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Theo nguồn ứng viên",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Tỷ lệ chuyển đổi CV",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Trạng thái CV",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-Bộ phận theo tháng",
+      "result": "passed",
+      "state": "table"
+    },
+    {
+      "name": "ui-report-export",
+      "result": "passed"
+    },
+    {
+      "name": "ui-report-bottom-spacing-1600",
+      "result": "passed",
+      "pixels": 24
+    },
+    {
+      "name": "ui-report-width-1600",
+      "result": "passed"
+    },
+    {
+      "name": "ui-report-bottom-spacing-390",
+      "result": "passed",
+      "pixels": 24
+    },
+    {
+      "name": "ui-report-width-390",
+      "result": "passed"
+    },
+    {
+      "name": "live-ui-complete",
+      "result": "passed"
+    }
+  ],
+  "api": [
+    {
+      "phase": "create",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 445
+    },
+    {
+      "phase": "create",
+      "path": "/list_recruitment/?from_date=2020-01-01&to_date=2027-12-31&page_size=100",
+      "method": "GET",
+      "status": 200,
+      "ms": 528
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1354
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1266
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2872
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 383
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 948
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2862
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 1178
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1216
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1385
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 394
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1240
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1408
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 1300
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 946
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2702
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 977
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1337
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1320
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 1301
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1311
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2497
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 1171
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 368
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1454
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 1317
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1213
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2867
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 1238
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 347
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1295
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 331
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1326
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2395
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 1209
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1273
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1382
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 962
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 461
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2824
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 930
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 400
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1438
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 1002
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1289
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2624
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 1273
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1952
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2444
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 975
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 440
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1297
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 976
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1268
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2386
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 947
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1236
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2377
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 976
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1300
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2781
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 384
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1193
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2418
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 354
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 938
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1209
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 993
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 354
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2287
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 336
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 943
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1254
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 365
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 956
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2680
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 330
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 302
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2645
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 1188
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 898
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2725
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 1273
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 1300
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2037
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 422
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 359
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2806
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 629
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 386
+    },
+    {
+      "phase": "create",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1721
+    },
+    {
+      "phase": "create",
+      "path": "/detail_cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 387
+    },
+    {
+      "phase": "workflows",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1248
+    },
+    {
+      "phase": "workflows",
+      "path": "/list_status_cv/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1380
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 360
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 1355
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/438",
+      "method": "PUT",
+      "status": 200,
+      "ms": 997
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 1403
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/440",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1048
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/439",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1002
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 1302
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 518
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 1384
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/438",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1290
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/439",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1250
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/440",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1378
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 1302
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 363
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 1414
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 323
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 393
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 924
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1331
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 330
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 417
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 397
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 927
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 1347
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/442",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1312
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/443",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1008
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/441",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1319
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 964
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 947
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/443",
+      "method": "PUT",
+      "status": 200,
+      "ms": 341
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 937
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/442",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1226
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/441",
+      "method": "PUT",
+      "status": 200,
+      "ms": 359
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 941
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 922
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1026
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 1329
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 368
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 903
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1066
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 642
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 1005
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 334
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 1306
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 1332
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/446",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1019
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/444",
+      "method": "PUT",
+      "status": 200,
+      "ms": 336
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/445",
+      "method": "PUT",
+      "status": 200,
+      "ms": 375
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 285
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 981
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 984
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/444",
+      "method": "PUT",
+      "status": 200,
+      "ms": 988
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/446",
+      "method": "PUT",
+      "status": 200,
+      "ms": 942
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/445",
+      "method": "PUT",
+      "status": 200,
+      "ms": 985
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 1026
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 404
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 904
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1016
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 958
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1033
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 895
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 993
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 1051
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 335
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 917
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/447",
+      "method": "PUT",
+      "status": 200,
+      "ms": 337
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 1261
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/449",
+      "method": "PUT",
+      "status": 200,
+      "ms": 289
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/448",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1337
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 293
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 331
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 868
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/449",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1073
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/448",
+      "method": "PUT",
+      "status": 200,
+      "ms": 949
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/447",
+      "method": "PUT",
+      "status": 200,
+      "ms": 881
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 308
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 867
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 862
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 960
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 951
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 970
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 311
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 960
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 883
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 353
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 928
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 1308
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/451",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1075
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/450",
+      "method": "PUT",
+      "status": 200,
+      "ms": 432
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 340
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/452",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1050
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 881
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 1209
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/451",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1233
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/450",
+      "method": "PUT",
+      "status": 200,
+      "ms": 278
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 467
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 354
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/452",
+      "method": "PUT",
+      "status": 200,
+      "ms": 981
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 959
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 922
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 954
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 950
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 369
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 981
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 874
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 302
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 346
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/454",
+      "method": "PUT",
+      "status": 200,
+      "ms": 897
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 1321
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/453",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1516
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 402
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/455",
+      "method": "PUT",
+      "status": 200,
+      "ms": 947
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 1211
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/454",
+      "method": "PUT",
+      "status": 200,
+      "ms": 452
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 922
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/453",
+      "method": "PUT",
+      "status": 200,
+      "ms": 979
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 454
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 1213
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/455",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1052
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 298
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 307
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1045
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 368
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 889
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 977
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 891
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 935
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 988
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 1025
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/456",
+      "method": "PUT",
+      "status": 200,
+      "ms": 280
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/457",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1022
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/458",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1054
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 944
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 876
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 864
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/457",
+      "method": "PUT",
+      "status": 200,
+      "ms": 357
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/456",
+      "method": "PUT",
+      "status": 200,
+      "ms": 997
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/458",
+      "method": "PUT",
+      "status": 200,
+      "ms": 369
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 333
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 348
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 1022
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 951
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 306
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 961
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 919
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 946
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 876
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 366
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 388
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 962
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/461",
+      "method": "PUT",
+      "status": 200,
+      "ms": 369
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/459",
+      "method": "PUT",
+      "status": 200,
+      "ms": 972
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/460",
+      "method": "PUT",
+      "status": 200,
+      "ms": 968
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 928
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 957
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 1000
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/461",
+      "method": "PUT",
+      "status": 200,
+      "ms": 866
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/460",
+      "method": "PUT",
+      "status": 200,
+      "ms": 973
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/459",
+      "method": "PUT",
+      "status": 200,
+      "ms": 992
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 352
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 283
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 886
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 980
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 999
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 942
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 917
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 312
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 286
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 276
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 327
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 946
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/464",
+      "method": "PUT",
+      "status": 200,
+      "ms": 976
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/463",
+      "method": "PUT",
+      "status": 200,
+      "ms": 930
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 262
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 369
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/462",
+      "method": "PUT",
+      "status": 200,
+      "ms": 933
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/463",
+      "method": "PUT",
+      "status": 200,
+      "ms": 366
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 347
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/464",
+      "method": "PUT",
+      "status": 200,
+      "ms": 933
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 961
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 948
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1063
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/462",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1094
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 337
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 929
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 982
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 571
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 363
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 1044
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 314
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 890
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 933
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/466",
+      "method": "PUT",
+      "status": 200,
+      "ms": 329
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/465",
+      "method": "PUT",
+      "status": 200,
+      "ms": 950
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/467",
+      "method": "PUT",
+      "status": 200,
+      "ms": 415
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 947
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 941
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 915
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/466",
+      "method": "PUT",
+      "status": 200,
+      "ms": 283
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 300
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/467",
+      "method": "PUT",
+      "status": 200,
+      "ms": 956
+    },
+    {
+      "phase": "workflows",
+      "path": "/change_status_cv/465",
+      "method": "PUT",
+      "status": 200,
+      "ms": 1280
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 921
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 950
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 917
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 306
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 945
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 311
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 348
+    },
+    {
+      "phase": "workflows",
+      "path": "/note-cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 977
+    },
+    {
+      "phase": "workflows",
+      "path": "/regis-interview/",
+      "method": "POST",
+      "status": 400,
+      "ms": 919
+    },
+    {
+      "phase": "workflows",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1167
+    },
+    {
+      "phase": "workflows",
+      "path": "/list_status_cv/",
+      "method": "GET",
+      "status": 200,
+      "ms": 369
+    },
+    {
+      "phase": "workflows",
+      "path": "/regis-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 858
+    },
+    {
+      "phase": "workflows",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 403
+    },
+    {
+      "phase": "workflows",
+      "path": "/add-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 898
+    },
+    {
+      "phase": "workflows",
+      "path": "/check-cv-interview/65",
+      "method": "GET",
+      "status": 200,
+      "ms": 296
+    },
+    {
+      "phase": "workflows",
+      "path": "/regis-interview/PV_261021_065",
+      "method": "GET",
+      "status": 200,
+      "ms": 937
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 385
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 395
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1265
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1283
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1295
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1341
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 406
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 409
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1345
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 405
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 410
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1138
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 272
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 383
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 403
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 318
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 367
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 951
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 297
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 303
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1173
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 351
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 927
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1255
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 304
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 451
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1250
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 429
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 899
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1268
+    },
+    {
+      "phase": "workflows",
+      "path": "/regis-interview/PV_261021_065",
+      "method": "GET",
+      "status": 200,
+      "ms": 1485
+    },
+    {
+      "phase": "workflows",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2432
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/440",
+      "method": "GET",
+      "status": 200,
+      "ms": 353
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/439",
+      "method": "GET",
+      "status": 200,
+      "ms": 896
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 908
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/442",
+      "method": "GET",
+      "status": 200,
+      "ms": 303
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/443",
+      "method": "GET",
+      "status": 200,
+      "ms": 320
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/441",
+      "method": "GET",
+      "status": 200,
+      "ms": 334
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/444",
+      "method": "GET",
+      "status": 200,
+      "ms": 433
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/446",
+      "method": "GET",
+      "status": 200,
+      "ms": 457
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/445",
+      "method": "GET",
+      "status": 200,
+      "ms": 1349
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/449",
+      "method": "GET",
+      "status": 200,
+      "ms": 415
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/447",
+      "method": "GET",
+      "status": 200,
+      "ms": 902
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/448",
+      "method": "GET",
+      "status": 200,
+      "ms": 1238
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/452",
+      "method": "GET",
+      "status": 200,
+      "ms": 292
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/450",
+      "method": "GET",
+      "status": 200,
+      "ms": 989
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/451",
+      "method": "GET",
+      "status": 200,
+      "ms": 1347
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/454",
+      "method": "GET",
+      "status": 200,
+      "ms": 294
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/455",
+      "method": "GET",
+      "status": 200,
+      "ms": 1024
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/453",
+      "method": "GET",
+      "status": 200,
+      "ms": 1390
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/457",
+      "method": "GET",
+      "status": 200,
+      "ms": 293
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/458",
+      "method": "GET",
+      "status": 200,
+      "ms": 308
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/456",
+      "method": "GET",
+      "status": 200,
+      "ms": 1301
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/459",
+      "method": "GET",
+      "status": 200,
+      "ms": 307
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/461",
+      "method": "GET",
+      "status": 200,
+      "ms": 318
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/460",
+      "method": "GET",
+      "status": 200,
+      "ms": 332
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/463",
+      "method": "GET",
+      "status": 200,
+      "ms": 326
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/464",
+      "method": "GET",
+      "status": 200,
+      "ms": 350
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/462",
+      "method": "GET",
+      "status": 200,
+      "ms": 1249
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/466",
+      "method": "GET",
+      "status": 200,
+      "ms": 356
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/467",
+      "method": "GET",
+      "status": 200,
+      "ms": 1312
+    },
+    {
+      "phase": "workflows",
+      "path": "/detail_cv/465",
+      "method": "GET",
+      "status": 200,
+      "ms": 1324
+    },
+    {
+      "phase": "edges",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1370
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_cv/438",
+      "method": "GET",
+      "status": 200,
+      "ms": 952
+    },
+    {
+      "phase": "edges",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1281
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_recruitment/109",
+      "method": "GET",
+      "status": 200,
+      "ms": 312
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_cv/109",
+      "method": "POST",
+      "status": 200,
+      "ms": 354
+    },
+    {
+      "phase": "edges",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2359
+    },
+    {
+      "phase": "edges",
+      "path": "/check-cv/468",
+      "method": "GET",
+      "status": 200,
+      "ms": 882
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_cv/468",
+      "method": "GET",
+      "status": 200,
+      "ms": 880
+    },
+    {
+      "phase": "edges",
+      "path": "/del-file-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1183
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_cv/468",
+      "method": "GET",
+      "status": 200,
+      "ms": 311
+    },
+    {
+      "phase": "edges",
+      "path": "/add-cv-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 1031
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/PV_261021_065",
+      "method": "GET",
+      "status": 200,
+      "ms": 380
+    },
+    {
+      "phase": "edges",
+      "path": "/del-cv-interview/?ls_id_cv=%5B468%5D&code_interview=PV_261021_065",
+      "method": "DELETE",
+      "status": 200,
+      "ms": 362
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/PV_261021_065",
+      "method": "GET",
+      "status": 200,
+      "ms": 915
+    },
+    {
+      "phase": "edges",
+      "path": "/detail_cv/468",
+      "method": "GET",
+      "status": 200,
+      "ms": 1021
+    },
+    {
+      "phase": "edges",
+      "path": "/del-data-cv/",
+      "method": "POST",
+      "status": 200,
+      "ms": 464
+    },
+    {
+      "phase": "edges",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 2334
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 908
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/",
+      "method": "POST",
+      "status": 200,
+      "ms": 291
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 966
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/",
+      "method": "PUT",
+      "status": 200,
+      "ms": 939
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 446
+    },
+    {
+      "phase": "inspect",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 320
+    },
+    {
+      "phase": "inspect",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 386
+    },
+    {
+      "phase": "edges",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1350
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 295
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/",
+      "method": "PUT",
+      "status": 200,
+      "ms": 360
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 1179
+    },
+    {
+      "phase": "edges",
+      "path": "/regis-interview/66",
+      "method": "DELETE",
+      "status": 200,
+      "ms": 286
+    },
+    {
+      "phase": "edges",
+      "path": "/list-interview/?from_date=2026-11-25&to_date=2026-11-25",
+      "method": "GET",
+      "status": 200,
+      "ms": 1411
+    },
+    {
+      "phase": "edges",
+      "path": "/list_cv/?from_date=2020-01-01&to_date=2027-12-31&page_size=1000",
+      "method": "GET",
+      "status": 200,
+      "ms": 1303
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 380
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1315
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 411
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 448
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1296
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 417
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 970
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1452
+    },
+    {
+      "phase": "ui",
+      "path": "/list_permission/",
+      "method": "GET",
+      "status": 200,
+      "ms": 1376
+    }
+  ],
+  "errors": [],
+  "account": {
+    "id": 815,
+    "username": "TEST_REC30_261021_QA",
+    "superuser": false
+  },
+  "parent": {
+    "id": 109,
+    "code": "HR_261021_021",
+    "title": "TEST_HRREQ20_261021_20 Tuyển dụng TEST 20",
+    "readOnly": true
+  },
+  "lastCompletedPhase": "ui",
+  "statuses": [
+    {
+      "id": 1,
+      "name": "Chờ duyệt"
+    },
+    {
+      "id": 2,
+      "name": "Chờ phỏng vấn"
+    },
+    {
+      "id": 3,
+      "name": "Chờ kết quả"
+    },
+    {
+      "id": 4,
+      "name": "Không đạt"
+    },
+    {
+      "id": 5,
+      "name": "Đạt"
+    },
+    {
+      "id": 6,
+      "name": "Tiềm năng"
+    },
+    {
+      "id": 8,
+      "name": "Offer"
+    },
+    {
+      "id": 9,
+      "name": "Không nhận việc"
+    },
+    {
+      "id": 10,
+      "name": "Đã nhận việc"
+    }
+  ],
+  "interview": {
+    "id": 65,
+    "day": "2026-11-25",
+    "title": "TEST_REC30_MVI3YC9L Interview",
+    "code": "PV_261021_065"
+  },
+  "resolvedAttempts": [
+    {
+      "phase": "workflows",
+      "message": "/regis-interview/: HTTP 400 {\"message\":\"Đã có lịch phỏng vấn được đăng ký trong khoảng thời gian này.\"}"
+    },
+    {
+      "phase": "edges",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '18:00'\n- '18:30'\n      ^"
+    },
+    {
+      "phase": "ui",
+      "message": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('table', { name: 'Bảng báo cáo tuyển dụng' }) to be visible\u001b[22m\n"
+    }
+  ],
+  "deletionControl": {
+    "id": 468,
+    "name": "TEST_REC30_MVI3YC9L DELETE_CONTROL",
+    "deleted": true
+  },
+  "summary": {
+    "result": "completed-with-backend-issues",
+    "profiles": 30,
+    "checksPassed": 287,
+    "openIssues": [
+      {
+        "name": "calendar-update-readback",
+        "result": "failed",
+        "layer": "backend",
+        "endpoint": "PUT /api/regis-interview/",
+        "httpStatus": 200,
+        "recordId": 66,
+        "expected": {
+          "time_end": "18:30",
+          "note": "TEST_REC30_MVI3YC9L UPDATED calendar"
+        },
+        "actual": {
+          "time_end": "18:00",
+          "note": "TEST_REC30_MVI3YC9L TEMP"
+        }
+      }
+    ],
+    "pageErrors": 0
+  },
+  "fixedIssues": [
+    {
+      "layer": "frontend",
+      "description": "JSON note downloads were parsed as API JSON. Explicit file response handling now preserves bytes even when CORS hides Content-Disposition. Retested with live JSON preview.",
+      "evidence": "ui-history-preview-4"
+    }
+  ]
+}

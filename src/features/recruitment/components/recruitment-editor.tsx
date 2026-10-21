@@ -42,17 +42,15 @@ export function RecruitmentEditor({
     "view-candidate",
     "create-candidate",
   ].includes(state.action);
+  const detailKind = ["candidate", "view-candidate"].includes(state.action)
+    ? "candidates"
+    : "requests";
   const detail = useQuery({
-    queryKey: ["recruitment-detail", userId, state.action, state.row.id],
+    queryKey: ["recruitment-detail", userId, detailKind, state.row.id],
     queryFn: ({ signal }) =>
-      recruitmentDetail(
-        ["candidate", "view-candidate"].includes(state.action)
-          ? "candidates"
-          : "requests",
-        state.row.id!,
-        signal,
-      ),
+      recruitmentDetail(detailKind, state.row.id!, signal),
     enabled: needsDetail,
+    staleTime: 60_000,
     retry: false,
   });
   const duplicate = useQuery({
@@ -108,8 +106,11 @@ export function RecruitmentEditor({
         if (!open && !busy) onClose();
       }}
     >
-      <DialogContent className="flex max-w-3xl flex-col overflow-hidden p-1 sm:p-1">
-        <div className="min-h-0 overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-lg p-4 sm:p-6">
+      <DialogContent
+        data-editor-action={state.action}
+        className="flex max-w-[57.6rem] flex-col overflow-hidden p-1 sm:p-1 data-[editor-action=note]:h-[min(48rem,calc(100dvh-2rem))]"
+      >
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-lg p-4 sm:p-6">
           <DialogHeader>
             <DialogHeading
               icon={<BriefcaseBusiness />}

@@ -321,6 +321,36 @@ describe("HTTP client", () => {
     ).resolves.toEqual({ status: 0 });
   });
 
+  it.each(['{"test":true}', "unparsed JSON file contents"])(
+    "preserves JSON file bytes without exposed download headers: %s",
+    async (contents) => {
+      fetchMock.mockResolvedValueOnce(
+        new Response(contents, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+      );
+      const file = await getRequest<Blob>("/download-note-cv/42", {
+        responseType: "file",
+      });
+      expect(file).toBeInstanceOf(Blob);
+      expect(await file.text()).toBe(contents);
+    },
+  );
+
+  it("keeps JSON download errors readable even when an attachment header is present", async () => {
+    const response = jsonResponse({ detail: "Forbidden" }, 403);
+    response.headers.set(
+      "Content-Disposition",
+      'attachment; filename="notes.json"',
+    );
+    fetchMock.mockResolvedValueOnce(response);
+    await expect(
+      getRequest("/download-note-cv/42", { responseType: "file" }),
+    ).rejects.toMatchObject({ status: 403, message: "Forbidden" });
+  });
+
   it("rejects a binary response received after signing out", async () => {
     let finish!: (response: Response) => void;
     fetchMock.mockImplementationOnce(

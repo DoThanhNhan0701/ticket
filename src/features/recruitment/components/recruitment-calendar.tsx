@@ -48,6 +48,8 @@ export function RecruitmentCalendar() {
   const query = useQuery({
     queryKey: ["recruitment-calendar", userId, params],
     queryFn: ({ signal }) => listRecruitment("interviews", params, signal),
+    placeholderData: (previous, old) =>
+      old?.queryKey[1] === userId ? previous : undefined,
     retry: false,
   });
   const cvLink = useMutation({
@@ -138,7 +140,7 @@ export function RecruitmentCalendar() {
             </Button>
           ))}
           <Button
-            disabled={!lookups.data || query.isFetching}
+            disabled={!lookups.data || query.isFetching || query.isError}
             onClick={() =>
               setEditor({
                 action: "interview",
@@ -166,12 +168,12 @@ export function RecruitmentCalendar() {
           <Button onClick={() => void query.refetch()}>Thử lại lịch</Button>
         </div>
       )}
-      {!query.isPending && !query.isError && (
+      {query.data && (
         <InterviewCalendarGrid
           days={days}
           rows={query.data?.results ?? []}
           view={view}
-          disabled={!lookups.data || query.isFetching}
+          disabled={!lookups.data || query.isFetching || query.isError}
           canViewCV={permissions?.can_cv_interview === true}
           onCreate={(date, time) => {
             const row: Record<string, unknown> = { start_date: date };

@@ -12,6 +12,7 @@ import {
   recruitmentDetail,
   exportRecruitment,
   interviewDetail,
+  downloadRecruitmentNote,
 } from "@/features/recruitment/api/recruitment-api";
 import { saveRecruitmentAction } from "@/features/recruitment/utils/recruitment-actions";
 import type { RecruitmentEditorState } from "@/features/recruitment/types";
@@ -375,3 +376,22 @@ it("recognizes the live API's empty interview response while preserving all othe
   );
   await expect(interviewDetail("TEST-error")).rejects.toThrow("Server error");
 });
+
+it("downloads note attachments as files so JSON uploads remain previewable", async () => {
+  const file = new Blob(['{"test":true}'], { type: "application/json" });
+  vi.mocked(getRequest).mockResolvedValue(file);
+  expect(await downloadRecruitmentNote(42)).toBe(file);
+  expect(getRequest).toHaveBeenCalledWith("/download-note-cv/42", {
+    responseType: "file",
+  });
+});
+
+it.each([new Blob([]), {}])(
+  "rejects empty or non-file note downloads",
+  async (response) => {
+    vi.mocked(getRequest).mockResolvedValue(response);
+    await expect(downloadRecruitmentNote(42)).rejects.toThrow(
+      "Không tải được tệp ghi chú.",
+    );
+  },
+);

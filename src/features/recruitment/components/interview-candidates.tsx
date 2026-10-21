@@ -25,6 +25,7 @@ import {
 } from "./recruitment-row-actions";
 import { InterviewCandidateFilters } from "./interview-candidate-filters";
 import { RecruitmentEditor } from "./recruitment-editor";
+import { RecruitmentStatusBadge } from "./recruitment-status-badge";
 export function InterviewCandidates() {
   const { codeInterview = "" } = useParams();
   const { userId, permissions } = useAuthContext();
@@ -39,6 +40,7 @@ export function InterviewCandidates() {
     queryKey: ["recruitment-interview-statuses", userId],
     queryFn: ({ signal }) =>
       recruitmentArray("/list_status_cv/", undefined, signal),
+    enabled: !canManage,
     retry: false,
   });
   const [editor, setEditor] = useState<RecruitmentEditorState | null>(null);
@@ -51,6 +53,10 @@ export function InterviewCandidates() {
       applied,
     ],
     queryFn: ({ signal }) => interviewDetail(codeInterview, applied, signal),
+    placeholderData: (previous, old) =>
+      old?.queryKey[1] === userId && old.queryKey[2] === codeInterview
+        ? previous
+        : undefined,
     retry: false,
   });
   const lookups = useRecruitmentLookups(canManage);
@@ -102,7 +108,9 @@ export function InterviewCandidates() {
       id: "status",
       label: "Trạng thái CV",
       render: (row) => (
-        <DataText text={text(row.cv_status__name || row.cv_status_name)} />
+        <RecruitmentStatusBadge
+          status={row.cv_status__name || row.cv_status_name}
+        />
       ),
     },
     {
@@ -115,7 +123,9 @@ export function InterviewCandidates() {
           mode="interview"
           row={row}
           canManage={canManage}
-          disabled={query.isFetching || (canManage && !lookups.data)}
+          disabled={
+            query.isFetching || query.isError || (canManage && !lookups.data)
+          }
           onAction={openAction}
           open={false}
           onOpenChange={(nextOpen) => {
@@ -129,7 +139,11 @@ export function InterviewCandidates() {
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
       <InterviewCandidateFilters
         values={applied}
-        statuses={recruitmentOptions(statuses.data)}
+        statuses={
+          canManage
+            ? (lookups.data?.statuses ?? [])
+            : recruitmentOptions(statuses.data)
+        }
         busy={query.isFetching}
         onApply={(next) => {
           resetPagination((current) => current + 1);
@@ -153,6 +167,7 @@ export function InterviewCandidates() {
         </div>
       )}
       <DataClientResults
+        refreshStyle="subtle"
         scopeKey={JSON.stringify([codeInterview, applied, paginationReset])}
         query={{
           ...query,
@@ -178,18 +193,22 @@ export function InterviewCandidates() {
             ]}
             label="CV phỏng vấn"
             getRowKey={(row) => String(row.id)}
-            scrollResetKey={`${offset}:${visibleRows.length}`}
+            scrollResetKey={JSON.stringify([codeInterview, applied, offset])}
           />
         )}
       />
-      {statuses.isError && <ErrorAlert message={statuses.error.message} />}
+      {!canManage && statuses.isError && (
+        <ErrorAlert message={statuses.error.message} />
+      )}
       {lookups.isError && <ErrorAlert message={lookups.error.message} />}
       <RecruitmentActionChooser
         mode="interview"
         row={actionRow}
         rows={rows}
         canManage={canManage}
-        disabled={query.isFetching || (canManage && !lookups.data)}
+        disabled={
+          query.isFetching || query.isError || (canManage && !lookups.data)
+        }
         onClose={() => setActionRow(null)}
         onAction={openAction}
       >

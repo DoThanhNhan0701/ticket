@@ -1,0 +1,15 @@
+{
+  "username": "TEST_REC30_261021_QA",
+  "id": 815,
+  "created": true,
+  "login": "passed",
+  "superuser": false,
+  "roles": [
+    "can_create",
+    "can_view",
+    "can_search",
+    "can_delete",
+    "can_cv_interview",
+    "can_hr_rec"
+  ]
+}

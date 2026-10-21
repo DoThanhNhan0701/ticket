@@ -66,6 +66,8 @@ export function RecruitmentReport() {
     queryKey: ["recruitment-report", userId, filters],
     queryFn: ({ signal }) =>
       recruitmentObject("/report_rect/", filters, signal),
+    placeholderData: (previous, old) =>
+      old?.queryKey[1] === userId ? previous : undefined,
     retry: false,
   });
   const exporting = useMutation({
@@ -138,7 +140,7 @@ export function RecruitmentReport() {
     ),
   }));
   return (
-    <div className="flex min-w-0 shrink-0 flex-col gap-3 pb-1">
+    <div className="flex min-w-0 shrink-0 flex-col gap-3 pb-6">
       <RecruitmentFilters
         values={filters}
         lookups={{}}
@@ -166,7 +168,7 @@ export function RecruitmentReport() {
             type="button"
             variant="outline"
             loading={exporting.isPending}
-            disabled={!query.data || query.isError}
+            disabled={!query.data || query.isError || query.isPlaceholderData}
             icon={<Download className="size-4" />}
             onClick={() => {
               if (!exporting.isPending) exporting.mutate();
@@ -220,10 +222,10 @@ export function RecruitmentReport() {
         aria-label={sections.find(([key]) => key === tab)?.[1]}
         className="flex min-w-0 shrink-0 flex-col gap-4 rounded-xl border bg-card p-3 sm:p-4"
       >
-        {!query.isPending && !query.isError && rows.length > 0 && (
+        {query.data && rows.length > 0 && (
           <>
             <div
-              key={`stats-${tab}-${query.dataUpdatedAt}`}
+              key={`stats-${tab}`}
               className="recruitment-report-reveal grid grid-cols-1 gap-3 min-[400px]:grid-cols-3"
             >
               {["number_cv_all", "quantity", "number_cv_pass"]
@@ -247,15 +249,12 @@ export function RecruitmentReport() {
                   </div>
                 ))}
             </div>
-            <RecruitmentChart
-              key={`chart-${tab}-${query.dataUpdatedAt}`}
-              rows={rows}
-              section={tab}
-            />
+            <RecruitmentChart key={`chart-${tab}`} rows={rows} section={tab} />
           </>
         )}
         <div className="flex h-[clamp(22rem,50vh,36rem)] min-h-0 min-w-0 flex-col">
           <DataClientResults
+            refreshStyle="subtle"
             scopeKey={JSON.stringify([tab, filters, paginationReset])}
             query={{
               ...query,
@@ -275,8 +274,8 @@ export function RecruitmentReport() {
                 rows={visibleRows}
                 columns={columns}
                 label="Bảng báo cáo tuyển dụng"
-                getRowKey={(row) => JSON.stringify(row)}
-                scrollResetKey={`${offset}:${visibleRows.length}`}
+                getRowKey={reportRowKey}
+                scrollResetKey={JSON.stringify([tab, filters, offset])}
               />
             )}
           />
@@ -299,4 +298,24 @@ function reportColumnWidth(key: string) {
   )
     return "220px";
   return "150px";
+}
+
+function reportRowKey(row: RecruitmentRow) {
+  const dimensions = recruitmentText(row.id)
+    ? ["id", "rec_position", "month"]
+    : [
+        "ticket_code",
+        "rec_position",
+        "department_recruited",
+        "department_recruited_name",
+        "username",
+        "candidate_source__name",
+        "cv_status__name",
+        "name",
+        "month",
+      ];
+  const identity = dimensions.map((key) => recruitmentText(row[key]));
+  return identity.some(Boolean)
+    ? JSON.stringify(identity)
+    : JSON.stringify(row);
 }

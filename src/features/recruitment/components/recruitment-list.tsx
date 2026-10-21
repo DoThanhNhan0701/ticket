@@ -37,6 +37,7 @@ import {
   RecruitmentRowActions,
 } from "./recruitment-row-actions";
 import { RecruitmentFilters } from "./recruitment-filters";
+import { RecruitmentStatusBadge } from "./recruitment-status-badge";
 const pageSizes = [100, 200] as const;
 export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
   const { userId } = useAuthContext();
@@ -127,7 +128,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         ? [...new Set([...current, id])]
         : current.filter((selectedId) => selectedId !== id),
     );
-  const rowActionsDisabled = !lookups.data || query.isFetching;
+  const rowActionsDisabled = !lookups.data || query.isFetching || query.isError;
   const editorContent =
     editor && lookups.data ? (
       <RecruitmentEditor
@@ -279,13 +280,12 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       id: "status",
       label: "Trạng thái",
       width: "140px",
-      render: (row) => (
-        <Badge tone="brand">
-          {text(
-            kind === "requests" ? row.ticket_status_name : row.cv_status_name,
-          )}
-        </Badge>
-      ),
+      render: (row) =>
+        kind === "requests" ? (
+          <Badge tone="brand">{text(row.ticket_status_name)}</Badge>
+        ) : (
+          <RecruitmentStatusBadge status={row.cv_status_name} />
+        ),
     },
     {
       id: "actions",
@@ -370,6 +370,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       )}
       {exportFile.isError && <ErrorAlert message={exportFile.error.message} />}
       <DataResults
+        refreshStyle="subtle"
         query={query}
         label={
           kind === "requests"

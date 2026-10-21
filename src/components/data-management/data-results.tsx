@@ -16,6 +16,7 @@ export function DataResults<T>({
   emptyDescription = "Thử thay đổi từ khóa hoặc bộ lọc để tìm dữ liệu phù hợp.",
   pagination,
   renderRows,
+  refreshStyle = "overlay",
 }: Readonly<{
   query: DataListQuery<T>;
   label: string;
@@ -25,7 +26,10 @@ export function DataResults<T>({
   emptyDescription?: string;
   pagination: Omit<DataPaginationProps, "count" | "disabled">;
   renderRows: (rows: T[]) => ReactNode;
+  refreshStyle?: "overlay" | "subtle";
 }>) {
+  const retainData = refreshStyle === "subtle" && Boolean(query.data);
+  const data = visibleData(query, refreshStyle);
   return (
     <section
       aria-label={label}
@@ -34,7 +38,13 @@ export function DataResults<T>({
     >
       {query.isPending && <LoadingState message={loadingMessage} />}
       {query.isError && (
-        <div className="space-y-3 p-4">
+        <div
+          className={
+            retainData
+              ? "absolute inset-x-2 top-2 z-20 space-y-2 rounded-lg border bg-card p-3 shadow-sm"
+              : "space-y-3 p-4"
+          }
+        >
           <ErrorAlert
             message={`${errorPrefix}: ${query.error?.message ?? "Lỗi không xác định"}`}
           />
@@ -60,10 +70,10 @@ export function DataResults<T>({
           </div>
         </div>
       )}
-      {!query.isPending && !query.isError && query.data && (
+      {data && (
         <>
-          {query.data.results.length > 0 ? (
-            renderRows(query.data.results)
+          {data.results.length > 0 ? (
+            renderRows(data.results)
           ) : (
             <EmptyState
               title={emptyTitle}
@@ -72,21 +82,49 @@ export function DataResults<T>({
               className="flex-1 rounded-none border-0 shadow-none"
             />
           )}
-          {query.data.results.length > 0 && (
+          {data.results.length > 0 && (
             <DataPagination
               {...pagination}
-              count={query.data.count}
-              disabled={query.isPlaceholderData || query.isFetching}
+              count={data.count}
+              disabled={
+                query.isPlaceholderData || query.isFetching || query.isError
+              }
             />
           )}
         </>
       )}
       {query.isFetching && !query.isPending && (
-        <LoadingState
-          message="Đang cập nhật danh sách..."
-          className="absolute inset-0 z-20 bg-card/80"
-        />
+        <DataRefreshIndicator style={refreshStyle} />
       )}
     </section>
+  );
+}
+
+function visibleData<T>(
+  query: DataListQuery<T>,
+  refreshStyle: "subtle" | "overlay",
+) {
+  if (query.isPending || (query.isError && refreshStyle !== "subtle")) return;
+  return query.data;
+}
+
+function DataRefreshIndicator({
+  style,
+}: Readonly<{ style: "subtle" | "overlay" }>) {
+  if (style === "subtle")
+    return (
+      <div
+        role="status"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 h-0.5 overflow-hidden bg-primary/15"
+      >
+        <span className="block h-full w-full animate-pulse bg-primary/60 motion-reduce:animate-none" />
+        <span className="sr-only">Đang cập nhật danh sách...</span>
+      </div>
+    );
+  return (
+    <LoadingState
+      message="Đang cập nhật danh sách..."
+      className="absolute inset-0 z-20 bg-card/80"
+    />
   );
 }

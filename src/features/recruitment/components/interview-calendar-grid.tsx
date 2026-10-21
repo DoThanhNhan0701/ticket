@@ -154,7 +154,7 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
   return (
     <div
       ref={scroll}
-      className="relative min-h-80 max-h-[65vh] flex-1 overflow-auto rounded-xl border bg-card"
+      className="relative min-h-80 flex-1 overflow-auto rounded-xl border bg-card"
     >
       <div
         role="grid"

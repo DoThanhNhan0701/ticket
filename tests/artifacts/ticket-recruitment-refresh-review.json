@@ -1,0 +1,661 @@
+{
+  "method": "Chromium UI with delayed fixture APIs. No real backend writes.",
+  "checks": [
+    {
+      "action": "request-update",
+      "reloaded": ["/api/list_recruitment/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-create-from-request",
+      "reloaded": [],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-update",
+      "reloaded": ["/api/list_cv/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-status",
+      "reloaded": ["/api/list_cv/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-attach-schedule",
+      "reloaded": ["/api/list_cv/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-note",
+      "reloaded": ["/api/note-cv/408"],
+      "tablePreserved": true,
+      "noteTopShift": 0,
+      "result": "passed"
+    },
+    {
+      "action": "individual-interview-time",
+      "reloaded": ["/api/regis-interview/INT_TEST"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "interview-note",
+      "reloaded": ["/api/note-cv/408"],
+      "tablePreserved": true,
+      "noteTopShift": 0,
+      "result": "passed"
+    },
+    {
+      "action": "interview-profile-update",
+      "reloaded": ["/api/regis-interview/INT_TEST"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "interview-remove-member",
+      "reloaded": ["/api/regis-interview/INT_TEST"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-delete-file",
+      "reloaded": ["/api/list_cv/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "candidate-delete",
+      "reloaded": ["/api/list_cv/"],
+      "tablePreserved": true,
+      "result": "passed"
+    },
+    {
+      "action": "calendar-update",
+      "reloaded": ["/api/list-interview/"],
+      "result": "passed"
+    },
+    {
+      "action": "calendar-create",
+      "reloaded": ["/api/list-interview/"],
+      "result": "passed"
+    },
+    {
+      "action": "calendar-delete",
+      "reloaded": ["/api/list-interview/"],
+      "result": "passed"
+    },
+    {
+      "action": "report-refresh",
+      "reloaded": ["/api/report_rect/"],
+      "chartPreserved": true,
+      "tablePreserved": true,
+      "result": "passed"
+    }
+  ],
+  "reads": [
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_recruitment/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/detail_recruitment/85"
+    },
+    {
+      "phase": "request-update",
+      "path": "/api/list_recruitment/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_recruitment/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/detail_recruitment/85"
+    },
+    {
+      "phase": "",
+      "path": "/api/v2/p/"
+    },
+    {
+      "phase": "",
+      "path": "/api/v2/w/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/detail_cv/408"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_district/"
+    },
+    {
+      "phase": "candidate-update",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "candidate-status",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list-interview/"
+    },
+    {
+      "phase": "candidate-attach-schedule",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/note-cv/408"
+    },
+    {
+      "phase": "candidate-note",
+      "path": "/api/note-cv/408"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "individual-interview-time",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/note-cv/408"
+    },
+    {
+      "phase": "interview-note",
+      "path": "/api/note-cv/408"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/detail_cv/408"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_district/"
+    },
+    {
+      "phase": "interview-profile-update",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "interview-remove-member",
+      "path": "/api/regis-interview/INT_TEST"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "candidate-delete-file",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "candidate-delete",
+      "path": "/api/list_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_department/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_city/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_user_v2/"
+    },
+    {
+      "phase": "",
+      "path": "/api/infor_input/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list-interview/"
+    },
+    {
+      "phase": "calendar-update",
+      "path": "/api/list-interview/"
+    },
+    {
+      "phase": "calendar-create",
+      "path": "/api/list-interview/"
+    },
+    {
+      "phase": "calendar-delete",
+      "path": "/api/list-interview/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_permission/"
+    },
+    {
+      "phase": "",
+      "path": "/api/report_rect/"
+    },
+    {
+      "phase": "",
+      "path": "/api/list_status_cv/"
+    },
+    {
+      "phase": "report-refresh",
+      "path": "/api/report_rect/"
+    }
+  ],
+  "writes": [
+    {
+      "phase": "request-update",
+      "path": "/api/detail_recruitment/85",
+      "method": "PUT"
+    },
+    {
+      "phase": "candidate-create-from-request",
+      "path": "/api/detail_cv/85",
+      "method": "POST"
+    },
+    {
+      "phase": "candidate-update",
+      "path": "/api/detail_cv/408",
+      "method": "PUT"
+    },
+    {
+      "phase": "candidate-status",
+      "path": "/api/change_status_cv/408",
+      "method": "PUT"
+    },
+    {
+      "phase": "candidate-attach-schedule",
+      "path": "/api/add-cv-interview/",
+      "method": "POST"
+    },
+    {
+      "phase": "candidate-note",
+      "path": "/api/note-cv/",
+      "method": "POST"
+    },
+    {
+      "phase": "individual-interview-time",
+      "path": "/api/detail-cv-interview/",
+      "method": "POST"
+    },
+    {
+      "phase": "interview-note",
+      "path": "/api/note-cv/",
+      "method": "POST"
+    },
+    {
+      "phase": "interview-profile-update",
+      "path": "/api/detail_cv/408",
+      "method": "PUT"
+    },
+    {
+      "phase": "interview-remove-member",
+      "path": "/api/del-cv-interview/",
+      "method": "DELETE"
+    },
+    {
+      "phase": "candidate-delete-file",
+      "path": "/api/del-file-cv/",
+      "method": "POST"
+    },
+    {
+      "phase": "candidate-delete",
+      "path": "/api/del-data-cv/",
+      "method": "POST"
+    },
+    {
+      "phase": "calendar-update",
+      "path": "/api/regis-interview/",
+      "method": "PUT"
+    },
+    {
+      "phase": "calendar-create",
+      "path": "/api/regis-interview/",
+      "method": "POST"
+    },
+    {
+      "phase": "calendar-delete",
+      "path": "/api/regis-interview/58",
+      "method": "DELETE"
+    }
+  ],
+  "errors": []
+}

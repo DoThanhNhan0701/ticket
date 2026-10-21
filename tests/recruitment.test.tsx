@@ -877,6 +877,183 @@ it("changes status from the interview page through the dedicated transition endp
   });
 });
 
+it("refreshes only the note history after adding feedback, leaving the interview table and lookup APIs untouched", async () => {
+  const notes: { id: number; content: string }[] = [
+    { id: 1, content: "TEST previous feedback" },
+  ];
+  vi.mocked(api.recruitmentArray).mockImplementation(async (path) =>
+    path.startsWith("/note-cv/") ? [...notes] : [],
+  );
+  vi.mocked(api.recruitmentWrite).mockImplementation(async () => {
+    notes.unshift({ id: 2, content: "TEST new feedback" });
+    return {};
+  });
+  mountInterviewActions();
+  const table = await screen.findByRole("table", { name: "CV phỏng vấn" });
+  await openActions("TEST Candidate");
+  fireEvent.click(
+    screen.getByRole("button", { name: "Ghi chú TEST Candidate" }),
+  );
+  await screen.findByText("TEST previous feedback");
+  const reads = () => [
+    vi.mocked(api.interviewDetail).mock.calls.length,
+    vi.mocked(api.recruitmentLookups).mock.calls.length,
+    vi.mocked(api.recruitmentDetail).mock.calls.length,
+    vi.mocked(api.listRecruitment).mock.calls.length,
+  ];
+  const before = reads();
+  const historyReads = vi
+    .mocked(api.recruitmentArray)
+    .mock.calls.filter(([path]) => path.startsWith("/note-cv/")).length;
+  fireEvent.change(screen.getByRole("textbox", { name: "Ghi chú phỏng vấn" }), {
+    target: { value: "TEST new feedback" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+  await screen.findByText("TEST new feedback");
+  expect(reads()).toEqual(before);
+  expect(
+    vi
+      .mocked(api.recruitmentArray)
+      .mock.calls.filter(([path]) => path.startsWith("/note-cv/")),
+  ).toHaveLength(historyReads + 1);
+  expect(table.isConnected).toBe(true);
+  expect(
+    screen.getByRole("dialog", { name: "Ghi chú phỏng vấn" }),
+  ).toBeTruthy();
+  expect(screen.queryByText("Đang cập nhật danh sách...")).toBeNull();
+});
+
+it("shares profile detail between view and edit, and reloads it only after a successful change", async () => {
+  let current = { ...candidate, city_name: "Hà Nội", district_name: "Ba Đình" };
+  mountInterviewActions();
+  vi.mocked(api.interviewDetail).mockImplementation(async () => [
+    { id: 58, ls_cv_interview: [current] },
+  ]);
+  vi.mocked(api.recruitmentDetail).mockImplementation(async () => ({
+    row: current,
+    reasons: [],
+  }));
+  vi.mocked(api.recruitmentWrite).mockImplementation(async () => {
+    current = { ...current, first_name: "TEST Changed Name" };
+    return {};
+  });
+  await openActions("TEST Candidate");
+  fireEvent.click(
+    screen.getByRole("button", { name: "Xem hồ sơ TEST Candidate" }),
+  );
+  const profile = await screen.findByRole("dialog", {
+    name: "Xem hồ sơ ứng viên",
+  });
+  await within(profile).findByText("TEST Candidate");
+  fireEvent.click(within(profile).getByRole("button", { name: "Đóng" }));
+  await screen.findByRole("dialog", { name: "Chọn thao tác" });
+  fireEvent.click(
+    screen.getByRole("button", { name: "Sửa hồ sơ TEST Candidate" }),
+  );
+  const name = await screen.findByLabelText(/^Họ và tên/);
+  expect(api.recruitmentDetail).toHaveBeenCalledTimes(1);
+  fireEvent.change(name, { target: { value: "TEST Changed Name" } });
+  const save = screen.getByRole("button", { name: "Lưu" });
+  await waitFor(() => expect(save.hasAttribute("disabled")).toBe(false));
+  const lookupReads = vi.mocked(api.recruitmentLookups).mock.calls.length;
+  const districtReads = vi
+    .mocked(api.recruitmentArray)
+    .mock.calls.filter(([path]) => path === "/list_district/").length;
+  fireEvent.click(save);
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("dialog", { name: "Chi tiết ứng viên" }),
+    ).toBeNull(),
+  );
+  expect(api.recruitmentDetail).toHaveBeenCalledTimes(1);
+  expect(api.recruitmentLookups).toHaveBeenCalledTimes(lookupReads);
+  expect(
+    vi
+      .mocked(api.recruitmentArray)
+      .mock.calls.filter(([path]) => path === "/list_district/"),
+  ).toHaveLength(districtReads);
+  fireEvent.click(screen.getByRole("button", { name: /^Xem hồ sơ/ }));
+  await within(
+    screen.getByRole("dialog", { name: "Xem hồ sơ ứng viên" }),
+  ).findByText("TEST Changed Name");
+  expect(api.recruitmentDetail).toHaveBeenCalledTimes(2);
+});
+
+it("preserves interview scroll and table nodes when a background reload changes the row count", async () => {
+  mountInterviewActions();
+  vi.mocked(api.interviewDetail).mockResolvedValue([
+    {
+      id: 58,
+      ls_cv_interview: [
+        candidate,
+        { ...candidate, id: 409, first_name: "TEST second" },
+      ],
+    },
+  ]);
+  const table = await screen.findByRole("table", { name: "CV phỏng vấn" });
+  const scroll = screen.getByRole("region", { name: "Cuộn bảng tuyển dụng" });
+  scroll.scrollTop = 250;
+  let finish!: (value: (typeof candidate)[]) => void;
+  vi.mocked(api.interviewDetail).mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = (rows) => resolve([{ id: 58, ls_cv_interview: rows }]);
+      }),
+  );
+  void client.invalidateQueries({
+    queryKey: ["recruitment-interview-candidates"],
+  });
+  await screen.findByText("Đang cập nhật danh sách...");
+  expect(screen.getByRole("table", { name: "CV phỏng vấn" })).toBe(table);
+  finish([candidate]);
+  await waitFor(() =>
+    expect(screen.queryByText("Đang cập nhật danh sách...")).toBeNull(),
+  );
+  expect(screen.getByRole("table", { name: "CV phỏng vấn" })).toBe(table);
+  expect(screen.getByRole("region", { name: "Cuộn bảng tuyển dụng" })).toBe(
+    scroll,
+  );
+  expect(scroll.scrollTop).toBe(250);
+});
+
+it("keeps report chart nodes mounted when report data is refreshed", async () => {
+  mount(<RecruitmentReport />);
+  const chart = await screen.findByRole("figure", {
+    name: "Biểu đồ số lượng CV",
+  });
+  const table = screen.getByRole("table", { name: "Bảng báo cáo tuyển dụng" });
+  const firstRow = within(table).getAllByRole("row")[1];
+  const scroll = screen.getByRole("region", { name: "Cuộn bảng tuyển dụng" });
+  scroll.scrollTop = 200;
+  vi.mocked(api.recruitmentObject).mockResolvedValue({
+    result_rect: [
+      {
+        ...request,
+        rec_position: "Developer",
+        number_cv_all: 6,
+        quantity: 2,
+        number_cv_pass: 1,
+      },
+      {
+        ...request,
+        id: 86,
+        rec_position: "TEST Another Position",
+        number_cv_all: 1,
+      },
+    ],
+  });
+  await client.invalidateQueries({ queryKey: ["recruitment-report"] });
+  await screen.findAllByText("TEST Another Position");
+  expect(screen.getByRole("figure", { name: "Biểu đồ số lượng CV" })).toBe(
+    chart,
+  );
+  expect(screen.getByRole("table", { name: "Bảng báo cáo tuyển dụng" })).toBe(
+    table,
+  );
+  expect(scroll.scrollTop).toBe(200);
+  expect(within(table).getAllByRole("row")[1]).toBe(firstRow);
+});
+
 it("sets the individual interview time without updating the candidate profile or schedule", async () => {
   mountInterviewActions();
   await openActions("TEST Candidate");

@@ -410,6 +410,40 @@ it("keeps previous rows mounted under a loading overlay and hides pagination for
   expect(screen.queryByTestId("rows")).toBeNull();
 });
 
+it("keeps rows mounted without a full overlay during subtle refreshes and background failures", () => {
+  const props = {
+    label: "Kết quả nhân viên",
+    pagination,
+    renderRows,
+    refreshStyle: "subtle" as const,
+  };
+  const view = render(<DataResults {...props} query={readyQuery} />);
+  const rows = screen.getByTestId("rows");
+  rows.scrollTop = 150;
+  view.rerender(
+    <DataResults {...props} query={{ ...readyQuery, isFetching: true }} />,
+  );
+  expect(screen.getByTestId("rows")).toBe(rows);
+  const indicator = screen
+    .getByText("Đang cập nhật danh sách...")
+    .closest('[role="status"]');
+  expect(indicator?.classList.contains("h-0.5")).toBe(true);
+  expect(indicator?.classList.contains("inset-0")).toBe(false);
+  view.rerender(
+    <DataResults
+      {...props}
+      query={{ ...readyQuery, isError: true, error: new Error("TEST offline") }}
+    />,
+  );
+  expect(screen.getByTestId("rows")).toBe(rows);
+  expect(rows.scrollTop).toBe(150);
+  expect(
+    screen.getByText("Không tải được danh sách: TEST offline"),
+  ).toBeTruthy();
+  view.rerender(<DataResults {...props} query={readyQuery} />);
+  expect(screen.getByTestId("rows")).toBe(rows);
+});
+
 it("provides shared error recovery without depending on a query library or feature DTO", () => {
   render(
     <DataResults
