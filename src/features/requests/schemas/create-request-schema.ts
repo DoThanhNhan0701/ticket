@@ -33,6 +33,17 @@ export const createRequestValuesSchema = z.object({
 });
 export type CreateRequestValues = z.infer<typeof createRequestValuesSchema>;
 export type DetailRow = CreateRequestValues["rows"][number];
+type ChoiceField =
+  | "handling_group"
+  | "ticket_type"
+  | "approve_user"
+  | "fore_cus"
+  | "bophansudung"
+  | "vanphong"
+  | "other1";
+export type CreateRequestChoices = Partial<
+  Record<ChoiceField, readonly { id: number }[]>
+>;
 
 export const requestAssignmentSchema = createRequestValuesSchema.pick({
   handling_group: true,
@@ -51,6 +62,7 @@ export const requestGeneralSchema = createRequestValuesSchema.pick({
 export function getCreateRequestSchema(
   groups: readonly TemplateGroup[],
   handlingGroups: readonly { id: number; name?: string }[] = [],
+  choices: CreateRequestChoices = {},
 ) {
   return createRequestValuesSchema.superRefine((values, context) => {
     const handlingGroup = handlingGroups.find(
@@ -63,6 +75,22 @@ export function getCreateRequestSchema(
         path: ["handling_group"],
         message: groupError,
       });
+    for (const name of Object.keys(choices) as ChoiceField[]) {
+      const options = choices[name];
+      const selected = name === "other1" ? values[name] : [values[name]];
+      if (
+        options &&
+        selected.some(
+          (value) =>
+            value && !options.some((option) => String(option.id) === value),
+        )
+      )
+        context.addIssue({
+          code: "custom",
+          path: [name],
+          message: "Vui lòng chọn thông tin hợp lệ.",
+        });
+    }
     for (const issue of validateDetailRows(
       getCreateRequestGroups(groups),
       values.rows,

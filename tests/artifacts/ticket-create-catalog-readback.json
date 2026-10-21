@@ -1,0 +1,771 @@
+{
+  "method": "Read-only UI search/open/detail-tab audit. Detail responses triggered by those clicks are observed; every displayed cell is compared with the five rows entered during creation. No direct HTTP calls or mutations.",
+  "results": [
+    {
+      "id": 14366,
+      "typeId": 106,
+      "type": "Đề nghị tạm ứng",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14367,
+      "typeId": 165,
+      "type": "Chi phí tổ chức sự kiện",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 1,
+      "verifiedCells": 20
+    },
+    {
+      "id": 14368,
+      "typeId": 129,
+      "type": "Đăng bài cuộc thi",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14369,
+      "typeId": 131,
+      "type": "Hỗ trợ quay phim/chụp ảnh",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14370,
+      "typeId": 132,
+      "type": "Tổ chức sự kiện",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 1,
+      "verifiedCells": 35
+    },
+    {
+      "id": 14371,
+      "typeId": 123,
+      "type": "Khác",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14372,
+      "typeId": 133,
+      "type": "Thiết kế ấn phẩm",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14373,
+      "typeId": 149,
+      "type": "Vô hiệu hóa tài khoản trên tool CRM",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 3,
+      "sections": 1,
+      "verifiedCells": 15
+    },
+    {
+      "id": 14374,
+      "typeId": 150,
+      "type": "Cấp/Thu hồi quyền cho tài khoản trên tool CRM",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14375,
+      "typeId": 148,
+      "type": "Tạo/Kích hoạt tài khoản CRM",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 1,
+      "verifiedCells": 20
+    },
+    {
+      "id": 14376,
+      "typeId": 173,
+      "type": "Tạm ứng công tác phí",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 1,
+      "verifiedCells": 20
+    },
+    {
+      "id": 14377,
+      "typeId": 85,
+      "type": "Đăng ký công tác",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 13,
+      "sections": 4,
+      "verifiedCells": 100
+    },
+    {
+      "id": 14378,
+      "typeId": 117,
+      "type": "Thu hồi user backoffice",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14379,
+      "typeId": 118,
+      "type": "Khác",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14380,
+      "typeId": 115,
+      "type": "Báo bộ tool backoffice lỗi",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14381,
+      "typeId": 116,
+      "type": "Kích hoạt user backoffice mới",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14382,
+      "typeId": 113,
+      "type": "Đánh giá thay đổi quan trọng",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 6,
+      "sections": 1,
+      "verifiedCells": 30
+    },
+    {
+      "id": 14383,
+      "typeId": 157,
+      "type": "Tiếp nhận CBNV đến công tác / Onsite",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 4,
+      "verifiedCells": 80
+    },
+    {
+      "id": 14384,
+      "typeId": 185,
+      "type": "Thu hồi nghỉ thai sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 16,
+      "sections": 4,
+      "verifiedCells": 165
+    },
+    {
+      "id": 14385,
+      "typeId": 178,
+      "type": "Thu hồi sử dụng tài sản cá nhân",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 10,
+      "sections": 2,
+      "verifiedCells": 70
+    },
+    {
+      "id": 14386,
+      "typeId": 104,
+      "type": "Đăng ký làm việc từ xa",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 15,
+      "sections": 3,
+      "verifiedCells": 120
+    },
+    {
+      "id": 14387,
+      "typeId": 158,
+      "type": "Cấp truy cập/ thu hồi phần mềm ngoại lệ",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 10,
+      "sections": 3,
+      "verifiedCells": 85
+    },
+    {
+      "id": 14388,
+      "typeId": 172,
+      "type": "Mua hàng Máy móc/ Thiết bị",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 4,
+      "verifiedCells": 75
+    },
+    {
+      "id": 14389,
+      "typeId": 171,
+      "type": "Mua hàng Cloud/phần mềm",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 5,
+      "verifiedCells": 60
+    },
+    {
+      "id": 14390,
+      "typeId": 174,
+      "type": "Mua hàng hóa/ dịch vụ khác",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 3,
+      "verifiedCells": 45
+    },
+    {
+      "id": 14391,
+      "typeId": 181,
+      "type": "Hoàn trả tài sản nhà cung cấp/ khách hàng",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 3,
+      "verifiedCells": 70
+    },
+    {
+      "id": 14392,
+      "typeId": 83,
+      "type": "Mượn tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 11,
+      "sections": 3,
+      "verifiedCells": 130
+    },
+    {
+      "id": 14393,
+      "typeId": 73,
+      "type": "Nâng cấp Tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 6,
+      "sections": 3,
+      "verifiedCells": 65
+    },
+    {
+      "id": 14394,
+      "typeId": 167,
+      "type": "Cấp mã tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 15,
+      "sections": 3,
+      "verifiedCells": 120
+    },
+    {
+      "id": 14395,
+      "typeId": 182,
+      "type": "Cấp mới tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 3,
+      "verifiedCells": 80
+    },
+    {
+      "id": 14396,
+      "typeId": 64,
+      "type": "Yêu cầu Đào tạo",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 1,
+      "verifiedCells": 35
+    },
+    {
+      "id": 14397,
+      "typeId": 69,
+      "type": "Đề nghị chấm dứt Hợp đồng lao động",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 10,
+      "sections": 1,
+      "verifiedCells": 50
+    },
+    {
+      "id": 14398,
+      "typeId": 70,
+      "type": "Đề nghị ký hợp đồng lao động",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14399,
+      "typeId": 71,
+      "type": "Khác",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14400,
+      "typeId": 114,
+      "type": "Đề nghị chấm dứt hợp đồng học việc/thử việc/Cộng tác viên",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 10,
+      "sections": 1,
+      "verifiedCells": 50
+    },
+    {
+      "id": 14401,
+      "typeId": 99,
+      "type": "Yêu cầu tuyển dụng",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 13,
+      "sections": 1,
+      "verifiedCells": 65
+    },
+    {
+      "id": 14402,
+      "typeId": 160,
+      "type": "Tặng Quà Onboarding & Nhân Viên Chính Thức",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 1,
+      "verifiedCells": 35
+    },
+    {
+      "id": 14403,
+      "typeId": 161,
+      "type": "Chuyển NVDA sang NV Học việc/thử việc",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14404,
+      "typeId": 159,
+      "type": "Gia hạn Hợp đồng Học việc/thử việc/Cộng tác viên",
+      "status": "passed",
+      "rows": 1,
+      "creationFields": 0,
+      "sections": 1,
+      "verifiedCells": 6
+    },
+    {
+      "id": 14405,
+      "typeId": 101,
+      "type": "Đăng ký nghỉ thai sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14406,
+      "typeId": 111,
+      "type": "Mang Tài Sản ra ngoài",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 2,
+      "verifiedCells": 50
+    },
+    {
+      "id": 14407,
+      "typeId": 81,
+      "type": "Cấp mới Chìa khóa tủ, Thẻ Nhân viên",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14408,
+      "typeId": 82,
+      "type": "Thu hồi Chìa khóa tủ, Thẻ Nhân viên",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 5,
+      "sections": 1,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14409,
+      "typeId": 86,
+      "type": "Hỗ trợ tiếp Khách",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 9,
+      "sections": 1,
+      "verifiedCells": 45
+    },
+    {
+      "id": 14410,
+      "typeId": 93,
+      "type": "Khác",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14411,
+      "typeId": 96,
+      "type": "Liên hệ Nhà cung cấp bên ngoài",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14412,
+      "typeId": 152,
+      "type": "Cấp Áo đồng phục công ty",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14413,
+      "typeId": 162,
+      "type": "Đăng ký gửi xe tòa nhà HCM",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 9,
+      "sections": 1,
+      "verifiedCells": 45
+    },
+    {
+      "id": 14414,
+      "typeId": 163,
+      "type": "Thu hồi gửi xe tòa nhà HCM",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 9,
+      "sections": 1,
+      "verifiedCells": 45
+    },
+    {
+      "id": 14415,
+      "typeId": 168,
+      "type": "Hiệu chuẩn đồng hồ phòng Server",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14416,
+      "typeId": 169,
+      "type": "Kiểm tra thiết bị PCCC",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14417,
+      "typeId": 170,
+      "type": "Bảo trì điều hòa",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14418,
+      "typeId": 95,
+      "type": "Cấp mới/Thu hồi server/server ảo dự án",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 6,
+      "sections": 2,
+      "verifiedCells": 50
+    },
+    {
+      "id": 14419,
+      "typeId": 75,
+      "type": "Tạo mới hoặc Xóa Group Email",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 1,
+      "verifiedCells": 20
+    },
+    {
+      "id": 14420,
+      "typeId": 77,
+      "type": "Reset mật khẩu",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14421,
+      "typeId": 90,
+      "type": "Khác",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14422,
+      "typeId": 91,
+      "type": "Kiểm tra, sửa chữa thiết bị",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14423,
+      "typeId": 92,
+      "type": "Kiểm tra sự cố mạng LAN, internet",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14424,
+      "typeId": 94,
+      "type": "Backup và Phục hồi dữ liệu",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14425,
+      "typeId": 146,
+      "type": "Trích xuất camera",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 3,
+      "sections": 1,
+      "verifiedCells": 15
+    },
+    {
+      "id": 14426,
+      "typeId": 179,
+      "type": "Cấp truy cập nhân viên",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 14,
+      "sections": 3,
+      "verifiedCells": 155
+    },
+    {
+      "id": 14427,
+      "typeId": 180,
+      "type": "Thu hồi truy cập nhân viên",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 15,
+      "sections": 3,
+      "verifiedCells": 150
+    },
+    {
+      "id": 14428,
+      "typeId": 190,
+      "type": "TEST_C_W75S53N",
+      "status": "passed",
+      "rows": 0,
+      "creationFields": 0,
+      "sections": 0,
+      "verifiedCells": 0
+    },
+    {
+      "id": 14429,
+      "typeId": 189,
+      "type": "TEST_C_W75S53F",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 3,
+      "sections": 2,
+      "verifiedCells": 55
+    },
+    {
+      "id": 14430,
+      "typeId": 191,
+      "type": "TEST_DETAIL_20261020_MVGMOTY6",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 2,
+      "sections": 2,
+      "verifiedCells": 25
+    },
+    {
+      "id": 14431,
+      "typeId": 184,
+      "type": "Chuyển team/ Chuyển bộ phận/ Onsite",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 21,
+      "sections": 5,
+      "verifiedCells": 220
+    },
+    {
+      "id": 14432,
+      "typeId": 105,
+      "type": "Thu hồi làm việc từ xa",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 6,
+      "sections": 3,
+      "verifiedCells": 95
+    },
+    {
+      "id": 14433,
+      "typeId": 107,
+      "type": "Báo cáo Sự cố hệ thống",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 4,
+      "sections": 2,
+      "verifiedCells": 75
+    },
+    {
+      "id": 14434,
+      "typeId": 144,
+      "type": "Mở/Khóa cổng USB",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 7,
+      "sections": 3,
+      "verifiedCells": 75
+    },
+    {
+      "id": 14435,
+      "typeId": 177,
+      "type": "Cấp mới sử dụng Tài sản cá nhân",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 13,
+      "sections": 3,
+      "verifiedCells": 100
+    },
+    {
+      "id": 14436,
+      "typeId": 186,
+      "type": "Cấp lại sau thai sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 21,
+      "sections": 4,
+      "verifiedCells": 150
+    },
+    {
+      "id": 14437,
+      "typeId": 183,
+      "type": "Thu hồi tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 6,
+      "sections": 3,
+      "verifiedCells": 105
+    },
+    {
+      "id": 14438,
+      "typeId": 72,
+      "type": "Chuyển quyền Tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 9,
+      "sections": 2,
+      "verifiedCells": 65
+    },
+    {
+      "id": 14439,
+      "typeId": 151,
+      "type": "Thanh lý tài sản",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 2,
+      "sections": 4,
+      "verifiedCells": 90
+    },
+    {
+      "id": 14440,
+      "typeId": 176,
+      "type": "Gỡ cài đặt phần mềm",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 13,
+      "sections": 3,
+      "verifiedCells": 105
+    },
+    {
+      "id": 14441,
+      "typeId": 175,
+      "type": "Cài đặt phần mềm",
+      "status": "passed",
+      "rows": 5,
+      "creationFields": 13,
+      "sections": 3,
+      "verifiedCells": 115
+    }
+  ],
+  "summary": {
+    "tickets": 76,
+    "passed": 76,
+    "failed": 0,
+    "verifiedCells": 3696
+  }
+}

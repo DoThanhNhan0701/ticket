@@ -37,7 +37,7 @@ export function TicketCloneButton({
           if (!mutation.isPending) mutation.mutate();
         }}
       >
-        Sao chép yêu cầu
+        Sao chép
       </AsyncButton>
       {mutation.isError && <ErrorAlert message={mutation.error.message} />}
     </div>

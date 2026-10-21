@@ -1,0 +1,127 @@
+{
+  "prefix": "TEST_CREATE_VALIDATE_1792505770192",
+  "method": "UI login, selections, typing, calendar, file picker, submit and cancellation against real API; authenticated GET readback; no mocks or injected form state",
+  "checks": [
+    {
+      "name": "no-premature-errors-before-first-submit"
+    },
+    {
+      "name": "empty-submit-required-selects-blocked"
+    },
+    {
+      "name": "select-errors-clear-on-valid-selection-without-clearing-unrelated-errors"
+    },
+    {
+      "name": "whitespace-title-and-past-due-date-correct-on-change"
+    },
+    {
+      "name": "detail-required-whitespace-zero-and-valid-to-invalid-transitions"
+    },
+    {
+      "name": "group-type-switch-removes-old-details-and-validates-current-template"
+    },
+    {
+      "name": "range-error-clears-when-only-other-endpoint-is-corrected-and-drafts-survive"
+    },
+    {
+      "name": "visible-date-error-390",
+      "screenshot": "/tmp/TEST_CREATE_VALIDATE_1792505770192/range-error-390.png"
+    },
+    {
+      "name": "visible-date-error-1440",
+      "screenshot": "/tmp/TEST_CREATE_VALIDATE_1792505770192/range-error-1440.png"
+    },
+    {
+      "name": "unfinished-date-stays-invalid-until-complete"
+    },
+    {
+      "name": "calendar-blocks-before-start-and-allows-same-day"
+    },
+    {
+      "name": "clearing-selected-calendar-day-revalidates-required-input"
+    },
+    {
+      "name": "copied-rows-independent-and-deleting-invalid-row-clears-obsolete-errors"
+    },
+    {
+      "name": "notes-1000-limit-retains-invalid-error-and-clears-on-valid-correction"
+    },
+    {
+      "name": "real-oversized-file-blocks-before-create-and-error-clears-on-removal"
+    },
+    {
+      "name": "start-over-clears-errors-drafts-files-and-restores-validation-after-first-submit"
+    },
+    {
+      "name": "single-real-create-upload-and-readback-after-corrections",
+      "id": 14365,
+      "code": "HR_261020_003"
+    },
+    {
+      "name": "test-ticket-canceled-through-ui"
+    }
+  ],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/list_tickettype/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/template_form/191",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_tickettype/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/template_form/64",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14365",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14365",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/cancel_ticket/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14365",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14365",
+      "status": 200
+    }
+  ],
+  "runtimeErrors": [],
+  "created": {
+    "id": 14365,
+    "code": "HR_261020_003",
+    "status": "Hủy"
+  }
+}

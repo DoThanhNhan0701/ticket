@@ -60,51 +60,57 @@ function validateDateRules(groups: readonly TemplateGroup[]) {
     }
   }
 }
+export function normalizeTemplate(groups: readonly TemplateGroup[]) {
+  return groups.map((group) => ({
+    ...group,
+    title: cleanTemplateTitle(group.title),
+    children: group.children.map((field) => {
+      const rule = field.validate;
+      const validate =
+        typeof rule === "object" &&
+        rule !== null &&
+        typeof rule.target === "string"
+          ? { ...rule, target: cleanTemplateTitle(rule.target) }
+          : rule;
+      const options = field.option
+        ?.map((value) => (Array.isArray(value) ? value[1] : value))
+        .map((value) => value.trim())
+        .filter(Boolean);
+      return {
+        ...field,
+        title: cleanTemplateTitle(field.title),
+        ...(options ? { option: options } : {}),
+        ...(validate !== undefined ? { validate } : {}),
+      };
+    }),
+  }));
+}
+
 export function prepareTemplate(groups: readonly TemplateGroup[]) {
   if (!groups.length)
     throw new Error("Vui lòng thêm ít nhất một phần biểu mẫu.");
   const groupNames = new Set<string>();
   const fieldNames = new Set<string>();
-  const cleaned = groups.map((group) => {
-    const title = cleanTemplateTitle(group.title);
+  const cleaned = normalizeTemplate(groups);
+  for (const group of cleaned) {
+    const title = group.title;
     if (!title || groupNames.has(title.toLowerCase()))
       throw new Error("Tên phần phải có nội dung và không trùng nhau.");
     if (!group.children.length)
       throw new Error(`Vui lòng thêm trường cho phần ${title}.`);
     groupNames.add(title.toLowerCase());
-    return {
-      ...group,
-      title,
-      children: group.children.map((field) => {
-        const name = cleanTemplateTitle(field.title);
-        if (!name || fieldNames.has(name.toLowerCase()))
-          throw new Error("Tên trường phải có nội dung và không trùng nhau.");
-        fieldNames.add(name.toLowerCase());
-        if (
-          field.widthcol !== undefined &&
-          (!/^\d+$/.test(String(field.widthcol)) || Number(field.widthcol) <= 0)
-        )
-          throw new Error("Độ rộng cột phải là số nguyên dương.");
-        const rule = field.validate;
-        const validate =
-          typeof rule === "object" &&
-          rule !== null &&
-          typeof rule.target === "string"
-            ? { ...rule, target: cleanTemplateTitle(rule.target) }
-            : rule;
-        const options = field.option
-          ?.map((value) => (Array.isArray(value) ? value[1] : value))
-          .map((value) => value.trim())
-          .filter(Boolean);
-        return {
-          ...field,
-          title: name,
-          ...(options ? { option: options } : {}),
-          ...(validate !== undefined ? { validate } : {}),
-        };
-      }),
-    };
-  });
+    for (const field of group.children) {
+      const name = field.title;
+      if (!name || fieldNames.has(name.toLowerCase()))
+        throw new Error("Tên trường phải có nội dung và không trùng nhau.");
+      fieldNames.add(name.toLowerCase());
+      if (
+        field.widthcol !== undefined &&
+        (!/^\d+$/.test(String(field.widthcol)) || Number(field.widthcol) <= 0)
+      )
+        throw new Error("Độ rộng cột phải là số nguyên dương.");
+    }
+  }
   validateDateRules(cleaned);
   return cleaned;
 }

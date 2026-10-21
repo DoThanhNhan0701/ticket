@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { addBusinessDays, format } from "date-fns";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getRequestTemplate } from "@/features/settings/api/template-api";
-import { prepareTemplate } from "@/features/settings/schemas/template-schema";
+import {
+  normalizeTemplate,
+  prepareTemplate,
+} from "@/features/settings/schemas/template-schema";
 import { normalizeSearchText } from "@/lib/search";
 import { useCloneRequest } from "./use-clone-request";
 import {
@@ -55,12 +58,27 @@ export function useCreateRequest() {
   const createdRef = useRef<CreatedRequest | undefined>(undefined),
     submitting = useRef(false),
     pendingFiles = useRef<File[]>([]);
-  const form = useForm<CreateRequestValues>({
-    resolver: zodResolver(getCreateRequestSchema([], lookups.data?.groups)),
-    defaultValues: defaults(),
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
-  });
+  const form: UseFormReturn<CreateRequestValues> = useForm<CreateRequestValues>(
+    {
+      // Template queries depend on watched selections. Read their latest results
+      // when validation runs so all fields use the current template and catalogs.
+      resolver: (values, context, options) =>
+        zodResolver(
+          getCreateRequestSchema(groups, lookups.data?.groups, {
+            handling_group: lookups.data?.groups,
+            ticket_type: types.data,
+            approve_user: lookups.data?.approvers,
+            fore_cus: lookups.data?.customers,
+            bophansudung: lookups.data?.departments,
+            vanphong: lookups.data?.offices,
+            other1: lookups.data?.teams,
+          }),
+        )(values, context, options),
+      defaultValues: defaults(),
+      mode: "onSubmit",
+      reValidateMode: "onChange",
+    },
+  );
   const group = useWatch({ control: form.control, name: "handling_group" }),
     type = useWatch({ control: form.control, name: "ticket_type" });
   const teams = useWatch({ control: form.control, name: "other1" });
@@ -79,9 +97,14 @@ export function useCreateRequest() {
     queryKey: ["request-create-template", userId, selectedType?.id],
     queryFn: async ({ signal }) => {
       const data = await getRequestTemplate(selectedType!.id, signal);
+      const forms = normalizeTemplate(data.forms);
+      const creation = getCreateRequestGroups(forms);
+      // Existing processing sections can contain blank or repeated legacy
+      // labels. Validate creation fields while preserving those later sections.
+      if (creation.length) prepareTemplate(creation);
       return {
         ...data,
-        forms: data.forms.length ? prepareTemplate(data.forms) : [],
+        forms,
       };
     },
     enabled: Boolean(selectedType),
@@ -95,8 +118,17 @@ export function useCreateRequest() {
     () => getCreateRequestGroups(templateGroups),
     [templateGroups],
   );
+  const rows = useWatch({ control: form.control, name: "rows" });
+  const { isSubmitted } = form.formState;
   useEffect(() => {
-    form.setValue("ticket_type", "");
+    // A date can invalidate another input in its row. Revalidate both range
+    // endpoints and comparison targets, including added/deleted/imported rows.
+    if (isSubmitted) void form.trigger("rows");
+  }, [rows, groups, isSubmitted, form]);
+  useEffect(() => {
+    form.setValue("ticket_type", "", {
+      shouldValidate: form.formState.isSubmitted,
+    });
     form.setValue("rows", [{ values: {} }]);
     form.clearErrors("rows");
   }, [group, form]);
@@ -106,14 +138,18 @@ export function useCreateRequest() {
   }, [type, groups, form]);
   useEffect(() => {
     if (lookups.data?.customers.length === 1 && !form.getValues("fore_cus"))
-      form.setValue("fore_cus", String(lookups.data.customers[0].id));
+      form.setValue("fore_cus", String(lookups.data.customers[0].id), {
+        shouldValidate: form.formState.isSubmitted,
+      });
   }, [lookups.data, form]);
   useEffect(() => {
     const all = lookups.data?.teams.find(
       (row) => normalizeSearchText(row.name ?? "") === "tat ca",
     );
     if (all && teams.length > 1 && teams.includes(String(all.id)))
-      form.setValue("other1", [String(all.id)]);
+      form.setValue("other1", [String(all.id)], {
+        shouldValidate: form.formState.isSubmitted,
+      });
   }, [lookups.data, teams, form]);
   const clone = useCloneRequest({
     userId,
@@ -135,6 +171,10 @@ export function useCreateRequest() {
     template.isSuccess &&
     !template.isFetching,
   );
+  const oversizedFile = files.find((file) => file.size > 50 * 1024 * 1024);
+  const attachmentError = oversizedFile
+    ? `Tệp “${oversizedFile.name}” vượt quá 50 MB. Vui lòng bỏ tệp hoặc chọn tệp nhỏ hơn.`
+    : undefined;
   const mutation = useMutation({
     mutationFn: async (values: CreateRequestValues) => {
       if (!createdRef.current) {
@@ -161,54 +201,12 @@ export function useCreateRequest() {
     },
   });
   const submit = (values: CreateRequestValues) => {
-    if (submitting.current || createdRef.current || !ready) return;
-    const parsed = getCreateRequestSchema(
-      groups,
-      lookups.data?.groups,
-    ).safeParse(values);
-    if (!parsed.success) {
-      for (const [index, issue] of parsed.error.issues.entries())
-        form.setError(
-          issue.path.join(".") as Parameters<typeof form.setError>[0],
-          { message: issue.message },
-          { shouldFocus: index === 0 },
-        );
+    if (submitting.current || createdRef.current || !ready || attachmentError)
       return;
-    }
-    if (!validateRelations(values)) return;
     pendingFiles.current = [...files];
     submitting.current = true;
-    mutation.mutate(parsed.data);
+    mutation.mutate(values);
   };
-  function validateRelations(values: CreateRequestValues) {
-    const data = lookups.data;
-    if (!data) return false;
-    const collections = {
-      handling_group: data.groups,
-      ticket_type: types.data ?? [],
-      approve_user: data.approvers,
-      fore_cus: data.customers,
-      bophansudung: data.departments,
-      vanphong: data.offices,
-    };
-    let valid = true;
-    for (const [key, rows] of Object.entries(collections)) {
-      const name = key as keyof typeof collections;
-      if (!rows.some((row) => String(row.id) === values[name])) {
-        form.setError(name, { message: "Vui lòng chọn thông tin hợp lệ." });
-        valid = false;
-      }
-    }
-    if (
-      values.other1.some(
-        (id) => !data.teams.some((row) => String(row.id) === id),
-      )
-    ) {
-      form.setError("other1", { message: "Team không hợp lệ." });
-      valid = false;
-    }
-    return valid;
-  }
   const reset = () => {
     if (createdRef.current || mutation.isPending) return;
     form.reset(
@@ -236,6 +234,7 @@ export function useCreateRequest() {
     ready,
     mutation,
     files,
+    attachmentError,
     setFiles,
     created,
     submit,

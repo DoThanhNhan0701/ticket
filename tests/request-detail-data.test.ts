@@ -33,6 +33,49 @@ const values = (): CreateRequestValues => ({
   duedate: format(addBusinessDays(new Date(), 5), "dd/MM/yyyy"),
   rows: [structuredClone(filledDetail)],
 });
+it.each([
+  ["title", " ", false],
+  ["title", "x".repeat(300), true],
+  ["title", "x".repeat(301), false],
+  ["description", "x".repeat(1000), true],
+  ["description", "x".repeat(1001), false],
+] as const)("enforces the %s boundary for %s", (name, value, valid) => {
+  const data = values();
+  data[name] = value;
+  expect(getCreateRequestSchema(createTemplate).safeParse(data).success).toBe(
+    valid,
+  );
+});
+it.each([
+  "handling_group",
+  "ticket_type",
+  "approve_user",
+  "fore_cus",
+  "bophansudung",
+  "vanphong",
+  "other1",
+] as const)(
+  "rejects %s selections outside the current active catalog",
+  (name) => {
+    const data = values();
+    if (name === "other1") data.other1 = ["999"];
+    const schema = getCreateRequestSchema(createTemplate, [], {
+      [name]: [{ id: 12345 }],
+    });
+    const invalid = schema.safeParse(data);
+    expect(invalid.success).toBe(false);
+    if (!invalid.success)
+      expect(invalid.error.issues.some((issue) => issue.path[0] === name)).toBe(
+        true,
+      );
+    const selected = name === "other1" ? data.other1[0] : data[name];
+    expect(
+      getCreateRequestSchema(createTemplate, [], {
+        [name]: [{ id: Number(selected) }],
+      }).safeParse(data).success,
+    ).toBe(true);
+  },
+);
 it.each(["31/02/2026", "29/02/2025", "2026-02-30", "not a date"])(
   "rejects invalid date %s",
   (value) => expect(parseRequestDate(value)).toBeUndefined(),

@@ -1,0 +1,5960 @@
+{
+  "prefix": "TEST_QC_CREATE_20261020_215226",
+  "method": "Browser UI only: login, open every handling group/type selector, fill fields, add/copy up to five detail rows, submit, search list and open created ticket for readback. Network responses are observed for evidence only; no direct API calls, mocks, injected state or lifecycle mutations.",
+  "groups": [
+    {
+      "id": 8,
+      "name": "Kế toán",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 106,
+          "name": "Đề nghị tạm ứng"
+        },
+        {
+          "id": 165,
+          "name": "Chi phí tổ chức sự kiện"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 2
+    },
+    {
+      "id": 10,
+      "name": "Ban Truyền thông",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 129,
+          "name": "Đăng bài cuộc thi"
+        },
+        {
+          "id": 131,
+          "name": "Hỗ trợ quay phim/chụp ảnh"
+        },
+        {
+          "id": 132,
+          "name": "Tổ chức sự kiện"
+        },
+        {
+          "id": 123,
+          "name": "Khác"
+        },
+        {
+          "id": 133,
+          "name": "Thiết kế ấn phẩm"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 5
+    },
+    {
+      "id": 11,
+      "name": "CRM Support",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 149,
+          "name": "Vô hiệu hóa tài khoản trên tool CRM"
+        },
+        {
+          "id": 150,
+          "name": "Cấp/Thu hồi quyền cho tài khoản trên tool CRM"
+        },
+        {
+          "id": 148,
+          "name": "Tạo/Kích hoạt tài khoản CRM"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 3
+    },
+    {
+      "id": 19,
+      "name": "Đăng ký công tác",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 173,
+          "name": "Tạm ứng công tác phí"
+        },
+        {
+          "id": 85,
+          "name": "Đăng ký công tác"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 2
+    },
+    {
+      "id": 9,
+      "name": "Nhóm hỗ trợ ticket",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 117,
+          "name": "Thu hồi user backoffice"
+        },
+        {
+          "id": 118,
+          "name": "Khác"
+        },
+        {
+          "id": 115,
+          "name": "Báo bộ tool backoffice lỗi"
+        },
+        {
+          "id": 116,
+          "name": "Kích hoạt user backoffice mới"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 4
+    },
+    {
+      "id": 5,
+      "name": "ISMS",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 184,
+          "name": "Chuyển team/ Chuyển bộ phận/ Onsite"
+        },
+        {
+          "id": 105,
+          "name": "Thu hồi làm việc từ xa"
+        },
+        {
+          "id": 107,
+          "name": "Báo cáo Sự cố hệ thống"
+        },
+        {
+          "id": 113,
+          "name": "Đánh giá thay đổi quan trọng"
+        },
+        {
+          "id": 144,
+          "name": "Mở/Khóa cổng USB"
+        },
+        {
+          "id": 157,
+          "name": "Tiếp nhận CBNV đến công tác / Onsite"
+        },
+        {
+          "id": 177,
+          "name": "Cấp mới sử dụng Tài sản cá nhân"
+        },
+        {
+          "id": 186,
+          "name": "Cấp lại sau thai sản"
+        },
+        {
+          "id": 185,
+          "name": "Thu hồi nghỉ thai sản"
+        },
+        {
+          "id": 178,
+          "name": "Thu hồi sử dụng tài sản cá nhân"
+        },
+        {
+          "id": 104,
+          "name": "Đăng ký làm việc từ xa"
+        },
+        {
+          "id": 158,
+          "name": "Cấp truy cập/ thu hồi phần mềm ngoại lệ"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 12
+    },
+    {
+      "id": 7,
+      "name": "Nhóm Mua hàng",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 172,
+          "name": "Mua hàng Máy móc/ Thiết bị"
+        },
+        {
+          "id": 171,
+          "name": "Mua hàng Cloud/phần mềm"
+        },
+        {
+          "id": 174,
+          "name": "Mua hàng hóa/ dịch vụ khác"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 3
+    },
+    {
+      "id": 18,
+      "name": "Tài sản",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 183,
+          "name": "Thu hồi tài sản"
+        },
+        {
+          "id": 72,
+          "name": "Chuyển quyền Tài sản"
+        },
+        {
+          "id": 181,
+          "name": "Hoàn trả tài sản nhà cung cấp/ khách hàng"
+        },
+        {
+          "id": 83,
+          "name": "Mượn tài sản"
+        },
+        {
+          "id": 73,
+          "name": "Nâng cấp Tài sản"
+        },
+        {
+          "id": 151,
+          "name": "Thanh lý tài sản"
+        },
+        {
+          "id": 167,
+          "name": "Cấp mã tài sản"
+        },
+        {
+          "id": 182,
+          "name": "Cấp mới tài sản"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 8
+    },
+    {
+      "id": 3,
+      "name": "HR",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 64,
+          "name": "Yêu cầu Đào tạo"
+        },
+        {
+          "id": 69,
+          "name": "Đề nghị chấm dứt Hợp đồng lao động"
+        },
+        {
+          "id": 70,
+          "name": "Đề nghị ký hợp đồng lao động"
+        },
+        {
+          "id": 71,
+          "name": "Khác"
+        },
+        {
+          "id": 114,
+          "name": "Đề nghị chấm dứt hợp đồng học việc/thử việc/Cộng tác viên"
+        },
+        {
+          "id": 99,
+          "name": "Yêu cầu tuyển dụng"
+        },
+        {
+          "id": 160,
+          "name": "Tặng Quà Onboarding & Nhân Viên Chính Thức"
+        },
+        {
+          "id": 161,
+          "name": "Chuyển NVDA sang NV Học việc/thử việc"
+        },
+        {
+          "id": 159,
+          "name": "Gia hạn Hợp đồng Học việc/thử việc/Cộng tác viên"
+        },
+        {
+          "id": 101,
+          "name": "Đăng ký nghỉ thai sản"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 10
+    },
+    {
+      "id": 2,
+      "name": "GA",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 111,
+          "name": "Mang Tài Sản ra ngoài"
+        },
+        {
+          "id": 81,
+          "name": "Cấp mới Chìa khóa tủ, Thẻ Nhân viên"
+        },
+        {
+          "id": 82,
+          "name": "Thu hồi Chìa khóa tủ, Thẻ Nhân viên"
+        },
+        {
+          "id": 86,
+          "name": "Hỗ trợ tiếp Khách"
+        },
+        {
+          "id": 93,
+          "name": "Khác"
+        },
+        {
+          "id": 96,
+          "name": "Liên hệ Nhà cung cấp bên ngoài"
+        },
+        {
+          "id": 152,
+          "name": "Cấp Áo đồng phục công ty"
+        },
+        {
+          "id": 162,
+          "name": "Đăng ký gửi xe tòa nhà HCM"
+        },
+        {
+          "id": 163,
+          "name": "Thu hồi gửi xe tòa nhà HCM"
+        },
+        {
+          "id": 168,
+          "name": "Hiệu chuẩn đồng hồ phòng Server"
+        },
+        {
+          "id": 169,
+          "name": "Kiểm tra thiết bị PCCC"
+        },
+        {
+          "id": 170,
+          "name": "Bảo trì điều hòa"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 12
+    },
+    {
+      "id": 4,
+      "name": "IT",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 95,
+          "name": "Cấp mới/Thu hồi server/server ảo dự án"
+        },
+        {
+          "id": 75,
+          "name": "Tạo mới hoặc Xóa Group Email"
+        },
+        {
+          "id": 77,
+          "name": "Reset mật khẩu"
+        },
+        {
+          "id": 90,
+          "name": "Khác"
+        },
+        {
+          "id": 91,
+          "name": "Kiểm tra, sửa chữa thiết bị"
+        },
+        {
+          "id": 92,
+          "name": "Kiểm tra sự cố mạng LAN, internet"
+        },
+        {
+          "id": 94,
+          "name": "Backup và Phục hồi dữ liệu"
+        },
+        {
+          "id": 146,
+          "name": "Trích xuất camera"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 8
+    },
+    {
+      "id": 20,
+      "name": "Phân quyền",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 176,
+          "name": "Gỡ cài đặt phần mềm"
+        },
+        {
+          "id": 175,
+          "name": "Cài đặt phần mềm"
+        },
+        {
+          "id": 179,
+          "name": "Cấp truy cập nhân viên"
+        },
+        {
+          "id": 180,
+          "name": "Thu hồi truy cập nhân viên"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 4
+    },
+    {
+      "id": 21,
+      "name": "TEST_20261020_G3CCBK Group OK",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 187,
+          "name": "TEST_20261020_G3CCBK Type OK"
+        },
+        {
+          "id": 188,
+          "name": "TEST_FORM_20261020_V4BI9J"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 2
+    },
+    {
+      "id": 22,
+      "name": "TEST_CW75S53",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 190,
+          "name": "TEST_C_W75S53N"
+        },
+        {
+          "id": 189,
+          "name": "TEST_C_W75S53F"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 2
+    },
+    {
+      "id": 23,
+      "name": "TEST_DVGMOTY6",
+      "occurrence": 0,
+      "types": [
+        {
+          "id": 191,
+          "name": "TEST_DETAIL_20261020_MVGMOTY6"
+        }
+      ],
+      "inactiveTypes": [],
+      "visibleOptions": 1
+    }
+  ],
+  "results": [
+    {
+      "groupId": 8,
+      "group": "Kế toán",
+      "typeId": 106,
+      "type": "Đề nghị tạm ứng",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [106] Đề nghị tạm ứng",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên người đề nghị",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 3
+        },
+        {
+          "title": "Lý do tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày mong muốn tạm ứng",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên người đề nghị.",
+        "Vui lòng nhập Loại tạm ứng.",
+        "Vui lòng nhập Lý do tạm ứng.",
+        "Vui lòng nhập Số tiền tạm ứng.",
+        "Vui lòng nhập Ngày mong muốn tạm ứng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-106-filled.png",
+      "createHttpStatus": 200,
+      "id": 14366,
+      "code": "Kế toán_261020_001",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-106-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 8,
+      "group": "Kế toán",
+      "typeId": 165,
+      "type": "Chi phí tổ chức sự kiện",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [165] Chi phí tổ chức sự kiện",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Sự kiện/Chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số Lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền dự kiến",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày mong muốn",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Sự kiện/Chương trình.",
+        "Vui lòng nhập Số Lượng.",
+        "Vui lòng nhập Số tiền dự kiến.",
+        "Vui lòng nhập Ngày mong muốn."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-165-filled.png",
+      "createHttpStatus": 200,
+      "id": 14367,
+      "code": "Kế toán_261020_002",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-165-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 20
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 10,
+      "group": "Ban Truyền thông",
+      "typeId": 129,
+      "type": "Đăng bài cuộc thi",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [129] Đăng bài cuộc thi",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Người liên hệ cung cấp thông tin",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Tên cuộc thi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích cuộc thi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Tên & Team đạt giải",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Đường link cung cấp hình ảnh",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Người liên hệ cung cấp thông tin.",
+        "Vui lòng nhập Tên cuộc thi.",
+        "Vui lòng nhập Mục đích cuộc thi.",
+        "Vui lòng nhập Tên & Team đạt giải.",
+        "Vui lòng nhập Đường link cung cấp hình ảnh."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-129-filled.png",
+      "createHttpStatus": 200,
+      "id": 14368,
+      "code": "Ban Truyền thông_261020_001",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-129-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 10,
+      "group": "Ban Truyền thông",
+      "typeId": 131,
+      "type": "Hỗ trợ quay phim/chụp ảnh",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [131] Hỗ trợ quay phim/chụp ảnh",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Tên Chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại ấn phẩm",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Thời gian tổ chức",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Địa điểm tổ chức",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Tên Chương trình.",
+        "Vui lòng nhập Mục đích chương trình.",
+        "Vui lòng nhập Loại ấn phẩm.",
+        "Vui lòng nhập Thời gian tổ chức.",
+        "Vui lòng nhập Địa điểm tổ chức."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-131-filled.png",
+      "createHttpStatus": 200,
+      "id": 14369,
+      "code": "Ban Truyền thông_261020_002",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-131-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 10,
+      "group": "Ban Truyền thông",
+      "typeId": 132,
+      "type": "Tổ chức sự kiện",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [132] Tổ chức sự kiện",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Tên Chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích Chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nội dung chính",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nhân sự tham gia hỗ trợ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Kinh phí tổ chức",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian tổ chức",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Địa điểm tổ chức",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Tên Chương trình.",
+        "Vui lòng nhập Mục đích Chương trình.",
+        "Vui lòng nhập Nội dung chính.",
+        "Vui lòng nhập Nhân sự tham gia hỗ trợ.",
+        "Vui lòng nhập Kinh phí tổ chức.",
+        "Vui lòng nhập Thời gian tổ chức.",
+        "Vui lòng nhập Địa điểm tổ chức."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-132-filled.png",
+      "createHttpStatus": 200,
+      "id": 14370,
+      "code": "Ban Truyền thông_261020_003",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-132-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 35
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 10,
+      "group": "Ban Truyền thông",
+      "typeId": 123,
+      "type": "Khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [123] Khác",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-123-filled.png",
+      "createHttpStatus": 200,
+      "id": 14371,
+      "code": "Ban Truyền thông_261020_004",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-123-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 10,
+      "group": "Ban Truyền thông",
+      "typeId": 133,
+      "type": "Thiết kế ấn phẩm",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [133] Thiết kế ấn phẩm",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Tên Chương trình",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại ấn phẩm",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Kích thước mong muốn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Màu sắc chủ đạo",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Tên Chương trình.",
+        "Vui lòng nhập Loại ấn phẩm.",
+        "Vui lòng nhập Kích thước mong muốn.",
+        "Vui lòng nhập Màu sắc chủ đạo.",
+        "Vui lòng nhập Mục đích."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-133-filled.png",
+      "createHttpStatus": 200,
+      "id": 14372,
+      "code": "Ban Truyền thông_261020_005",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-133-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 11,
+      "group": "CRM Support",
+      "typeId": 149,
+      "type": "Vô hiệu hóa tài khoản trên tool CRM",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [149] Vô hiệu hóa tài khoản trên tool CRM",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Email công ty",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Email công ty.",
+        "Vui lòng nhập Mục đích."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-149-filled.png",
+      "createHttpStatus": 200,
+      "id": 14373,
+      "code": "CRM Support_261020_001",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-149-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 15
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 11,
+      "group": "CRM Support",
+      "typeId": 150,
+      "type": "Cấp/Thu hồi quyền cho tài khoản trên tool CRM",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [150] Cấp/Thu hồi quyền cho tài khoản trên tool CRM",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Email công ty",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Nhóm người dùng bị ảnh hưởng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Email công ty.",
+        "Vui lòng nhập Yêu cầu.",
+        "Vui lòng nhập Nhóm người dùng bị ảnh hưởng.",
+        "Vui lòng nhập Mục đích."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-150-filled.png",
+      "createHttpStatus": 200,
+      "id": 14374,
+      "code": "CRM Support_261020_002",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-150-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 11,
+      "group": "CRM Support",
+      "typeId": 148,
+      "type": "Tạo/Kích hoạt tài khoản CRM",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [148] Tạo/Kích hoạt tài khoản CRM",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Email công ty",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Mục đích sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Email công ty.",
+        "Vui lòng nhập Yêu cầu.",
+        "Vui lòng nhập Mục đích sử dụng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-148-filled.png",
+      "createHttpStatus": 200,
+      "id": 14375,
+      "code": "CRM Support_261020_003",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-148-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 20
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 19,
+      "group": "Đăng ký công tác",
+      "typeId": 173,
+      "type": "Tạm ứng công tác phí",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [173] Tạm ứng công tác phí",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên người đề nghị",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày mong muốn tạm ứng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên người đề nghị.",
+        "Vui lòng nhập Lý do tạm ứng.",
+        "Vui lòng nhập Số tiền tạm ứng.",
+        "Vui lòng nhập Ngày mong muốn tạm ứng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-173-filled.png",
+      "createHttpStatus": 200,
+      "id": 14376,
+      "code": "Đăng ký công tác_261020_001",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-173-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 20
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 19,
+      "group": "Đăng ký công tác",
+      "typeId": 85,
+      "type": "Đăng ký công tác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [85] Đăng ký công tác",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "Họ và tên người công tác",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số CCCD/ Passport",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "DOB (Ngày sinh)",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Điện thoại",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Điểm xuất phát",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Điểm đến",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Địa điểm công tác",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nhiệm vụ / mục đích công tác",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian đi",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian về",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chi tiết lịch trình di chuyển nếu nhiều địa điểm",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên người công tác.",
+        "Vui lòng nhập Số CCCD/ Passport.",
+        "Vui lòng nhập DOB (Ngày sinh).",
+        "Vui lòng nhập Điện thoại.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Điểm xuất phát.",
+        "Vui lòng nhập Điểm đến.",
+        "Vui lòng nhập Địa điểm công tác.",
+        "Vui lòng nhập Nhiệm vụ / mục đích công tác.",
+        "Vui lòng nhập Thời gian đi.",
+        "Vui lòng nhập Thời gian về."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-85-filled.png",
+      "createHttpStatus": 200,
+      "id": 14377,
+      "code": "Đăng ký công tác_261020_002",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-85-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 100
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 9,
+      "group": "Nhóm hỗ trợ ticket",
+      "typeId": 117,
+      "type": "Thu hồi user backoffice",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [117] Thu hồi user backoffice",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-117-filled.png",
+      "createHttpStatus": 200,
+      "id": 14378,
+      "code": "Nhóm hỗ trợ ticket_261020_001",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-117-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 9,
+      "group": "Nhóm hỗ trợ ticket",
+      "typeId": 118,
+      "type": "Khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [118] Khác",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-118-filled.png",
+      "createHttpStatus": 200,
+      "id": 14379,
+      "code": "Nhóm hỗ trợ ticket_261020_002",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-118-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 9,
+      "group": "Nhóm hỗ trợ ticket",
+      "typeId": 115,
+      "type": "Báo bộ tool backoffice lỗi",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [115] Báo bộ tool backoffice lỗi",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-115-filled.png",
+      "createHttpStatus": 200,
+      "id": 14380,
+      "code": "Nhóm hỗ trợ ticket_261020_003",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-115-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 9,
+      "group": "Nhóm hỗ trợ ticket",
+      "typeId": 116,
+      "type": "Kích hoạt user backoffice mới",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [116] Kích hoạt user backoffice mới",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-116-filled.png",
+      "createHttpStatus": 200,
+      "id": 14381,
+      "code": "Nhóm hỗ trợ ticket_261020_004",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-116-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 184,
+      "type": "Chuyển team/ Chuyển bộ phận/ Onsite",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [184] Chuyển team/ Chuyển bộ phận/ Onsite",
+      "templateSections": 5,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận hiện tại",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team hiện tại",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi hiện tại",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận chuyển đến",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Team chuyển đến",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi chuyển đến",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vị trí Onsite",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thời gian Onsite dự kiến",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ngày chuyển",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ngày hoàn thành bàn giao",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Server",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Vân tay",
+          "type": "text",
+          "required": false,
+          "options": 2
+        },
+        {
+          "title": "Thu hồi Group mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Group chat",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi truy cập khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản thu hồi",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ticket thu hồi tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản chuyển quyền",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ticket chuyển quyền tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận hiện tại.",
+        "Vui lòng nhập Team hiện tại.",
+        "Vui lòng nhập Vị trí ngồi hiện tại."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-184-filled.png",
+      "createHttpStatus": 200,
+      "id": 14431,
+      "code": "ISMS_261020_007",
+      "detailTableRows": [5, 5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-184-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 220
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 105,
+      "type": "Thu hồi làm việc từ xa",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [105] Thu hồi làm việc từ xa",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Mã Nhân viên",
+          "type": "number",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại truy cập",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Thời gian thu hồi",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã Tài sản, Loại Tài sản mang vào công ty",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Gói cước internet, Số tiền thanh toán",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã Nhân viên.",
+        "Vui lòng nhập Họ và tên Nhân viên.",
+        "Vui lòng nhập Loại truy cập.",
+        "Vui lòng nhập Thời gian thu hồi."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-105-filled.png",
+      "createHttpStatus": 200,
+      "id": 14432,
+      "code": "ISMS_261020_008",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-105-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 95
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 107,
+      "type": "Báo cáo Sự cố hệ thống",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [107] Báo cáo Sự cố hệ thống",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Mô tả chi tiết sự cố",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian phát hiện sự cố (Giờ, Ngày)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người báo cáo",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Phạm vi ảnh hưởng (nếu đã xác định)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mô tả chi tiết sự cố.",
+        "Vui lòng nhập Thời gian phát hiện sự cố (Giờ, Ngày).",
+        "Vui lòng nhập Người báo cáo."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-107-filled.png",
+      "createHttpStatus": 200,
+      "id": 14433,
+      "code": "ISMS_261020_009",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-107-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 75
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 113,
+      "type": "Đánh giá thay đổi quan trọng",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [113] Đánh giá thay đổi quan trọng",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Yêu cầu thay đổi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại thay đổi",
+          "type": "text",
+          "required": true,
+          "options": 5
+        },
+        {
+          "title": "Các phòng ban thực hiện",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chi phí dự kiến (nếu có)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu dự kiến",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc dự kiến",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Yêu cầu thay đổi.",
+        "Vui lòng nhập Loại thay đổi.",
+        "Vui lòng nhập Các phòng ban thực hiện.",
+        "Vui lòng nhập Thời gian bắt đầu dự kiến.",
+        "Vui lòng nhập Thời gian kết thúc dự kiến."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-113-filled.png",
+      "createHttpStatus": 200,
+      "id": 14382,
+      "code": "ISMS_261020_001",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-113-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 30
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 144,
+      "type": "Mở/Khóa cổng USB",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [144] Mở/Khóa cổng USB",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Mã Tài sản Thiết bị mở/khóa",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên người sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã số nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích mở/khóa cổng USB",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc (Đăng ký mở khóa tối đa 1 năm)",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại yêu cầu.",
+        "Vui lòng nhập Mã Tài sản Thiết bị mở/khóa.",
+        "Vui lòng nhập Họ và tên người sử dụng.",
+        "Vui lòng nhập Mã số nhân viên.",
+        "Vui lòng nhập Mục đích mở/khóa cổng USB.",
+        "Vui lòng nhập Thời gian bắt đầu.",
+        "Vui lòng nhập Thời gian kết thúc (Đăng ký mở khóa tối đa 1 năm)."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-144-filled.png",
+      "createHttpStatus": 200,
+      "id": 14434,
+      "code": "ISMS_261020_010",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-144-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 75
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 157,
+      "type": "Tiếp nhận CBNV đến công tác / Onsite",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [157] Tiếp nhận CBNV đến công tác / Onsite",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian Kết thúc",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên Nhân viên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Thời gian bắt đầu.",
+        "Vui lòng nhập Thời gian Kết thúc."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-157-filled.png",
+      "createHttpStatus": 200,
+      "id": 14383,
+      "code": "ISMS_261020_002",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-157-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 80
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 177,
+      "type": "Cấp mới sử dụng Tài sản cá nhân",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [177] Cấp mới sử dụng Tài sản cá nhân",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do cấp mới",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu cấp mới",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc dự kiến cấp quyền sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hãng sản xuất",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Model",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hệ điều hành",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "RAM",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ nhớ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Serial Number / IMEI",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "MAC Address",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại tài sản.",
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên nhân viên.",
+        "Vui lòng nhập Lý do cấp mới.",
+        "Vui lòng nhập Thời gian bắt đầu cấp mới.",
+        "Vui lòng nhập Thời gian kết thúc dự kiến cấp quyền sử dụng.",
+        "Vui lòng nhập Hãng sản xuất.",
+        "Vui lòng nhập Model.",
+        "Vui lòng nhập Hệ điều hành.",
+        "Vui lòng nhập RAM.",
+        "Vui lòng nhập Bộ nhớ.",
+        "Vui lòng nhập Serial Number / IMEI.",
+        "Vui lòng nhập MAC Address."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-177-filled.png",
+      "createHttpStatus": 200,
+      "id": 14435,
+      "code": "ISMS_261020_011",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-177-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 100
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 186,
+      "type": "Cấp lại sau thai sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [186] Cấp lại sau thai sản",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày đi làm (dự kiến)",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người tiếp nhận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Cấp truy cập Server",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Cấp vân tay",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thêm vào group mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Cấp truy cập khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Cấp mới tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Chuyển quyền tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ticket chuyển quyền",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vị trí cấp mới locker",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Người cấp tủ",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú 1",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Cập nhật hệ thống tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Cập nhật hệ thống phân quyền",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người cập nhật",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Vị trí ngồi.",
+        "Vui lòng nhập Ngày đi làm (dự kiến).",
+        "Vui lòng nhập Người tiếp nhận.",
+        "Vui lòng nhập Cập nhật hệ thống tài sản.",
+        "Vui lòng nhập Cập nhật hệ thống phân quyền."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-186-filled.png",
+      "createHttpStatus": 200,
+      "id": 14436,
+      "code": "ISMS_261020_012",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-186-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 150
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 185,
+      "type": "Thu hồi nghỉ thai sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [185] Thu hồi nghỉ thai sản",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi hiện tại",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày nghỉ thai sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày hoàn thành bàn giao",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người nhận bàn giao",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Account",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Server",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Vân tay",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi Group mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Thu hồi truy cập khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chuyển quyền tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ticket chuyển quyền tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Vị trí ngồi hiện tại.",
+        "Vui lòng nhập Ngày nghỉ thai sản.",
+        "Vui lòng nhập Ngày hoàn thành bàn giao.",
+        "Vui lòng nhập Người nhận bàn giao.",
+        "Vui lòng nhập Mã tài sản thu hồi."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-185-filled.png",
+      "createHttpStatus": 200,
+      "id": 14384,
+      "code": "ISMS_261020_003",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-185-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 165
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 178,
+      "type": "Thu hồi sử dụng tài sản cá nhân",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [178] Thu hồi sử dụng tài sản cá nhân",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản cá nhân (đã cấp)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hãng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Model",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Serial Number / IMEI",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "MAC Address",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại tài sản.",
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên nhân viên.",
+        "Vui lòng nhập Lý do thu hồi.",
+        "Vui lòng nhập Thời gian bắt đầu thu hồi.",
+        "Vui lòng nhập Mã tài sản cá nhân (đã cấp).",
+        "Vui lòng nhập Hãng.",
+        "Vui lòng nhập Model.",
+        "Vui lòng nhập Serial Number / IMEI."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-178-filled.png",
+      "createHttpStatus": 200,
+      "id": 14385,
+      "code": "ISMS_261020_004",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-178-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 70
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 104,
+      "type": "Đăng ký làm việc từ xa",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [104] Đăng ký làm việc từ xa",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Mã Nhân viên",
+          "type": "number",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hỗ trợ gói cước internet",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Phương pháp truy cập",
+          "type": "text",
+          "required": true,
+          "options": 3
+        },
+        {
+          "title": "Loại truy cập",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Mức độ bảo mật",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chức vụ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Địa chỉ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nơi làm việc từ xa",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thiết bị truy cập từ xa",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Đã đọc và đồng ý với điều khoản làm việc từ xa (tại tài liệu hướng dẫn)",
+          "type": "text",
+          "required": true,
+          "options": 1
+        },
+        {
+          "title": "Số điện thoại cá nhân",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chi tiết truy cập/ Loại server truy cập",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày bắt đầu",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày kết thúc",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã Nhân viên.",
+        "Vui lòng nhập Họ và tên Nhân viên.",
+        "Vui lòng nhập Phương pháp truy cập.",
+        "Vui lòng nhập Loại truy cập.",
+        "Vui lòng nhập Mức độ bảo mật.",
+        "Vui lòng nhập Chức vụ.",
+        "Vui lòng nhập Địa chỉ.",
+        "Vui lòng nhập Nơi làm việc từ xa.",
+        "Vui lòng nhập Thiết bị truy cập từ xa.",
+        "Vui lòng nhập Đã đọc và đồng ý với điều khoản làm việc từ xa (tại tài liệu hướng dẫn).",
+        "Vui lòng nhập Số điện thoại cá nhân.",
+        "Vui lòng nhập Chi tiết truy cập/ Loại server truy cập.",
+        "Vui lòng nhập Ngày bắt đầu.",
+        "Vui lòng nhập Ngày kết thúc."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-104-filled.png",
+      "createHttpStatus": 200,
+      "id": 14386,
+      "code": "ISMS_261020_005",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-104-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 120
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 5,
+      "group": "ISMS",
+      "typeId": 158,
+      "type": "Cấp truy cập/ thu hồi phần mềm ngoại lệ",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [158] Cấp truy cập/ thu hồi phần mềm ngoại lệ",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Yêu cầu (Cấp mới/Thu hồi)",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Tên Phần Mềm",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Mã số nhân viên sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ & tên nhân viên sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Phạm vi sử dụng (trên thiết bị nào)",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Thời gian bắt đầu",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Yêu cầu (Cấp mới/Thu hồi).",
+        "Vui lòng nhập Tên Phần Mềm.",
+        "Vui lòng nhập Mã số nhân viên sử dụng.",
+        "Vui lòng nhập Họ & tên nhân viên sử dụng.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Mục đích sử dụng.",
+        "Vui lòng nhập Phạm vi sử dụng (trên thiết bị nào).",
+        "Vui lòng nhập Thời gian bắt đầu.",
+        "Vui lòng nhập Thời gian kết thúc."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-158-filled.png",
+      "createHttpStatus": 200,
+      "id": 14387,
+      "code": "ISMS_261020_006",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-158-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 85
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 7,
+      "group": "Nhóm Mua hàng",
+      "typeId": 172,
+      "type": "Mua hàng Máy móc/ Thiết bị",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [172] Mua hàng Máy móc/ Thiết bị",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "Máy móc/ Thiết bị cần mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thông số yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền dự kiến (VND)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Máy móc/ Thiết bị cần mua.",
+        "Vui lòng nhập Thông số yêu cầu.",
+        "Vui lòng nhập Số lượng.",
+        "Vui lòng nhập Số tiền dự kiến (VND).",
+        "Vui lòng nhập Lý do mua."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-172-filled.png",
+      "createHttpStatus": 200,
+      "id": 14388,
+      "code": "Nhóm Mua hàng_261020_001",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-172-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 75
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 7,
+      "group": "Nhóm Mua hàng",
+      "typeId": 171,
+      "type": "Mua hàng Cloud/phần mềm",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [171] Mua hàng Cloud/phần mềm",
+      "templateSections": 5,
+      "fields": [
+        {
+          "title": "Cloud/phần mềm cần mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thông số yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền dự kiến (VND)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Cloud/phần mềm cần mua.",
+        "Vui lòng nhập Thông số yêu cầu.",
+        "Vui lòng nhập Số lượng.",
+        "Vui lòng nhập Số tiền dự kiến (VND).",
+        "Vui lòng nhập Lý do mua."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-171-filled.png",
+      "createHttpStatus": 200,
+      "id": 14389,
+      "code": "Nhóm Mua hàng_261020_002",
+      "detailTableRows": [5, 5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-171-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 60
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 7,
+      "group": "Nhóm Mua hàng",
+      "typeId": 174,
+      "type": "Mua hàng hóa/ dịch vụ khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [174] Mua hàng hóa/ dịch vụ khác",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Hàng hóa/Dịch vụ cần mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thông số yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số tiền dự kiến (VND)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do mua",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Hàng hóa/Dịch vụ cần mua.",
+        "Vui lòng nhập Thông số yêu cầu.",
+        "Vui lòng nhập Số lượng.",
+        "Vui lòng nhập Số tiền dự kiến (VND).",
+        "Vui lòng nhập Lý do mua."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-174-filled.png",
+      "createHttpStatus": 200,
+      "id": 14390,
+      "code": "Nhóm Mua hàng_261020_003",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-174-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 45
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 183,
+      "type": "Thu hồi tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [183] Thu hồi tài sản",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "MSNV sử dụng",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên nhân viên sử dụng",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vị trí sử dụng tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Lý do thu hồi",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-183-filled.png",
+      "createHttpStatus": 200,
+      "id": 14437,
+      "code": "Tài sản_261020_006",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-183-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 105
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 72,
+      "type": "Chuyển quyền Tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [72] Chuyển quyền Tài sản",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Loại Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 7
+        },
+        {
+          "title": "Mã Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã nhân viên Người sử dụng cũ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Người sử dụng cũ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí tài sản cũ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã nhân viên Người sử dụng mới",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Người sử dụng mới",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí Tài sản mới",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại Tài sản.",
+        "Vui lòng nhập Mã Tài sản.",
+        "Vui lòng nhập Mã nhân viên Người sử dụng cũ.",
+        "Vui lòng nhập Họ và tên Người sử dụng cũ.",
+        "Vui lòng nhập Vị trí tài sản cũ.",
+        "Vui lòng nhập Mã nhân viên Người sử dụng mới.",
+        "Vui lòng nhập Họ và tên Người sử dụng mới.",
+        "Vui lòng nhập Vị trí Tài sản mới."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-72-filled.png",
+      "createHttpStatus": 200,
+      "id": 14438,
+      "code": "Tài sản_261020_007",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-72-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 65
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 181,
+      "type": "Hoàn trả tài sản nhà cung cấp/ khách hàng",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [181] Hoàn trả tài sản nhà cung cấp/ khách hàng",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Mã tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thông số kỹ thuật liên quan",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí sử dụng trước khi trả",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Tình trạng tài sản trước khi trả",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ticket mang tài sản ra ngoài liên quan",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do trả tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã tài sản.",
+        "Vui lòng nhập Loại tài sản.",
+        "Vui lòng nhập Thông số kỹ thuật liên quan.",
+        "Vui lòng nhập Vị trí sử dụng trước khi trả.",
+        "Vui lòng nhập Tình trạng tài sản trước khi trả.",
+        "Vui lòng nhập Ticket mang tài sản ra ngoài liên quan.",
+        "Vui lòng nhập Lý do trả tài sản."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-181-filled.png",
+      "createHttpStatus": 200,
+      "id": 14391,
+      "code": "Tài sản_261020_001",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-181-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 70
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 83,
+      "type": "Mượn tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [83] Mượn tài sản",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại tài sản mượn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng mượn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nơi sử dụng khi mượn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do mượn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian mượn",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian trả (dự kiến)",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Loại tài sản mượn.",
+        "Vui lòng nhập Số lượng mượn.",
+        "Vui lòng nhập Nơi sử dụng khi mượn.",
+        "Vui lòng nhập Lý do mượn.",
+        "Vui lòng nhập Thời gian mượn.",
+        "Vui lòng nhập Thời gian trả (dự kiến)."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-83-filled.png",
+      "createHttpStatus": 200,
+      "id": 14392,
+      "code": "Tài sản_261020_002",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-83-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 130
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 73,
+      "type": "Nâng cấp Tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [73] Nâng cấp Tài sản",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Mã Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nội dung yêu cầu nâng cấp",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại Tài sản.",
+        "Vui lòng nhập Mã Tài sản.",
+        "Vui lòng nhập Người sử dụng.",
+        "Vui lòng nhập Vị trí Tài sản.",
+        "Vui lòng nhập Nội dung yêu cầu nâng cấp."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-73-filled.png",
+      "createHttpStatus": 200,
+      "id": 14393,
+      "code": "Tài sản_261020_003",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-73-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 65
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 151,
+      "type": "Thanh lý tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [151] Thanh lý tài sản",
+      "templateSections": 4,
+      "fields": [
+        {
+          "title": "Loại tài sản thanh lý",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại tài sản thanh lý.",
+        "Vui lòng nhập Số lượng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-151-filled.png",
+      "createHttpStatus": 200,
+      "id": 14439,
+      "code": "Tài sản_261020_008",
+      "detailTableRows": [5, 5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-151-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 90
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 167,
+      "type": "Cấp mã tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [167] Cấp mã tài sản",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Nhóm tài sản",
+          "type": "text",
+          "required": false,
+          "options": 41
+        },
+        {
+          "title": "Hãng sản xuất",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Model thiết bị",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Số serial",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Cấu hình thiết bị",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ngày mua (nếu có hợp đồng lấy ngày trên hợp đồng)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ticket mua hàng liên quan",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Nhà cung cấp",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vị trí sử dụng tài sản",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "MSNV người sử dụng",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Họ tên người sử dụng",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận quản lý",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Trạng thái tài sản",
+          "type": "text",
+          "required": false,
+          "options": 2
+        },
+        {
+          "title": "Giá trị tài sản (VND)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-167-filled.png",
+      "createHttpStatus": 200,
+      "id": 14394,
+      "code": "Tài sản_261020_004",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-167-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 120
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 18,
+      "group": "Tài sản",
+      "typeId": 182,
+      "type": "Cấp mới tài sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [182] Cấp mới tài sản",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "Loại tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "MSNV sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ & tên nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí sử dụng tài sản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại tài sản.",
+        "Vui lòng nhập MSNV sử dụng.",
+        "Vui lòng nhập Họ & tên nhân viên.",
+        "Vui lòng nhập Vị trí sử dụng tài sản."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-182-filled.png",
+      "createHttpStatus": 200,
+      "id": 14395,
+      "code": "Tài sản_261020_005",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-182-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 80
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 64,
+      "type": "Yêu cầu Đào tạo",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [64] Yêu cầu Đào tạo",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên Người sử dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian đào tạo",
+          "type": "range-date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nội dung đào tạo",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích đào tạo",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên Người sử dụng.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Thời gian đào tạo.",
+        "Vui lòng nhập Thời gian đào tạo.",
+        "Vui lòng nhập Nội dung đào tạo.",
+        "Vui lòng nhập Mục đích đào tạo."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-64-filled.png",
+      "createHttpStatus": 200,
+      "id": 14396,
+      "code": "HR_261020_004",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-64-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 35
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 69,
+      "type": "Đề nghị chấm dứt Hợp đồng lao động",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [69] Đề nghị chấm dứt Hợp đồng lao động",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chức vụ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do chấm dứt HĐLĐ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày làm việc cuối cùng",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian Bàn giao công việc",
+          "type": "range-date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người tiếp nhận bàn giao công việc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Chức vụ.",
+        "Vui lòng nhập Lý do chấm dứt HĐLĐ.",
+        "Vui lòng nhập Ngày làm việc cuối cùng.",
+        "Vui lòng nhập Thời gian Bàn giao công việc.",
+        "Vui lòng nhập Thời gian Bàn giao công việc.",
+        "Vui lòng nhập Người tiếp nhận bàn giao công việc."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-69-filled.png",
+      "createHttpStatus": 200,
+      "id": 14397,
+      "code": "HR_261020_005",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-69-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 50
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 70,
+      "type": "Đề nghị ký hợp đồng lao động",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [70] Đề nghị ký hợp đồng lao động",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-70-filled.png",
+      "createHttpStatus": 200,
+      "id": 14398,
+      "code": "HR_261020_006",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-70-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 71,
+      "type": "Khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [71] Khác",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-71-filled.png",
+      "createHttpStatus": 200,
+      "id": 14399,
+      "code": "HR_261020_007",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-71-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 114,
+      "type": "Đề nghị chấm dứt hợp đồng học việc/thử việc/Cộng tác viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [114] Đề nghị chấm dứt hợp đồng học việc/thử việc/Cộng tác viên",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số nhân viên",
+          "type": "number",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Chức vụ",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do chấm dứt hợp đồng học việc/thử việc/Cộng tác viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày làm việc cuối cùng",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bàn giao công việc",
+          "type": "range-date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Người tiếp nhận bàn giao công việc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Chức vụ.",
+        "Vui lòng nhập Lý do chấm dứt hợp đồng học việc/thử việc/Cộng tác viên.",
+        "Vui lòng nhập Ngày làm việc cuối cùng.",
+        "Vui lòng nhập Thời gian bàn giao công việc.",
+        "Vui lòng nhập Thời gian bàn giao công việc.",
+        "Vui lòng nhập Người tiếp nhận bàn giao công việc."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-114-filled.png",
+      "createHttpStatus": 200,
+      "id": 14400,
+      "code": "HR_261020_008",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-114-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 50
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 99,
+      "type": "Yêu cầu tuyển dụng",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [99] Yêu cầu tuyển dụng",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Team cần tuyển",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí tuyển dụng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian nhận việc",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Địa điểm làm việc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mức lương",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bằng cấp",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Hình thức Thời gian làm việc",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Mô tả công việc cơ bản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Giới tính",
+          "type": "text",
+          "required": false,
+          "options": 2
+        },
+        {
+          "title": "Độ tuổi",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Kinh nghiệm",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Yêu cầu kỹ năng (Ngoại ngữ,...)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Team cần tuyển.",
+        "Vui lòng nhập Vị trí tuyển dụng.",
+        "Vui lòng nhập Số lượng.",
+        "Vui lòng nhập Thời gian nhận việc.",
+        "Vui lòng nhập Địa điểm làm việc.",
+        "Vui lòng nhập Mức lương.",
+        "Vui lòng nhập Bằng cấp.",
+        "Vui lòng nhập Hình thức Thời gian làm việc.",
+        "Vui lòng nhập Mô tả công việc cơ bản."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-99-filled.png",
+      "createHttpStatus": 200,
+      "id": 14401,
+      "code": "HR_261020_009",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-99-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 65
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 160,
+      "type": "Tặng Quà Onboarding & Nhân Viên Chính Thức",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [160] Tặng Quà Onboarding & Nhân Viên Chính Thức",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày bắt đầu nhận việc",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Trạng thái hiện tại",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Thông tin nhận quà",
+          "type": "text",
+          "required": true,
+          "options": 2
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Ngày bắt đầu nhận việc.",
+        "Vui lòng nhập Trạng thái hiện tại.",
+        "Vui lòng nhập Thông tin nhận quà."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-160-filled.png",
+      "createHttpStatus": 200,
+      "id": 14402,
+      "code": "HR_261020_010",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-160-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 35
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 161,
+      "type": "Chuyển NVDA sang NV Học việc/thử việc",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [161] Chuyển NVDA sang NV Học việc/thử việc",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-161-filled.png",
+      "createHttpStatus": 200,
+      "id": 14403,
+      "code": "HR_261020_011",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-161-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 159,
+      "type": "Gia hạn Hợp đồng Học việc/thử việc/Cộng tác viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [159] Gia hạn Hợp đồng Học việc/thử việc/Cộng tác viên",
+      "templateSections": 1,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-159-filled.png",
+      "createHttpStatus": 200,
+      "id": 14404,
+      "code": "HR_261020_012",
+      "detailTableRows": [1],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-159-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 6
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 3,
+      "group": "HR",
+      "typeId": 101,
+      "type": "Đăng ký nghỉ thai sản",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [101] Đăng ký nghỉ thai sản",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày dự kiến sinh",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày bắt đầu nghỉ",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày kết thúc nghỉ",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Ngày dự kiến sinh.",
+        "Vui lòng nhập Ngày bắt đầu nghỉ.",
+        "Vui lòng nhập Ngày kết thúc nghỉ."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-101-filled.png",
+      "createHttpStatus": 200,
+      "id": 14405,
+      "code": "HR_261020_013",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-101-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 111,
+      "type": "Mang Tài Sản ra ngoài",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [111] Mang Tài Sản ra ngoài",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Loại Tài sản",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Mã Tài sản",
+          "type": "number",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mức độ bảo mật",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Họ và tên Người mang ra",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích mang ra",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian mang ra",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian dự kiến mang vào",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Loại Tài sản.",
+        "Vui lòng nhập Mã Tài sản.",
+        "Vui lòng nhập Mức độ bảo mật.",
+        "Vui lòng nhập Họ và tên Người mang ra.",
+        "Vui lòng nhập Mục đích mang ra.",
+        "Vui lòng nhập Thời gian mang ra.",
+        "Vui lòng nhập Thời gian dự kiến mang vào."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-111-filled.png",
+      "createHttpStatus": 200,
+      "id": 14406,
+      "code": "GA_261020_001",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-111-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 50
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 81,
+      "type": "Cấp mới Chìa khóa tủ, Thẻ Nhân viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [81] Cấp mới Chìa khóa tủ, Thẻ Nhân viên",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày cấp mới",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Ngày cấp mới.",
+        "Vui lòng nhập Bộ phận."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-81-filled.png",
+      "createHttpStatus": 200,
+      "id": 14407,
+      "code": "GA_261020_002",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-81-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 82,
+      "type": "Thu hồi Chìa khóa tủ, Thẻ Nhân viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [82] Thu hồi Chìa khóa tủ, Thẻ Nhân viên",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày thu hồi",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Ngày thu hồi.",
+        "Vui lòng nhập Bộ phận."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-82-filled.png",
+      "createHttpStatus": 200,
+      "id": 14408,
+      "code": "GA_261020_003",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-82-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 86,
+      "type": "Hỗ trợ tiếp Khách",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [86] Hỗ trợ tiếp Khách",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Họ và tên người tiếp Khách",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng Khách",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Phòng họp",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian bắt đầu",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ngày tiếp Khách",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Yêu cầu quà",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Họ và tên người tiếp Khách.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Số lượng Khách.",
+        "Vui lòng nhập Phòng họp.",
+        "Vui lòng nhập Thời gian bắt đầu.",
+        "Vui lòng nhập Thời gian kết thúc.",
+        "Vui lòng nhập Ngày tiếp Khách.",
+        "Vui lòng nhập Yêu cầu quà."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-86-filled.png",
+      "createHttpStatus": 200,
+      "id": 14409,
+      "code": "GA_261020_004",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-86-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 45
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 93,
+      "type": "Khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [93] Khác",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-93-filled.png",
+      "createHttpStatus": 200,
+      "id": 14410,
+      "code": "GA_261020_005",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-93-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 96,
+      "type": "Liên hệ Nhà cung cấp bên ngoài",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [96] Liên hệ Nhà cung cấp bên ngoài",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-96-filled.png",
+      "createHttpStatus": 200,
+      "id": 14411,
+      "code": "GA_261020_006",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-96-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 152,
+      "type": "Cấp Áo đồng phục công ty",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [152] Cấp Áo đồng phục công ty",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-152-filled.png",
+      "createHttpStatus": 200,
+      "id": 14412,
+      "code": "GA_261020_007",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-152-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 162,
+      "type": "Đăng ký gửi xe tòa nhà HCM",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [162] Đăng ký gửi xe tòa nhà HCM",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại xe",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Màu Sắc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Biển số Xe",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hãng xe",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian đăng ký bắt đầu sử dụng",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Loại xe.",
+        "Vui lòng nhập Màu Sắc.",
+        "Vui lòng nhập Biển số Xe.",
+        "Vui lòng nhập Hãng xe.",
+        "Vui lòng nhập Thời gian đăng ký bắt đầu sử dụng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-162-filled.png",
+      "createHttpStatus": 200,
+      "id": 14413,
+      "code": "GA_261020_008",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-162-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 45
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 163,
+      "type": "Thu hồi gửi xe tòa nhà HCM",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [163] Thu hồi gửi xe tòa nhà HCM",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Mã số Nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Loại xe",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Màu Sắc",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Biển số Xe",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Hãng xe",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian kết thúc sử dụng",
+          "type": "date-text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Mã số Nhân viên.",
+        "Vui lòng nhập Họ và tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Loại xe.",
+        "Vui lòng nhập Màu Sắc.",
+        "Vui lòng nhập Biển số Xe.",
+        "Vui lòng nhập Hãng xe.",
+        "Vui lòng nhập Thời gian kết thúc sử dụng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-163-filled.png",
+      "createHttpStatus": 200,
+      "id": 14414,
+      "code": "GA_261020_009",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-163-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 45
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 168,
+      "type": "Hiệu chuẩn đồng hồ phòng Server",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [168] Hiệu chuẩn đồng hồ phòng Server",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-168-filled.png",
+      "createHttpStatus": 200,
+      "id": 14415,
+      "code": "GA_261020_010",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-168-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 169,
+      "type": "Kiểm tra thiết bị PCCC",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [169] Kiểm tra thiết bị PCCC",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-169-filled.png",
+      "createHttpStatus": 200,
+      "id": 14416,
+      "code": "GA_261020_011",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-169-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 2,
+      "group": "GA",
+      "typeId": 170,
+      "type": "Bảo trì điều hòa",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [170] Bảo trì điều hòa",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-170-filled.png",
+      "createHttpStatus": 200,
+      "id": 14417,
+      "code": "GA_261020_012",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-170-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 95,
+      "type": "Cấp mới/Thu hồi server/server ảo dự án",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [95] Cấp mới/Thu hồi server/server ảo dự án",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Cấp/Thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Tên Server cấp mới/thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên người quản lý server",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã số nhân viên người quản lý",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích cấp mới/thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mô tả yêu cầu cấp mới (RAM, CPU)",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Cấp/Thu hồi.",
+        "Vui lòng nhập Tên Server cấp mới/thu hồi.",
+        "Vui lòng nhập Họ và tên người quản lý server.",
+        "Vui lòng nhập Mã số nhân viên người quản lý.",
+        "Vui lòng nhập Mục đích cấp mới/thu hồi."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-95-filled.png",
+      "createHttpStatus": 200,
+      "id": 14418,
+      "code": "IT_261020_001",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-95-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 50
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 75,
+      "type": "Tạo mới hoặc Xóa Group Email",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [75] Tạo mới hoặc Xóa Group Email",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Yêu cầu",
+          "type": "text",
+          "required": true,
+          "options": 2
+        },
+        {
+          "title": "Tên Group mail",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Email cá nhân tham gia group mail",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Ghi chú",
+          "type": "text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Yêu cầu.",
+        "Vui lòng nhập Tên Group mail.",
+        "Vui lòng nhập Email cá nhân tham gia group mail."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-75-filled.png",
+      "createHttpStatus": 200,
+      "id": 14419,
+      "code": "IT_261020_002",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-75-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 20
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 77,
+      "type": "Reset mật khẩu",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [77] Reset mật khẩu",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-77-filled.png",
+      "createHttpStatus": 200,
+      "id": 14420,
+      "code": "IT_261020_003",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-77-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 90,
+      "type": "Khác",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [90] Khác",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-90-filled.png",
+      "createHttpStatus": 200,
+      "id": 14421,
+      "code": "IT_261020_004",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-90-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 91,
+      "type": "Kiểm tra, sửa chữa thiết bị",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [91] Kiểm tra, sửa chữa thiết bị",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-91-filled.png",
+      "createHttpStatus": 200,
+      "id": 14422,
+      "code": "IT_261020_005",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-91-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 92,
+      "type": "Kiểm tra sự cố mạng LAN, internet",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [92] Kiểm tra sự cố mạng LAN, internet",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-92-filled.png",
+      "createHttpStatus": 200,
+      "id": 14423,
+      "code": "IT_261020_006",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-92-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 94,
+      "type": "Backup và Phục hồi dữ liệu",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [94] Backup và Phục hồi dữ liệu",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-94-filled.png",
+      "createHttpStatus": 200,
+      "id": 14424,
+      "code": "IT_261020_007",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-94-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 4,
+      "group": "IT",
+      "typeId": 146,
+      "type": "Trích xuất camera",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [146] Trích xuất camera",
+      "templateSections": 1,
+      "fields": [
+        {
+          "title": "Khu vực/Phòng cần trích xuất camera",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mục đích trích xuất",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Thời gian yêu cầu trích xuất",
+          "type": "text",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Khu vực/Phòng cần trích xuất camera.",
+        "Vui lòng nhập Mục đích trích xuất.",
+        "Vui lòng nhập Thời gian yêu cầu trích xuất."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-146-filled.png",
+      "createHttpStatus": 200,
+      "id": 14425,
+      "code": "IT_261020_008",
+      "detailTableRows": [5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-146-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 15
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 20,
+      "group": "Phân quyền",
+      "typeId": 176,
+      "type": "Gỡ cài đặt phần mềm",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [176] Gỡ cài đặt phần mềm",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản gỡ phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Miêu tả",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nhóm phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 3
+        },
+        {
+          "title": "Mức độ quan trọng",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Giấy phép sử dụng phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Phiên bản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Văn phòng",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Bộ phận quản lý",
+          "type": "text",
+          "required": true,
+          "options": 9
+        },
+        {
+          "title": "Chủ sở hữu rủi ro",
+          "type": "text",
+          "required": true,
+          "options": 6
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Mã tài sản gỡ phần mềm.",
+        "Vui lòng nhập Miêu tả.",
+        "Vui lòng nhập Nhóm phần mềm.",
+        "Vui lòng nhập Mức độ quan trọng.",
+        "Vui lòng nhập Giấy phép sử dụng phần mềm.",
+        "Vui lòng nhập Phiên bản.",
+        "Vui lòng nhập Văn phòng.",
+        "Vui lòng nhập Bộ phận quản lý.",
+        "Vui lòng nhập Chủ sở hữu rủi ro."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-176-filled.png",
+      "createHttpStatus": 200,
+      "id": 14440,
+      "code": "Phân quyền_261020_003",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-176-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 105
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 20,
+      "group": "Phân quyền",
+      "typeId": 175,
+      "type": "Cài đặt phần mềm",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [175] Cài đặt phần mềm",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mã tài sản cài đặt",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Miêu tả phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Nhóm phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 3
+        },
+        {
+          "title": "Mức độ quan trọng",
+          "type": "text",
+          "required": true,
+          "options": 4
+        },
+        {
+          "title": "Giấy phép sử dụng phần mềm",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Phiên bản",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Văn phòng",
+          "type": "text",
+          "required": true,
+          "options": 6
+        },
+        {
+          "title": "Bộ phận quản lý",
+          "type": "text",
+          "required": true,
+          "options": 9
+        },
+        {
+          "title": "Chủ sở hữu rủi ro",
+          "type": "text",
+          "required": true,
+          "options": 6
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Mã tài sản cài đặt.",
+        "Vui lòng nhập Miêu tả phần mềm.",
+        "Vui lòng nhập Nhóm phần mềm.",
+        "Vui lòng nhập Mức độ quan trọng.",
+        "Vui lòng nhập Giấy phép sử dụng phần mềm.",
+        "Vui lòng nhập Phiên bản.",
+        "Vui lòng nhập Văn phòng.",
+        "Vui lòng nhập Bộ phận quản lý.",
+        "Vui lòng nhập Chủ sở hữu rủi ro."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-175-filled.png",
+      "createHttpStatus": 200,
+      "id": 14441,
+      "code": "Phân quyền_261020_004",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-175-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 115
+      },
+      "fixedLegacyTemplate": true
+    },
+    {
+      "groupId": 20,
+      "group": "Phân quyền",
+      "typeId": 179,
+      "type": "Cấp truy cập nhân viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [179] Cấp truy cập nhân viên",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ tên nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Account",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Quyền Server cần cấp",
+          "type": "text",
+          "required": false,
+          "options": 6
+        },
+        {
+          "title": "Link Server cần cấp quyền",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vân tay",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Group mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ms Team",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Truy cập khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ngày vào",
+          "type": "date-text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ tên nhân viên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Vị trí ngồi.",
+        "Vui lòng nhập Vân tay."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-179-filled.png",
+      "createHttpStatus": 200,
+      "id": 14426,
+      "code": "Phân quyền_261020_001",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-179-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 155
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 20,
+      "group": "Phân quyền",
+      "typeId": 180,
+      "type": "Thu hồi truy cập nhân viên",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [180] Thu hồi truy cập nhân viên",
+      "templateSections": 3,
+      "fields": [
+        {
+          "title": "MSNV",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Họ và tên nhân viên",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Bộ phận",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Team",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Vị trí ngồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Lý do thu hồi",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Quyền cần thu hồi",
+          "type": "text",
+          "required": false,
+          "options": 6
+        },
+        {
+          "title": "Link Server",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Account",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Vân tay",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Email",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Group mail",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Ms Team",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Truy cập khác",
+          "type": "text",
+          "required": false,
+          "options": 0
+        },
+        {
+          "title": "Hạn cuối thu hồi (nếu nghỉ việc)",
+          "type": "date-text",
+          "required": false,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập MSNV.",
+        "Vui lòng nhập Họ và tên nhân viên.",
+        "Vui lòng nhập Bộ phận.",
+        "Vui lòng nhập Team.",
+        "Vui lòng nhập Vị trí ngồi.",
+        "Vui lòng nhập Lý do thu hồi."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-180-filled.png",
+      "createHttpStatus": 200,
+      "id": 14427,
+      "code": "Phân quyền_261020_002",
+      "detailTableRows": [5, 5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-180-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 150
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 21,
+      "group": "TEST_20261020_G3CCBK Group OK",
+      "typeId": 187,
+      "type": "TEST_20261020_G3CCBK Type OK",
+      "status": "blocked",
+      "checks": ["empty-submit-blocked"],
+      "reason": "Tên bộ phận xử lý quá dài để tạo mã yêu cầu. Vui lòng chọn bộ phận khác hoặc rút gọn tên còn tối đa 19 ký tự trong Cấu hình hệ thống.",
+      "failureScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-187-blocked.png",
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 21,
+      "group": "TEST_20261020_G3CCBK Group OK",
+      "typeId": 188,
+      "type": "TEST_FORM_20261020_V4BI9J",
+      "status": "blocked",
+      "checks": ["empty-submit-blocked"],
+      "reason": "Tên bộ phận xử lý quá dài để tạo mã yêu cầu. Vui lòng chọn bộ phận khác hoặc rút gọn tên còn tối đa 19 ký tự trong Cấu hình hệ thống.",
+      "failureScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-188-blocked.png",
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 22,
+      "group": "TEST_CW75S53",
+      "typeId": 190,
+      "type": "TEST_C_W75S53N",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [190] TEST_C_W75S53N",
+      "templateSections": 0,
+      "fields": [],
+      "hasCreationDetails": false,
+      "rows": 0,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-190-filled.png",
+      "createHttpStatus": 200,
+      "id": 14428,
+      "code": "TEST_CW75S53_261020_011",
+      "detailTableRows": [],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-190-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 0
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 22,
+      "group": "TEST_CW75S53",
+      "typeId": 189,
+      "type": "TEST_C_W75S53F",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [189] TEST_C_W75S53F",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Nội dung.test [QA]",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "number",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Phương án",
+          "type": "text",
+          "required": true,
+          "options": 3
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Nội dung.test [QA].",
+        "Vui lòng nhập Số lượng.",
+        "Vui lòng nhập Phương án."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-189-filled.png",
+      "createHttpStatus": 200,
+      "id": 14429,
+      "code": "TEST_CW75S53_261020_012",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-189-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 55
+      },
+      "fixedLegacyTemplate": false
+    },
+    {
+      "groupId": 23,
+      "group": "TEST_DVGMOTY6",
+      "typeId": 191,
+      "type": "TEST_DETAIL_20261020_MVGMOTY6",
+      "status": "passed",
+      "checks": [
+        "empty-submit-blocked",
+        "five-detail-rows-filled-through-inputs-add-and-copy",
+        "valid-corrections-cleared-errors",
+        "single-real-create-post"
+      ],
+      "title": "TEST_QC_CREATE_20261020_215226 [191] TEST_DETAIL_20261020_MVGMOTY6",
+      "templateSections": 2,
+      "fields": [
+        {
+          "title": "Nội dung",
+          "type": "text",
+          "required": true,
+          "options": 0
+        },
+        {
+          "title": "Số lượng",
+          "type": "number",
+          "required": true,
+          "options": 0
+        }
+      ],
+      "hasCreationDetails": true,
+      "initialValidationErrors": [
+        "Vui lòng nhập Nội dung.",
+        "Vui lòng nhập Số lượng."
+      ],
+      "rows": 5,
+      "formScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-191-filled.png",
+      "createHttpStatus": 200,
+      "id": 14430,
+      "code": "TEST_DVGMOTY6_261020_006",
+      "detailTableRows": [5, 5],
+      "createdScreenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-191-created.png",
+      "readback": {
+        "status": "passed",
+        "verifiedCells": 25
+      },
+      "fixedLegacyTemplate": false
+    }
+  ],
+  "runtimeErrors": [],
+  "failedResponses": [],
+  "visibleGroupLabels": [
+    "Kế toán",
+    "Ban Truyền thông",
+    "CRM Support",
+    "Đăng ký công tác",
+    "Nhóm hỗ trợ ticket",
+    "ISMS",
+    "Nhóm Mua hàng",
+    "Tài sản",
+    "HR",
+    "GA",
+    "IT",
+    "Phân quyền",
+    "TEST_20261020_G3CCBK Group OK",
+    "TEST_CW75S53",
+    "TEST_DVGMOTY6"
+  ],
+  "inventory": {
+    "groups": 15,
+    "activeTypes": 78,
+    "inactiveTypes": 0
+  },
+  "firstPass": {
+    "summary": {
+      "total": 78,
+      "passed": 65,
+      "blocked": 2,
+      "failed": 11,
+      "created": 65
+    },
+    "issues": [
+      {
+        "typeId": 184,
+        "type": "Chuyển team/ Chuyển bộ phận/ Onsite",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-184-failed.png"
+      },
+      {
+        "typeId": 105,
+        "type": "Thu hồi làm việc từ xa",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-105-failed.png"
+      },
+      {
+        "typeId": 107,
+        "type": "Báo cáo Sự cố hệ thống",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-107-failed.png"
+      },
+      {
+        "typeId": 144,
+        "type": "Mở/Khóa cổng USB",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-144-failed.png"
+      },
+      {
+        "typeId": 177,
+        "type": "Cấp mới sử dụng Tài sản cá nhân",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-177-failed.png"
+      },
+      {
+        "typeId": 186,
+        "type": "Cấp lại sau thai sản",
+        "group": "ISMS",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-186-failed.png"
+      },
+      {
+        "typeId": 183,
+        "type": "Thu hồi tài sản",
+        "group": "Tài sản",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-183-failed.png"
+      },
+      {
+        "typeId": 72,
+        "type": "Chuyển quyền Tài sản",
+        "group": "Tài sản",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-72-failed.png"
+      },
+      {
+        "typeId": 151,
+        "type": "Thanh lý tài sản",
+        "group": "Tài sản",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-151-failed.png"
+      },
+      {
+        "typeId": 176,
+        "type": "Gỡ cài đặt phần mềm",
+        "group": "Phân quyền",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-176-failed.png"
+      },
+      {
+        "typeId": 175,
+        "type": "Cài đặt phần mềm",
+        "group": "Phân quyền",
+        "alerts": [
+          "Không tải được biểu mẫu: Tên trường phải có nội dung và không trùng nhau."
+        ],
+        "screenshot": "/tmp/TEST_QC_CREATE_20261020_215226/type-175-failed.png"
+      }
+    ],
+    "readback": {
+      "tickets": 65,
+      "verifiedCells": 2501,
+      "failed": 0
+    }
+  },
+  "summary": {
+    "total": 78,
+    "passed": 76,
+    "blocked": 2,
+    "failed": 0,
+    "created": 76,
+    "fiveRowTickets": 55,
+    "noCreationDetailTickets": 21,
+    "enteredDetailRows": 275,
+    "verifiedCells": 3696,
+    "fixedLegacyTemplates": 11
+  }
+}

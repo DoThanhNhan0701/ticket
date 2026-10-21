@@ -84,7 +84,7 @@ function DetailTabs({
         <p className="mt-2 text-sm whitespace-pre-wrap wrap-anywhere">
           {ticket.title}
         </p>
-        <div className="mt-3 flex flex-wrap items-start justify-between gap-2">
+        <div className="mt-3 flex flex-wrap items-start justify-end gap-2">
           <TicketCloneButton ticket={ticket} />
           <TicketActions ticket={ticket} onSaved={onSaved} />
         </div>

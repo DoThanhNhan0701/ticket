@@ -548,9 +548,7 @@ async function cloneAndCancel(ticket) {
   let clone = report.tickets.find((item) => item.scenario === "clone");
   if (!clone) {
     const page = await openTicket("nhandt01", ticket, "created");
-    await page
-      .getByRole("button", { name: "Sao chép yêu cầu", exact: true })
-      .click();
+    await page.getByRole("button", { name: "Sao chép", exact: true }).click();
     await page
       .getByRole("textbox", { name: "Tiêu đề yêu cầu", exact: true })
       .waitFor();

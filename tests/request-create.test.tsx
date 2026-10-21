@@ -352,7 +352,7 @@ it("retains later section drafts and attachments while an earlier section is bei
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
 
-it("keeps details hidden for an invalid due date and validates only when Create is clicked", async () => {
+it("validates a due date on first submit and clears the error as soon as it is corrected", async () => {
   renderPage();
   await fillAssignment();
   change("create-due-date", format(addDays(startOfToday(), -1), "dd/MM/yyyy"));
@@ -370,15 +370,272 @@ it("keeps details hidden for an invalid due date and validates only when Create 
   change("create-due-date", format(startOfToday(), "dd/MM/yyyy"));
   fireEvent.blur(document.getElementById("create-due-date")!);
   expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
-  expect(
-    screen.getByText("Ngày mong muốn phải hợp lệ và không trước hôm nay."),
-  ).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await waitFor(() =>
     expect(
       screen.queryByText("Ngày mong muốn phải hợp lệ và không trước hôm nay."),
     ).toBeNull(),
   );
+});
+
+it("revalidates required selections and text on change after the first submit, without clearing other errors", async () => {
+  renderPage();
+  await ready();
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await waitFor(() =>
+    expect(
+      document
+        .getElementById("create-handling_group")
+        ?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  await select("Bộ phận xử lý", "ISMS");
+  await waitFor(() =>
+    expect(
+      document
+        .getElementById("create-handling_group")
+        ?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
+  expect(
+    document
+      .getElementById("create-approve_user")
+      ?.getAttribute("aria-invalid"),
+  ).toBe("true");
+  await select("Loại yêu cầu", "Đăng ký từ xa");
+  await select("Người phê duyệt", "Đỗ Nhân");
+  await select("Department", "Department AI");
+  await select("Văn phòng", "VP Huế");
+  change("create-title", "   ");
+  await waitFor(() =>
+    expect(
+      document.getElementById("create-title")?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  change("create-title", "Đã sửa tiêu đề");
+  await waitFor(() =>
+    expect(
+      document.getElementById("create-title")?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
+  await screen.findByRole("group", { name: "Dòng 1" });
+  change("detail-0-f0", "   ");
+  await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
+  change("detail-0-f0", "Nội dung hợp lệ");
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f0")?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
+  expect(
+    document.getElementById("detail-0-f1")?.getAttribute("aria-invalid"),
+  ).toBe("true");
+  change("detail-0-f1", "0");
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f1")?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
+  change("detail-0-f0", " ");
+  await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("revalidates dependent date comparisons when only the reference changes and keeps rows independent", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  fireEvent.click(screen.getByRole("button", { name: "Sao chép dòng 1" }));
+  change("detail-0-f3", "19/10/2026");
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Ngày phải >= Từ ngày.");
+  change("detail-0-f2", "18/10/2026");
+  await waitFor(() =>
+    expect(screen.queryByText("Ngày phải >= Từ ngày.")).toBeNull(),
+  );
+  change("detail-0-f2", "22/10/2026");
+  await screen.findByText("Ngày phải >= Từ ngày.");
+  expect(
+    document.getElementById("detail-1-f3")?.getAttribute("aria-invalid"),
+  ).toBe("false");
+  change("detail-0-f2", "18/10/2026");
+  await waitFor(() =>
+    expect(screen.queryByText("Ngày phải >= Từ ngày.")).toBeNull(),
+  );
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("revalidates range endpoints and removes obsolete row errors when deleting or copying rows", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  change("detail-0-f4-start", "20/10/2026");
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f4-end")?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  change("detail-0-f4-end", "21/10/2026");
+  await waitFor(() =>
+    expect(document.getElementById("detail-0-f4-end-error")).toBeNull(),
+  );
+  change("detail-0-f4-start", "22/10/2026");
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-0-f4-end")?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  change("detail-0-f4-start", "21/10/2026");
+  await waitFor(() =>
+    expect(document.getElementById("detail-0-f4-end-error")).toBeNull(),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Thêm dòng" }));
+  await waitFor(() =>
+    expect(
+      document.getElementById("detail-1-f0")?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Xóa dòng 2" }));
+  await waitFor(() => expect(screen.queryAllByRole("alert")).toHaveLength(0));
+  fireEvent.click(screen.getByRole("button", { name: "Sao chép dòng 1" }));
+  await screen.findByRole("group", { name: "Dòng 2" });
+  expect(
+    document.getElementById("detail-1-f4-end")?.getAttribute("aria-invalid"),
+  ).toBe("false");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("keeps a length error while notes remain invalid, then clears it on correction and resets validation on Start over", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  change("create-description", "x".repeat(1001));
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Ghi chú tối đa 1000 ký tự.");
+  change("create-description", "x".repeat(1002));
+  await waitFor(() =>
+    expect(
+      document
+        .getElementById("create-description")
+        ?.getAttribute("aria-invalid"),
+    ).toBe("true"),
+  );
+  change("create-description", "x".repeat(1000));
+  await waitFor(() =>
+    expect(screen.queryByText("Ghi chú tối đa 1000 ký tự.")).toBeNull(),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
+  await fillBase();
+  expect(screen.queryAllByRole("alert")).toHaveLength(0);
+  fireEvent.blur(document.getElementById("detail-0-f0")!);
+  expect(
+    document.getElementById("detail-0-f0")?.getAttribute("aria-invalid"),
+  ).toBe("false");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("drops errors from the previous template when switching groups and revalidates the new template", async () => {
+  renderPage();
+  await fillBase();
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
+  await select("Bộ phận xử lý", "IT");
+  await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
+  expect(screen.queryByText("Vui lòng nhập Ghi chú chi tiết.")).toBeNull();
+  expect(document.getElementById("detail-0-f0")).toBeNull();
+  await select("Bộ phận xử lý", "ISMS");
+  await select("Loại yêu cầu", "Đăng ký từ xa");
+  await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("");
+  await fillDetails();
+  await waitFor(() => expect(screen.queryAllByRole("alert")).toHaveLength(0));
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("rejects selections removed from current catalogs and clears the error after selecting an active replacement", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  const data = client.getQueryData<{
+    departments: { id: number; name: string; is_active: boolean }[];
+  }>(["request-create-lookups", 42])!;
+  act(() =>
+    client.setQueryData(["request-create-lookups", 42], {
+      ...data,
+      departments: [{ id: 21, name: "Department mới", is_active: true }],
+    }),
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Department" }).textContent,
+    ).toContain("Chọn Department"),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Vui lòng chọn thông tin hợp lệ.");
+  expect(
+    document.getElementById("create-department")?.getAttribute("aria-invalid"),
+  ).toBe("true");
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  await select("Department", "Department mới");
+  await waitFor(() =>
+    expect(
+      document
+        .getElementById("create-department")
+        ?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
+  expect(screen.queryByText("Vui lòng chọn thông tin hợp lệ.")).toBeNull();
+});
+
+it.each(["picker", "drop"])(
+  "blocks oversized attachments before creating a ticket and clears the error when removed (%s)",
+  async (source) => {
+    renderPage();
+    await fillBase();
+    await fillDetails();
+    const file = new File(["test"], "too-large.txt");
+    Object.defineProperty(file, "size", { value: 50 * 1024 * 1024 + 1 });
+    if (source === "picker")
+      fireEvent.change(screen.getByLabelText("Tệp đính kèm"), {
+        target: { files: [file] },
+      });
+    else
+      fireEvent.drop(
+        screen.getByRole("button", { name: "Chọn tệp đính kèm" }),
+        { dataTransfer: { files: [file] } },
+      );
+    await screen.findByText(/too-large.txt.*vượt quá 50 MB/);
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+    });
+    expect(calls("/ticket_manager")).toHaveLength(0);
+    expect(calls("/attachmentticketfile")).toHaveLength(0);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Bỏ tệp too-large.txt" }),
+    );
+    expect(screen.queryByText(/vượt quá 50 MB/)).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+    await screen.findByRole("heading", { name: "Đã về danh sách" });
+    expect(calls("/ticket_manager")).toHaveLength(1);
+  },
+);
+
+it("accepts an attachment exactly at the size limit", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  const file = new File(["test"], "at-limit.txt");
+  Object.defineProperty(file, "size", { value: 50 * 1024 * 1024 });
+  fireEvent.change(screen.getByLabelText("Tệp đính kèm"), {
+    target: { files: [file] },
+  });
+  expect(screen.queryByText(/vượt quá 50 MB/)).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByRole("heading", { name: "Đã về danh sách" });
+  expect(calls("/ticket_manager")).toHaveLength(1);
+  expect(calls("/attachmentticketfile")).toHaveLength(1);
 });
 
 it("returns to the first section and clears the draft when starting over", async () => {
@@ -466,6 +723,54 @@ it("shows only sections enabled for creation and preserves hidden sections for l
       "Ngày xử lý": "",
       "Kết quả nghiệm thu": "",
     });
+});
+
+it("creates five rows from a legacy template whose later sections contain blank and repeated field labels", async () => {
+  const groups = structuredClone(createMultiSectionTemplate);
+  groups[1].children.push(
+    { title: "", type: "text", required: true },
+    { title: "Ghi chú chi tiết (*)", type: "text" },
+    { title: "Trạng thái thực hiện", type: "text" },
+  );
+  groups[2].children.push({ title: "Trạng thái thực hiện", type: "text" });
+  template = { forms: groups };
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  for (let index = 1; index < 5; index++)
+    fireEvent.click(
+      screen.getByRole("button", { name: `Sao chép dòng ${index}` }),
+    );
+  expect(screen.getAllByRole("group", { name: /^Dòng \d+$/ })).toHaveLength(5);
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByRole("heading", { name: "Đã về danh sách" });
+  const { dataform } = JSON.parse(
+    String(calls("/ticket_manager")[0][1]?.body),
+  ).formDataTicket;
+  expect(dataform.header).toHaveLength(3);
+  expect(
+    dataform.header[1].children.some(
+      (field: { title: string }) => field.title === "",
+    ),
+  ).toBe(true);
+  expect(dataform.data).toHaveLength(5);
+  for (const row of dataform.data)
+    expect(row).toMatchObject({
+      "Ghi chú chi tiết": "Nội dung mẫu",
+      "Trạng thái thực hiện": "",
+      "": "",
+    });
+});
+
+it("still rejects ambiguous duplicate labels in creation fields", async () => {
+  const groups = structuredClone(createTemplate);
+  groups[0].children.push({ title: "Ghi chú chi tiết (*)", type: "text" });
+  template = { forms: groups };
+  renderPage();
+  await fillBase();
+  await screen.findByText(/Tên trường phải có nội dung và không trùng nhau/);
+  expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
+  expect(calls("/ticket_manager")).toHaveLength(0);
 });
 
 it("shows an enabled later section instead of a hidden first section and submits it under the correct names", async () => {

@@ -31,6 +31,7 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
       {model.mutation.isError && (
         <ErrorAlert message={model.mutation.error.message} />
       )}
+      {model.attachmentError && <ErrorAlert message={model.attachmentError} />}
       {model.created && model.mutation.isError && (
         <p
           role="status"

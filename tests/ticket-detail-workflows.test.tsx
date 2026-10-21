@@ -156,7 +156,7 @@ it("opens a copy in the creation form without creating a ticket", async () => {
       </MemoryRouter>
     </AuthContext.Provider>,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Sao chép yêu cầu" }));
+  fireEvent.click(screen.getByRole("button", { name: /^Sao chép$/ }));
   await screen.findByText("Creation form");
   expect(
     fetchMock.mock.calls.every(([, options]) => options?.method === "GET"),
