@@ -22,6 +22,9 @@ import { recruitmentDetail, recruitmentObject } from "../api/recruitment-api";
 import { recruitmentRows, recruitmentText } from "../utils/recruitment-format";
 import { actionLabels } from "../utils/recruitment-fields";
 import { RecruitmentEditorForm } from "./recruitment-editor-form";
+import { RecruitmentEditorTabs } from "./recruitment-editor-tabs";
+import { RecruitmentNoteHistory } from "./recruitment-note-history";
+import { RecruitmentCandidateProfile } from "./recruitment-candidate-profile";
 export function RecruitmentEditor({
   state,
   lookups,
@@ -70,6 +73,34 @@ export function RecruitmentEditor({
       department_recruited: row.department_recruited,
       gender: "Nam",
     };
+  const editorForm = (
+    <RecruitmentEditorForm
+      key={`${state.action}-${state.row.id}`}
+      state={{ ...state, row }}
+      lookups={{ ...lookups, reasons: detail.data ? detail.data.reasons : [] }}
+      onClose={onClose}
+      onBusy={setBusy}
+    />
+  );
+  let editorContent = editorForm;
+  if (state.action === "view-candidate")
+    editorContent = (
+      <RecruitmentCandidateProfile
+        row={row}
+        lookups={lookups}
+        onClose={onClose}
+      />
+    );
+  if (state.action === "candidate")
+    editorContent = (
+      <RecruitmentEditorTabs
+        candidateId={state.row.id!}
+        busy={busy}
+        onClose={onClose}
+      >
+        {editorForm}
+      </RecruitmentEditorTabs>
+    );
   return (
     <Dialog
       open
@@ -77,45 +108,54 @@ export function RecruitmentEditor({
         if (!open && !busy) onClose();
       }}
     >
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogHeading
-            icon={<BriefcaseBusiness />}
-            title={actionLabels[state.action]}
-            description={
-              state.action === "view-candidate"
-                ? "Xem thông tin, tệp hồ sơ và ghi chú phỏng vấn."
-                : "Kiểm tra thông tin trước khi lưu thay đổi."
-            }
-          />
-          <DialogCloseButton disabled={busy} />
-        </DialogHeader>
-        {active?.isPending && <LoadingState message="Đang tải thông tin..." />}
-        {active?.isError && (
-          <div className="space-y-3">
-            <ErrorAlert message={active.error.message} />
-            <Button onClick={() => void active.refetch()}>
-              Thử lại thông tin
-            </Button>
-          </div>
-        )}
-        {editorReady(active) &&
-          (state.action === "duplicate" ? (
-            <DuplicateResults
-              rows={recruitmentRows(duplicate.data && duplicate.data.results)}
+      <DialogContent className="flex max-w-3xl flex-col overflow-hidden p-1 sm:p-1">
+        <div className="min-h-0 overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-lg p-4 sm:p-6">
+          <DialogHeader>
+            <DialogHeading
+              icon={<BriefcaseBusiness />}
+              title={actionLabels[state.action]}
+              description={
+                state.action === "view-candidate"
+                  ? "Thông tin ứng viên và tệp CV."
+                  : "Kiểm tra thông tin trước khi lưu thay đổi."
+              }
             />
-          ) : (
-            <RecruitmentEditorForm
-              key={`${state.action}-${state.row.id}`}
-              state={{ ...state, row }}
-              lookups={{
-                ...lookups,
-                reasons: detail.data ? detail.data.reasons : [],
-              }}
-              onClose={onClose}
-              onBusy={setBusy}
-            />
-          ))}
+            <DialogCloseButton disabled={busy} />
+          </DialogHeader>
+          {state.action === "note" && (
+            <p className="mb-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
+              Ứng viên:{" "}
+              <span className="font-medium">
+                {recruitmentText(state.row.first_name) ||
+                  recruitmentText(state.row.code_cv)}
+              </span>
+            </p>
+          )}
+          {active?.isPending && (
+            <LoadingState message="Đang tải thông tin..." />
+          )}
+          {active?.isError && (
+            <div className="space-y-3">
+              <ErrorAlert message={active.error.message} />
+              <Button onClick={() => void active.refetch()}>
+                Thử lại thông tin
+              </Button>
+            </div>
+          )}
+          {editorReady(active) &&
+            (state.action === "duplicate" ? (
+              <DuplicateResults
+                rows={recruitmentRows(duplicate.data && duplicate.data.results)}
+              />
+            ) : (
+              editorContent
+            ))}
+          {state.action === "note" && (
+            <div className="mt-6">
+              <RecruitmentNoteHistory candidateId={state.row.id!} />
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

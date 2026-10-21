@@ -1,41 +1,28 @@
-import { useMutation } from "@tanstack/react-query";
-import { downloadFile } from "@/lib/download";
-import { downloadRecruitmentNote } from "../api/recruitment-api";
-import { Copy } from "lucide-react";
+import { Copy, Paperclip } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ErrorAlert } from "@/components/error-alert";
-import { formatDataDateTime } from "@/components/data-management";
-import type { RecruitmentEditorState, RecruitmentRow } from "../types";
+import { RequestAttachments } from "@/features/requests/components/request-attachments";
+import { TicketFiles } from "@/features/requests/components/ticket-files";
+import type { RecruitmentEditorState } from "../types";
 import {
-  recruitmentRows,
   recruitmentFileHref,
   recruitmentText,
 } from "../utils/recruitment-format";
 export function RecruitmentFormExtras({
   state,
   uploadNames,
-  notes,
-  noteError,
+  files,
   disabled,
   onFile,
+  hideInterviewFile = false,
 }: Readonly<{
   state: RecruitmentEditorState;
   uploadNames: string[];
-  notes: RecruitmentRow[];
-  noteError: Error | null;
+  files: Record<string, File | undefined>;
   disabled: boolean;
   onFile: (name: string, file: File | undefined) => void;
+  hideInterviewFile?: boolean;
 }>) {
-  const download = useMutation({
-    mutationFn: async (file: RecruitmentRow) => ({
-      blob: await downloadRecruitmentNote(file.id!),
-      name: recruitmentText(file.file_name) || "Ghi_chu",
-    }),
-    onSuccess: ({ blob, name }) => downloadFile(blob, name),
-    retry: false,
-  });
   return (
     <>
       {state.action === "request" && Boolean(state.row.link_cv) && (
@@ -65,85 +52,58 @@ export function RecruitmentFormExtras({
         </div>
       )}
       {[
-        ["path_file_recr", "name_file_recr"],
-        ["path_file_cv", "name_file_cv"],
-        ["path_file_interview", "name_file_interview"],
-      ].map(([path, name]) => {
-        const href = recruitmentFileHref(state.row[path], state.row[name]);
-        return href ? (
-          <a
-            key={path}
-            className="block truncate text-sm text-primary underline"
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {recruitmentText(state.row[name]) || "Xem tệp đính kèm"}
-          </a>
-        ) : null;
-      })}
+        ["path_file_recr", "name_file_recr", "Tệp tuyển dụng"],
+        ["path_file_cv", "name_file_cv", "Tệp CV"],
+        ["path_file_interview", "name_file_interview", "Tệp phỏng vấn"],
+      ]
+        .filter(
+          ([path]) => !hideInterviewFile || path !== "path_file_interview",
+        )
+        .map(([path, name, label]) => {
+          const href = recruitmentFileHref(state.row[path], state.row[name]);
+          return href ? (
+            <section
+              key={path}
+              aria-label={label}
+              className="min-w-0 space-y-2"
+            >
+              <p className="flex items-center gap-2 text-sm font-semibold">
+                <Paperclip aria-hidden="true" className="size-4" />
+                {label}
+              </p>
+              <TicketFiles
+                previewAllFiles
+                layout="tiles"
+                files={{
+                  [recruitmentText(state.row[name]) || "Tệp đính kèm"]: href,
+                }}
+              />
+            </section>
+          ) : null;
+        })}
       {uploadNames.map((name) => (
-        <div key={name} className="space-y-2">
-          <label
-            htmlFor={`recruitment-${name}`}
-            className="text-sm font-medium"
-          >
-            {uploadLabel(name, state.action)}
-          </label>
-          <Input
-            id={`recruitment-${name}`}
-            type="file"
-            disabled={disabled}
-            onChange={(event) => onFile(name, event.target.files?.[0])}
-          />
-        </div>
-      ))}
-      {download.isError && <ErrorAlert message={download.error.message} />}
-      {Boolean(noteError) && <ErrorAlert message={noteError!.message} />}
-      {notes.map((note, index) => (
-        <div
-          key={String(note.id ?? index)}
-          className="rounded-lg border p-3 text-sm"
-        >
-          <p className="text-xs text-muted-foreground">
-            {recruitmentText(
-              note.fore_user__username ||
-                note.user_create_name ||
-                note.username,
-            )}{" "}
-            {formatDataDateTime(
-              recruitmentText(note.created || note.note_date),
-            )}
-          </p>
-          <p className="whitespace-pre-wrap">
-            {recruitmentText(note.content ?? note.note)}
-          </p>
-          {recruitmentRows(note.data_file).map((file) => (
-            <Button
-              key={file.id}
-              type="button"
-              variant="link"
-              className="max-w-full justify-start truncate px-0"
-              disabled={download.isPending}
-              onClick={() => download.mutate(file)}
-            >
-              {recruitmentText(file.file_name) || "Tải tệp ghi chú"}
-            </Button>
-          ))}
-          {recruitmentFileHref(note.path_file_note, note.name_file_note) && (
-            <a
-              href={recruitmentFileHref(
-                note.path_file_note,
-                note.name_file_note,
-              )}
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary underline"
-            >
-              {recruitmentText(note.name_file_note) || "Tệp ghi chú"}
-            </a>
-          )}
-        </div>
+        <RequestAttachments
+          previewAllFiles
+          key={name}
+          layout="tiles"
+          inputId={`recruitment-${name}`}
+          label={uploadLabel(name, state.action)}
+          hideLabel={
+            name === "file_upload" &&
+            state.action !== "request" &&
+            Boolean(
+              recruitmentFileHref(
+                state.row.path_file_cv,
+                state.row.name_file_cv,
+              ),
+            )
+          }
+          files={files[name] ? [files[name]] : []}
+          multiple={false}
+          description={`Chọn một tệp bất kỳ, tối đa ${name === "file_upload" && state.action !== "request" ? 10 : 50} MB.`}
+          disabled={disabled}
+          onChange={(selected) => onFile(name, selected[0])}
+        />
       ))}
     </>
   );

@@ -1,0 +1,108 @@
+{
+  "checks": [
+    {
+      "page": "/recruitment/requests",
+      "action": "Xem yêu cầu",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/requests",
+      "action": "Thêm ứng viên",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Sửa hồ sơ",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Ghi chú",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Chuyển trạng thái",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Kiểm tra trùng",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Gắn lịch phỏng vấn",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Xóa hồ sơ",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Xóa tệp CV",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Ghi chú",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Xem hồ sơ",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Chuyển trạng thái",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Đặt giờ",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Bỏ khỏi lịch",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Sửa hồ sơ",
+      "parentChooserRetained": true,
+      "result": "passed"
+    },
+    {
+      "flow": "chooser retained after successful save and table refresh",
+      "result": "passed"
+    }
+  ],
+  "writes": [
+    {
+      "path": "/api/change_status_cv/408",
+      "method": "PUT",
+      "body": "------WebKitFormBoundaryCPQcSgSVEzg0lh7h\r\nContent-Disposition: form-data; name=\"code_cv\"\r\n\r\nTEST-CV\r\n------WebKitFormBoundaryCPQcSgSVEzg0lh7h\r\nContent-Disposition: form-data; name=\"cv_status\"\r\n\r\n2\r\n------WebKitFormBoundaryCPQcSgSVEzg0lh7h\r\nContent-Disposition: form-data; name=\"why_change\"\r\n\r\n\r\n------WebKitFormBoundaryCPQcSgSVEzg0lh7h--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/change_status_cv/408"
+    }
+  ],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}

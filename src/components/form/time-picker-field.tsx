@@ -6,6 +6,7 @@ import {
 } from "react-hook-form";
 import { TimePicker } from "@/components/ui/time-picker";
 import { FormFieldShell } from "./form-field-shell";
+import { validateTimeRange } from "@/lib/time-range";
 
 export function TimePickerField<T extends FieldValues>({
   control,
@@ -15,6 +16,8 @@ export function TimePickerField<T extends FieldValues>({
   required,
   disabled,
   className,
+  minTime,
+  maxTime,
 }: Readonly<{
   control: Control<T>;
   name: FieldPath<T>;
@@ -23,7 +26,10 @@ export function TimePickerField<T extends FieldValues>({
   required?: boolean;
   disabled?: boolean;
   className?: string;
+  minTime?: string;
+  maxTime?: string;
 }>) {
+  const hintId = minTime && maxTime ? `${id}-hint` : undefined;
   return (
     <Controller
       name={name}
@@ -31,9 +37,7 @@ export function TimePickerField<T extends FieldValues>({
       rules={{
         required: required ? `Vui lòng chọn ${label.toLowerCase()}.` : false,
         validate: (value) =>
-          !value ||
-          /^([01]\d|2[0-3]):[0-5]\d$/.test(String(value)) ||
-          "Giờ không hợp lệ. Vui lòng nhập HH:mm.",
+          validateTimeRange(String(value ?? ""), minTime, maxTime) ?? true,
       }}
       render={({ field, fieldState }) => (
         <FormFieldShell
@@ -51,10 +55,17 @@ export function TimePickerField<T extends FieldValues>({
             value={String(field.value ?? "")}
             onValueChange={field.onChange}
             disabled={disabled}
+            minTime={minTime}
+            maxTime={maxTime}
             aria-required={required}
             aria-invalid={fieldState.invalid}
-            aria-describedby={fieldState.error ? `${id}-error` : undefined}
+            aria-describedby={fieldState.error ? `${id}-error` : hintId}
           />
+          {minTime && maxTime && (
+            <p id={hintId} className="text-xs text-muted-foreground">
+              Khung giờ cho phép: {minTime} – {maxTime}.
+            </p>
+          )}
         </FormFieldShell>
       )}
     />

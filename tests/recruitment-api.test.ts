@@ -14,6 +14,7 @@ import {
   interviewDetail,
 } from "@/features/recruitment/api/recruitment-api";
 import { saveRecruitmentAction } from "@/features/recruitment/utils/recruitment-actions";
+import type { RecruitmentEditorState } from "@/features/recruitment/types";
 vi.mock("@/lib/api/client", () => ({
   getRequest: vi.fn(),
   postRequest: vi.fn(),
@@ -26,6 +27,80 @@ beforeEach(() => {
   vi.mocked(putRequest).mockResolvedValue({});
   vi.mocked(deleteRequest).mockResolvedValue(null);
 });
+it.each([
+  {
+    action: "request",
+    id: 85,
+    endpoint: "/detail_recruitment/85",
+    method: "PUT",
+    field: "file_upload",
+  },
+  {
+    action: "create-candidate",
+    id: 85,
+    endpoint: "/detail_cv/85",
+    method: "POST",
+    field: "file_upload",
+  },
+  {
+    action: "candidate",
+    id: 408,
+    endpoint: "/detail_cv/408",
+    method: "PUT",
+    field: "file_upload",
+  },
+  {
+    action: "note",
+    id: 408,
+    endpoint: "/note-cv/",
+    method: "POST",
+    field: "file_note",
+  },
+] as const)(
+  "preserves every uploaded file format for $action / $field",
+  async ({ action, id, endpoint, method, field }) => {
+    const formats = [
+      ["Đánh giá ứng viên #1.PNG", "image/png"],
+      ["CV.pdf", "application/pdf"],
+      [
+        "CV.docx",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ],
+      [
+        "Dữ liệu.xlsx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ],
+      [
+        "Presentation.pptx",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      ],
+      ["Notes.txt", "text/plain"],
+      ["Backup.zip", "application/zip"],
+      ["Archive.7z", ""],
+      ["Interview.mp4", "video/mp4"],
+      ["README", ""],
+    ];
+    for (const [name, type] of formats) {
+      const file = new File([`TEST ${name}`], name, { type });
+      await saveRecruitmentAction(
+        { action, row: { id } } satisfies RecruitmentEditorState,
+        { note: "TEST upload", quantity: "1" },
+        { [field]: file },
+      );
+      const calls =
+        method === "POST"
+          ? vi.mocked(postRequest).mock.calls
+          : vi.mocked(putRequest).mock.calls;
+      const [url, options] = calls[calls.length - 1];
+      expect(url).toBe(endpoint);
+      const uploaded = (options!.body as FormData).get(field) as File;
+      expect(uploaded).toBe(file);
+      expect(uploaded.name).toBe(name);
+      expect(uploaded.type).toBe(type);
+      expect(uploaded.size).toBe(file.size);
+    }
+  },
+);
 it("keeps only applied nonempty filters and respects nullable calendar counts", async () => {
   vi.mocked(getRequest).mockResolvedValue({
     count: null,
@@ -109,6 +184,48 @@ it("does not overwrite readonly rich text or ticket data when saving a request",
     note: "TEST",
   });
 });
+it("cannot change CV status or transition reason through a profile update", async () => {
+  await saveRecruitmentAction(
+    { action: "candidate", row: { id: 408 } },
+    {
+      first_name: "TEST Updated",
+      cv_status: "2",
+      cv_status_id: "2",
+      why_change: "TEST transition reason",
+      why_change_statuscv: "TEST old reason",
+      id_interview: "58",
+      note: "TEST injected feedback",
+    },
+    { file_note: new File(["TEST"], "feedback.pdf") },
+  );
+  expect(putRequest).toHaveBeenCalledTimes(1);
+  const [path, options] = vi.mocked(putRequest).mock.calls[0];
+  expect(path).toBe("/detail_cv/408");
+  const body = options!.body as FormData;
+  expect(body.has("file_note")).toBe(false);
+  expect(JSON.parse(String(body.get("values")))).toEqual({
+    first_name: "TEST Updated",
+  });
+});
+it("rejects empty interview notes but accepts attachment-only notes", async () => {
+  await expect(
+    saveRecruitmentAction(
+      { action: "note", row: { id: 408 } },
+      { note: "   " },
+      {},
+    ),
+  ).rejects.toThrow("Vui lòng nhập ghi chú hoặc đính kèm tệp.");
+  expect(postRequest).not.toHaveBeenCalled();
+  const file = new File(["TEST"], "feedback.xlsx");
+  await saveRecruitmentAction(
+    { action: "note", row: { id: 408 } },
+    { note: "" },
+    { file_note: file },
+  );
+  const body = vi.mocked(postRequest).mock.calls[0][1]!.body as FormData;
+  expect(body.get("file_note")).toBe(file);
+  expect(body.get("id_cv")).toBe("408");
+});
 it("uses the V2 status change multipart contract", async () => {
   await saveRecruitmentAction(
     { action: "status", row: { id: 8, code_cv: "TEST-CV" } },
@@ -152,6 +269,24 @@ it("registers and edits interviews with numeric assignees", async () => {
     "/regis-interview/",
     expect.anything(),
   );
+});
+it("blocks out-of-range candidate times before sending an API write", async () => {
+  const state: RecruitmentEditorState = {
+    action: "candidate-time",
+    row: { id: 408, id_interview: 58 },
+    timeRange: { start: "04:00", end: "11:00" },
+  };
+  for (const time_start of ["03:59", "11:01", "25:00"])
+    await expect(
+      saveRecruitmentAction(state, { time_start }, {}),
+    ).rejects.toThrow();
+  expect(postRequest).not.toHaveBeenCalled();
+  for (const time_start of ["04:00", "11:00", ""])
+    await saveRecruitmentAction(state, { time_start }, {});
+  expect(postRequest).toHaveBeenCalledTimes(3);
+  expect(postRequest).toHaveBeenLastCalledWith("/detail-cv-interview/", {
+    body: { id_cv: 408, id_interview: 58, time_start: null },
+  });
 });
 it("removes candidates using DELETE query parameters without a request body", async () => {
   await saveRecruitmentAction(

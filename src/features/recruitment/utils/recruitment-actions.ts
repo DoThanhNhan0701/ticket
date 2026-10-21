@@ -1,13 +1,21 @@
 import { recruitmentMultipart, recruitmentWrite } from "../api/recruitment-api";
 import type { RecruitmentEditorState, RecruitmentValues } from "../types";
-import { recruitmentFields } from "./recruitment-fields";
+import {
+  recruitmentFields,
+  recruitmentUploadNames,
+} from "./recruitment-fields";
 import { recruitmentDate } from "./recruitment-format";
+import { validateTimeRange } from "@/lib/time-range";
 export async function saveRecruitmentAction(
   state: RecruitmentEditorState,
   values: RecruitmentValues,
   files: Record<string, File | undefined>,
 ) {
   const id = state.row.id;
+  const allowedUploads = recruitmentUploadNames(state.action);
+  files = Object.fromEntries(
+    Object.entries(files).filter(([name]) => allowedUploads.includes(name)),
+  );
   const data = recruitmentPayload(state, values);
   const body = (extra: Record<string, unknown> = {}) =>
     recruitmentMultipart({ ...data, ...extra }, files);
@@ -64,6 +72,8 @@ async function saveAdditionalAction(
       return recruitmentWrite("/add-cv-interview/", "POST", form);
     }
     case "note": {
+      if (!String(data.note ?? "").trim() && !files.file_note)
+        throw new Error("Vui lòng nhập ghi chú hoặc đính kèm tệp.");
       const form = body();
       form.append("id_cv", String(id));
       return recruitmentWrite("/note-cv/", "POST", form);
@@ -74,30 +84,47 @@ async function saveAdditionalAction(
         code_interview: state.code ?? "",
       });
     case "candidate-time":
-      return recruitmentWrite("/detail-cv-interview/", "POST", {
-        id_cv: id,
-        id_interview: state.row.id_interview,
-        time_start: data.time_start || null,
-      });
+      return saveCandidateInterviewTime(state, data);
     default:
       throw new Error("Thao tác không hợp lệ.");
   }
+}
+
+function saveCandidateInterviewTime(
+  state: RecruitmentEditorState,
+  data: Record<string, unknown>,
+) {
+  const issue = validateTimeRange(
+    String(data.time_start ?? ""),
+    state.timeRange?.start,
+    state.timeRange?.end,
+  );
+  if (issue) throw new Error(issue);
+  return recruitmentWrite("/detail-cv-interview/", "POST", {
+    id_cv: state.row.id,
+    id_interview: state.row.id_interview,
+    time_start: data.time_start || null,
+  });
 }
 
 function recruitmentPayload(
   state: RecruitmentEditorState,
   values: RecruitmentValues,
 ) {
-  const readonlyFields = recruitmentFields(state.action)
-    .filter((field) => field.readonly)
-    .map((field) => field.name);
+  const editableFields = new Set(
+    recruitmentFields(state.action)
+      .filter((field) => !field.readonly)
+      .map((field) => field.name),
+  );
   const data: Record<string, unknown> = Object.fromEntries(
-    Object.entries(values).filter(([key]) => !readonlyFields.includes(key)),
+    Object.entries(values).filter(([key]) => editableFields.has(key)),
   );
   if (state.action === "create-candidate")
     for (const [key, value] of Object.entries(data))
       if (value === "") delete data[key];
   normalizeNumericFields(data);
+  // Keep address codes as strings, including leading zeroes. The current backend
+  // stores the five-digit ward code in its existing district_code field.
   if (Array.isArray(data.user_interview) && data.user_interview.length === 0)
     delete data.user_interview;
   normalizeDateFields(data);

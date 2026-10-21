@@ -15,12 +15,15 @@ export type RecruitmentLookups = Record<string, RecruitmentOption[]>;
 export interface RecruitmentField {
   name: string;
   label: string;
+  placeholder?: string;
   type?: "date" | "time" | "select" | "multi" | "textarea" | "email" | "number";
   lookup?: string;
   required?: boolean;
   readonly?: boolean;
   min?: number;
   max?: number;
+  minTime?: string;
+  maxTime?: string;
 }
 export type RecruitmentValues = Record<string, string | string[]>;
 export type RecruitmentAction =
@@ -43,4 +46,5 @@ export interface RecruitmentEditorState {
   row: RecruitmentRow;
   ids?: number[];
   code?: string;
+  timeRange?: { start: string; end: string };
 }

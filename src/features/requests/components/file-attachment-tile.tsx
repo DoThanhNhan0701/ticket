@@ -81,6 +81,7 @@ export function FileAttachmentTile({
       <button
         type="button"
         aria-label={previewLabel}
+        disabled={disabled}
         className={className}
         onClick={onPreview}
       >

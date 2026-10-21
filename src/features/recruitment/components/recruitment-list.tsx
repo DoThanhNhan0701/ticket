@@ -32,7 +32,10 @@ import {
 } from "../utils/recruitment-format";
 import { useRecruitmentLookups } from "../hooks/use-recruitment-lookups";
 import { RecruitmentEditor } from "./recruitment-editor";
-import { RecruitmentRowActions } from "./recruitment-row-actions";
+import {
+  RecruitmentActionChooser,
+  RecruitmentRowActions,
+} from "./recruitment-row-actions";
 import { RecruitmentFilters } from "./recruitment-filters";
 const pageSizes = [100, 200] as const;
 export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
@@ -62,6 +65,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
     page_size: String(pagination.pageSize),
   };
   const [editor, setEditor] = useState<RecruitmentEditorState | null>(null);
+  const [actionRow, setActionRow] = useState<RecruitmentRow | null>(null);
   const [selected, setSelected] = useState<number[]>([]);
   const selectionScope = params.toString();
   useEffect(() => {
@@ -124,6 +128,17 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         : current.filter((selectedId) => selectedId !== id),
     );
   const rowActionsDisabled = !lookups.data || query.isFetching;
+  const editorContent =
+    editor && lookups.data ? (
+      <RecruitmentEditor
+        state={editor}
+        lookups={lookups.data}
+        onClose={() => {
+          setEditor(null);
+          setSelected([]);
+        }}
+      />
+    ) : null;
   const columns: DataColumn<RecruitmentRow>[] = [
     {
       id: "index",
@@ -275,7 +290,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
     {
       id: "actions",
       label: "Thao tác",
-      width: kind === "requests" ? "105px" : "260px",
+      width: "80px",
       sticky: "right",
       render: (row) => (
         <RecruitmentRowActions
@@ -283,6 +298,10 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           row={row}
           disabled={rowActionsDisabled}
           onAction={open}
+          open={false}
+          onOpenChange={(nextOpen) => {
+            if (nextOpen) setActionRow(row);
+          }}
         />
       ),
     },
@@ -382,16 +401,17 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           />
         )}
       />
-      {editor && lookups.data && (
-        <RecruitmentEditor
-          state={editor}
-          lookups={lookups.data}
-          onClose={() => {
-            setEditor(null);
-            setSelected([]);
-          }}
-        />
-      )}
+      {!editor?.row.id && editorContent}
+      <RecruitmentActionChooser
+        mode={kind}
+        row={actionRow}
+        rows={query.data?.results}
+        disabled={rowActionsDisabled}
+        onClose={() => setActionRow(null)}
+        onAction={open}
+      >
+        {editorContent}
+      </RecruitmentActionChooser>
     </div>
   );
 }

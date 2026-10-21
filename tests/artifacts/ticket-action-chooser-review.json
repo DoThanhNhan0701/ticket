@@ -1,0 +1,82 @@
+{
+  "checks": [
+    {
+      "page": "/recruitment/requests",
+      "action": "Xem yêu cầu",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/requests",
+      "action": "Thêm ứng viên",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Sửa hồ sơ",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Ghi chú",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Chuyển trạng thái",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Kiểm tra trùng",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Gắn lịch phỏng vấn",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Xóa hồ sơ",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/candidates",
+      "action": "Xóa tệp CV",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Ghi chú",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Xem hồ sơ",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Chuyển trạng thái",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Đặt giờ",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Bỏ khỏi lịch",
+      "result": "passed"
+    },
+    {
+      "page": "/recruitment/interviews/INT_TEST",
+      "action": "Sửa hồ sơ",
+      "result": "passed"
+    }
+  ],
+  "writes": [],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}

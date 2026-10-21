@@ -1,9 +1,11 @@
 import { z } from "zod";
-import { differenceInCalendarMonths, format } from "date-fns";
+import { addMonths, format } from "date-fns";
+import { validateTimeRange } from "@/lib/time-range";
 import type {
   RecruitmentAction,
   RecruitmentField,
   RecruitmentLookups,
+  RecruitmentOption,
   RecruitmentRow,
   RecruitmentValues,
 } from "../types";
@@ -85,6 +87,10 @@ function validateTextField(
     error(field.name, `Tối thiểu ${field.min} ký tự.`);
   if (field.max && value.length > field.max)
     error(field.name, `Tối đa ${field.max} ký tự.`);
+  if (field.type === "time") {
+    const issue = validateTimeRange(value, field.minTime, field.maxTime);
+    if (issue) error(field.name, issue);
+  }
   const checks: Record<string, [boolean, string]> = {
     email: [
       field.type === "email" && !z.email().safeParse(value).success,
@@ -94,16 +100,13 @@ function validateTextField(
       field.type === "date" && !recruitmentDate(value),
       "Ngày không hợp lệ.",
     ],
-    time: [
-      field.type === "time" && !/^([01]\d|2[0-3]):[0-5]\d$/.test(value),
-      "Giờ không hợp lệ.",
-    ],
     numberphone: [
       field.name === "numberphone" && !/^\d{10,12}$/.test(value),
       "Số điện thoại phải có từ 10 đến 12 chữ số.",
     ],
     quantity: [
-      field.name === "quantity" && !/^[1-9]\d*$/.test(value),
+      field.name === "quantity" &&
+        (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))),
       "Số lượng phải là số nguyên dương.",
     ],
     birthday: [
@@ -123,6 +126,10 @@ function validateRecruitmentField(
   error: FieldError,
 ) {
   if (field.readonly) return;
+  if ((field.type === "multi") !== Array.isArray(value)) {
+    error(field.name, "Giá trị không hợp lệ. Vui lòng nhập lại.");
+    return;
+  }
   if (field.required && !value.length)
     error(
       field.name,
@@ -130,15 +137,18 @@ function validateRecruitmentField(
     );
   if (field.lookup && value.length) {
     const selected = Array.isArray(value) ? value : [value];
-    if (
-      selected.some(
-        (id) =>
-          !(options[field.lookup!] ?? []).some((option) => option.value === id),
-      )
-    )
-      error(field.name, "Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+    validateSelection(field.name, selected, options[field.lookup] ?? [], error);
   }
   if (typeof value === "string") validateTextField(field, value, now, error);
+}
+function validateSelection(
+  name: string,
+  selected: string[],
+  options: RecruitmentOption[],
+  error: FieldError,
+) {
+  if (selected.some((id) => !options.some((option) => option.value === id)))
+    error(name, "Lựa chọn không hợp lệ. Vui lòng chọn lại.");
 }
 function validateInterview(
   values: RecruitmentValues,
@@ -147,8 +157,8 @@ function validateInterview(
   error: FieldError,
 ) {
   const day = recruitmentDate(String(values.start_date ?? ""));
-  const start = String(values.time_start ?? "").slice(0, 5),
-    end = String(values.time_end ?? "").slice(0, 5);
+  const start = String(values.time_start ?? ""),
+    end = String(values.time_end ?? "");
   if (start && end && end <= start)
     error("time_end", "Giờ kết thúc phải sau giờ bắt đầu.");
   if (!editing && day && start && new Date(`${day}T${start}`) <= now)
@@ -162,14 +172,17 @@ export function recruitmentFormSchema(
   now = new Date(),
 ) {
   return z
-    .record(z.string(), z.union([z.string().trim(), z.array(z.string())]))
+    .record(
+      z.string(),
+      z.union([z.string().trim(), z.array(z.string().trim())]),
+    )
     .superRefine((values, context) => {
       const error: FieldError = (name, message) =>
         context.addIssue({ code: "custom", path: [name], message });
       for (const field of fields)
         validateRecruitmentField(
           field,
-          values[field.name] ?? "",
+          values[field.name] ?? (field.type === "multi" ? [] : ""),
           options,
           now,
           error,
@@ -189,11 +202,82 @@ export function validateRecruitmentRange(
   if (start > end) return "Ngày kết thúc phải từ ngày bắt đầu trở đi.";
   if (
     maxMonths &&
-    (differenceInCalendarMonths(new Date(end), new Date(start)) > maxMonths ||
-      (differenceInCalendarMonths(new Date(end), new Date(start)) ===
-        maxMonths &&
-        end.slice(-2) > start.slice(-2)))
+    end >
+      format(addMonths(new Date(`${start}T00:00:00`), maxMonths), "yyyy-MM-dd")
   )
     return `Phạm vi tra cứu không quá ${maxMonths} tháng.`;
   return null;
+}
+
+export type RecruitmentFilterMode =
+  "requests" | "candidates" | "interviews" | "reports";
+
+export function recruitmentFilterSchema(
+  mode: RecruitmentFilterMode,
+  lookups: RecruitmentLookups,
+) {
+  return z
+    .record(z.string(), z.string().trim())
+    .superRefine((values, context) => {
+      const error: FieldError = (name, message) =>
+        context.addIssue({ code: "custom", path: [name], message });
+      const from = values.from_date ?? "";
+      const to = values.to_date ?? "";
+      if (mode === "interviews") {
+        if (!recruitmentDate(from)) error("from_date", "Ngày không hợp lệ.");
+        return;
+      }
+      const issue = validateRecruitmentRange(
+        from,
+        to,
+        mode === "reports" ? 6 : undefined,
+      );
+      if (issue) error(!recruitmentDate(from) ? "from_date" : "to_date", issue);
+      if (mode === "reports") return;
+      const fields = [
+        ["department_recruited", "departments"],
+        ["user_received", "users"],
+        mode === "requests"
+          ? ["ticket_status", "ticketStatuses"]
+          : ["cv_status", "statuses"],
+      ];
+      const options: RecruitmentLookups = {
+        ...lookups,
+        ticketStatuses: [2, 3, 4, 6, 7].map((id) => ({
+          value: String(id),
+          label: String(id),
+        })),
+      };
+      for (const [name, lookup] of fields) {
+        const value = values[name];
+        if (!value) continue;
+        const selected =
+          name === "department_recruited"
+            ? value.split(",").map((id) => id.trim())
+            : [value];
+        validateSelection(name, selected, options[lookup] ?? [], error);
+      }
+    });
+}
+
+export function interviewCandidateFilterSchema(lookups: RecruitmentLookups) {
+  return z.object({
+    search: z.string().trim(),
+    gender: z
+      .string()
+      .trim()
+      .refine(
+        (value) => ["", "Nam", "Nữ"].includes(value),
+        "Giới tính không hợp lệ.",
+      ),
+    cv_status: z
+      .string()
+      .trim()
+      .refine(
+        (value) =>
+          !value ||
+          (lookups.statuses ?? []).some((option) => option.value === value),
+        "Trạng thái CV không hợp lệ. Vui lòng chọn lại.",
+      ),
+  });
 }

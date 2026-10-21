@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "mode": "new-ward",
+      "endpoint": "/api/detail_cv/109",
+      "fields": [
+        [
+          "values",
+          "{\"first_name\":\"TEST_ADDRESS_V2_261021\",\"gender\":\"Nam\",\"numberphone\":\"0900000091\",\"city_code\":\"01\",\"district_code\":\"001\",\"address\":\"TEST Địa chỉ mới\",\"department_recruited\":\"31\"}"
+        ]
+      ],
+      "status": 200,
+      "response": {
+        "message": "Tạo CV thành công"
+      }
+    }
+  ],
+  "readback": {
+    "status": 200,
+    "address": {
+      "id": 436,
+      "city_code": "01",
+      "district_code": "00004",
+      "first_name": "TEST_ADDRESS_V2_261021",
+      "city_name": "Thành phố Hà Nội",
+      "district_name": null
+    }
+  }
+}

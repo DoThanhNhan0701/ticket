@@ -1,0 +1,19 @@
+{
+  "checks": [
+    {
+      "flow": "profile contains personal details without workflow fields or editing controls",
+      "result": "passed"
+    },
+    {
+      "flow": "CV preview retained",
+      "result": "passed"
+    },
+    {
+      "flow": "mobile profile without horizontal overflow",
+      "result": "passed"
+    }
+  ],
+  "writes": [],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}

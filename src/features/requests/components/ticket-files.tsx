@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FilePreviewDialog } from "@/components/file-preview-dialog";
 import { FileText, Image } from "lucide-react";
 import {
   Dialog,
@@ -13,10 +14,12 @@ import { FileAttachmentTile } from "./file-attachment-tile";
 interface TicketFilesProps {
   files: Record<string, string>;
   layout?: "list" | "tiles";
+  previewAllFiles?: boolean;
   removedFiles?: string[];
   onRemove?: (name: string) => void;
   onRestore?: (name: string) => void;
   disabled?: boolean;
+  onDownload?: (name: string) => void;
 }
 
 export function TicketFiles({
@@ -26,6 +29,8 @@ export function TicketFiles({
   onRemove,
   onRestore,
   disabled,
+  onDownload,
+  previewAllFiles,
 }: Readonly<TicketFilesProps>) {
   const [preview, setPreview] = useState<{ name: string; url: string } | null>(
     null,
@@ -43,6 +48,12 @@ export function TicketFiles({
         {Object.entries(files).map(([name, source]) => {
           const url = ticketFileUrl(source);
           const image = /\.(?:png|jpe?g|gif|webp|avif|bmp)$/i.test(name);
+          let tileAction = onDownload ? () => onDownload(name) : undefined;
+          if (!tileAction && url && (image || previewAllFiles))
+            tileAction = () => {
+              setFailed(false);
+              setPreview({ name, url });
+            };
           if (layout === "tiles")
             return (
               <FileAttachmentTile
@@ -58,14 +69,8 @@ export function TicketFiles({
                     ? () => onRestore(name)
                     : undefined
                 }
-                onPreview={
-                  url && image
-                    ? () => {
-                        setFailed(false);
-                        setPreview({ name, url });
-                      }
-                    : undefined
-                }
+                previewLabel={onDownload ? `Tải tệp ${name}` : name}
+                onPreview={tileAction}
               />
             );
           const content = (
@@ -87,7 +92,20 @@ export function TicketFiles({
               {content}
             </span>
           );
-          if (url && image)
+          if (onDownload)
+            action = (
+              <button
+                type="button"
+                title={name}
+                aria-label={`Tải tệp ${name}`}
+                className={className}
+                disabled={disabled}
+                onClick={() => onDownload(name)}
+              >
+                {content}
+              </button>
+            );
+          else if (url && (image || previewAllFiles))
             action = (
               <button
                 type="button"
@@ -122,7 +140,14 @@ export function TicketFiles({
           );
         })}
       </ul>
-      {preview && (
+      {preview && previewAllFiles && (
+        <FilePreviewDialog
+          name={preview.name}
+          url={preview.url}
+          onClose={() => setPreview(null)}
+        />
+      )}
+      {preview && !previewAllFiles && (
         <Dialog
           open
           onOpenChange={(open) => {

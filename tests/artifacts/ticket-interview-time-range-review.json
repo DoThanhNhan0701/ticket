@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "range": ["04:00", "11:00"],
+      "disabledHours": true,
+      "disabledMinutes": true,
+      "invalidManualTimesBlocked": true,
+      "endBoundarySaved": true,
+      "result": "passed"
+    },
+    {
+      "range": ["09:30", "11:15"],
+      "disabledHours": true,
+      "disabledMinutes": true,
+      "invalidManualTimesBlocked": true,
+      "endBoundarySaved": true,
+      "result": "passed"
+    },
+    {
+      "range": ["10:15", "10:45"],
+      "disabledHours": true,
+      "disabledMinutes": true,
+      "invalidManualTimesBlocked": true,
+      "endBoundarySaved": true,
+      "result": "passed"
+    }
+  ],
+  "writes": [
+    {
+      "path": "/api/detail-cv-interview/",
+      "method": "POST",
+      "body": "{\"id_cv\":408,\"id_interview\":58,\"time_start\":\"11:00\"}",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail-cv-interview/"
+    },
+    {
+      "path": "/api/detail-cv-interview/",
+      "method": "POST",
+      "body": "{\"id_cv\":408,\"id_interview\":58,\"time_start\":\"11:15\"}",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail-cv-interview/"
+    },
+    {
+      "path": "/api/detail-cv-interview/",
+      "method": "POST",
+      "body": "{\"id_cv\":408,\"id_interview\":58,\"time_start\":\"10:45\"}",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail-cv-interview/"
+    }
+  ],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}

@@ -25,9 +25,13 @@ afterEach(cleanup);
 function Example({
   initial = "",
   disabled = false,
+  minTime,
+  maxTime,
 }: {
   initial?: string;
   disabled?: boolean;
+  minTime?: string;
+  maxTime?: string;
 }) {
   const [value, setValue] = useState(initial);
   return (
@@ -39,6 +43,8 @@ function Example({
         value={value}
         onValueChange={setValue}
         disabled={disabled}
+        minTime={minTime}
+        maxTime={maxTime}
       />
     </>
   );
@@ -59,6 +65,61 @@ it("selects 24-hour time including boundary minutes and can clear it", async () 
   fireEvent.click(await screen.findByRole("button", { name: "Xóa giờ" }));
   expect((screen.getByLabelText("Giờ bắt đầu") as HTMLInputElement).value).toBe(
     "",
+  );
+});
+it("disables out-of-range hours and boundary minutes and skips them with the keyboard", async () => {
+  render(<Example minTime="09:30" maxTime="11:15" />);
+  fireEvent.click(screen.getByRole("button", { name: "Chọn giờ bắt đầu" }));
+  const hour = await screen.findByRole("button", { name: "Giờ 09" });
+  expect(
+    screen.getByRole("button", { name: "Giờ 08" }).hasAttribute("disabled"),
+  ).toBe(true);
+  expect(
+    screen.getByRole("button", { name: "Giờ 12" }).hasAttribute("disabled"),
+  ).toBe(true);
+  expect(
+    screen.getByRole("button", { name: "Phút 29" }).hasAttribute("disabled"),
+  ).toBe(true);
+  expect(
+    screen.getByRole("button", { name: "Phút 30" }).hasAttribute("disabled"),
+  ).toBe(false);
+  fireEvent.click(hour);
+  const input = screen.getByLabelText("Giờ bắt đầu") as HTMLInputElement;
+  expect(input.value).toBe("09:30");
+  fireEvent.click(screen.getByRole("button", { name: "Giờ 11" }));
+  expect(input.value).toBe("11:15");
+  expect(
+    screen.getByRole("button", { name: "Phút 16" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.keyDown(screen.getByRole("button", { name: "Giờ 11" }), {
+    key: "ArrowDown",
+  });
+  expect(input.value).toBe("09:30");
+  fireEvent.keyDown(screen.getByRole("button", { name: "Phút 30" }), {
+    key: "ArrowUp",
+  });
+  expect(input.value).toBe("09:59");
+  fireEvent.keyDown(screen.getByRole("button", { name: "Giờ 09" }), {
+    key: "End",
+  });
+  expect(input.value).toBe("11:15");
+  fireEvent.keyDown(screen.getByRole("button", { name: "Phút 15" }), {
+    key: "Home",
+  });
+  expect(input.value).toBe("11:00");
+});
+
+it("restricts minutes correctly when the interview fits within a single hour", async () => {
+  render(<Example minTime="10:15" maxTime="10:45" />);
+  fireEvent.click(screen.getByRole("button", { name: "Chọn giờ bắt đầu" }));
+  await screen.findByRole("button", { name: "Giờ 10" });
+  for (const label of ["Giờ 09", "Giờ 11", "Phút 14", "Phút 46"])
+    expect(
+      screen.getByRole("button", { name: label }).hasAttribute("disabled"),
+    ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Phút 45" }));
+  expect((screen.getByLabelText("Giờ bắt đầu") as HTMLInputElement).value).toBe(
+    "10:45",
   );
 });
 it("opens from the keyboard and navigates hours and minutes without submitting", async () => {

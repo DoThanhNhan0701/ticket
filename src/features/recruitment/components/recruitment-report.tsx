@@ -110,6 +110,19 @@ export function RecruitmentReport() {
   );
   const columns: DataColumn<RecruitmentRow>[] = keys.map((key) => ({
     id: key,
+    width: reportColumnWidth(key),
+    align: [
+      "number_cv_all",
+      "number_cv",
+      "number_cv_pass",
+      "quantity",
+      "rate_pass",
+      "rate",
+      "count",
+      "value",
+    ].includes(key)
+      ? "right"
+      : "left",
     label:
       key === "rate_pass" && tab === "result_time_recruitment"
         ? "Thời gian tuyển dụng (ngày)"
@@ -125,7 +138,7 @@ export function RecruitmentReport() {
     ),
   }));
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
+    <div className="flex min-w-0 shrink-0 flex-col gap-3 pb-1">
       <RecruitmentFilters
         values={filters}
         lookups={{}}
@@ -166,7 +179,7 @@ export function RecruitmentReport() {
 
       {exporting.isError && <ErrorAlert message={exporting.error.message} />}
       <div
-        className="flex flex-wrap gap-2 rounded-xl border bg-card p-2"
+        className="flex shrink-0 gap-1 overflow-x-auto rounded-xl border bg-card p-2 [scrollbar-gutter:stable]"
         role="tablist"
         aria-label="Báo cáo tuyển dụng"
       >
@@ -179,6 +192,7 @@ export function RecruitmentReport() {
             aria-selected={tab === key}
             aria-controls="recruitment-report-panel"
             variant={tab === key ? "default" : "ghost"}
+            className="shrink-0 transition-colors motion-reduce:transition-none"
             onKeyDown={(event) => {
               const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
               if (!keys.includes(event.key)) return;
@@ -204,11 +218,14 @@ export function RecruitmentReport() {
         id="recruitment-report-panel"
         role="tabpanel"
         aria-label={sections.find(([key]) => key === tab)?.[1]}
-        className="flex min-h-64 flex-1 flex-col gap-4 rounded-xl border bg-card p-4"
+        className="flex min-w-0 shrink-0 flex-col gap-4 rounded-xl border bg-card p-3 sm:p-4"
       >
         {!query.isPending && !query.isError && rows.length > 0 && (
           <>
-            <div className="flex flex-wrap gap-3">
+            <div
+              key={`stats-${tab}-${query.dataUpdatedAt}`}
+              className="recruitment-report-reveal grid grid-cols-1 gap-3 min-[400px]:grid-cols-3"
+            >
               {["number_cv_all", "quantity", "number_cv_pass"]
                 .filter((key) =>
                   rows.some((row) => Number.isFinite(Number(row[key]))),
@@ -216,7 +233,7 @@ export function RecruitmentReport() {
                 .map((key) => (
                   <div
                     key={key}
-                    className="min-w-40 rounded-xl border bg-muted/30 p-4"
+                    className="min-w-0 rounded-xl border border-primary/15 bg-linear-to-br from-primary/5 to-card p-4"
                   >
                     <p className="text-xs text-muted-foreground">
                       {labels[key]}
@@ -230,34 +247,56 @@ export function RecruitmentReport() {
                   </div>
                 ))}
             </div>
-            <RecruitmentChart rows={rows} />
+            <RecruitmentChart
+              key={`chart-${tab}-${query.dataUpdatedAt}`}
+              rows={rows}
+              section={tab}
+            />
           </>
         )}
-        <DataClientResults
-          scopeKey={JSON.stringify([tab, filters, paginationReset])}
-          query={{
-            ...query,
-            data: query.data
-              ? { results: rows, count: rows.length }
-              : undefined,
-          }}
-          label="Kết quả báo cáo tuyển dụng"
-          itemLabel="bản ghi"
-          loadingMessage="Đang tải báo cáo tuyển dụng..."
-          errorPrefix="Không tải được báo cáo tuyển dụng"
-          emptyTitle="Không có dữ liệu báo cáo trong khoảng thời gian đã chọn."
-          renderRows={(visibleRows, offset) => (
-            <DataTable
-              scrollLabel="Cuộn bảng tuyển dụng"
-              rows={visibleRows}
-              columns={columns}
-              label="Bảng báo cáo tuyển dụng"
-              getRowKey={(row) => JSON.stringify(row)}
-              scrollResetKey={`${offset}:${visibleRows.length}`}
-            />
-          )}
-        />
+        <div className="flex h-[clamp(22rem,50vh,36rem)] min-h-0 min-w-0 flex-col">
+          <DataClientResults
+            scopeKey={JSON.stringify([tab, filters, paginationReset])}
+            query={{
+              ...query,
+              data: query.data
+                ? { results: rows, count: rows.length }
+                : undefined,
+            }}
+            label="Kết quả báo cáo tuyển dụng"
+            itemLabel="bản ghi"
+            loadingMessage="Đang tải báo cáo tuyển dụng..."
+            errorPrefix="Không tải được báo cáo tuyển dụng"
+            emptyTitle="Không có dữ liệu báo cáo trong khoảng thời gian đã chọn."
+            renderRows={(visibleRows, offset) => (
+              <DataTable
+                className="min-w-[48rem]"
+                scrollLabel="Cuộn bảng tuyển dụng"
+                rows={visibleRows}
+                columns={columns}
+                label="Bảng báo cáo tuyển dụng"
+                getRowKey={(row) => JSON.stringify(row)}
+                scrollResetKey={`${offset}:${visibleRows.length}`}
+              />
+            )}
+          />
+        </div>
       </section>
     </div>
   );
+}
+
+function reportColumnWidth(key: string) {
+  if (["created", "time_close"].includes(key)) return "160px";
+  if (
+    [
+      "rec_position",
+      "department_recruited",
+      "department_recruited_name",
+      "name",
+      "candidate_source__name",
+    ].includes(key)
+  )
+    return "220px";
+  return "150px";
 }

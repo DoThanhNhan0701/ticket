@@ -39,6 +39,7 @@ export function RecruitmentFormFields({
           id: `recruitment-${field.name}`,
           name: field.name,
           label: field.label,
+          placeholder: fieldPlaceholder(field),
           required: field.required,
           disabled: disabled || field.readonly,
         };
@@ -64,7 +65,6 @@ export function RecruitmentFormFields({
                   : []),
                 ...(options[field.lookup! as keyof typeof options] ?? []),
               ]}
-              placeholder={`Chọn ${field.label.toLowerCase()}`}
             />
           );
         if (field.type === "multi")
@@ -73,7 +73,6 @@ export function RecruitmentFormFields({
               key={field.name}
               {...shared}
               options={options[field.lookup! as keyof typeof options] ?? []}
-              placeholder={`Chọn ${field.label.toLowerCase()}`}
             />
           );
         if (field.type === "textarea")
@@ -85,7 +84,14 @@ export function RecruitmentFormFields({
             />
           );
         if (field.type === "time")
-          return <TimePickerField key={field.name} {...shared} />;
+          return (
+            <TimePickerField
+              key={field.name}
+              {...shared}
+              minTime={field.minTime}
+              maxTime={field.maxTime}
+            />
+          );
         return (
           <InputField
             key={field.name}
@@ -101,4 +107,20 @@ export function RecruitmentFormFields({
       })}
     </div>
   );
+}
+
+function fieldPlaceholder(field: RecruitmentField): string {
+  if (field.readonly) return "";
+  if (field.placeholder) return field.placeholder;
+  switch (field.type) {
+    case "date":
+      return "DD/MM/YYYY";
+    case "time":
+      return "HH:mm";
+    case "select":
+    case "multi":
+      return `Chọn ${field.label.toLowerCase()}`;
+    default:
+      return `Nhập ${field.label.toLowerCase()}...`;
+  }
 }

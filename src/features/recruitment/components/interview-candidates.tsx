@@ -19,7 +19,10 @@ import {
   names,
 } from "../utils/recruitment-format";
 import { useRecruitmentLookups } from "../hooks/use-recruitment-lookups";
-import { RecruitmentRowActions } from "./recruitment-row-actions";
+import {
+  RecruitmentActionChooser,
+  RecruitmentRowActions,
+} from "./recruitment-row-actions";
 import { InterviewCandidateFilters } from "./interview-candidate-filters";
 import { RecruitmentEditor } from "./recruitment-editor";
 export function InterviewCandidates() {
@@ -39,6 +42,7 @@ export function InterviewCandidates() {
     retry: false,
   });
   const [editor, setEditor] = useState<RecruitmentEditorState | null>(null);
+  const [actionRow, setActionRow] = useState<RecruitmentRow | null>(null);
   const query = useQuery({
     queryKey: [
       "recruitment-interview-candidates",
@@ -51,6 +55,23 @@ export function InterviewCandidates() {
   });
   const lookups = useRecruitmentLookups(canManage);
   const { interview, rows } = interviewData(query.data);
+  const openAction = (
+    action: RecruitmentEditorState["action"],
+    selected: RecruitmentRow,
+  ) =>
+    setEditor({
+      action,
+      row: {
+        ...selected,
+        id_interview: interview?.id,
+        time_start: interviewTime(selected),
+      },
+      code: codeInterview,
+      timeRange: {
+        start: text(interview?.time_start).slice(0, 5),
+        end: text(interview?.time_end).slice(0, 5),
+      },
+    });
   const columns: DataColumn<RecruitmentRow>[] = [
     {
       id: "name",
@@ -87,24 +108,19 @@ export function InterviewCandidates() {
     {
       id: "actions",
       label: "Thao tác",
-      width: "210px",
+      width: "80px",
+      sticky: "right",
       render: (row) => (
         <RecruitmentRowActions
           mode="interview"
           row={row}
           canManage={canManage}
           disabled={query.isFetching || (canManage && !lookups.data)}
-          onAction={(action, selected) =>
-            setEditor({
-              action,
-              row: {
-                ...selected,
-                id_interview: interview?.id,
-                time_start: interviewTime(selected),
-              },
-              code: codeInterview,
-            })
-          }
+          onAction={openAction}
+          open={false}
+          onOpenChange={(nextOpen) => {
+            if (nextOpen) setActionRow(row);
+          }}
         />
       ),
     },
@@ -151,7 +167,15 @@ export function InterviewCandidates() {
           <DataTable
             scrollLabel="Cuộn bảng tuyển dụng"
             rows={visibleRows}
-            columns={columns}
+            columns={[
+              {
+                id: "index",
+                label: "#",
+                width: "60px",
+                render: (_row, index) => offset + index + 1,
+              },
+              ...columns,
+            ]}
             label="CV phỏng vấn"
             getRowKey={(row) => String(row.id)}
             scrollResetKey={`${offset}:${visibleRows.length}`}
@@ -160,13 +184,23 @@ export function InterviewCandidates() {
       />
       {statuses.isError && <ErrorAlert message={statuses.error.message} />}
       {lookups.isError && <ErrorAlert message={lookups.error.message} />}
-      {editor && (
-        <RecruitmentEditor
-          state={editor}
-          lookups={lookups.data ?? {}}
-          onClose={() => setEditor(null)}
-        />
-      )}
+      <RecruitmentActionChooser
+        mode="interview"
+        row={actionRow}
+        rows={rows}
+        canManage={canManage}
+        disabled={query.isFetching || (canManage && !lookups.data)}
+        onClose={() => setActionRow(null)}
+        onAction={openAction}
+      >
+        {editor && (
+          <RecruitmentEditor
+            state={editor}
+            lookups={lookups.data ?? {}}
+            onClose={() => setEditor(null)}
+          />
+        )}
+      </RecruitmentActionChooser>
     </div>
   );
 }

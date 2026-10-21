@@ -11,15 +11,16 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import type {
   RecruitmentEditorState,
   RecruitmentLookups,
+  RecruitmentListData,
   RecruitmentValues,
 } from "../types";
-import { recruitmentArray, listRecruitment } from "../api/recruitment-api";
+import { listRecruitment } from "../api/recruitment-api";
+import { recruitmentDate, recruitmentText } from "../utils/recruitment-format";
 import {
-  recruitmentDate,
-  recruitmentOptions,
-  recruitmentText,
-} from "../utils/recruitment-format";
-import { recruitmentFields, actionLabels } from "../utils/recruitment-fields";
+  recruitmentFields,
+  recruitmentUploadNames,
+  actionLabels,
+} from "../utils/recruitment-fields";
 import {
   recruitmentDefaults,
   recruitmentFormSchema,
@@ -27,6 +28,10 @@ import {
 import { saveRecruitmentAction } from "../utils/recruitment-actions";
 import { RecruitmentFormFields } from "./recruitment-form-fields";
 import { RecruitmentFormExtras } from "./recruitment-form-extras";
+import { RecruitmentNoteComposer } from "./recruitment-note-composer";
+import { RecruitmentAddressStatus } from "./recruitment-address-status";
+import { RecruitmentAttachStatus } from "./recruitment-attach-status";
+import { useRecruitmentAddress } from "../hooks/use-recruitment-address";
 export function RecruitmentEditorForm({
   state,
   lookups,
@@ -41,58 +46,46 @@ export function RecruitmentEditorForm({
   const { userId } = useAuthContext();
   const client = useQueryClient();
   const submitting = useRef(false);
-  const fields = recruitmentFields(state.action);
+  const baseFields = recruitmentFields(state.action, state.timeRange);
   const [files, setFiles] = useState<Record<string, File | undefined>>({});
   const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
   const fileError = Object.values(fileErrors).filter(Boolean).join(" ");
   const optionsRef = useRef<RecruitmentLookups>(lookups);
   const form = useForm<RecruitmentValues>({
-    defaultValues: recruitmentDefaults(
-      fields,
-      state.action === "status"
-        ? { ...state.row, cv_status_id: null }
-        : state.row,
-    ),
+    defaultValues: editorDefaults(state, baseFields),
     resolver: (values, context, options) =>
       zodResolver(
         recruitmentFormSchema(
           state.action,
-          fields,
+          baseFields,
           optionsRef.current,
           Boolean(state.row.id),
         ),
       )(values, context, options),
   });
-  const city = useWatch({ control: form.control, name: "city_code" });
-  const previousCity = useRef(city);
-  useEffect(() => {
-    if (city !== previousCity.current) {
-      form.setValue("district_code", "", { shouldValidate: true });
-      previousCity.current = city;
-    }
-  }, [city, form]);
-  const districts = useQuery({
-    queryKey: ["recruitment-districts", userId, city],
-    queryFn: ({ signal }) =>
-      recruitmentArray("/list_district/", { city_code: String(city) }, signal),
-    enabled:
-      fields.some(
-        (field) => field.name === "district_code" && !field.readonly,
-      ) && Boolean(city),
-    retry: false,
-  });
-  useEffect(() => {
-    if (districts.data && form.formState.errors.district_code)
-      void form.trigger("district_code");
-  }, [districts.data, form]);
+  const address = useRecruitmentAddress(state, form, lookups, userId);
+  const fields = addressFields(baseFields, address.legacy);
+  const addressQueries = address.queries;
   const date = useWatch({ control: form.control, name: "start_date" });
+  const [startTime, endTime] = useWatch({
+    control: form.control,
+    name: ["time_start", "time_end"],
+  });
+  const {
+    trigger,
+    formState: { isSubmitted },
+  } = form;
+  useEffect(() => {
+    if (state.action === "interview" && isSubmitted)
+      void trigger(["start_date", "time_end"]);
+  }, [date, startTime, endTime, isSubmitted, state.action, trigger]);
   const previousDate = useRef(date);
   useEffect(() => {
     if (state.action === "attach" && date !== previousDate.current) {
-      form.setValue("id_interview", "", { shouldValidate: true });
+      form.setValue("id_interview", "", { shouldValidate: isSubmitted });
       previousDate.current = date;
     }
-  }, [date, form, state.action]);
+  }, [date, form, state.action, isSubmitted]);
   const schedules = useQuery({
     queryKey: ["recruitment-attach-interviews", userId, date],
     queryFn: ({ signal }) =>
@@ -111,7 +104,8 @@ export function RecruitmentEditorForm({
   const options = {
     ...lookups,
     statuses: editorStatuses(state, lookups),
-    districts: recruitmentOptions(districts.data, "code"),
+    cities: address.cities,
+    districts: address.districts,
     genders: [
       { value: "Nam", label: "Nam" },
       { value: "Nữ", label: "Nữ" },
@@ -132,26 +126,37 @@ export function RecruitmentEditorForm({
         predicate: (query) =>
           String(query.queryKey[0]).startsWith("recruitment"),
       });
-      toast.success("Đã lưu thay đổi.");
-      onClose();
+      if (state.action === "note") {
+        form.reset({ note: "" });
+        setFiles({});
+        setFileErrors({});
+        toast.success("Đã thêm ghi chú.");
+      } else {
+        toast.success("Đã lưu thay đổi.");
+        onClose();
+      }
     },
     onSettled: () => {
       submitting.current = false;
       onBusy(false);
     },
   });
-  const notes = useQuery({
-    queryKey: ["recruitment-notes", userId, state.row.id],
-    queryFn: ({ signal }) =>
-      recruitmentArray(`/note-cv/${state.row.id}`, undefined, signal),
-    enabled: ["candidate", "view-candidate", "note"].includes(state.action),
-    retry: false,
-  });
   const submit = form.handleSubmit((values) => {
+    if (
+      state.action === "note" &&
+      !String(values.note ?? "").trim() &&
+      !files.file_note
+    ) {
+      form.setError("note", {
+        type: "manual",
+        message: "Vui lòng nhập ghi chú hoặc đính kèm tệp.",
+      });
+      return;
+    }
     if (
       submitting.current ||
       submissionBlocked(fileError, state.action, schedules.data, [
-        districts,
+        ...addressQueries,
         schedules,
       ])
     )
@@ -159,7 +164,29 @@ export function RecruitmentEditorForm({
     submitting.current = true;
     mutation.mutate(values);
   });
-  const uploadNames = getUploadNames(state.action);
+  const selectFile = (name: string, file: File | undefined) => {
+    const limit =
+      name === "file_upload" && state.action !== "request" ? 10 : 50;
+    if (file && file.size > limit * 1024 * 1024) {
+      setFiles((current) => ({ ...current, [name]: undefined }));
+      setFileErrors((current) => ({
+        ...current,
+        [name]: `Tệp không được vượt quá ${limit} MB.`,
+      }));
+      return;
+    }
+    setFileErrors((current) => ({ ...current, [name]: "" }));
+    setFiles((current) => ({ ...current, [name]: file }));
+    if (name === "file_note" && file) form.clearErrors("note");
+  };
+  const noteField = ["candidate", "view-candidate", "note"].includes(
+    state.action,
+  )
+    ? fields.find((field) => field.name === "note")
+    : undefined;
+  const uploadNames = recruitmentUploadNames(state.action).filter(
+    (name) => !noteField || name !== "file_note",
+  );
   return (
     <form
       aria-label={actionLabels[state.action]}
@@ -168,7 +195,7 @@ export function RecruitmentEditorForm({
       onSubmit={(event) => {
         if (
           submissionBlocked(fileError, state.action, schedules.data, [
-            districts,
+            ...addressQueries,
             schedules,
           ])
         ) {
@@ -180,72 +207,63 @@ export function RecruitmentEditorForm({
     >
       {fields.length === 0 && (
         <p className="rounded-lg border bg-muted/40 p-4 text-sm">
-          Xác nhận {actionLabels[state.action].toLowerCase()}{" "}
-          {recruitmentText(
-            state.row.code_cv || state.row.title || state.row.id,
-          )}
-          ?
+          {confirmationMessage(state)}
         </p>
       )}
       <RecruitmentFormFields
-        fields={fields}
+        fields={fields.filter((field) => !noteField || field.name !== "note")}
         form={form}
         lookups={options}
         disabled={mutation.isPending}
       />
-      {state.action === "attach" && (
-        <>
-          <p className="text-sm text-muted-foreground">
-            Đã chọn {(state.ids ?? [state.row.id]).length} ứng viên.
-          </p>
-          {schedules.isError && (
-            <ErrorAlert message={schedules.error.message} />
-          )}
-        </>
+      {state.action === "candidate" && (
+        <p className="text-xs text-muted-foreground">
+          Để thay đổi trạng thái CV, dùng chức năng Chuyển trạng thái trong cột
+          Thao tác.
+        </p>
       )}
-      <RecruitmentFormExtras
-        state={state}
-        uploadNames={uploadNames}
-        notes={notes.data ?? []}
-        noteError={notes.error}
+      <RecruitmentAddressStatus
+        address={address}
         disabled={mutation.isPending}
-        onFile={(name, file) => {
-          const limit =
-            name === "file_upload" && state.action !== "request" ? 10 : 50;
-          if (file && file.size > limit * 1024 * 1024) {
-            setFiles((current) => ({ ...current, [name]: undefined }));
-            setFileErrors((current) => ({
-              ...current,
-              [name]: `Tệp không được vượt quá ${limit} MB.`,
-            }));
-            return;
-          }
-          setFileErrors((current) => ({ ...current, [name]: "" }));
-          setFiles((current) => ({ ...current, [name]: file }));
-        }}
+        readonly={state.action === "view-candidate"}
       />
-      {districts.isError && (
-        <div className="space-y-2">
-          <ErrorAlert message={districts.error.message} />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void districts.refetch()}
-          >
-            Thử lại quận/huyện
-          </Button>
-        </div>
+      {state.action === "attach" && (
+        <RecruitmentAttachStatus
+          count={(state.ids ?? [state.row.id]).length}
+          schedules={schedules}
+          hasDate={Boolean(recruitmentDate(String(date ?? "")))}
+        />
+      )}
+      {state.action !== "attach" && state.action !== "note" && (
+        <RecruitmentFormExtras
+          state={state}
+          uploadNames={uploadNames}
+          files={files}
+          disabled={mutation.isPending}
+          onFile={selectFile}
+          hideInterviewFile={Boolean(noteField)}
+        />
+      )}
+      {noteField && (
+        <RecruitmentNoteComposer
+          control={form.control}
+          field={noteField}
+          row={state.action === "note" ? {} : state.row}
+          file={files.file_note}
+          disabled={mutation.isPending}
+          onFile={(file) => selectFile("file_note", file)}
+        />
       )}
       {fileError && <ErrorAlert message={fileError} />}
       {mutation.isError && <ErrorAlert message={mutation.error.message} />}
-      <DialogFooter>
+      <DialogFooter className="mt-0 pt-0">
         <Button
           type="button"
           variant="outline"
           disabled={mutation.isPending}
           onClick={onClose}
         >
-          Hủy
+          {state.action === "view-candidate" ? "Đóng" : "Hủy"}
         </Button>
         {state.action !== "view-candidate" && (
           <AsyncButton
@@ -255,10 +273,10 @@ export function RecruitmentEditorForm({
               fileError,
               state.action,
               schedules.data,
-              [districts, schedules],
+              [...addressQueries, schedules],
             )}
           >
-            Lưu
+            {submitLabel(state.action)}
           </AsyncButton>
         )}
       </DialogFooter>
@@ -266,27 +284,48 @@ export function RecruitmentEditorForm({
   );
 }
 
-function getUploadNames(action: string) {
-  const names: Record<string, string[]> = {
-    request: ["file_upload"],
-    candidate: ["file_upload", "file_note"],
-    "create-candidate": ["file_upload"],
-    note: ["file_note"],
-  };
-  return names[action] ?? [];
+function editorDefaults(
+  state: RecruitmentEditorState,
+  fields: ReturnType<typeof recruitmentFields>,
+) {
+  if (state.action === "status")
+    return recruitmentDefaults(fields, { ...state.row, cv_status_id: null });
+  if (state.action === "note") return recruitmentDefaults(fields, { note: "" });
+  return recruitmentDefaults(fields, state.row);
+}
+
+function submitLabel(action: RecruitmentEditorState["action"]) {
+  if (action === "note") return "Thêm ghi chú";
+  if (action === "remove-interview-cv") return "Bỏ khỏi lịch phỏng vấn";
+  if (action === "delete-file" || action === "delete-candidate")
+    return actionLabels[action];
+  return "Lưu";
+}
+
+function confirmationMessage(state: RecruitmentEditorState) {
+  const name = recruitmentText(
+    state.row.code_cv || state.row.title || state.row.id,
+  );
+  if (state.action === "delete-file")
+    return `Xóa tệp “${recruitmentText(state.row.name_file_cv)}” khỏi hồ sơ ${name}? Thông tin ứng viên được giữ lại.`;
+  if (state.action === "delete-candidate")
+    return `Xóa toàn bộ hồ sơ ứng viên ${name}${state.row.first_name ? ` — ${recruitmentText(state.row.first_name)}` : ""}?`;
+  if (state.action === "remove-interview-cv")
+    return `Bỏ ứng viên ${recruitmentText(state.row.first_name) || name} khỏi lịch phỏng vấn ${state.code ?? ""}? Hồ sơ ứng viên và trạng thái CV được giữ lại.`;
+  return `Xác nhận ${actionLabels[state.action].toLowerCase()} ${name}?`;
 }
 
 function submissionBlocked(
   error: string,
   action: string,
-  schedules: unknown,
+  schedules: RecruitmentListData | undefined,
   dependencies: readonly { isFetching: boolean; isError: boolean }[],
 ) {
   return (
     dependencies.some((query) => query.isFetching || query.isError) ||
     action === "view-candidate" ||
     Boolean(error) ||
-    (action === "attach" && !schedules)
+    (action === "attach" && !schedules?.results.length)
   );
 }
 
@@ -300,4 +339,15 @@ function editorStatuses(
       (option) => option.value !== String(state.row.cv_status_id),
     );
   return statuses;
+}
+
+function addressFields(
+  fields: ReturnType<typeof recruitmentFields>,
+  legacy: boolean,
+) {
+  return fields.map((field) =>
+    legacy && field.name === "district_code"
+      ? { ...field, label: "Quận/Huyện (địa chỉ cũ)" }
+      : field,
+  );
 }

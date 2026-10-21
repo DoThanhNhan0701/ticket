@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
 import type { RecruitmentOption } from "../types";
 import { RecruitmentAdvancedDrawer } from "./recruitment-advanced-drawer";
 import { RecruitmentFilterActions } from "./recruitment-filter-actions";
+import { interviewCandidateFilterSchema } from "../utils/recruitment-validation";
 
 export interface InterviewCandidateFilterValues {
   search: string;
@@ -29,17 +31,23 @@ export function InterviewCandidateFilters({
   onApply: (values: InterviewCandidateFilterValues) => void;
 }>) {
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const form = useForm<InterviewCandidateFilterValues>({ values });
+  const form = useForm<InterviewCandidateFilterValues>({
+    values,
+    resolver: zodResolver(interviewCandidateFilterSchema({ statuses })),
+  });
   const shared = { control: form.control, disabled: busy };
   const apply = (input: InterviewCandidateFilterValues) => {
     if (busy) return;
     onApply({ ...input, search: input.search.trim() });
     setAdvancedOpen(false);
   };
-  const submit = form.handleSubmit(apply);
+  const submit = form.handleSubmit(apply, (errors) => {
+    if (errors.gender) setAdvancedOpen(true);
+  });
   return (
     <form
       aria-label="Bộ lọc CV phỏng vấn"
+      noValidate
       className="space-y-3 rounded-xl border bg-card p-3"
       onSubmit={submit}
     >
@@ -72,14 +80,17 @@ export function InterviewCandidateFilters({
             disabled={busy}
             activeCount={values.gender ? 1 : 0}
             onOpenChange={(open) => {
-              if (!open) form.setValue("gender", values.gender);
+              if (!open) {
+                form.setValue("gender", values.gender);
+                form.clearErrors("gender");
+              }
               setAdvancedOpen(open);
             }}
             onApply={submit}
             onClear={() => {
               const next = { ...form.getValues(), gender: "" };
               form.reset(next);
-              apply(next);
+              void form.handleSubmit(apply)();
             }}
           >
             <SelectField

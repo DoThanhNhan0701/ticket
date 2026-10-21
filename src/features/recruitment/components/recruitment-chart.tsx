@@ -1,50 +1,103 @@
 import type { RecruitmentRow } from "../types";
 import { recruitmentText } from "../utils/recruitment-format";
+import "./recruitment-report.css";
+
+const numberFormat = new Intl.NumberFormat("vi-VN", {
+  maximumFractionDigits: 1,
+});
+
+function chartValue(value: unknown) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.max(0, number) : 0;
+}
+
 export function RecruitmentChart({
   rows,
-}: Readonly<{ rows: RecruitmentRow[] }>) {
-  const metric =
-    ["number_cv_all", "number_cv", "number_cv_pass"].find((key) =>
-      rows.some((row) => row[key] !== undefined),
-    ) ?? "number_cv";
-  const maximum = Math.max(
-    1,
-    ...rows.map((row) => Math.max(0, Number(row[metric]) || 0)),
-  );
+  section,
+}: Readonly<{ rows: RecruitmentRow[]; section?: string }>) {
+  const isDuration = section === "result_time_recruitment";
+  const metric = isDuration
+    ? "rate_pass"
+    : ([
+        "number_cv_all",
+        "number_cv",
+        "number_cv_pass",
+        "quantity",
+        "value",
+        "count",
+        "rate",
+      ].find((key) => rows.some((row) => row[key] !== undefined)) ??
+      "number_cv");
+  const metricTitles: Record<string, string> = {
+    number_cv_pass: "Số CV đã nhận việc",
+    quantity: "Số lượng yêu cầu",
+    value: "Số lượng",
+    count: "Số lượng",
+    rate: "Tỷ lệ (%)",
+  };
+  const title = isDuration
+    ? "Thời gian tuyển dụng (ngày)"
+    : (metricTitles[metric] ?? "Số lượng CV");
+  const maximum = Math.max(1, ...rows.map((row) => chartValue(row[metric])));
   return (
     <figure
-      aria-label="Biểu đồ số lượng CV"
-      className="space-y-3 rounded-xl border bg-muted/20 p-4"
+      aria-label={
+        isDuration ? "Biểu đồ thời gian tuyển dụng" : "Biểu đồ số lượng CV"
+      }
+      className="min-w-0 shrink-0 space-y-4 rounded-xl border bg-linear-to-br from-primary/5 via-card to-card p-3 sm:p-5"
     >
-      <figcaption className="text-sm font-semibold">
-        {metric === "number_cv_pass" ? "Số CV đã nhận việc" : "Số lượng CV"}
+      <figcaption className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
+        <span className="flex items-center gap-2">
+          <span aria-hidden="true" className="size-2 rounded-full bg-primary" />
+          {title}
+        </span>
+        <span className="text-xs font-normal text-muted-foreground">
+          {numberFormat.format(rows.length)} nhóm dữ liệu
+        </span>
       </figcaption>
-      <div className="max-h-72 space-y-3 overflow-y-auto">
+      <div
+        className="max-h-64 space-y-1 overflow-y-auto overscroll-contain pr-3 [scrollbar-gutter:stable] sm:max-h-72"
+        role="region"
+        aria-label={title}
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Keyboard users need to scroll the chart categories.
+        tabIndex={0}
+      >
         {rows.map((row, index) => {
-          const label = recruitmentText(
+          let label = recruitmentText(
             row.rec_position ||
+              row.department_recruited_name ||
               row.department_recruited ||
               row.username ||
               row.candidate_source__name ||
               row.name ||
               row.month,
           );
-          const value = Math.max(0, Number(row[metric]) || 0);
+          if (section === "result_department_month" && row.month)
+            label = `${label} · ${recruitmentText(row.month)}`;
+          const value = chartValue(row[metric]);
           return (
             <div
               key={`${label}-${index}`}
-              className="grid grid-cols-[minmax(5rem,1fr)_3fr_auto] items-center gap-3 text-xs"
+              className="group grid min-w-0 grid-cols-[minmax(0,1fr)_4rem] items-center gap-x-3 gap-y-2 rounded-lg px-2 py-2.5 text-xs transition-colors hover:bg-primary/5 sm:grid-cols-[minmax(8rem,1fr)_minmax(0,3fr)_4rem] motion-reduce:transition-none"
             >
               <span className="truncate" title={label}>
                 {label}
               </span>
-              <div className="h-3 overflow-hidden rounded-full bg-muted">
+              <div
+                className="col-span-2 row-start-2 h-2.5 overflow-hidden rounded-full bg-muted sm:col-span-1 sm:col-start-2 sm:row-start-1"
+                aria-hidden="true"
+              >
                 <div
-                  className="h-full rounded-full bg-primary"
-                  style={{ width: `${(value / maximum) * 100}%` }}
+                  className="recruitment-chart-bar h-full origin-left rounded-full bg-linear-to-r from-primary to-brand-cyan"
+                  style={{
+                    width: `${(value / maximum) * 100}%`,
+                    animationDelay: `${Math.min(index, 10) * 35}ms`,
+                  }}
                 />
               </div>
-              <span className="tabular-nums">{value}</span>
+              <span className="col-start-2 row-start-1 text-right font-semibold tabular-nums sm:col-start-3">
+                {numberFormat.format(value)}
+              </span>
             </div>
           );
         })}

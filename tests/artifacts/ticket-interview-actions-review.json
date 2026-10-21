@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "flow": "/recruitment/candidates profile update",
+      "result": "passed"
+    },
+    {
+      "flow": "/recruitment/interviews/INT_TEST profile update",
+      "result": "passed"
+    },
+    {
+      "flow": "readonly profile",
+      "result": "passed"
+    },
+    {
+      "flow": "dedicated status transition",
+      "result": "passed"
+    },
+    {
+      "flow": "individual time",
+      "result": "passed"
+    },
+    {
+      "flow": "empty note blocked; existing feedback not copied",
+      "result": "passed"
+    },
+    {
+      "flow": "text feedback preserves draft across tabs",
+      "result": "passed"
+    },
+    {
+      "flow": "file-only feedback accepted",
+      "result": "passed"
+    },
+    {
+      "flow": "remove only interview membership",
+      "result": "passed"
+    }
+  ],
+  "writes": [
+    {
+      "path": "/api/detail_cv/408",
+      "method": "PUT",
+      "body": "------WebKitFormBoundaryMdZJffyK5SYEyztn\r\nContent-Disposition: form-data; name=\"values\"\r\n\r\n{\"first_name\":\"TEST changed name\",\"birthday\":null,\"gender\":\"Nam\",\"numberphone\":\"0912345678\",\"city_code\":\"01\",\"district_code\":\"001\",\"address\":\"\",\"email\":\"\",\"education_level\":\"\",\"education_major\":\"\",\"language_skill\":\"\",\"application_date\":null,\"candidate_source\":\"\",\"ls_user_received\":[]}\r\n------WebKitFormBoundaryMdZJffyK5SYEyztn--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail_cv/408"
+    },
+    {
+      "path": "/api/detail_cv/408",
+      "method": "PUT",
+      "body": "------WebKitFormBoundaryClApRGNoyCNE3ZpM\r\nContent-Disposition: form-data; name=\"values\"\r\n\r\n{\"first_name\":\"TEST changed name\",\"birthday\":null,\"gender\":\"Nam\",\"numberphone\":\"0912345678\",\"city_code\":\"01\",\"district_code\":\"001\",\"address\":\"\",\"email\":\"\",\"education_level\":\"\",\"education_major\":\"\",\"language_skill\":\"\",\"application_date\":null,\"candidate_source\":\"\",\"ls_user_received\":[]}\r\n------WebKitFormBoundaryClApRGNoyCNE3ZpM--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail_cv/408"
+    },
+    {
+      "path": "/api/change_status_cv/408",
+      "method": "PUT",
+      "body": "------WebKitFormBoundaryLh49fDV2ti0h5HCK\r\nContent-Disposition: form-data; name=\"code_cv\"\r\n\r\nTEST-CV\r\n------WebKitFormBoundaryLh49fDV2ti0h5HCK\r\nContent-Disposition: form-data; name=\"cv_status\"\r\n\r\n2\r\n------WebKitFormBoundaryLh49fDV2ti0h5HCK\r\nContent-Disposition: form-data; name=\"why_change\"\r\n\r\nTEST approved\r\n------WebKitFormBoundaryLh49fDV2ti0h5HCK--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/change_status_cv/408"
+    },
+    {
+      "path": "/api/detail-cv-interview/",
+      "method": "POST",
+      "body": "{\"id_cv\":408,\"id_interview\":58,\"time_start\":\"11:30\"}",
+      "url": "https://ticket-api.aiminds.io.vn/api/detail-cv-interview/"
+    },
+    {
+      "path": "/api/note-cv/",
+      "method": "POST",
+      "body": "------WebKitFormBoundaryN3YfWFpUeC4rHDaQ\r\nContent-Disposition: form-data; name=\"values\"\r\n\r\n{\"note\":\"TEST feedback\"}\r\n------WebKitFormBoundaryN3YfWFpUeC4rHDaQ\r\nContent-Disposition: form-data; name=\"id_cv\"\r\n\r\n408\r\n------WebKitFormBoundaryN3YfWFpUeC4rHDaQ--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/note-cv/"
+    },
+    {
+      "path": "/api/note-cv/",
+      "method": "POST",
+      "body": "------WebKitFormBoundaryhr55Eoay2hi4ShLz\r\nContent-Disposition: form-data; name=\"values\"\r\n\r\n{\"note\":\"\"}\r\n------WebKitFormBoundaryhr55Eoay2hi4ShLz\r\nContent-Disposition: form-data; name=\"file_note\"; filename=\"TEST feedback.zip\"\r\nContent-Type: application/zip\r\n\r\nTEST attachment\r\n------WebKitFormBoundaryhr55Eoay2hi4ShLz\r\nContent-Disposition: form-data; name=\"id_cv\"\r\n\r\n408\r\n------WebKitFormBoundaryhr55Eoay2hi4ShLz--\r\n",
+      "url": "https://ticket-api.aiminds.io.vn/api/note-cv/"
+    },
+    {
+      "path": "/api/del-cv-interview/",
+      "method": "DELETE",
+      "body": null,
+      "url": "https://ticket-api.aiminds.io.vn/api/del-cv-interview/?ls_id_cv=%5B408%5D&code_interview=INT_TEST"
+    }
+  ],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}

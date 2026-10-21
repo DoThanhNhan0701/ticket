@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "./popover";
 import { cn } from "@/lib/utils";
+import { timeMinutes } from "@/lib/time-range";
 
 type TimePickerProps = Omit<
   ComponentProps<typeof Input>,
@@ -17,6 +18,8 @@ type TimePickerProps = Omit<
   label: string;
   value: string;
   onValueChange: (value: string) => void;
+  minTime?: string;
+  maxTime?: string;
 };
 
 function parseTime(value: string) {
@@ -34,16 +37,26 @@ export function TimePicker({
   className,
   onBlur,
   onKeyDown,
+  minTime,
+  maxTime,
   ...props
 }: Readonly<TimePickerProps>) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (disabled) setOpen(false);
   }, [disabled]);
-  const selected = parseTime(value);
+  const min = timeMinutes(minTime) ?? 0;
+  const max = timeMinutes(maxTime) ?? 1439;
+  const parsed = parseTime(value);
+  const minutes = parsed ? parsed.hour * 60 + parsed.minute : min;
+  const current = Math.min(max, Math.max(min, minutes));
+  const selected = { hour: Math.floor(current / 60), minute: current % 60 };
   const changePart = (part: "hour" | "minute", next: number) => {
-    const time = { hour: 0, minute: 0, ...selected, [part]: next };
-    onValueChange(`${twoDigits(time.hour)}:${twoDigits(time.minute)}`);
+    const time = { ...selected, [part]: next };
+    const bounded = Math.min(max, Math.max(min, time.hour * 60 + time.minute));
+    onValueChange(
+      `${twoDigits(Math.floor(bounded / 60))}:${twoDigits(bounded % 60)}`,
+    );
   };
   return (
     <Popover open={open && !disabled} onOpenChange={setOpen}>
@@ -99,13 +112,18 @@ export function TimePicker({
           <TimeOptions
             label="Giờ"
             count={24}
-            selected={selected?.hour ?? 0}
+            selected={selected.hour}
+            isDisabled={(hour) => hour * 60 + 59 < min || hour * 60 > max}
             onSelect={(hour) => changePart("hour", hour)}
           />
           <TimeOptions
             label="Phút"
             count={60}
-            selected={selected?.minute ?? 0}
+            selected={selected.minute}
+            isDisabled={(minute) =>
+              selected.hour * 60 + minute < min ||
+              selected.hour * 60 + minute > max
+            }
             onSelect={(minute) => changePart("minute", minute)}
           />
         </div>
@@ -136,12 +154,17 @@ function TimeOptions({
   count,
   selected,
   onSelect,
+  isDisabled = () => false,
 }: Readonly<{
   label: string;
   count: number;
   selected: number;
   onSelect: (value: number) => void;
+  isDisabled?: (value: number) => boolean;
 }>) {
+  const enabled = Array.from({ length: count }, (_, value) => value).filter(
+    (value) => !isDisabled(value),
+  );
   return (
     <div className="min-w-0">
       <p className="border-b py-2 text-center text-xs font-medium text-muted-foreground">
@@ -161,18 +184,22 @@ function TimeOptions({
             className="w-full tabular-nums"
             aria-label={`${label} ${twoDigits(value)}`}
             aria-pressed={selected === value}
+            disabled={isDisabled(value)}
             tabIndex={selected === value ? 0 : -1}
             ref={(element) => {
               if (selected === value)
                 element?.scrollIntoView?.({ block: "nearest" });
             }}
             onKeyDown={(event) => {
+              if (!enabled.length) return;
+              const index = enabled.indexOf(value);
               let next: number;
-              if (event.key === "ArrowDown") next = (selected + 1) % count;
+              if (event.key === "ArrowDown")
+                next = enabled[(index + 1) % enabled.length];
               else if (event.key === "ArrowUp")
-                next = (selected + count - 1) % count;
-              else if (event.key === "Home") next = 0;
-              else if (event.key === "End") next = count - 1;
+                next = enabled[(index + enabled.length - 1) % enabled.length];
+              else if (event.key === "Home") next = enabled[0];
+              else if (event.key === "End") next = enabled[enabled.length - 1];
               else return;
               event.preventDefault();
               onSelect(next);

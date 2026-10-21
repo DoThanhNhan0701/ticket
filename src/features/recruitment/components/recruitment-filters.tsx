@@ -1,10 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
-import {
-  useForm,
-  useWatch,
-  type Control,
-  type ResolverResult,
-} from "react-hook-form";
+import { useForm, useWatch, type Control } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { InputField } from "@/components/form/input-field";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { SelectField } from "@/components/form/select-field";
@@ -16,7 +12,7 @@ import {
   defaultRecruitmentDates,
   recruitmentDate,
 } from "../utils/recruitment-format";
-import { validateRecruitmentRange } from "../utils/recruitment-validation";
+import { recruitmentFilterSchema } from "../utils/recruitment-validation";
 export function RecruitmentFilters({
   values,
   lookups,
@@ -37,20 +33,8 @@ export function RecruitmentFilters({
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const hasAdvanced = mode === "requests" || mode === "candidates";
   const form = useForm<Record<string, string>>({
-    values,
-    resolver: (input): ResolverResult<Record<string, string>> => {
-      const maxMonths = mode === "reports" ? 6 : undefined;
-      const issue =
-        mode === "interviews"
-          ? validateCalendarDate(input.from_date)
-          : validateRecruitmentRange(input.from_date, input.to_date, maxMonths);
-      return issue
-        ? {
-            values: {},
-            errors: { from_date: { type: "validate", message: issue } },
-          }
-        : { values: input, errors: {} };
-    },
+    values: filterValues(mode, values),
+    resolver: zodResolver(recruitmentFilterSchema(mode, lookups)),
   });
   const [from, to] = useWatch({
     control: form.control,
@@ -61,7 +45,7 @@ export function RecruitmentFilters({
     formState: { isSubmitted },
   } = form;
   useEffect(() => {
-    if (isSubmitted) void trigger("from_date");
+    if (isSubmitted) void trigger(["from_date", "to_date"]);
   }, [from, to, isSubmitted, trigger]);
   const activeCount = advancedFilterCount(mode, values);
   const shared = { control: form.control, disabled: busy };
@@ -91,7 +75,11 @@ export function RecruitmentFilters({
             name={mode === "requests" ? "title" : "search"}
             id="recruitment-filter-search"
             label={mode === "requests" ? "Tiêu đề" : "Tìm kiếm"}
-            placeholder="Nhập từ khóa..."
+            placeholder={
+              mode === "requests"
+                ? "Nhập tiêu đề yêu cầu..."
+                : "Nhập tên, email, số điện thoại..."
+            }
           />
         )}
         {mode === "requests" && (
@@ -154,7 +142,7 @@ export function RecruitmentFilters({
         <RecruitmentFilterActions
           busy={busy}
           onReset={() => {
-            form.reset(values);
+            form.reset(filterValues(mode, values));
             onReset();
           }}
         >
@@ -185,7 +173,7 @@ export function RecruitmentFilters({
                   ),
                 };
                 form.reset(next);
-                apply(next);
+                void form.handleSubmit(apply)();
               }}
             >
               <RecruitmentDateRange {...shared} />
@@ -207,6 +195,7 @@ export function RecruitmentFilters({
                     name="ticket_code"
                     id="recruitment-filter-ticket"
                     label="Mã yêu cầu tuyển dụng"
+                    placeholder="Nhập mã yêu cầu tuyển dụng..."
                   />
                 </>
               )}
@@ -236,10 +225,6 @@ export function RecruitmentFilters({
       </div>
     </form>
   );
-}
-
-function validateCalendarDate(value: string) {
-  return recruitmentDate(value) ? null : "Ngày không hợp lệ.";
 }
 
 function RecruitmentDateRange({
@@ -289,4 +274,17 @@ function advancedKeys(mode: string) {
         "user_received",
         "ticket_code",
       ];
+}
+
+function filterValues(mode: string, values: Record<string, string>) {
+  const fields: Record<string, string[]> = {
+    requests: [...advancedKeys(mode), "title", "ticket_status"],
+    candidates: [...advancedKeys(mode), "search", "cv_status"],
+    interviews: ["from_date", "user_interview"],
+    reports: ["from_date", "to_date"],
+  };
+  return {
+    ...Object.fromEntries(fields[mode].map((key) => [key, ""])),
+    ...values,
+  };
 }

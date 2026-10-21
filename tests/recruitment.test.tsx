@@ -8,15 +8,22 @@ import {
   within,
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import * as api from "@/features/recruitment/api/recruitment-api";
+import * as addressApi from "@/features/recruitment/api/vietnam-address-api";
+vi.mock("@/features/recruitment/api/vietnam-address-api", () => ({
+  listVietnamProvinces: vi.fn(),
+  listVietnamWards: vi.fn(),
+}));
 import { RecruitmentList } from "@/features/recruitment/components/recruitment-list";
 import { RecruitmentFilters } from "@/features/recruitment/components/recruitment-filters";
+import { InterviewCandidateFilters } from "@/features/recruitment/components/interview-candidate-filters";
 import { defaultRecruitmentDates } from "@/features/recruitment/utils/recruitment-format";
 import { RecruitmentCalendar } from "@/features/recruitment/components/recruitment-calendar";
 import { InterviewCandidates } from "@/features/recruitment/components/interview-candidates";
 import { RecruitmentEditor } from "@/features/recruitment/components/recruitment-editor";
+import { RecruitmentRowActions } from "@/features/recruitment/components/recruitment-row-actions";
 import { RecruitmentReport } from "@/features/recruitment/components/recruitment-report";
 import { downloadFile } from "@/lib/download";
 const auth = vi.hoisted(() => ({ can_hr_rec: true, can_cv_interview: true }));
@@ -108,6 +115,15 @@ beforeEach(() => {
     })),
   );
   vi.mocked(api.recruitmentLookups).mockResolvedValue(lookups);
+  vi.mocked(addressApi.listVietnamProvinces).mockResolvedValue([
+    { value: "01", label: "Hà Nội" },
+    { value: "79", label: "Hồ Chí Minh" },
+  ]);
+  vi.mocked(addressApi.listVietnamWards).mockImplementation(async (province) =>
+    province === "01"
+      ? [{ value: "00004", label: "Phường Ba Đình" }]
+      : [{ value: "26734", label: "Phường Sài Gòn" }],
+  );
   vi.mocked(api.listRecruitment).mockImplementation(async (kind) => {
     if (kind === "requests") return { count: 1, results: [request] };
     if (kind === "candidates") return { count: 1, results: [candidate] };
@@ -154,6 +170,151 @@ async function option(label: string, name: string) {
   fireEvent.pointerDown(item, { pointerType: "mouse" });
   fireEvent.click(item);
 }
+async function openActions(name = "TEST-CV") {
+  if (screen.queryByRole("dialog", { name: "Chọn thao tác" })) return;
+  const button = await screen.findByRole("button", {
+    name: `Thao tác ${name}`,
+  });
+  await waitFor(() => expect(button.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(button);
+  await screen.findByRole("dialog", { name: "Chọn thao tác" });
+}
+it.each([
+  {
+    mode: "requests",
+    manage: false,
+    file: false,
+    actions: [
+      ["request", "Xem yêu cầu"],
+      ["create-candidate", "Thêm ứng viên"],
+    ],
+  },
+  {
+    mode: "candidates",
+    manage: false,
+    file: false,
+    actions: [
+      ["candidate", "Sửa hồ sơ"],
+      ["note", "Ghi chú"],
+      ["status", "Chuyển trạng thái"],
+      ["duplicate", "Kiểm tra trùng"],
+      ["attach", "Gắn lịch phỏng vấn"],
+      ["delete-candidate", "Xóa hồ sơ"],
+    ],
+  },
+  {
+    mode: "candidates",
+    manage: false,
+    file: true,
+    actions: [
+      ["candidate", "Sửa hồ sơ"],
+      ["note", "Ghi chú"],
+      ["status", "Chuyển trạng thái"],
+      ["duplicate", "Kiểm tra trùng"],
+      ["attach", "Gắn lịch phỏng vấn"],
+      ["delete-candidate", "Xóa hồ sơ"],
+      ["delete-file", "Xóa tệp CV"],
+    ],
+  },
+  {
+    mode: "interview",
+    manage: false,
+    file: false,
+    actions: [
+      ["note", "Ghi chú"],
+      ["view-candidate", "Xem hồ sơ"],
+    ],
+  },
+  {
+    mode: "interview",
+    manage: true,
+    file: false,
+    actions: [
+      ["note", "Ghi chú"],
+      ["view-candidate", "Xem hồ sơ"],
+      ["status", "Chuyển trạng thái"],
+      ["candidate-time", "Đặt giờ"],
+      ["remove-interview-cv", "Bỏ khỏi lịch"],
+      ["candidate", "Sửa hồ sơ"],
+    ],
+  },
+] as const)(
+  "shows one action button for $mode, HR=$manage, CV file=$file and dispatches each choice exactly once",
+  async ({ mode, manage, file, actions }) => {
+    const onAction = vi.fn();
+    const row =
+      mode === "requests"
+        ? request
+        : { ...candidate, name_file_cv: file ? "TEST CV.pdf" : "" };
+    const name = {
+      requests: request.ticket_code,
+      candidates: candidate.code_cv,
+      interview: candidate.first_name,
+    }[mode];
+    render(
+      <RecruitmentRowActions
+        mode={mode}
+        row={row}
+        canManage={manage}
+        disabled={false}
+        onAction={onAction}
+      />,
+    );
+    expect(screen.getAllByRole("button")).toHaveLength(1);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    for (const [action, label] of actions) {
+      if (!screen.queryByRole("dialog", { name: "Chọn thao tác" }))
+        fireEvent.click(
+          screen.getByRole("button", { name: `Thao tác ${name}` }),
+        );
+      const dialog = await screen.findByRole("dialog", {
+        name: "Chọn thao tác",
+      });
+      expect(within(dialog).getAllByRole("button")).toHaveLength(
+        actions.length + 1,
+      );
+      fireEvent.click(
+        within(dialog).getByRole("button", { name: `${label} ${name}` }),
+      );
+      expect(onAction).toHaveBeenLastCalledWith(action, row);
+      expect(
+        screen.getByRole("dialog", { name: "Chọn thao tác" }),
+      ).toBeTruthy();
+    }
+    expect(onAction).toHaveBeenCalledTimes(actions.length);
+    fireEvent.keyDown(screen.getByRole("dialog", { name: "Chọn thao tác" }), {
+      key: "Escape",
+    });
+    expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Đóng chọn thao tác" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(onAction).toHaveBeenCalledTimes(actions.length);
+  },
+);
+
+it("disables actions during refresh while keeping the chooser open until its X is clicked", async () => {
+  const onAction = vi.fn();
+  const props = { mode: "candidates" as const, row: candidate, onAction };
+  const { rerender } = render(<RecruitmentRowActions {...props} disabled />);
+  const button = screen.getByRole("button", { name: "Thao tác TEST-CV" });
+  expect(button.hasAttribute("disabled")).toBe(true);
+  fireEvent.click(button);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  rerender(<RecruitmentRowActions {...props} disabled={false} />);
+  fireEvent.click(button);
+  await screen.findByRole("dialog", { name: "Chọn thao tác" });
+  rerender(<RecruitmentRowActions {...props} disabled />);
+  expect(
+    screen
+      .getByRole("button", { name: "Sửa hồ sơ TEST-CV" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
+  rerender(<RecruitmentRowActions {...props} disabled={false} />);
+  expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Đóng chọn thao tác" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(onAction).not.toHaveBeenCalled();
+});
 it("loads real-contract requests, only applies draft filters on Search and exports applied values", async () => {
   mount(<RecruitmentList kind="requests" />);
   await screen.findByRole("table", { name: "Bảng yêu cầu tuyển dụng" });
@@ -189,12 +350,18 @@ it("shows a retryable list failure without leaking previous rows", async () => {
 });
 it("requires candidate fields before writing and clears errors after corrections", async () => {
   mount(<RecruitmentList kind="requests" />);
+  await openActions("TEST-REC");
   const add = await screen.findByRole("button", {
     name: "Thêm ứng viên TEST-REC",
   });
   await waitFor(() => expect(add.hasAttribute("disabled")).toBe(false));
   fireEvent.click(add);
   await screen.findByRole("form", { name: "Thêm ứng viên" });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   await screen.findByText("Vui lòng nhập họ và tên.");
   expect(api.recruitmentWrite).not.toHaveBeenCalled();
@@ -208,20 +375,28 @@ it("requires candidate fields before writing and clears errors after corrections
     target: { value: "0002610210" },
   });
   await option("Tỉnh/Thành phố", "Hà Nội");
-  await option("Quận/Huyện", "Ba Đình");
+  await option("Xã/Phường/Đặc khu", "Phường Ba Đình");
   fireEvent.change(screen.getByLabelText(/^Địa chỉ/), {
     target: { value: "TEST address" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await waitFor(() =>
+    expect(screen.queryByRole("dialog", { name: "Thêm ứng viên" })).toBeNull(),
+  );
   expect(api.recruitmentWrite).toHaveBeenCalledWith(
     "/detail_cv/85",
     "POST",
     expect.any(FormData),
   );
+  const payload = vi.mocked(api.recruitmentWrite).mock.calls[0][2] as FormData;
+  expect(JSON.parse(String(payload.get("values")))).toMatchObject({
+    city_code: "01",
+    district_code: "00004",
+  });
 });
 it("excludes the current CV status and submits status changes using the correct CV", async () => {
   mount(<RecruitmentList kind="candidates" />);
+  await openActions();
   const button = await screen.findByRole("button", {
     name: "Chuyển trạng thái TEST-CV",
   });
@@ -235,16 +410,93 @@ it("excludes the current CV status and submits status changes using the correct 
     expect(screen.queryByText("Vui lòng chọn trạng thái.")).toBeNull(),
   );
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("dialog", { name: "Chuyển trạng thái CV" }),
+    ).toBeNull(),
+  );
   expect(api.recruitmentWrite).toHaveBeenCalledWith(
     "/change_status_cv/408",
     "PUT",
     expect.any(FormData),
   );
+  expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBeTruthy();
+});
+it("keeps the chooser behind child forms, ignores Escape, and closes only via its X", async () => {
+  mount(<RecruitmentList kind="candidates" />);
+  await openActions();
+  const chooser = screen.getByRole("dialog", { name: "Chọn thao tác" });
+  fireEvent.click(
+    within(chooser).getByRole("button", { name: "Sửa hồ sơ TEST-CV" }),
+  );
+  await screen.findByLabelText(/^Họ và tên/);
+  expect(chooser.isConnected).toBe(true);
+  expect(chooser.hasAttribute("data-open")).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Hủy" }));
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("dialog", { name: "Chi tiết ứng viên" }),
+    ).toBeNull(),
+  );
+  expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBe(chooser);
+  fireEvent.keyDown(chooser, { key: "Escape" });
+  expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBeTruthy();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Kiểm tra trùng TEST-CV" }),
+  );
+  await screen.findByText("Không tìm thấy hồ sơ trùng lặp.");
+  fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("dialog", { name: "Kiểm tra hồ sơ trùng" }),
+    ).toBeNull(),
+  );
+  expect(screen.getByRole("dialog", { name: "Chọn thao tác" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Đóng chọn thao tác" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+
+it("keeps the chooser open after deleting its row and disables further actions until closed", async () => {
+  let exists = true;
+  vi.mocked(api.listRecruitment).mockImplementation(async () => ({
+    count: exists ? 1 : 0,
+    results: exists ? [candidate] : [],
+  }));
+  vi.mocked(api.recruitmentWrite).mockImplementation(async () => {
+    exists = false;
+    return {};
+  });
+  mount(<RecruitmentList kind="candidates" />);
+  await openActions();
+  fireEvent.click(screen.getByRole("button", { name: "Xóa hồ sơ TEST-CV" }));
+  const confirmation = await screen.findByRole("dialog", {
+    name: "Xóa hồ sơ ứng viên",
+  });
+  fireEvent.click(
+    within(confirmation).getByRole("button", { name: "Xóa hồ sơ ứng viên" }),
+  );
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("dialog", { name: "Xóa hồ sơ ứng viên" }),
+    ).toBeNull(),
+  );
+  const chooser = screen.getByRole("dialog", { name: "Chọn thao tác" });
+  expect(
+    within(chooser)
+      .getByRole("button", { name: "Sửa hồ sơ TEST-CV" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.click(
+    within(chooser).getByRole("button", { name: "Đóng chọn thao tác" }),
+  );
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(api.recruitmentWrite).toHaveBeenCalledTimes(1);
 });
 it("opens duplicate results without writing candidate records", async () => {
   vi.mocked(api.recruitmentObject).mockResolvedValue({ results: [] });
   mount(<RecruitmentList kind="candidates" />);
+  await openActions();
   const button = await screen.findByRole("button", {
     name: "Kiểm tra trùng TEST-CV",
   });
@@ -253,6 +505,73 @@ it("opens duplicate results without writing candidate records", async () => {
   await screen.findByText("Không tìm thấy hồ sơ trùng lặp.");
   expect(api.recruitmentWrite).not.toHaveBeenCalled();
 });
+it.each([
+  {
+    label: "Xóa hồ sơ",
+    title: "Xóa hồ sơ ứng viên",
+    endpoint: "/del-data-cv/",
+    confirmation: /Xóa toàn bộ hồ sơ ứng viên TEST-CV/,
+  },
+  {
+    label: "Xóa tệp CV",
+    title: "Xóa tệp CV",
+    endpoint: "/del-file-cv/",
+    confirmation: /Xóa tệp “TEST CV.pdf” khỏi hồ sơ TEST-CV/,
+  },
+])(
+  "keeps $label separate from the other candidate actions",
+  async ({ label, title, endpoint, confirmation }) => {
+    vi.mocked(api.listRecruitment).mockResolvedValue({
+      count: 1,
+      results: [
+        {
+          ...candidate,
+          name_file_cv: "TEST CV.pdf",
+          path_file_cv: "/uploads/",
+        },
+      ],
+    });
+    mount(<RecruitmentList kind="candidates" />);
+    await openActions();
+    const action = await screen.findByRole("button", {
+      name: `${label} TEST-CV`,
+    });
+    await waitFor(() => expect(action.hasAttribute("disabled")).toBe(false));
+    expect(
+      screen.getAllByRole("button", { name: "Xóa hồ sơ TEST-CV" }),
+    ).toHaveLength(1);
+    expect(
+      screen.getAllByRole("button", { name: "Xóa tệp CV TEST-CV" }),
+    ).toHaveLength(1);
+    fireEvent.click(action);
+    let dialog = await screen.findByRole("dialog", { name: title });
+    expect(within(dialog).getByText(confirmation)).toBeTruthy();
+    expect(api.recruitmentWrite).not.toHaveBeenCalled();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Hủy" }));
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog", { name: title })).toBeNull(),
+    );
+    expect(api.recruitmentWrite).not.toHaveBeenCalled();
+    await openActions();
+    fireEvent.click(screen.getByRole("button", { name: `${label} TEST-CV` }));
+    dialog = await screen.findByRole("dialog", { name: title });
+    fireEvent.click(within(dialog).getByRole("button", { name: title }));
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog", { name: title })).toBeNull(),
+    );
+    expect(api.recruitmentWrite).toHaveBeenCalledTimes(1);
+    expect(api.recruitmentWrite).toHaveBeenCalledWith(
+      endpoint,
+      "POST",
+      expect.anything(),
+    );
+    const payload = vi.mocked(api.recruitmentWrite).mock.calls[0][2];
+    if (payload instanceof FormData) {
+      expect(payload.get("id_cv")).toBe("408");
+      expect(payload.get("name_file_cv")).toBe("TEST CV.pdf");
+    } else expect(payload).toEqual({ id_cv: 408 });
+  },
+);
 it("opens an interview form and blocks reversed time ranges", async () => {
   mount(<RecruitmentCalendar />);
   const add = await screen.findByRole("button", {
@@ -276,6 +595,15 @@ it("opens an interview form and blocks reversed time ranges", async () => {
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   await screen.findByText("Giờ kết thúc phải sau giờ bắt đầu.");
   expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.change(screen.getByLabelText(/^Giờ bắt đầu/), {
+    target: { value: "09:00" },
+  });
+  await waitFor(() =>
+    expect(screen.queryByText("Giờ kết thúc phải sau giờ bắt đầu.")).toBeNull(),
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
 });
 it("renders report tables and charts, supports keyboard tabs and blocks excessive date ranges", async () => {
   mount(<RecruitmentReport />);
@@ -359,21 +687,268 @@ it("limits interview-only users to viewing profiles and feedback without HR look
   mount(<InterviewCandidates />);
   await screen.findByRole("table", { name: "CV phỏng vấn" });
   expect(screen.getByText("10:15")).toBeTruthy();
+  await openActions("TEST Candidate");
   expect(screen.queryByRole("button", { name: /^Đặt giờ/ })).toBeNull();
   expect(screen.queryByRole("button", { name: /^Bỏ khỏi lịch/ })).toBeNull();
   expect(screen.queryByRole("button", { name: /^Sửa hồ sơ/ })).toBeNull();
+  expect(
+    screen.queryByRole("button", { name: /^Chuyển trạng thái/ }),
+  ).toBeNull();
   expect(api.recruitmentLookups).not.toHaveBeenCalled();
   fireEvent.click(
     screen.getByRole("button", { name: "Xem hồ sơ TEST Candidate" }),
   );
-  await screen.findByLabelText(/^Họ và tên/);
-  expect(screen.getByLabelText(/^Họ và tên/).hasAttribute("disabled")).toBe(
-    true,
-  );
+  const profile = await screen.findByRole("dialog", {
+    name: "Xem hồ sơ ứng viên",
+  });
+  await within(profile).findByText("TEST Candidate");
+  expect(profile.querySelector("input, textarea, form")).toBeNull();
+  expect(within(profile).queryByRole("tablist")).toBeNull();
   expect(screen.queryByRole("button", { name: "Lưu" })).toBeNull();
   expect(api.recruitmentWrite).not.toHaveBeenCalled();
 });
-it("shows live-contract note content and author after reopening a profile", async () => {
+
+function mountInterviewActions() {
+  vi.mocked(api.interviewDetail).mockResolvedValue([
+    {
+      id: 58,
+      title: "TEST interview",
+      time_start: "04:00:00",
+      time_end: "11:00:00",
+      ls_cv_interview: [
+        { ...candidate, data_interview_cv: { time_start: "10:15:00" } },
+      ],
+    },
+  ]);
+  return mount(
+    <Routes>
+      <Route
+        path="/recruitment/interviews/:codeInterview"
+        element={<InterviewCandidates />}
+      />
+    </Routes>,
+    "/recruitment/interviews/PV_TEST",
+  );
+}
+
+it("shows only candidate profile details and the CV in the read-only viewer", async () => {
+  const onClose = vi.fn();
+  vi.mocked(api.recruitmentDetail).mockResolvedValue({
+    row: {
+      ...candidate,
+      birthday: "2000-01-01",
+      city_name: "Thành phố Hà Nội",
+      district_name: "Quận Ba Đình",
+      address: "TEST address",
+      education_level_name: "Đại học",
+      education_major: "IT",
+      language_skill: "Tiếng Anh",
+      cv_status_name: "TEST hidden status",
+      why_change_statuscv: "TEST hidden reason",
+      note: "TEST hidden note",
+      candidate_source_name: "TEST hidden source",
+      data_user_received: [{ id: 42, username: "TEST hidden assignee" }],
+      path_file_cv: "/uploads/",
+      name_file_cv: "TEST CV.docx",
+      path_file_interview: "/uploads/",
+      name_file_interview: "TEST interview.pdf",
+    },
+    reasons: [],
+  });
+  mount(
+    <RecruitmentEditor
+      state={{ action: "view-candidate", row: candidate }}
+      lookups={{}}
+      onClose={onClose}
+    />,
+  );
+  const dialog = await screen.findByRole("dialog", {
+    name: "Xem hồ sơ ứng viên",
+  });
+  const profile = within(dialog);
+  await profile.findByText("TEST address");
+  for (const text of [
+    candidate.first_name,
+    candidate.numberphone,
+    candidate.email,
+    "01/01/2000",
+    "Thành phố Hà Nội",
+    "Quận Ba Đình",
+    "Đại học",
+    "IT",
+    "Tiếng Anh",
+  ])
+    expect(profile.getByText(text)).toBeTruthy();
+  for (const text of [
+    "Trạng thái CV",
+    "Lý do chuyển trạng thái",
+    "Người phụ trách",
+    "Nguồn ứng viên",
+    "Ngày ứng tuyển",
+    "TEST hidden note",
+    "TEST hidden status",
+    "TEST hidden reason",
+    "TEST hidden source",
+    "TEST hidden assignee",
+    "TEST interview.pdf",
+    "Hồ sơ đang sử dụng địa chỉ tỉnh, quận/huyện cũ.",
+  ])
+    expect(profile.queryByText(text)).toBeNull();
+  expect(
+    dialog.querySelector(
+      "form, input, textarea, [role=combobox], [role=tablist], [aria-required=true]",
+    ),
+  ).toBeNull();
+  expect(api.recruitmentArray).not.toHaveBeenCalled();
+  expect(addressApi.listVietnamProvinces).not.toHaveBeenCalled();
+  expect(addressApi.listVietnamWards).not.toHaveBeenCalled();
+  fireEvent.click(profile.getByRole("button", { name: "TEST CV.docx" }));
+  const preview = await screen.findByRole("dialog", { name: "TEST CV.docx" });
+  expect(within(preview).getByRole("link", { name: "Tải xuống" })).toBeTruthy();
+  fireEvent.click(
+    within(preview).getByRole("button", { name: "Đóng xem tệp" }),
+  );
+  await waitFor(() =>
+    expect(screen.queryByRole("dialog", { name: "TEST CV.docx" })).toBeNull(),
+  );
+  fireEvent.click(profile.getByRole("button", { name: "Đóng" }));
+  expect(onClose).toHaveBeenCalledTimes(1);
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+
+it.each(["candidates", "interview"] as const)(
+  "updates personal data from %s without exposing a second status-changing form",
+  async (source) => {
+    if (source === "interview") mountInterviewActions();
+    else mount(<RecruitmentList kind="candidates" />);
+    await openActions(
+      source === "interview" ? candidate.first_name : candidate.code_cv,
+    );
+    const edit = await screen.findByRole("button", {
+      name: `Sửa hồ sơ ${source === "interview" ? candidate.first_name : candidate.code_cv}`,
+    });
+    await waitFor(() => expect(edit.hasAttribute("disabled")).toBe(false));
+    fireEvent.click(edit);
+    const name = await screen.findByLabelText(/^Họ và tên/);
+    const dialog = within(
+      screen.getByRole("dialog", { name: "Chi tiết ứng viên" }),
+    );
+    const status = dialog.getByLabelText("Trạng thái CV") as HTMLInputElement;
+    expect(status.disabled).toBe(true);
+    expect(status.value).toBe("Mới");
+    expect(
+      dialog.queryByRole("combobox", { name: "Trạng thái CV" }),
+    ).toBeNull();
+    expect(dialog.queryByLabelText("Lý do chuyển trạng thái")).toBeNull();
+    fireEvent.change(name, { target: { value: "TEST updated candidate" } });
+    const save = screen.getByRole("button", { name: "Lưu" });
+    await waitFor(() => expect(save.hasAttribute("disabled")).toBe(false));
+    fireEvent.click(save);
+    await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+    const [path, method, body] = vi.mocked(api.recruitmentWrite).mock.calls[0];
+    expect([path, method]).toEqual(["/detail_cv/408", "PUT"]);
+    const values = JSON.parse(String((body as FormData).get("values")));
+    expect(values.first_name).toBe("TEST updated candidate");
+    expect(values).not.toHaveProperty("cv_status");
+    expect(values).not.toHaveProperty("why_change");
+  },
+);
+
+it("changes status from the interview page through the dedicated transition endpoint", async () => {
+  mountInterviewActions();
+  await openActions("TEST Candidate");
+  const action = await screen.findByRole("button", {
+    name: "Chuyển trạng thái TEST Candidate",
+  });
+  await waitFor(() => expect(action.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(action);
+  await option("Trạng thái", "Đã duyệt");
+  fireEvent.change(screen.getByLabelText("Lý do chuyển trạng thái"), {
+    target: { value: "TEST approved" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+  const [path, method, body] = vi.mocked(api.recruitmentWrite).mock.calls[0];
+  expect([path, method]).toEqual(["/change_status_cv/408", "PUT"]);
+  expect(Object.fromEntries(body as FormData)).toEqual({
+    code_cv: "TEST-CV",
+    cv_status: "2",
+    why_change: "TEST approved",
+  });
+});
+
+it("sets the individual interview time without updating the candidate profile or schedule", async () => {
+  mountInterviewActions();
+  await openActions("TEST Candidate");
+  const action = await screen.findByRole("button", {
+    name: "Đặt giờ TEST Candidate",
+  });
+  await waitFor(() => expect(action.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(action);
+  const time = screen.getByLabelText("Giờ phỏng vấn") as HTMLInputElement;
+  expect(time.value).toBe("10:15");
+  fireEvent.change(time, { target: { value: "11:30" } });
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("Giờ phải nằm trong khoảng 04:00 đến 11:00.");
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.change(time, { target: { value: "03:59" } });
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.change(time, { target: { value: "10:15" } });
+  await waitFor(() =>
+    expect(
+      screen.queryByText("Giờ phải nằm trong khoảng 04:00 đến 11:00."),
+    ).toBeNull(),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Chọn giờ phỏng vấn" }));
+  expect(
+    (await screen.findByRole("button", { name: "Giờ 03" })).hasAttribute(
+      "disabled",
+    ),
+  ).toBe(true);
+  expect(
+    screen.getByRole("button", { name: "Giờ 12" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Giờ 11" }));
+  expect(
+    screen.getByRole("button", { name: "Phút 01" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Xong" }));
+  expect(time.value).toBe("11:00");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() =>
+    expect(api.recruitmentWrite).toHaveBeenCalledExactlyOnceWith(
+      "/detail-cv-interview/",
+      "POST",
+      { id_cv: 408, id_interview: 58, time_start: "11:00" },
+    ),
+  );
+});
+
+it("removes only interview membership after confirmation, keeping the candidate record and status", async () => {
+  mountInterviewActions();
+  await openActions("TEST Candidate");
+  const action = await screen.findByRole("button", {
+    name: "Bỏ khỏi lịch TEST Candidate",
+  });
+  await waitFor(() => expect(action.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(action);
+  await screen.findByText(
+    /Bỏ ứng viên TEST Candidate khỏi lịch phỏng vấn PV_TEST/,
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Bỏ khỏi lịch phỏng vấn" }),
+  );
+  await waitFor(() =>
+    expect(api.recruitmentWrite).toHaveBeenCalledExactlyOnceWith(
+      "/del-cv-interview/",
+      "DELETE",
+      undefined,
+      { ls_id_cv: "[408]", code_interview: "PV_TEST" },
+    ),
+  );
+});
+it("shows live-contract note content and author in the note modal", async () => {
   vi.mocked(api.recruitmentArray).mockImplementation(async (path) =>
     path.startsWith("/note-cv/")
       ? [
@@ -381,20 +956,311 @@ it("shows live-contract note content and author after reopening a profile", asyn
             id: 1,
             content: "TEST feedback persisted",
             fore_user__username: "test-interviewer",
-            data_file: [],
+            created: "2026-10-21T08:31:32Z",
+            data_file: [{ id: 10, file_name: "TEST interview.pdf" }],
           },
+          { id: 2, content: "", data_file: [] },
         ]
       : [],
   );
   mount(
     <RecruitmentEditor
-      state={{ action: "view-candidate", row: candidate }}
+      state={{ action: "note", row: candidate }}
       lookups={{}}
       onClose={vi.fn()}
     />,
   );
   await screen.findByText("TEST feedback persisted");
   expect(screen.getByText(/test-interviewer/)).toBeTruthy();
+  const history = screen.getByRole("region", {
+    name: "Lịch sử ghi chú phỏng vấn",
+  });
+  expect(
+    within(history).getByRole("heading", { name: "Lịch sử ghi chú phỏng vấn" }),
+  ).toBeTruthy();
+  expect(
+    within(history).getByRole("button", { name: "Mở tệp TEST interview.pdf" }),
+  ).toBeTruthy();
+  expect(within(history).getByText("Không có nội dung ghi chú.")).toBeTruthy();
+  expect(within(history).getByText("Chưa rõ người ghi")).toBeTruthy();
+  expect(within(history).getAllByRole("article")).toHaveLength(2);
+});
+it("preserves unsaved candidate fields and uploads when switching between information and history tabs", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "candidate", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("tab", { name: "Thông tin" });
+  fireEvent.change(screen.getByLabelText(/^Họ và tên/), {
+    target: { value: "TEST Modified Candidate" },
+  });
+  const file = new File(["TEST"], "TEST kept.pdf", { type: "application/pdf" });
+  fireEvent.change(screen.getByLabelText("Tệp CV"), {
+    target: { files: [file] },
+  });
+  expect(
+    vi
+      .mocked(api.recruitmentArray)
+      .mock.calls.some(([path]) => path.startsWith("/note-cv/")),
+  ).toBe(false);
+  fireEvent.click(screen.getByRole("tab", { name: "Lịch sử" }));
+  await screen.findByRole("heading", { name: "Lịch sử ghi chú phỏng vấn" });
+  expect(screen.queryByRole("button", { name: "Lưu" })).toBeNull();
+  expect(screen.queryByRole("textbox", { name: /^Họ và tên/ })).toBeNull();
+  fireEvent.click(screen.getByRole("tab", { name: "Thông tin" }));
+  expect((screen.getByLabelText(/^Họ và tên/) as HTMLInputElement).value).toBe(
+    "TEST Modified Candidate",
+  );
+  expect(screen.getByText("TEST kept.pdf")).toBeTruthy();
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+  const payload = vi.mocked(api.recruitmentWrite).mock.calls[0][2] as FormData;
+  expect(JSON.parse(String(payload.get("values")))).toMatchObject({
+    first_name: "TEST Modified Candidate",
+  });
+  expect(payload.get("file_upload")).toBe(file);
+});
+it("retries failed history requests and shows an empty history without submitting the form", async () => {
+  let failed = false;
+  vi.mocked(api.recruitmentArray).mockImplementation(async (path) => {
+    if (path.startsWith("/note-cv/") && !failed) {
+      failed = true;
+      throw new Error("TEST history unavailable");
+    }
+    return [];
+  });
+  mount(
+    <RecruitmentEditor
+      state={{ action: "note", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByText("TEST history unavailable");
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại lịch sử" }));
+  await screen.findByText("Chưa có lịch sử ghi chú phỏng vấn.");
+  expect(
+    screen.getByRole("textbox", { name: "Ghi chú phỏng vấn" }),
+  ).toBeTruthy();
+  expect(screen.queryByRole("tablist")).toBeNull();
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+it.each(["candidates", "interview"] as const)(
+  "adds a fresh note from %s without resubmitting old content or creating an empty history entry",
+  async (source) => {
+    vi.mocked(api.recruitmentArray).mockImplementation(async (path) =>
+      path.startsWith("/note-cv/")
+        ? [
+            {
+              id: 7,
+              content: "TEST saved feedback",
+              fore_user__username: "test-user",
+            },
+          ]
+        : [],
+    );
+    const row = {
+      ...candidate,
+      note: "TEST previous note",
+      name_file_cv: "TEST CV.pdf",
+      path_file_cv: "/uploads/",
+      name_file_interview: "TEST previous note.pdf",
+      path_file_interview: "/uploads/",
+    };
+    vi.mocked(api.listRecruitment).mockResolvedValue({
+      count: 1,
+      results: [row],
+    });
+    if (source === "interview") {
+      mountInterviewActions();
+      vi.mocked(api.interviewDetail).mockResolvedValue([
+        { id: 58, ls_cv_interview: [row] },
+      ]);
+    } else mount(<RecruitmentList kind="candidates" />);
+    await openActions(source === "interview" ? row.first_name : row.code_cv);
+    const action = await screen.findByRole("button", {
+      name: `Ghi chú ${source === "interview" ? row.first_name : row.code_cv}`,
+    });
+    await waitFor(() => expect(action.hasAttribute("disabled")).toBe(false));
+    fireEvent.click(action);
+    const note = screen.getByRole("textbox", {
+      name: "Ghi chú phỏng vấn",
+    }) as HTMLTextAreaElement;
+    expect(note.value).toBe("");
+    expect(screen.queryByRole("tablist")).toBeNull();
+    expect(screen.getAllByRole("form")).toHaveLength(1);
+    const history = await screen.findByText("TEST saved feedback");
+    expect(history.closest("form")).toBeNull();
+    expect(
+      screen.getByRole("form").compareDocumentPosition(history) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(api.recruitmentArray).toHaveBeenCalledWith(
+      "/note-cv/408",
+      undefined,
+      expect.any(AbortSignal),
+    );
+    expect(screen.queryByText("TEST CV.pdf")).toBeNull();
+    expect(screen.queryByText("TEST previous note.pdf")).toBeNull();
+    fireEvent.change(note, { target: { value: "   " } });
+    fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+    await screen.findByText("Vui lòng nhập ghi chú hoặc đính kèm tệp.");
+    expect(api.recruitmentWrite).not.toHaveBeenCalled();
+    const file = new File(["TEST"], "TEST feedback.zip");
+    fireEvent.change(screen.getByLabelText("Tệp ghi chú phỏng vấn"), {
+      target: { files: [file] },
+    });
+    expect(screen.getByText(file.name)).toBeTruthy();
+    expect(
+      screen.queryByText("Vui lòng nhập ghi chú hoặc đính kèm tệp."),
+    ).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+    await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+    const [path, method, payload] = vi.mocked(api.recruitmentWrite).mock
+      .calls[0];
+    expect([path, method]).toEqual(["/note-cv/", "POST"]);
+    expect((payload as FormData).get("file_note")).toBe(file);
+    expect(JSON.parse(String((payload as FormData).get("values")))).toEqual({
+      note: "",
+    });
+  },
+);
+
+it("keeps the note modal open, refreshes history and resets only after a successful save", async () => {
+  const onClose = vi.fn();
+  const notes: { id: number; content: string; fore_user__username: string }[] =
+    [];
+  let fail = false;
+  vi.mocked(api.recruitmentArray).mockImplementation(async (path) =>
+    path.startsWith("/note-cv/") ? [...notes] : [],
+  );
+  vi.mocked(api.recruitmentWrite).mockImplementation(
+    async (_path, _method, body) => {
+      if (fail) throw new Error("TEST save note failed");
+      const values = JSON.parse(String((body as FormData).get("values")));
+      notes.unshift({
+        id: notes.length + 1,
+        content: values.note,
+        fore_user__username: "test-user",
+      });
+      return {};
+    },
+  );
+  mount(
+    <RecruitmentEditor
+      state={{ action: "note", row: candidate }}
+      lookups={lookups}
+      onClose={onClose}
+    />,
+  );
+  await screen.findByText("Chưa có lịch sử ghi chú phỏng vấn.");
+  const input = screen.getByRole("textbox", {
+    name: "Ghi chú phỏng vấn",
+  }) as HTMLTextAreaElement;
+  const form = screen.getByRole("form", { name: "Ghi chú phỏng vấn" });
+  const attach = () =>
+    fireEvent.change(screen.getByLabelText("Tệp ghi chú phỏng vấn"), {
+      target: { files: [new File(["TEST"], "TEST feedback.pdf")] },
+    });
+  fireEvent.change(input, { target: { value: "TEST first note" } });
+  attach();
+  fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+  fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+  await screen.findByText("TEST first note");
+  await waitFor(() => expect(input.value).toBe(""));
+  expect(within(form).queryByText("TEST feedback.pdf")).toBeNull();
+  expect(
+    screen.getByRole("dialog", { name: "Ghi chú phỏng vấn" }),
+  ).toBeTruthy();
+  expect(onClose).not.toHaveBeenCalled();
+  expect(api.recruitmentWrite).toHaveBeenCalledTimes(1);
+  fail = true;
+  fireEvent.change(input, { target: { value: "TEST next note" } });
+  attach();
+  const submit = screen.getByRole("button", { name: "Thêm ghi chú" });
+  await waitFor(() => expect(submit.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(submit);
+  await screen.findByText("TEST save note failed");
+  expect(input.value).toBe("TEST next note");
+  expect(within(form).getByText("TEST feedback.pdf")).toBeTruthy();
+  expect(notes).toHaveLength(1);
+  fail = false;
+  fireEvent.click(submit);
+  await screen.findByText("TEST next note");
+  await waitFor(() => expect(input.value).toBe(""));
+  expect(screen.getByText("TEST first note")).toBeTruthy();
+  expect(within(form).queryByText("TEST feedback.pdf")).toBeNull();
+  expect(onClose).not.toHaveBeenCalled();
+  expect(api.recruitmentWrite).toHaveBeenCalledTimes(3);
+});
+
+it("groups interview feedback and its attachment in one composer and saves both together", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "note", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  const input = screen.getByRole("textbox", { name: "Ghi chú phỏng vấn" });
+  const composer = input.closest('[data-slot="field"]') as HTMLElement;
+  expect(
+    within(composer).getByRole("button", {
+      name: "Chọn tệp ghi chú phỏng vấn",
+    }),
+  ).toBeTruthy();
+  fireEvent.change(input, { target: { value: "TEST combined feedback" } });
+  const spreadsheet = new File(["TEST sheet"], "TEST spreadsheet.xlsx", {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  expect(
+    within(composer)
+      .getByLabelText("Tệp ghi chú phỏng vấn")
+      .getAttribute("accept"),
+  ).toBeNull();
+  fireEvent.drop(input, { dataTransfer: { files: [spreadsheet] } });
+  expect(within(composer).getByText("TEST spreadsheet.xlsx")).toBeTruthy();
+  const tooLarge = new File(["TEST"], "TEST large.pdf");
+  Object.defineProperty(tooLarge, "size", { value: 51 * 1024 * 1024 });
+  fireEvent.change(within(composer).getByLabelText("Tệp ghi chú phỏng vấn"), {
+    target: { files: [tooLarge] },
+  });
+  await screen.findByText("Tệp không được vượt quá 50 MB.");
+  expect(
+    screen
+      .getByRole("button", { name: "Thêm ghi chú" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
+  const file = new File(["TEST feedback"], "TEST feedback.pdf", {
+    type: "application/pdf",
+  });
+  fireEvent.change(within(composer).getByLabelText("Tệp ghi chú phỏng vấn"), {
+    target: { files: [file] },
+  });
+  await waitFor(() =>
+    expect(screen.queryByText("Tệp không được vượt quá 50 MB.")).toBeNull(),
+  );
+  expect(
+    within(composer).getByRole("button", { name: "Bỏ tệp TEST feedback.pdf" }),
+  ).toBeTruthy();
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Thêm ghi chú" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+  const [url, method, payload] = vi.mocked(api.recruitmentWrite).mock.calls[0];
+  expect(url).toBe("/note-cv/");
+  expect(method).toBe("POST");
+  expect(JSON.parse(String((payload as FormData).get("values")))).toMatchObject(
+    { note: "TEST combined feedback" },
+  );
+  expect((payload as FormData).get("file_note")).toBe(file);
 });
 it("clears a date range error as either date is corrected without fetching a draft", async () => {
   mount(<RecruitmentReport />);
@@ -436,7 +1302,7 @@ it("refetches the list when Search is clicked again with unchanged applied filte
     expect(api.listRecruitment).toHaveBeenCalledTimes(initial + 1),
   );
 });
-it("keeps an oversized CV error when a separate valid note file is selected", async () => {
+it("keeps CV validation in the profile form without exposing interview-note uploads", async () => {
   mount(
     <RecruitmentEditor
       state={{ action: "candidate", row: candidate }}
@@ -453,9 +1319,8 @@ it("keeps an oversized CV error when a separate valid note file is selected", as
     target: { files: [oversized] },
   });
   await screen.findByText("Tệp không được vượt quá 10 MB.");
-  fireEvent.change(screen.getByLabelText("Tệp ghi chú phỏng vấn"), {
-    target: { files: [new File(["TEST"], "TEST_note.pdf")] },
-  });
+  expect(screen.queryByLabelText("Tệp ghi chú phỏng vấn")).toBeNull();
+  expect(screen.queryByLabelText("Ghi chú / File phỏng vấn")).toBeNull();
   expect(screen.getByText("Tệp không được vượt quá 10 MB.")).toBeTruthy();
   expect(
     screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
@@ -510,7 +1375,7 @@ it("does not allow list actions, selection or bulk assignment against rows being
   );
   expect(
     screen
-      .getByRole("button", { name: "Sửa hồ sơ TEST-CV" })
+      .getByRole("button", { name: "Thao tác TEST-CV" })
       .hasAttribute("disabled"),
   ).toBe(true);
   expect(
@@ -724,6 +1589,268 @@ it("opens advanced fields automatically when a hidden date range fails validatio
   await waitFor(() => expect(onApply).toHaveBeenCalledTimes(1));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 });
+it("blocks invalid department filters and validates again when clearing advanced filters", async () => {
+  const onApply = vi.fn();
+  mount(
+    <RecruitmentFilters
+      mode="requests"
+      values={{
+        from_date: "2026-10-21",
+        to_date: "2026-10-22",
+        department_recruited: "999",
+        ticket_status: "999",
+      }}
+      lookups={lookups}
+      busy={false}
+      onApply={onApply}
+      onReset={vi.fn()}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await screen.findByRole("dialog", { name: "Lọc nâng cao" });
+  expect(onApply).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Xóa bộ lọc nâng cao" }));
+  await screen.findByText("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+  expect(onApply).not.toHaveBeenCalled();
+  fireEvent.keyDown(screen.getByRole("dialog", { name: "Lọc nâng cao" }), {
+    key: "Escape",
+  });
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await option("Trạng thái yêu cầu", "Đã phê duyệt");
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await screen.findByRole("dialog", { name: "Lọc nâng cao" });
+  fireEvent.click(screen.getByRole("button", { name: "Xóa bộ lọc nâng cao" }));
+  await waitFor(() => expect(onApply).toHaveBeenCalledTimes(1));
+  expect(onApply).toHaveBeenCalledWith(
+    expect.objectContaining({ ticket_status: "2", department_recruited: "" }),
+  );
+});
+it("shows and recovers from an invalid hidden interview candidate gender", async () => {
+  const onApply = vi.fn();
+  mount(
+    <InterviewCandidateFilters
+      values={{ search: " TEST ", gender: "unknown", cv_status: "1" }}
+      statuses={lookups.statuses}
+      busy={false}
+      onApply={onApply}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await screen.findByText("Giới tính không hợp lệ.");
+  expect(onApply).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Xóa bộ lọc nâng cao" }));
+  await waitFor(() =>
+    expect(onApply).toHaveBeenCalledWith({
+      search: "TEST",
+      gender: "",
+      cv_status: "1",
+    }),
+  );
+});
+it("retries schedule options after a failure and saves only a schedule from the selected date", async () => {
+  client.setQueryData(
+    ["recruitment-notes", 42, candidate.id],
+    [{ id: 1, content: "TEST cached private note" }],
+  );
+  vi.mocked(api.listRecruitment)
+    .mockRejectedValueOnce(new Error("TEST schedules unavailable"))
+    .mockResolvedValue({
+      count: 1,
+      results: [
+        {
+          id: 58,
+          title: "TEST Interview",
+          time_start: "09:00",
+          time_end: "10:00",
+        },
+      ],
+    });
+  mount(
+    <RecruitmentEditor
+      state={{
+        action: "attach",
+        row: {
+          ...candidate,
+          start_date: "2026-10-22",
+          path_file_cv: "/media/cv.pdf",
+          name_file_cv: "TEST unrelated CV.pdf",
+        },
+      }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  const retry = await screen.findByRole("button", {
+    name: "Thử lại lịch phỏng vấn",
+  });
+  expect(screen.queryByText("TEST cached private note")).toBeNull();
+  expect(screen.queryByText("TEST unrelated CV.pdf")).toBeNull();
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.submit(
+    screen.getByRole("form", { name: "Thêm ứng viên vào lịch phỏng vấn" }),
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  fireEvent.click(retry);
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  await option("Lịch phỏng vấn", "TEST Interview (09:00 - 10:00)");
+  fireEvent.change(screen.getByLabelText(/^Ngày phỏng vấn/), {
+    target: { value: "23/10/2026" },
+  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  expect(screen.queryByText("Vui lòng chọn lịch phỏng vấn.")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("Vui lòng chọn lịch phỏng vấn.");
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  await option("Lịch phỏng vấn", "TEST Interview (09:00 - 10:00)");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalledTimes(1));
+  expect(
+    (vi.mocked(api.recruitmentWrite).mock.calls[0][2] as FormData).get(
+      "id_interview",
+    ),
+  ).toBe("58");
+  expect(
+    (vi.mocked(api.recruitmentWrite).mock.calls[0][2] as FormData).get(
+      "ls_id_cv",
+    ),
+  ).toBe("[408]");
+});
+it("explains empty interview dates and only enables saving after schedules load", async () => {
+  vi.mocked(api.listRecruitment).mockResolvedValue({ count: 0, results: [] });
+  mount(
+    <RecruitmentEditor
+      state={{ action: "attach", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  fireEvent.change(screen.getByLabelText(/^Ngày phỏng vấn/), {
+    target: { value: "21/10/2026" },
+  });
+  await screen.findByText(
+    "Không có lịch phỏng vấn trong ngày đã chọn. Vui lòng chọn ngày khác.",
+  );
+  expect(screen.queryByText("Vui lòng chọn lịch phỏng vấn.")).toBeNull();
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(true);
+  let resolve!: (value: {
+    count: number;
+    results: {
+      id: number;
+      title: string;
+      time_start: string;
+      time_end: string;
+    }[];
+  }) => void;
+  vi.mocked(api.listRecruitment).mockImplementationOnce(
+    () =>
+      new Promise((done) => {
+        resolve = done;
+      }),
+  );
+  fireEvent.change(screen.getByLabelText(/^Ngày phỏng vấn/), {
+    target: { value: "22/10/2026" },
+  });
+  await screen.findByText("Đang tải lịch phỏng vấn...");
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.submit(
+    screen.getByRole("form", { name: "Thêm ứng viên vào lịch phỏng vấn" }),
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  resolve({
+    count: 1,
+    results: [
+      {
+        id: 58,
+        title: "TEST Interview",
+        time_start: "09:00",
+        time_end: "10:00",
+      },
+    ],
+  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  expect(
+    screen.queryByText(
+      "Không có lịch phỏng vấn trong ngày đã chọn. Vui lòng chọn ngày khác.",
+    ),
+  ).toBeNull();
+  expect(api.listRecruitment).toHaveBeenLastCalledWith(
+    "interviews",
+    { from_date: "2026-10-22", to_date: "2026-10-22" },
+    expect.anything(),
+  );
+});
+it("attaches all selected candidates and allows retrying a rejected save without losing the schedule", async () => {
+  const onClose = vi.fn();
+  vi.mocked(api.listRecruitment).mockResolvedValue({
+    count: 1,
+    results: [
+      {
+        id: 58,
+        title: "TEST Interview",
+        time_start: "09:00",
+        time_end: "10:00",
+      },
+    ],
+  });
+  vi.mocked(api.recruitmentWrite)
+    .mockRejectedValueOnce(new Error("TEST assignment failed"))
+    .mockResolvedValue({});
+  mount(
+    <RecruitmentEditor
+      state={{ action: "attach", row: {}, ids: [408, 409] }}
+      lookups={lookups}
+      onClose={onClose}
+    />,
+  );
+  expect(screen.getByText("Đã chọn 2 ứng viên.")).toBeTruthy();
+  fireEvent.change(screen.getByLabelText(/^Ngày phỏng vấn/), {
+    target: { value: "22/10/2026" },
+  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  await option("Lịch phỏng vấn", "TEST Interview (09:00 - 10:00)");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("TEST assignment failed");
+  expect(api.recruitmentWrite).toHaveBeenCalledTimes(1);
+  expect(onClose).not.toHaveBeenCalled();
+  expect(
+    screen.getByRole("combobox", { name: "Lịch phỏng vấn" }).textContent,
+  ).toContain("TEST Interview");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+  expect(api.recruitmentWrite).toHaveBeenCalledTimes(2);
+  for (const [url, method, body] of vi.mocked(api.recruitmentWrite).mock
+    .calls) {
+    expect(url).toBe("/add-cv-interview/");
+    expect(method).toBe("POST");
+    expect(Object.fromEntries((body as FormData).entries())).toEqual({
+      ls_id_cv: "[408,409]",
+      id_interview: "58",
+    });
+  }
+});
 it("keeps report dates visible without an empty advanced-search section", () => {
   mount(
     <RecruitmentFilters
@@ -823,4 +1950,190 @@ it("shows V2 recruitment metadata and Vietnam-style due dates without allowing t
   expect(
     (screen.getByLabelText("Người cập nhật") as HTMLInputElement).value,
   ).toBe("test-editor");
+});
+it("saves an existing candidate without changing legacy address codes", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "candidate", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("combobox", { name: "Quận/Huyện (địa chỉ cũ)" });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalled());
+  const payload = vi.mocked(api.recruitmentWrite).mock.calls[0][2] as FormData;
+  expect(JSON.parse(String(payload.get("values")))).toMatchObject({
+    city_code: "01",
+    district_code: "001",
+  });
+  expect(addressApi.listVietnamProvinces).not.toHaveBeenCalled();
+  expect(addressApi.listVietnamWards).not.toHaveBeenCalled();
+});
+it("preserves a legacy address until the user explicitly switches to the new hierarchy", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "candidate", row: candidate }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("combobox", { name: "Quận/Huyện (địa chỉ cũ)" });
+  expect(addressApi.listVietnamProvinces).not.toHaveBeenCalled();
+  expect(
+    screen.getByText("Hồ sơ đang sử dụng địa chỉ tỉnh, quận/huyện cũ."),
+  ).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Chọn địa chỉ mới" }));
+  expect(screen.queryByText("Vui lòng chọn tỉnh/thành phố.")).toBeNull();
+  await option("Tỉnh/Thành phố", "Hà Nội");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn tỉnh/thành phố.")).toBeNull(),
+  );
+  await option("Xã/Phường/Đặc khu", "Phường Ba Đình");
+  await option("Tỉnh/Thành phố", "Hồ Chí Minh");
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("combobox", { name: "Xã/Phường/Đặc khu" })
+        ?.textContent,
+    ).not.toContain("Phường Ba Đình"),
+  );
+  await option("Xã/Phường/Đặc khu", "Phường Sài Gòn");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(api.recruitmentWrite).toHaveBeenCalled());
+  const calls = vi.mocked(api.recruitmentWrite).mock.calls;
+  const call = calls[calls.length - 1];
+  const values = JSON.parse(String((call[2] as FormData).get("values")));
+  expect(values).toMatchObject({ city_code: "79", district_code: "26734" });
+});
+it("does not validate untouched wards when choosing or changing a province before saving", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "create-candidate", row: request }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("form", { name: "Thêm ứng viên" });
+  await option("Tỉnh/Thành phố", "Hà Nội");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull();
+  await option("Xã/Phường/Đặc khu", "Phường Ba Đình");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull(),
+  );
+  expect(
+    screen
+      .getByRole("combobox", { name: "Xã/Phường/Đặc khu" })
+      .getAttribute("aria-invalid"),
+  ).toBe("false");
+  await option("Tỉnh/Thành phố", "Hồ Chí Minh");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull();
+  expect(
+    screen.getByRole("combobox", { name: "Xã/Phường/Đặc khu" }).textContent,
+  ).not.toContain("Phường Ba Đình");
+  await option("Xã/Phường/Đặc khu", "Phường Sài Gòn");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull(),
+  );
+  await option("Tỉnh/Thành phố", "Hà Nội");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull();
+  await option("Xã/Phường/Đặc khu", "Phường Ba Đình");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull(),
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+it("validates a missing ward on save and clears the error after a valid selection", async () => {
+  mount(
+    <RecruitmentEditor
+      state={{ action: "create-candidate", row: request }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("form", { name: "Thêm ứng viên" });
+  await option("Tỉnh/Thành phố", "Hà Nội");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await screen.findByText("Vui lòng chọn xã/phường/đặc khu.");
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+  await option("Xã/Phường/Đặc khu", "Phường Ba Đình");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull(),
+  );
+  await option("Tỉnh/Thành phố", "Hồ Chí Minh");
+  await screen.findByText("Vui lòng chọn xã/phường/đặc khu.");
+  await option("Xã/Phường/Đặc khu", "Phường Sài Gòn");
+  await waitFor(() =>
+    expect(screen.queryByText("Vui lòng chọn xã/phường/đặc khu.")).toBeNull(),
+  );
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+it("resolves a modern ward name when viewing a saved candidate with no backend district name", async () => {
+  vi.mocked(api.recruitmentDetail).mockResolvedValue({
+    row: { ...candidate, district_code: "00004", district_name: null },
+    reasons: [],
+  });
+  mount(
+    <RecruitmentEditor
+      state={{
+        action: "view-candidate",
+        row: { ...candidate, district_code: "00004" },
+      }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByText("Phường Ba Đình");
+  expect(screen.getByText("Hà Nội")).toBeTruthy();
+});
+it("blocks candidate saving while public address options are unavailable and supports retry", async () => {
+  vi.mocked(addressApi.listVietnamProvinces).mockRejectedValueOnce(
+    new Error("TEST unavailable"),
+  );
+  mount(
+    <RecruitmentEditor
+      state={{ action: "create-candidate", row: request }}
+      lookups={lookups}
+      onClose={vi.fn()}
+    />,
+  );
+  await screen.findByRole("button", { name: "Thử lại địa chỉ" });
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại địa chỉ" }));
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("button", { name: "Thử lại địa chỉ" }),
+    ).toBeNull(),
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+    ).toBe(false),
+  );
 });

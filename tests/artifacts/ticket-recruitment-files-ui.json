@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-21T07:34:24.438Z",
+  "checks": [
+    {
+      "case": "Create candidate uses ticket attachment picker with selected file and remove action",
+      "result": "passed"
+    },
+    {
+      "case": "Single-file selection replaces the previous CV and can be removed",
+      "result": "passed"
+    },
+    {
+      "case": "Selected image opens and closes preview without submitting",
+      "result": "passed"
+    },
+    {
+      "case": "Attachment layout 1440px light",
+      "result": "passed"
+    },
+    {
+      "case": "Attachment layout 1440px dark",
+      "result": "passed"
+    },
+    {
+      "case": "Attachment layout 390px light",
+      "result": "passed"
+    },
+    {
+      "case": "Attachment layout 390px dark",
+      "result": "passed"
+    },
+    {
+      "case": "Saved recruitment attachment uses ticket file list and preserves its real URL",
+      "result": "passed"
+    },
+    {
+      "case": "CV size error is retained when a valid interview note attachment is selected",
+      "result": "passed"
+    },
+    {
+      "case": "Clearing oversized CV clears its error and the note can be independently removed",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "blockedWrites": []
+}

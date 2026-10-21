@@ -1,0 +1,471 @@
+{
+  "checks": [
+    {
+      "flow": "request",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST image.PNG",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST Đánh giá.pdf",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST CV.docx",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST Data.xlsx",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST Backup.zip",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST Notes.txt",
+      "result": "passed"
+    },
+    {
+      "flow": "history",
+      "format": "TEST README",
+      "result": "passed"
+    },
+    {
+      "flow": "/recruitment/interviews",
+      "result": "passed"
+    },
+    {
+      "flow": "/recruitment/reports",
+      "result": "passed"
+    }
+  ],
+  "writes": [
+    {
+      "flow": "request",
+      "filename": "TEST image.PNG",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST Đánh giá.pdf",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST CV.docx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST Data.xlsx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST Backup.zip",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST Notes.txt",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "request",
+      "filename": "TEST README",
+      "field": "file_upload",
+      "endpoint": "/api/detail_recruitment/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST image.PNG",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST Đánh giá.pdf",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST CV.docx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST Data.xlsx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST Backup.zip",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST Notes.txt",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "create-candidate",
+      "filename": "TEST README",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/85",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST image.PNG",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST Đánh giá.pdf",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST CV.docx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST Data.xlsx",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST Backup.zip",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST Notes.txt",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-cv",
+      "filename": "TEST README",
+      "field": "file_upload",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST image.PNG",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST Đánh giá.pdf",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST CV.docx",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST Data.xlsx",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST Backup.zip",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST Notes.txt",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "candidate-note",
+      "filename": "TEST README",
+      "field": "file_note",
+      "endpoint": "/api/detail_cv/408",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST image.PNG",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST Đánh giá.pdf",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST CV.docx",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST Data.xlsx",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST Backup.zip",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST Notes.txt",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    },
+    {
+      "flow": "interview-note",
+      "filename": "TEST README",
+      "field": "file_note",
+      "endpoint": "/api/note-cv/",
+      "result": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "method": "Isolated browser UI with fixture APIs; no real backend writes."
+}
