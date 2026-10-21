@@ -1,3 +1,4 @@
+import { MobilePageAction } from "@/components/layout/mobile-page-action";
 import { useId, useState, type ReactNode } from "react";
 import { Search } from "lucide-react";
 import { SearchInput } from "@/components/search-input";
@@ -11,6 +12,9 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import { DataFiltersDrawer } from "./data-filters-drawer";
+import type { DataFilterField, DataFilterValues } from "./types";
 
 interface DataSearchProps {
   readonly label?: string;
@@ -29,6 +33,13 @@ interface DataSearchProps {
   readonly className?: string;
   readonly iconOnlyOnMobile?: boolean;
   readonly onSearch: (value: string, filterValue: string) => void;
+  readonly mobileFilters?: {
+    fields: readonly DataFilterField[];
+    initialValues: DataFilterValues;
+    activeCount: number;
+    onApply: (values: DataFilterValues) => void;
+    onClear: () => void;
+  };
 }
 
 function DataSearchForm({
@@ -122,6 +133,11 @@ export function DataSearch({
   className,
   ...props
 }: Readonly<DataSearchProps>) {
+  const mobile = useIsMobile();
+  if (mobile)
+    return (
+      <MobileDataSearch {...props} actions={actions} className={className} />
+    );
   return (
     <div
       className={cn(
@@ -150,5 +166,82 @@ export function DataSearch({
         </div>
       )}
     </div>
+  );
+}
+
+function MobileDataSearch({
+  initialValue,
+  filter,
+  label = "Tìm kiếm dữ liệu",
+  placeholder = "Nhập từ khóa...",
+  mobileFilters,
+  actions,
+  className,
+  onSearch,
+}: Readonly<DataSearchProps>) {
+  const all = filter?.allOptionValue ?? "all";
+  const fields: DataFilterField[] = [
+    { name: "search", label, placeholder },
+    ...(filter
+      ? [
+          {
+            name: "status",
+            label: filter.label,
+            placeholder: filter.label,
+            type: "select" as const,
+            options: filter.options,
+            searchable: filter.searchable,
+            isLoading: filter.loading,
+          },
+        ]
+      : []),
+  ];
+  const drawer = (
+    <DataFiltersDrawer
+      iconOnly
+      label="Tìm kiếm nâng cao"
+      fields={mobileFilters?.fields ?? fields}
+      initialValues={
+        mobileFilters?.initialValues ?? {
+          search: initialValue,
+          status: filter?.initialValue ?? all,
+        }
+      }
+      activeFilterCount={
+        mobileFilters?.activeCount ??
+        mobileSearchCount(initialValue, filter, all)
+      }
+      onApply={
+        mobileFilters?.onApply ??
+        ((values) => onSearch(values.search ?? "", values.status ?? all))
+      }
+      onClear={mobileFilters?.onClear ?? (() => onSearch("", all))}
+    />
+  );
+  if (mobileFilters || !actions)
+    return <MobilePageAction>{drawer}</MobilePageAction>;
+  return (
+    <MobilePageAction>
+      <div
+        className={cn(
+          "flex min-w-0 flex-none flex-wrap items-center justify-end gap-2",
+          className,
+        )}
+      >
+        {actions}
+        {drawer}
+      </div>
+    </MobilePageAction>
+  );
+}
+
+function mobileSearchCount(
+  value: string,
+  filter: DataSearchProps["filter"],
+  all: string,
+) {
+  return (
+    Number(Boolean(value.trim())) +
+    Number(Boolean(filter?.initialValue && filter.initialValue !== all))
   );
 }

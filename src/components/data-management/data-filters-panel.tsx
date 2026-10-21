@@ -12,12 +12,16 @@ export function DataFiltersPanel({
   activeFilterCount,
   description,
   children,
+  label,
+  iconOnly = false,
 }: Readonly<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
   activeFilterCount: number;
   description: string;
   children: ReactNode;
+  label?: string;
+  iconOnly?: boolean;
 }>) {
   const filterDescription =
     activeFilterCount > 0
@@ -34,18 +38,19 @@ export function DataFiltersPanel({
             size="icon"
             className={cn(
               "h-11 sm:h-10 sm:pointer-coarse:h-11",
-              activeFilterCount > 0
+              !iconOnly && (activeFilterCount > 0 || label)
                 ? "w-auto gap-2 px-3"
                 : "w-11 sm:w-10 sm:pointer-coarse:w-11",
             )}
-            aria-label="Lọc nâng cao"
+            aria-label={label ?? "Lọc nâng cao"}
             aria-description={filterDescription}
-            title={filterDescription ?? "Lọc nâng cao"}
+            title={filterDescription ?? label ?? "Lọc nâng cao"}
           />
         }
       >
         <Filter className="size-4" aria-hidden="true" />
-        {activeFilterCount > 0 && (
+        {!iconOnly && label && <span>{label}</span>}
+        {!iconOnly && activeFilterCount > 0 && (
           <Badge
             tone="brand"
             className="h-5 min-w-5 justify-center rounded-full px-1.5 py-0 tabular-nums"
@@ -62,7 +67,7 @@ export function DataFiltersPanel({
             <header className="flex shrink-0 items-center justify-between gap-3 p-4 sm:p-6">
               <DialogHeading
                 icon={<Filter aria-hidden="true" />}
-                title="Lọc nâng cao"
+                title={label ?? "Lọc nâng cao"}
                 description={description}
               />
               <Dialog.Close

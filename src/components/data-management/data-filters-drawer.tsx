@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useState } from "react";
 import { DataFiltersPanel } from "./data-filters-panel";
 import { DataFiltersForm } from "./data-filters-form";
@@ -10,19 +11,30 @@ export function DataFiltersDrawer<Name extends string>({
   initialValues,
   onApply,
   onClear,
+  label,
+  activeFilterCount,
+  iconOnly,
 }: Readonly<{
   fields: readonly DataFilterField<Name>[];
   description?: string;
   initialValues: DataFilterValues<Name>;
   onApply: (filters: DataFilterValues<Name>) => void;
   onClear: () => void;
+  label?: string;
+  activeFilterCount?: number;
+  iconOnly?: boolean;
 }>) {
   const [open, setOpen] = useState(false);
+  const mobile = useIsMobile();
   return (
     <DataFiltersPanel
       open={open}
       onOpenChange={setOpen}
-      activeFilterCount={countActiveFilters(fields, initialValues)}
+      activeFilterCount={
+        activeFilterCount ?? countActiveFilters(fields, initialValues)
+      }
+      label={label}
+      iconOnly={iconOnly}
       description={description}
     >
       <DataFiltersForm
@@ -33,6 +45,7 @@ export function DataFiltersDrawer<Name extends string>({
           onApply(filters);
           setOpen(false);
         }}
+        onCancel={mobile ? () => setOpen(false) : undefined}
         onClear={() => {
           onClear();
           setOpen(false);

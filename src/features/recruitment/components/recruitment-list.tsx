@@ -334,6 +334,8 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           <>
             {kind === "candidates" && (
               <Button
+                mobileIconOnly
+                title="Gắn lịch phỏng vấn"
                 type="button"
                 variant="outline"
                 disabled={!selected.length || rowActionsDisabled}
@@ -342,10 +344,12 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
                 }
               >
                 <CalendarPlus className="size-4" />
-                Gắn lịch ({selected.length})
+                {`Gắn lịch (${selected.length})`}
               </Button>
             )}
             <AsyncButton
+              mobileIconOnly
+              title="Xuất Excel"
               type="button"
               variant="outline"
               loading={exportFile.isPending}

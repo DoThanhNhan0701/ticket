@@ -1,3 +1,4 @@
+import { MobilePageActionSlot } from "./mobile-page-action";
 import type { ReactNode } from "react";
 import { ArrowLeft, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,7 @@ export function PageHeader({
   actions,
 }: Readonly<PageHeaderProps>) {
   return (
-    <header className="flex h-10 shrink-0 items-center justify-between gap-2 sm:gap-3">
+    <header className="flex h-11 shrink-0 items-center sm:h-10 justify-between gap-2 sm:gap-3">
       <div className="flex min-w-0 flex-1 items-center gap-2">
         {onBack && (
           <Button
@@ -55,8 +56,9 @@ export function PageHeader({
           )}
         </div>
       </div>
+      <MobilePageActionSlot />
       {actions && (
-        <div className="flex h-full min-w-0 shrink-0 items-center gap-2 [&>a]:h-full [&>button]:h-full">
+        <div className="flex min-w-0 shrink-0 items-center gap-2 max-sm:[&>a]:size-11 max-sm:[&>a]:p-0 max-sm:[&>button]:size-11 max-sm:[&>button]:p-0 max-sm:[&_svg]:size-4 sm:h-full sm:[&>a]:h-full sm:[&>button]:h-full">
           {actions}
         </div>
       )}

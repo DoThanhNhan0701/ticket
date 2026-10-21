@@ -1,0 +1,245 @@
+{
+  "method": "Production build with fixture APIs; no real backend writes.",
+  "checks": [
+    {
+      "path": "/requests",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/requests/all",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/approvals/pending",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/approvals/approved",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/tasks/mine",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/tasks",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/users",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/requesting-departments",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/handling-departments",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/request-types",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/teams",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/positions",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/offices",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/reports",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/reports/export",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/requests",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/candidates",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/interviews",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/reports",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/interviews/INT_TEST",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    },
+    {
+      "path": "/requests/all",
+      "case": "search-and-advanced-single-apply",
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/candidates",
+      "case": "search-and-advanced-single-apply",
+      "result": "passed"
+    },
+    {
+      "path": "/requests/all",
+      "width": 1440,
+      "desktopFieldsVisible": true,
+      "result": "passed"
+    },
+    {
+      "path": "/settings/users",
+      "width": 1440,
+      "desktopFieldsVisible": true,
+      "result": "passed"
+    },
+    {
+      "path": "/recruitment/candidates",
+      "width": 1440,
+      "desktopFieldsVisible": true,
+      "result": "passed"
+    },
+    {
+      "path": "/reports",
+      "width": 1440,
+      "desktopFieldsVisible": true,
+      "result": "passed"
+    },
+    {
+      "case": "resize-closes-mobile-panel",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "result": "passed"
+}

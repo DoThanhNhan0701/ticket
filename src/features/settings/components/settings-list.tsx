@@ -116,7 +116,7 @@ export function SettingsList({
                 variant="ghost"
                 aria-label="Xóa lọc"
                 title="Xóa lọc"
-                className="w-11 px-0 lg:w-auto lg:px-4"
+                className="hidden w-11 px-0 sm:inline-flex lg:w-auto lg:px-4"
                 onClick={() =>
                   update({ search: undefined, is_active: undefined, page: 1 })
                 }

@@ -86,13 +86,18 @@ export function RequestDetailRows({
         step={3}
         title={
           <>
-            <span className="shrink-0">Chi tiết yêu cầu</span>
-            <span aria-hidden="true" className="text-muted-foreground">
+            <span className="min-w-0 truncate sm:shrink-0">
+              Chi tiết yêu cầu
+            </span>
+            <span
+              aria-hidden="true"
+              className="hidden text-muted-foreground sm:inline"
+            >
               ·
             </span>
             <TruncatedText
               text={groups.map((group) => group.title).join(" · ")}
-              className="text-muted-foreground"
+              className="hidden text-muted-foreground sm:block"
             />
           </>
         }
@@ -100,23 +105,27 @@ export function RequestDetailRows({
         actions={
           <>
             <AsyncButton
+              mobileIconOnly
+              title="Tải mẫu"
+              icon={<Download className="size-4" aria-hidden="true" />}
               type="button"
               variant="outline"
               loading={download.isPending}
               disabled={busy}
               onClick={() => download.mutate()}
             >
-              <Download className="size-4" aria-hidden="true" />
               Tải mẫu
             </AsyncButton>
             <AsyncButton
+              mobileIconOnly
+              title="Nhập Excel"
+              icon={<Upload className="size-4" aria-hidden="true" />}
               type="button"
               variant="outline"
               loading={upload.isPending}
               disabled={busy}
               onClick={() => input.current?.click()}
             >
-              <Upload className="size-4" aria-hidden="true" />
               Nhập Excel
             </AsyncButton>
             <input

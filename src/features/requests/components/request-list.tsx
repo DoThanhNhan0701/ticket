@@ -116,6 +116,49 @@ export function RequestList({
       <div className="shrink-0 space-y-3">
         <div className="flex flex-wrap items-end gap-2 sm:items-center sm:gap-3">
           <DataSearch
+            mobileFilters={{
+              fields: [
+                {
+                  name: "searchAll",
+                  label: "Tìm kiếm yêu cầu",
+                  placeholder: "Nhập từ khóa...",
+                },
+                {
+                  name: statusKey,
+                  label: "Trạng thái",
+                  placeholder: "Tất cả trạng thái",
+                  type: "select",
+                  searchable: true,
+                  options: statusOptions,
+                  isLoading: statuses.isPending,
+                },
+                ...filterFields,
+              ],
+              initialValues: {
+                ...advancedFilters,
+                searchAll: params.searchAll ?? "",
+                [statusKey]: selectedStatus ?? "all",
+              },
+              activeCount:
+                countActiveFilters(filterFields, params) +
+                Number(Boolean(params.searchAll)) +
+                Number(Boolean(selectedStatus)),
+              onApply: (filters) =>
+                update({
+                  ...filters,
+                  [statusKey]:
+                    filters[statusKey] === "all"
+                      ? undefined
+                      : filters[statusKey],
+                }),
+              onClear: () =>
+                update({}, [
+                  "searchAll",
+                  statusKey,
+                  "typeView",
+                  ...filterNames,
+                ]),
+            }}
             label="Tìm kiếm yêu cầu"
             resetKey={JSON.stringify(params)}
             initialValue={params.searchAll ?? ""}
@@ -150,7 +193,7 @@ export function RequestList({
             <Button
               type="button"
               variant="ghost"
-              className="w-full sm:w-auto"
+              className="hidden sm:inline-flex sm:w-auto"
               onClick={() =>
                 update({}, ["searchAll", statusKey, "typeView", ...filterNames])
               }

@@ -16,7 +16,7 @@ export function RequestFormSection({
 }>) {
   return (
     <Card className="min-w-0 gap-4 p-4 sm:p-5">
-      <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+      <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           {step !== undefined && (
             <span
@@ -38,9 +38,7 @@ export function RequestFormSection({
           </div>
         </div>
         {actions && (
-          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
-            {actions}
-          </div>
+          <div className="flex shrink-0 items-center gap-2">{actions}</div>
         )}
       </div>
       {children}

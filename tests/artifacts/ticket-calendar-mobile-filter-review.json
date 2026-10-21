@@ -1,0 +1,17 @@
+{
+  "method": "Production build with fixture APIs; no real backend writes.",
+  "checks": [
+    {
+      "path": "/recruitment/interviews",
+      "width": 390,
+      "fieldsHiddenUntilOpen": true,
+      "searchInHeader": true,
+      "iconOnly": true,
+      "singleDrawer": true,
+      "noOverflow": true,
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "result": "passed"
+}

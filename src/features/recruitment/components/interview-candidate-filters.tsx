@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
 import type { RecruitmentOption } from "../types";
+import { ResponsiveFilters } from "@/components/data-management/responsive-filters";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { RecruitmentAdvancedDrawer } from "./recruitment-advanced-drawer";
 import { RecruitmentFilterActions } from "./recruitment-filter-actions";
 import { interviewCandidateFilterSchema } from "../utils/recruitment-validation";
@@ -30,6 +32,8 @@ export function InterviewCandidateFilters({
   busy: boolean;
   onApply: (values: InterviewCandidateFilterValues) => void;
 }>) {
+  const mobile = useIsMobile();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const form = useForm<InterviewCandidateFilterValues>({
     values,
@@ -40,75 +44,105 @@ export function InterviewCandidateFilters({
     if (busy) return;
     onApply({ ...input, search: input.search.trim() });
     setAdvancedOpen(false);
+    setMobileOpen(false);
   };
   const submit = form.handleSubmit(apply, (errors) => {
     if (errors.gender) setAdvancedOpen(true);
   });
+  const genderField = (
+    <SelectField
+      {...shared}
+      id="interview-filter-gender"
+      name="gender"
+      searchable
+      label="Giới tính ứng viên"
+      placeholder="Tất cả giới tính"
+      options={[
+        { value: "", label: "Tất cả giới tính" },
+        { value: "Nam", label: "Nam" },
+        { value: "Nữ", label: "Nữ" },
+      ]}
+    />
+  );
   return (
-    <form
-      aria-label="Bộ lọc CV phỏng vấn"
-      noValidate
-      className="space-y-3 rounded-xl border bg-card p-3"
-      onSubmit={submit}
+    <ResponsiveFilters
+      mobile={mobile}
+      open={mobileOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset(values);
+          form.clearErrors();
+        }
+        setMobileOpen(open);
+      }}
+      activeCount={Object.values(values).filter((value) => value.trim()).length}
     >
-      <div className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap [&>[data-slot=field]]:xl:w-60 [&>[data-slot=field]]:xl:flex-none">
-        <InputField
-          {...shared}
-          id="interview-filter-search"
-          name="search"
-          label="Tìm ứng viên phỏng vấn"
-          placeholder="Tìm tên, email, số điện thoại..."
-        />
-        <SelectField
-          {...shared}
-          id="interview-filter-status"
-          name="cv_status"
-          label="Trạng thái ứng viên"
-          placeholder="Tất cả trạng thái"
-          searchable
-          options={[{ value: "", label: "Tất cả trạng thái" }, ...statuses]}
-        />
-        <RecruitmentFilterActions
-          busy={busy}
-          onReset={() => {
-            form.reset(emptyInterviewFilters);
-            onApply(emptyInterviewFilters);
-          }}
-        >
-          <RecruitmentAdvancedDrawer
-            open={advancedOpen}
-            disabled={busy}
-            activeCount={values.gender ? 1 : 0}
-            onOpenChange={(open) => {
-              if (!open) {
-                form.setValue("gender", values.gender);
-                form.clearErrors("gender");
-              }
-              setAdvancedOpen(open);
-            }}
-            onApply={submit}
-            onClear={() => {
-              const next = { ...form.getValues(), gender: "" };
-              form.reset(next);
-              void form.handleSubmit(apply)();
+      <form
+        aria-label="Bộ lọc CV phỏng vấn"
+        noValidate
+        className="space-y-3 rounded-xl border bg-card p-3"
+        onSubmit={submit}
+      >
+        <div className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap [&>[data-slot=field]]:xl:w-60 [&>[data-slot=field]]:xl:flex-none">
+          <InputField
+            {...shared}
+            id="interview-filter-search"
+            name="search"
+            label="Tìm ứng viên phỏng vấn"
+            placeholder="Tìm tên, email, số điện thoại..."
+          />
+          <SelectField
+            {...shared}
+            id="interview-filter-status"
+            name="cv_status"
+            label="Trạng thái ứng viên"
+            placeholder="Tất cả trạng thái"
+            searchable
+            options={[{ value: "", label: "Tất cả trạng thái" }, ...statuses]}
+          />
+          {mobile && genderField}
+          <RecruitmentFilterActions
+            onCancel={
+              mobile
+                ? () => {
+                    form.reset(values);
+                    form.clearErrors();
+                    setMobileOpen(false);
+                  }
+                : undefined
+            }
+            busy={busy}
+            onReset={() => {
+              form.reset(emptyInterviewFilters);
+              onApply(emptyInterviewFilters);
+              setMobileOpen(false);
             }}
           >
-            <SelectField
-              {...shared}
-              id="interview-filter-gender"
-              name="gender"
-              searchable
-              label="Giới tính ứng viên"
-              placeholder="Tất cả giới tính"
-              options={[
-                { value: "", label: "Tất cả giới tính" },
-                { value: "Nam", label: "Nam" },
-                { value: "Nữ", label: "Nữ" },
-              ]}
-            />
-          </RecruitmentAdvancedDrawer>
-        </RecruitmentFilterActions>
-      </div>
-    </form>
+            {!mobile && (
+              <RecruitmentAdvancedDrawer
+                open={advancedOpen}
+                disabled={busy}
+                activeCount={values.gender ? 1 : 0}
+                onOpenChange={(open) => {
+                  if (!open) {
+                    form.setValue("gender", values.gender);
+                    form.clearErrors("gender");
+                  }
+                  setAdvancedOpen(open);
+                }}
+                onApply={submit}
+                onClear={() => {
+                  const next = { ...form.getValues(), gender: "" };
+                  form.reset(next);
+                  void form.handleSubmit(apply)();
+                }}
+              >
+                {genderField}
+              </RecruitmentAdvancedDrawer>
+            )}
+          </RecruitmentFilterActions>
+        </div>
+      </form>
+    </ResponsiveFilters>
   );
 }

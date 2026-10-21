@@ -87,3 +87,10 @@ export function names(value: unknown) {
     .filter(Boolean)
     .join(", ");
 }
+
+export type InterviewCalendarView = "month" | "week" | "day";
+
+export function interviewCalendarView(value: string): InterviewCalendarView {
+  if (value === "month" || value === "day") return value;
+  return "week";
+}

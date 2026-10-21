@@ -1,3 +1,4 @@
+import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
 import { ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LegacyPageRedirect } from "@/app/legacy-page-redirect";
@@ -91,31 +92,39 @@ export function WorkspacePage({
     );
 
   return (
-    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
-      <PageHeader
-        title={page.label}
-        description={page.description}
-        icon={Icon}
-        actions={
-          page.path === HOME_PATH &&
-          canAccessPage(createTicketPage, permissions) ? (
-            <Link to={createTicketPage.path} className={buttonVariants()}>
-              <createTicketPage.icon className="size-4" aria-hidden="true" />
-              {createTicketPage.label}
-            </Link>
-          ) : undefined
-        }
-      />
-      {allowed ? (
-        content
-      ) : (
-        <EmptyState
-          title="Bạn chưa có quyền truy cập"
-          description="Vui lòng liên hệ quản trị viên nếu bạn cần sử dụng chức năng này."
-          icon={<ShieldCheck className="size-6" aria-hidden="true" />}
-          className="my-auto min-h-72"
+    <MobilePageActionProvider>
+      <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
+        <PageHeader
+          title={page.label}
+          description={page.description}
+          icon={Icon}
+          actions={
+            page.path === HOME_PATH &&
+            canAccessPage(createTicketPage, permissions) ? (
+              <Link
+                to={createTicketPage.path}
+                title={createTicketPage.label}
+                className={buttonVariants({
+                  className: "max-sm:size-11 max-sm:gap-0 max-sm:px-0",
+                })}
+              >
+                <createTicketPage.icon className="size-4" aria-hidden="true" />
+                <span className="max-sm:sr-only">{createTicketPage.label}</span>
+              </Link>
+            ) : undefined
+          }
         />
-      )}
-    </div>
+        {allowed ? (
+          content
+        ) : (
+          <EmptyState
+            title="Bạn chưa có quyền truy cập"
+            description="Vui lòng liên hệ quản trị viên nếu bạn cần sử dụng chức năng này."
+            icon={<ShieldCheck className="size-6" aria-hidden="true" />}
+            className="my-auto min-h-72"
+          />
+        )}
+      </div>
+    </MobilePageActionProvider>
   );
 }

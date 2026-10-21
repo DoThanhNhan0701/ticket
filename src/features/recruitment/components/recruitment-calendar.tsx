@@ -1,3 +1,4 @@
+import { ResponsivePageAction } from "@/components/layout/mobile-page-action";
 import { useState } from "react";
 import {
   addDays,
@@ -11,7 +12,15 @@ import {
 } from "date-fns";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { CalendarPlus, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  CalendarPlus,
+  CalendarDays,
+  CalendarRange,
+  Calendar,
+  CalendarCheck,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
@@ -21,6 +30,7 @@ import { listRecruitment, recruitmentObject } from "../api/recruitment-api";
 import { useRecruitmentLookups } from "../hooks/use-recruitment-lookups";
 import { InterviewCalendarGrid } from "./interview-calendar-grid";
 import { RecruitmentEditor } from "./recruitment-editor";
+import { interviewCalendarView } from "../utils/recruitment-format";
 import { RecruitmentFilters } from "./recruitment-filters";
 export function RecruitmentCalendar() {
   const { userId, permissions } = useAuthContext();
@@ -79,14 +89,35 @@ export function RecruitmentCalendar() {
     },
     (_, index) => addDays(start, index),
   );
+  const createInterviewButton = (
+    <Button
+      mobileIconOnly
+      title="Tạo lịch phỏng vấn"
+      disabled={!lookups.data || query.isFetching || query.isError}
+      onClick={() =>
+        setEditor({
+          action: "interview",
+          row: { start_date: format(day, "yyyy-MM-dd") },
+        })
+      }
+    >
+      <CalendarPlus className="size-4" />
+      Tạo lịch phỏng vấn
+    </Button>
+  );
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3">
       <RecruitmentFilters
         mode="interviews"
-        values={{ ...params, from_date: format(day, "yyyy-MM-dd") }}
+        values={{
+          ...params,
+          from_date: format(day, "yyyy-MM-dd"),
+          calendar_view: view,
+        }}
         lookups={lookups.data ?? {}}
         busy={query.isFetching}
         onApply={(values) => {
+          setView(interviewCalendarView(values.calendar_view));
           setUser(values.user_interview);
           setDay(new Date(`${values.from_date}T12:00:00`));
         }}
@@ -95,7 +126,7 @@ export function RecruitmentCalendar() {
           setDay(new Date());
         }}
       />
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="hidden flex-wrap items-center justify-between gap-2 sm:flex">
         <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
@@ -105,7 +136,13 @@ export function RecruitmentCalendar() {
           >
             <ChevronLeft className="size-4" />
           </Button>
-          <Button variant="outline" onClick={() => setDay(new Date())}>
+          <Button
+            mobileIconOnly
+            title="Hôm nay"
+            variant="outline"
+            onClick={() => setDay(new Date())}
+          >
+            <CalendarCheck className="size-4 sm:hidden" aria-hidden="true" />
             Hôm nay
           </Button>
           <Button
@@ -125,32 +162,24 @@ export function RecruitmentCalendar() {
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ["month", "Tháng"],
-              ["week", "Tuần"],
-              ["day", "Ngày"],
+              ["month", "Tháng", CalendarDays],
+              ["week", "Tuần", CalendarRange],
+              ["day", "Ngày", Calendar],
             ] as const
-          ).map(([value, label]) => (
+          ).map(([value, label, ViewIcon]) => (
             <Button
               key={value}
+              mobileIconOnly
+              title={label}
               variant={view === value ? "default" : "outline"}
               onClick={() => setView(value)}
               aria-pressed={view === value}
             >
+              <ViewIcon className="size-4 sm:hidden" aria-hidden="true" />
               {label}
             </Button>
           ))}
-          <Button
-            disabled={!lookups.data || query.isFetching || query.isError}
-            onClick={() =>
-              setEditor({
-                action: "interview",
-                row: { start_date: format(day, "yyyy-MM-dd") },
-              })
-            }
-          >
-            <CalendarPlus className="size-4" />
-            Tạo lịch phỏng vấn
-          </Button>
+          <ResponsivePageAction>{createInterviewButton}</ResponsivePageAction>
         </div>
       </div>
       {lookups.isError && (

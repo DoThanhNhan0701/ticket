@@ -13,11 +13,13 @@ export function DataFiltersForm<Name extends string>({
   initialValues,
   onApply,
   onClear,
+  onCancel,
 }: Readonly<{
   fields: readonly DataFilterField<Name>[];
   initialValues: DataFilterValues<Name>;
   onApply: (filters: DataFilterValues<Name>) => void;
   onClear: () => void;
+  onCancel?: () => void;
 }>) {
   const formId = useId();
   const { control, handleSubmit } = useForm<DataFilterValues>({
@@ -74,10 +76,12 @@ export function DataFiltersForm<Name extends string>({
           return <InputField key={field.name} {...props} />;
         })}
       </div>
-      <div className="flex shrink-0 flex-wrap items-center gap-2 p-4 sm:p-6">
-        <Button type="submit">Áp dụng bộ lọc</Button>
-        <Button type="button" variant="outline" onClick={onClear}>
-          Xóa bộ lọc nâng cao
+      <div className="grid shrink-0 grid-cols-2 gap-2 p-4 sm:flex sm:flex-wrap sm:p-6">
+        <Button title={onCancel ? "Tìm kiếm" : "Áp dụng bộ lọc"} type="submit">
+          {onCancel ? "Tìm kiếm" : "Áp dụng bộ lọc"}
+        </Button>
+        <Button type="button" variant="outline" onClick={onCancel ?? onClear}>
+          {onCancel ? "Hủy" : "Xóa bộ lọc nâng cao"}
         </Button>
       </div>
     </form>

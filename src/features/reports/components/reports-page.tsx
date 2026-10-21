@@ -114,7 +114,7 @@ export function ReportsPage({
     <div
       className={cn(
         "min-w-0 w-full space-y-4",
-        !showReport && "my-auto max-w-4xl self-center",
+        !showReport && "max-w-4xl self-center sm:my-auto",
       )}
     >
       <ReportFiltersForm

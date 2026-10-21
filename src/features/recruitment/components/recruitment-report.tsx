@@ -165,6 +165,8 @@ export function RecruitmentReport() {
         }}
         actions={
           <AsyncButton
+            mobileIconOnly
+            title="Xuất Excel"
             type="button"
             variant="outline"
             loading={exporting.isPending}
