@@ -23,6 +23,7 @@ import { setCookie, getCookie } from "@/lib/cookies";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
 import { settingsKinds, type SettingsKind } from "@/features/settings/types";
 import { settingsConfig } from "@/features/settings/utils/settings-config";
+import { getPositionPermissionInfo } from "@/features/settings/utils/position-permissions";
 import { listSettingsRequest } from "@/features/settings/api/settings-api";
 import { downloadFile } from "@/lib/download";
 import {
@@ -578,6 +579,123 @@ it("retries a list failure without clearing the session", async () => {
   await ready();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBe("settings-access");
 });
+
+it("shows readable permission labels in the positions table and existing edit form", async () => {
+  renderPage("positions");
+  await ready();
+  await screen.findByText("Tạo yêu cầu");
+  expect(screen.queryByText("can_create")).toBeNull();
+  await editorReady("positions", true);
+  fireEvent.click(screen.getByRole("button", { name: "Quyền hạn" }));
+  const option = await screen.findByRole("button", {
+    name: "Tạo yêu cầu",
+  });
+  expect(option.getAttribute("aria-pressed")).toBe("true");
+  expect(screen.queryByText("can_create")).toBeNull();
+  expect(
+    fetchMock.mock.calls.every(([, options]) => options?.method === "GET"),
+  ).toBe(true);
+});
+
+it("opens permission explanations beside the create action without writing data", async () => {
+  renderPage("positions");
+  await ready();
+  fireEvent.click(screen.getByRole("button", { name: "Thông tin quyền hạn" }));
+  const dialog = screen.getByRole("dialog", { name: "Thông tin quyền hạn" });
+  expect(await within(dialog).findByText("Tạo yêu cầu")).toBeTruthy();
+  expect(
+    within(dialog).getByText("Tạo yêu cầu mới và sao chép yêu cầu hiện có."),
+  ).toBeTruthy();
+  fireEvent.click(
+    within(dialog).getByRole("button", { name: "Đóng thông tin quyền hạn" }),
+  );
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(
+    fetchMock.mock.calls.every(([, options]) => options?.method === "GET"),
+  ).toBe(true);
+});
+
+it("retries failed permission explanations without leaving the help dialog", async () => {
+  lookupFailure = true;
+  renderPage("positions");
+  await ready();
+  fireEvent.click(screen.getByRole("button", { name: "Thông tin quyền hạn" }));
+  const dialog = screen.getByRole("dialog", { name: "Thông tin quyền hạn" });
+  await within(dialog).findByText(/Lookup offline/);
+  lookupFailure = false;
+  fireEvent.click(
+    within(dialog).getByRole("button", { name: "Thử lại quyền hạn" }),
+  );
+  expect(await within(dialog).findByText("Tạo yêu cầu")).toBeTruthy();
+});
+
+it("preserves unknown permission names and supplied descriptions", () => {
+  expect(getPositionPermissionInfo("custom_permission", "Mô tả riêng")).toEqual(
+    { label: "custom_permission", description: "Mô tả riêng" },
+  );
+  expect(getPositionPermissionInfo("toString").label).toBe("toString");
+});
+
+function includeRetiredPermissions() {
+  const previous = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((input, options) => {
+    if (new URL(String(input)).pathname === "/api/list_position_permission/")
+      return Promise.resolve(
+        Response.json([
+          positionPermissionFixture,
+          { ...positionPermissionFixture, id: 5, name: "can_search" },
+          { ...positionPermissionFixture, id: 7, name: "can_delete" },
+        ]),
+      );
+    return previous(input, options);
+  });
+}
+
+it("excludes retired permissions from new assignments and Select all", async () => {
+  includeRetiredPermissions();
+  renderPage("positions");
+  await editorReady("positions");
+  change("Tên chức vụ", "TEST active permissions");
+  fireEvent.click(screen.getByRole("button", { name: "Quyền hạn" }));
+  expect(
+    screen.queryByRole("button", { name: /Tìm kiếm yêu cầu|Xóa yêu cầu/ }),
+  ).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Select all" }));
+  fireEvent.keyDown(document, { key: "Escape" });
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const write = requests("/api/chucvumanager/", "POST")[0];
+  expect(JSON.parse(String(write[1]?.body)).permission).toEqual([1]);
+});
+
+it.each([false, true])(
+  "keeps legacy permissions on edit and allows explicit removal (%s)",
+  async (remove) => {
+    includeRetiredPermissions();
+    rows.positions = [{ ...settingsFixtures.positions, permission: [1, 5, 7] }];
+    renderPage("positions");
+    await editorReady("positions", true);
+    const removeSearch = screen.getByRole("button", {
+      name: "Remove Tìm kiếm yêu cầu (Ngừng cấp mới)",
+    });
+    if (remove) {
+      fireEvent.click(removeSearch);
+      fireEvent.click(screen.getByRole("button", { name: "Quyền hạn" }));
+      expect(
+        screen.queryByRole("button", {
+          name: "Tìm kiếm yêu cầu (Ngừng cấp mới)",
+        }),
+      ).toBeNull();
+      fireEvent.keyDown(document, { key: "Escape" });
+    }
+    fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    const write = requests("/api/chucvumanager/13", "PUT")[0];
+    expect(JSON.parse(String(write[1]?.body)).permission).toEqual(
+      remove ? [1, 7] : [1, 5, 7],
+    );
+  },
+);
 it("blocks saving while a lookup fails and retries independently", async () => {
   lookupFailure = true;
   renderPage("positions");

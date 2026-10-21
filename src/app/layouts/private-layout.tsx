@@ -8,7 +8,7 @@ import { LoadingScreen } from "@/components/loading-screen";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { HOME_PATH } from "@/constants/auth";
+import { getDefaultWorkspacePath } from "../navigation";
 import { AppSidebar, MobileSidebar } from "./app-sidebar";
 import { useSidebarPreferences } from "./use-sidebar-preferences";
 
@@ -20,7 +20,7 @@ export function PrivateLayout() {
     toggleGroup,
   } = useSidebarPreferences();
   const desktopToggleRef = useRef<HTMLButtonElement>(null);
-  const { token, isInitializing, username, avatarUrl, logout } =
+  const { token, isInitializing, username, avatarUrl, logout, permissions } =
     useAuthContext();
   if (isInitializing) return <LoadingScreen />;
   if (!token) return <Navigate to="/login" replace />;
@@ -57,7 +57,7 @@ export function PrivateLayout() {
               </Button>
             </div>
             <Link
-              to={HOME_PATH}
+              to={getDefaultWorkspacePath(permissions)}
               aria-label="Rainscales Ticket home"
               className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >

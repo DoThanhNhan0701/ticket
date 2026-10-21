@@ -14,7 +14,14 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import App from "@/app/app";
 import { requestDetailFixture } from "./fixtures/request-detail";
 import { requestDetailSchema } from "@/features/requests/schemas/request-detail-schema";
-import { isPageActive, navigationGroups } from "@/app/navigation";
+import { getRequestDetail } from "@/features/requests/api/request-detail-api";
+import {
+  canAccessPage,
+  getDefaultWorkspacePath,
+  isPageActive,
+  navigationGroups,
+  workspacePages,
+} from "@/app/navigation";
 
 vi.mock("@/features/requests/api/request-detail-api", () => ({
   validTicketId: (id: string) => /^[1-9]\d*$/.test(id),
@@ -86,7 +93,7 @@ beforeEach(() => {
     username: "ticket-user",
     userId: 1,
     avatarUrl: null,
-    permissions: { can_create: true },
+    permissions: { can_create: true, can_view: true },
     userPermission: null,
     isInitializing: false,
     isLoading: false,
@@ -175,6 +182,43 @@ it("redirects the root to the request list with no overview navigation", async (
   expect(screen.getByTestId("current-path").textContent).toBe("/requests/new");
 });
 
+it.each(["/", "/login", "/unknown-page"])(
+  "opens the first permitted page from %s for the reported task/report account",
+  async (path) => {
+    auth.permissions = {
+      can_process: true,
+      can_report: true,
+      can_export: true,
+    };
+    renderApp(path);
+    await screen.findByRole("heading", { name: "Nhiệm vụ cá nhân" });
+    expect(screen.getByTestId("current-path").textContent).toBe("/tasks/mine");
+    expect(
+      screen
+        .getByRole("link", { name: "Rainscales Ticket home" })
+        .getAttribute("href"),
+    ).toBe("/tasks/mine");
+    expect(screen.queryByText("Bạn chưa có quyền truy cập")).toBeNull();
+    expect(
+      screen.queryByRole("link", { name: "Danh sách yêu cầu" }),
+    ).toBeNull();
+  },
+);
+
+it.each([
+  [{}, "/requests"],
+  [{ is_superuser: true }, "/requests"],
+  [{ can_view: true, can_process: true }, "/requests"],
+  [{ can_create: true }, "/requests/new"],
+  [{ can_allticket: true }, "/requests/all"],
+  [{ can_accept: true }, "/approvals/pending"],
+  [{ can_report: true }, "/reports"],
+  [{ can_export: true }, "/reports/export"],
+  [{ can_system: true }, "/settings/users"],
+])("selects a home path for functional permissions %j", (permissions, path) => {
+  expect(getDefaultWorkspacePath(permissions)).toBe(path);
+});
+
 it.each([
   "/",
   "/change-password",
@@ -220,7 +264,9 @@ it.each([
 ])(
   "redirects old URL %s to %s with its query and fragment intact",
   async (oldUrl, newUrl, title) => {
-    auth.permissions = { is_superuser: true };
+    auth.permissions = Object.fromEntries(
+      workspacePages.map((page) => [page.permission, true]),
+    );
     renderApp(oldUrl);
     expect(await screen.findByRole("heading", { name: title })).toBeTruthy();
     expect(screen.getByTestId("current-path").textContent).toBe(newUrl);
@@ -290,6 +336,7 @@ it("redirects the legacy change-status link to the implemented form while preser
 it("shows ticketV2 navigation groups according to the account permissions", async () => {
   auth.permissions = {
     can_create: true,
+    can_view: true,
     can_accept: true,
     can_process: true,
     can_report: true,
@@ -335,14 +382,14 @@ it("shows ticketV2 navigation groups according to the account permissions", asyn
 });
 
 it.each([
-  ["/requests", "Danh sách yêu cầu", "can_create"],
+  ["/requests", "Danh sách yêu cầu", "can_view"],
   ["/approvals/approved", "Đã phê duyệt", "can_accept"],
   ["/tasks/mine", "Nhiệm vụ cá nhân", "can_process"],
   ["/tasks", "Tất cả nhiệm vụ", "can_process"],
-  ["/reports/export", "Truy xuất dữ liệu", "can_report"],
+  ["/reports/export", "Truy xuất dữ liệu", "can_export"],
   ["/recruitment/candidates", "Quản lý ứng viên", "can_hr_rec"],
   ["/settings/users", "Người dùng", "can_system"],
-  ["/settings/offices", "Văn phòng", "is_system_manage"],
+  ["/settings/offices", "Văn phòng", "can_system"],
 ])(
   "opens %s directly and highlights the correct sidebar link",
   async (path, label, permission) => {
@@ -365,7 +412,7 @@ it.each([
 );
 
 it("keeps the request list active while opening a ticket detail URL", async () => {
-  auth.permissions = { can_create: true };
+  auth.permissions = { can_create: true, can_view: true };
   renderApp("/tickets/42?source=legacy#details");
   expect(
     await screen.findByRole("heading", { name: "Chi tiết yêu cầu" }),
@@ -392,7 +439,7 @@ it("does not activate the request list for other static request pages", () => {
 });
 
 it("hides unavailable groups and denies unauthorized direct URLs", async () => {
-  auth.permissions = { can_create: true };
+  auth.permissions = { can_create: true, can_view: true };
   renderApp("/settings/users");
   expect(
     await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" }),
@@ -404,20 +451,93 @@ it("hides unavailable groups and denies unauthorized direct URLs", async () => {
   expect(screen.queryByText("Trang đang được chuẩn bị")).toBeNull();
 });
 
-it("allows a superuser to navigate to every section", async () => {
-  auth.permissions = { is_superuser: true };
-  renderApp("/settings/users");
+it.each(["is_superuser", "is_admin", "is_staff", "is_system_manage"])(
+  "does not grant settings access through %s",
+  async (flag) => {
+    auth.permissions = { [flag]: true };
+    renderApp("/settings/users");
+    expect(
+      await screen.findByRole("heading", {
+        name: "Bạn chưa có quyền truy cập",
+      }),
+    ).toBeTruthy();
+    expect(screen.queryByText("Cấu hình hệ thống")).toBeNull();
+  },
+);
+
+it.each([false, true])(
+  "explains the empty sidebar without granting access (collapsed: %s)",
+  async (collapsed) => {
+    auth.permissions = {};
+    localStorage.setItem(
+      "ticket.sidebar",
+      JSON.stringify({ collapsed, groups: {} }),
+    );
+    renderApp("/requests");
+    await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+    const sidebar = within(
+      screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+    );
+    const status = sidebar.getByRole("status");
+    expect(within(status).getByText("Chưa có mục truy cập")).toBeTruthy();
+    expect(
+      within(status).getByText(
+        "Liên hệ quản trị viên để được cấp quyền cho các mục trong menu.",
+      ),
+    ).toBeTruthy();
+    expect(sidebar.queryByRole("link")).toBeNull();
+    if (collapsed)
+      expect(status.getAttribute("title")).toContain("Chưa có mục truy cập");
+    fireEvent.click(screen.getByRole("button", { name: "Mở menu điều hướng" }));
+    const mobile = await screen.findByRole("dialog", {
+      name: "Điều hướng Ticket",
+    });
+    expect(within(mobile).getByRole("status").textContent).toContain(
+      "Chưa có mục truy cập",
+    );
+    expect(within(mobile).queryByRole("link")).toBeNull();
+  },
+);
+
+it.each(workspacePages)(
+  "requires only the functional permission for $path",
+  (page) => {
+    expect(typeof page.permission).toBe("string");
+    expect(page.permission.startsWith("can_")).toBe(true);
+    expect(canAccessPage(page, null)).toBe(false);
+    expect(
+      canAccessPage(page, {
+        is_superuser: true,
+        is_admin: true,
+        is_system_manage: true,
+      }),
+    ).toBe(false);
+    expect(
+      canAccessPage(page, { [page.permission]: false, is_superuser: true }),
+    ).toBe(false);
+    expect(canAccessPage(page, { [page.permission]: true })).toBe(true);
+    const otherPermissions = Object.fromEntries(
+      workspacePages
+        .filter((other) => other.permission !== page.permission)
+        .map((other) => [other.permission, true]),
+    );
+    expect(canAccessPage(page, otherPermissions)).toBe(false);
+  },
+);
+
+it("blocks ticket detail before rendering its data without can_view", async () => {
+  auth.permissions = { can_create: true, is_superuser: true };
+  vi.mocked(getRequestDetail).mockClear();
+  renderApp("/requests/42");
   expect(
-    await screen.findByRole("heading", { name: "Người dùng" }),
+    await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" }),
   ).toBeTruthy();
-  expect(screen.getByText("Tuyển dụng")).toBeTruthy();
-  expect(screen.getByText("Danh sách phê duyệt")).toBeTruthy();
-  expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
-  expect(screen.queryByText("Bạn chưa có quyền truy cập")).toBeNull();
+  expect(screen.queryByText("RS-0042")).toBeNull();
+  expect(getRequestDetail).not.toHaveBeenCalled();
 });
 
 it("collapses the desktop sidebar while retaining accessible navigation", async () => {
-  auth.permissions = { can_create: true, can_report: true };
+  auth.permissions = { can_create: true, can_view: true, can_report: true };
   renderApp();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
@@ -449,7 +569,7 @@ it("collapses the desktop sidebar while retaining accessible navigation", async 
 });
 
 it("restores sidebar width and explicitly opened or closed groups after remount", async () => {
-  auth.permissions = { can_create: true, can_report: true };
+  auth.permissions = { can_create: true, can_view: true, can_report: true };
   const view = renderApp();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   const sidebar = screen.getByRole("complementary", { name: "Sidebar Ticket" });
@@ -510,7 +630,7 @@ it("keeps collapsed flyouts permission-filtered and highlights the list for tick
 });
 
 it("opens the mobile drawer and closes it after navigation", async () => {
-  auth.permissions = { can_create: true };
+  auth.permissions = { can_create: true, can_view: true };
   renderApp("/requests/new");
   await screen.findByRole("heading", { name: "Tạo yêu cầu" });
   fireEvent.click(screen.getByRole("button", { name: "Mở menu điều hướng" }));

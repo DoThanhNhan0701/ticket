@@ -526,8 +526,8 @@ it.each(pages)(
   },
 );
 
-it("isolates personal and all-task caches for superusers during navigation", async () => {
-  auth.permissions = { is_superuser: true };
+it("isolates personal and all-task caches with explicit task permission during navigation", async () => {
+  auth.permissions = { can_process: true };
   renderPage("/tasks/mine");
   await ready("Nhiệm vụ cá nhân");
   let finish!: (response: Response) => void;

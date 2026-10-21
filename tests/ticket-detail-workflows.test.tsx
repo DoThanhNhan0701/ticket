@@ -132,6 +132,24 @@ it("rejects access-denied success responses for comments, details, and uploads",
     uploadRequestAttachment(42, new File(["a"], "note.txt")),
   ).rejects.toThrow("quyền");
 });
+it.each([
+  { can_view: true, is_superuser: true },
+  { can_create: false, is_superuser: true },
+])(
+  "hides copying without can_create even with a Django superuser flag: %j",
+  (permissions) => {
+    open(
+      <AuthContext.Provider value={{ permissions } as AuthContextValue}>
+        <MemoryRouter>
+          <TicketCloneButton ticket={ticket()} />
+        </MemoryRouter>
+      </AuthContext.Provider>,
+    );
+    expect(screen.queryByRole("button", { name: "Sao chép" })).toBeNull();
+    expect(fetchMock).not.toHaveBeenCalled();
+  },
+);
+
 it("opens a copy in the creation form without creating a ticket", async () => {
   fetchMock.mockResolvedValue(
     Response.json({

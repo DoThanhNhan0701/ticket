@@ -7,6 +7,7 @@ import {
 } from "@/components/data-management";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatPositionPermissionName } from "../utils/position-permissions";
 import type {
   LookupKind,
   SettingsKind,
@@ -100,11 +101,12 @@ function entityColumns(
       render: (row) => (
         <DataText
           text={row.permission
-            ?.map(
-              (id) =>
+            ?.map((id) =>
+              formatPositionPermissionName(
                 lookups["position-permissions"]?.find(
                   (option) => option.id === id,
                 )?.name ?? String(id),
+              ),
             )
             .join(", ")}
         />

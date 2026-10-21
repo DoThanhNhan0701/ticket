@@ -53,7 +53,7 @@ beforeEach(() => {
     username: "Requester",
     userId: 42,
     avatarUrl: null,
-    permissions: { can_create: true },
+    permissions: { can_create: true, can_view: true },
     userPermission: null,
     isInitializing: false,
     isLoading: false,
@@ -315,7 +315,11 @@ it("requests the next page and resets pagination when changing page size", async
 it.each(["/requests", "/requests/all"])(
   "returns the existing table to the top on paging and size changes at %s, preserving horizontal scroll and same-page refreshes",
   async (path) => {
-    auth.permissions = { can_create: true, can_allticket: true };
+    auth.permissions = {
+      can_create: true,
+      can_view: true,
+      can_allticket: true,
+    };
     renderList(path);
     const waitReady = path === "/requests" ? ready : allReady;
     const readParams = path === "/requests" ? lastParams : allListParams;
@@ -958,7 +962,7 @@ it("submits real status and request-type IDs with all-request advanced fields an
 });
 
 it("isolates personal and all-request query data while navigating between lists", async () => {
-  auth.permissions = { can_create: true, can_allticket: true };
+  auth.permissions = { can_create: true, can_view: true, can_allticket: true };
   renderList();
   await ready();
   let finish!: (response: Response) => void;
@@ -1350,15 +1354,19 @@ it.each(approvalPages)(
 it.each(approvalPages)(
   "does not fetch $label without can_accept, even with create or all-request permissions",
   ({ path }) => {
-    auth.permissions = { can_create: true, can_allticket: true };
+    auth.permissions = {
+      can_create: true,
+      can_view: true,
+      can_allticket: true,
+    };
     renderList(path);
     expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
     expect(fetchMock).not.toHaveBeenCalled();
   },
 );
 
-it("isolates pending, approved and personal caches while switching lists and permits superusers", async () => {
-  auth.permissions = { is_superuser: true };
+it("isolates pending, approved and personal caches while switching lists with explicit page permissions", async () => {
+  auth.permissions = { can_view: true, can_accept: true, can_allticket: true };
   listResponse = () =>
     Response.json({
       ...pagination,
@@ -1424,7 +1432,11 @@ it.each([
 ])(
   "searches status options without accents on $label and applies the selected value only on submit",
   async ({ path, label, statusKey, statusValue }) => {
-    auth.permissions = { is_superuser: true };
+    auth.permissions = {
+      can_view: true,
+      can_accept: true,
+      can_allticket: true,
+    };
     renderList(`${path}?page=2`);
     await ready(label);
     const readParams = path === "/requests/all" ? allListParams : lastParams;

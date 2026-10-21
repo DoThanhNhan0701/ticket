@@ -1,0 +1,3314 @@
+{
+  "prefix": "TEST_PERM_261021",
+  "method": "Real browser UI only. Create isolated TEST department/team, positions and accounts; log in separately; inspect actual API responses; test each page and sidebar. No direct API calls, mocked permissions or edits to existing users.",
+  "permissions": [
+    {
+      "id": 1,
+      "code": "can_create",
+      "label": "Tạo yêu cầu"
+    },
+    {
+      "id": 2,
+      "code": "can_report",
+      "label": "Xem báo cáo"
+    },
+    {
+      "id": 3,
+      "code": "can_system",
+      "label": "Cấu hình hệ thống"
+    },
+    {
+      "id": 4,
+      "code": "can_view",
+      "label": "Xem yêu cầu"
+    },
+    {
+      "id": 5,
+      "code": "can_search",
+      "label": "Tìm kiếm yêu cầu"
+    },
+    {
+      "id": 6,
+      "code": "can_accept",
+      "label": "Phê duyệt yêu cầu"
+    },
+    {
+      "id": 7,
+      "code": "can_delete",
+      "label": "Xóa yêu cầu"
+    },
+    {
+      "id": 8,
+      "code": "can_export",
+      "label": "Xuất dữ liệu"
+    },
+    {
+      "id": 9,
+      "code": "can_allticket",
+      "label": "Xem tất cả yêu cầu"
+    },
+    {
+      "id": 10,
+      "code": "can_cv_interview",
+      "label": "Xem hồ sơ phỏng vấn"
+    },
+    {
+      "id": 11,
+      "code": "can_return_ticket",
+      "label": "Chuyển trạng thái yêu cầu"
+    }
+  ],
+  "profiles": [
+    {
+      "key": "create",
+      "label": "Tạo yêu cầu",
+      "permissions": ["can_create"],
+      "username": "test_p261021_create",
+      "positionName": "TEST_PERM_261021_create",
+      "employeeCode": "TP26102101",
+      "positionId": 27,
+      "userId": 799,
+      "actualPermissions": ["can_create"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": []
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "report",
+      "label": "Xem báo cáo",
+      "permissions": ["can_report"],
+      "username": "test_p261021_report",
+      "positionName": "TEST_PERM_261021_report",
+      "employeeCode": "TP26102102",
+      "positionId": 28,
+      "userId": 800,
+      "actualPermissions": ["can_report"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/reports"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "system",
+      "label": "Cấu hình hệ thống",
+      "permissions": ["can_system"],
+      "username": "test_p261021_system",
+      "positionName": "TEST_PERM_261021_system",
+      "employeeCode": "TP26102103",
+      "positionId": 29,
+      "userId": 801,
+      "actualPermissions": ["can_system"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": [
+          "/settings/handling-departments",
+          "/settings/offices",
+          "/settings/positions",
+          "/settings/request-types",
+          "/settings/requesting-departments",
+          "/settings/teams",
+          "/settings/users"
+        ]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "view",
+      "label": "Xem yêu cầu",
+      "permissions": ["can_view"],
+      "username": "test_p261021_view",
+      "positionName": "TEST_PERM_261021_view",
+      "employeeCode": "TP26102104",
+      "positionId": 30,
+      "userId": 802,
+      "actualPermissions": ["can_view"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [
+            {
+              "path": "/api/ticket_manager/14361",
+              "status": 400
+            }
+          ],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/requests"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "search",
+      "label": "Tìm kiếm yêu cầu",
+      "permissions": ["can_search"],
+      "username": "test_p261021_search",
+      "positionName": "TEST_PERM_261021_search",
+      "employeeCode": "TP26102105",
+      "positionId": 31,
+      "userId": 803,
+      "actualPermissions": ["can_search"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": []
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "accept",
+      "label": "Phê duyệt yêu cầu",
+      "permissions": ["can_accept"],
+      "username": "test_p261021_accept",
+      "positionName": "TEST_PERM_261021_accept",
+      "employeeCode": "TP26102106",
+      "positionId": 32,
+      "userId": 804,
+      "actualPermissions": ["can_accept"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/approvals/approved", "/approvals/pending"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "delete",
+      "label": "Xóa yêu cầu",
+      "permissions": ["can_delete"],
+      "username": "test_p261021_delete",
+      "positionName": "TEST_PERM_261021_delete",
+      "employeeCode": "TP26102107",
+      "positionId": 33,
+      "userId": 805,
+      "actualPermissions": ["can_delete"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": []
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "export",
+      "label": "Xuất dữ liệu",
+      "permissions": ["can_export"],
+      "username": "test_p261021_export",
+      "positionName": "TEST_PERM_261021_export",
+      "employeeCode": "TP26102108",
+      "positionId": 34,
+      "userId": 806,
+      "actualPermissions": ["can_export"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/reports/export"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "allticket",
+      "label": "Xem tất cả yêu cầu",
+      "permissions": ["can_allticket"],
+      "username": "test_p261021_allticket",
+      "positionName": "TEST_PERM_261021_allticket",
+      "employeeCode": "TP26102109",
+      "positionId": 35,
+      "userId": 807,
+      "actualPermissions": ["can_allticket"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/requests/all"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "cv_interview",
+      "label": "Xem hồ sơ phỏng vấn",
+      "permissions": ["can_cv_interview"],
+      "username": "test_p261021_cv_interview",
+      "positionName": "TEST_PERM_261021_cv_interview",
+      "employeeCode": "TP26102110",
+      "positionId": 36,
+      "userId": 808,
+      "actualPermissions": ["can_cv_interview"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": []
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "return_ticket",
+      "label": "Chuyển trạng thái yêu cầu",
+      "permissions": ["can_return_ticket"],
+      "username": "test_p261021_return_ticket",
+      "positionName": "TEST_PERM_261021_return_ticket",
+      "employeeCode": "TP26102111",
+      "positionId": 37,
+      "userId": 809,
+      "actualPermissions": ["can_return_ticket"],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": ["/requests/change-status"]
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "none",
+      "label": "Không quyền",
+      "permissions": [],
+      "username": "test_p261021_none",
+      "positionName": "TEST_PERM_261021_none",
+      "employeeCode": "TP26102112",
+      "positionId": 38,
+      "userId": 810,
+      "actualPermissions": [],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": []
+      },
+      "verification": "passed"
+    },
+    {
+      "key": "all",
+      "label": "Đủ quyền",
+      "permissions": [
+        "can_create",
+        "can_report",
+        "can_system",
+        "can_view",
+        "can_search",
+        "can_accept",
+        "can_delete",
+        "can_export",
+        "can_allticket",
+        "can_cv_interview",
+        "can_return_ticket"
+      ],
+      "username": "test_p261021_all",
+      "positionName": "TEST_PERM_261021_all",
+      "employeeCode": "TP26102113",
+      "positionId": 39,
+      "userId": 811,
+      "actualPermissions": [
+        "can_accept",
+        "can_allticket",
+        "can_create",
+        "can_cv_interview",
+        "can_delete",
+        "can_export",
+        "can_report",
+        "can_return_ticket",
+        "can_search",
+        "can_system",
+        "can_view"
+      ],
+      "flags": {
+        "is_superuser": false,
+        "is_admin": false,
+        "is_handling": false
+      },
+      "login": "passed",
+      "pages": [
+        {
+          "path": "/requests",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/new",
+          "permission": "can_create",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/all",
+          "permission": "can_allticket",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/change-status",
+          "permission": "can_return_ticket",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/requests/14361",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tickets/from-email/14361",
+          "permission": "can_view",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/pending",
+          "permission": "can_accept",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/approvals/approved",
+          "permission": "can_accept",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks/mine",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/tasks",
+          "permission": "can_process",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports",
+          "permission": "can_report",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/reports/export",
+          "permission": "can_export",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/requests",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/candidates",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/reports",
+          "permission": "can_hr_rec",
+          "expected": "denied",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/recruitment/interviews/TEST_QC_PERMISSION",
+          "permission": "can_cv_interview",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/requesting-departments",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/handling-departments",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/request-types",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/teams",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/positions",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/offices",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings/users/new",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        },
+        {
+          "path": "/settings",
+          "permission": "can_system",
+          "expected": "allowed",
+          "result": "passed",
+          "apiErrors": [],
+          "displayedAlerts": []
+        }
+      ],
+      "sidebar": {
+        "result": "passed",
+        "links": [
+          "/approvals/approved",
+          "/approvals/pending",
+          "/reports",
+          "/reports/export",
+          "/requests",
+          "/requests/all",
+          "/requests/change-status",
+          "/settings/handling-departments",
+          "/settings/offices",
+          "/settings/positions",
+          "/settings/request-types",
+          "/settings/requesting-departments",
+          "/settings/teams",
+          "/settings/users"
+        ]
+      },
+      "verification": "passed"
+    }
+  ],
+  "creations": [
+    {
+      "kind": "departments",
+      "name": "TEST_QC_PERM_261021",
+      "id": 32
+    },
+    {
+      "kind": "teams",
+      "name": "TEST_QC_PERM_261021",
+      "id": 90
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_create",
+      "id": 27
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_create",
+      "id": 799
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_report",
+      "id": 28
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_report",
+      "id": 800
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_system",
+      "id": 29
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_system",
+      "id": 801
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_view",
+      "id": 30
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_view",
+      "id": 802
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_search",
+      "id": 31
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_search",
+      "id": 803
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_accept",
+      "id": 32
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_accept",
+      "id": 804
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_delete",
+      "id": 33
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_delete",
+      "id": 805
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_export",
+      "id": 34
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_export",
+      "id": 806
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_allticket",
+      "id": 35
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_allticket",
+      "id": 807
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_cv_interview",
+      "id": 36
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_cv_interview",
+      "id": 808
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_return_ticket",
+      "id": 37
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_return_ticket",
+      "id": 809
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_none",
+      "id": 38
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_none",
+      "id": 810
+    },
+    {
+      "kind": "positions",
+      "name": "TEST_PERM_261021_all",
+      "id": 39
+    },
+    {
+      "kind": "users",
+      "name": "test_p261021_all",
+      "id": 811
+    }
+  ],
+  "department": {
+    "id": 32,
+    "name": "TEST_QC_PERM_261021"
+  },
+  "team": {
+    "id": 90,
+    "name": "TEST_QC_PERM_261021"
+  },
+  "environment": {
+    "ui": "http://127.0.0.1:5189",
+    "api": "https://ticket-api.aiminds.io.vn"
+  },
+  "coverageNotes": [
+    "The suite verifies real-account login, exact assigned permissions, sidebar links and admission to 26 protected page URLs per account. Denied pages issue no protected-data requests.",
+    "Allowed refers to page admission, not bypass of the API record-access or data-scope rules. API error responses are preserved per page.",
+    "The all profile has all 11 permissions available in the position-permission catalog. can_process and can_hr_rec are not in that catalog; these isolated accounts are not processing-group members, so tasks and recruitment-list pages remain denied.",
+    "can_search and can_delete do not grant entry to an independent page in the current route mapping.",
+    "Only TEST department/team, positions and users were created. No existing user or ticket was edited. Passwords and tokens are not stored in artifacts."
+  ],
+  "recordAccessObservation": {
+    "account": "test_p261021_view",
+    "path": "/requests/14361",
+    "status": 400,
+    "message": "You do not have access",
+    "result": "API denied reading an existing ticket belonging to another account even though can_view admits the detail page."
+  },
+  "setupObservation": {
+    "entity": "TEST_PERM_261021_all",
+    "initialResponse": 400,
+    "reason": "Description exceeded the backend limit of 150 characters.",
+    "resolution": "Shortened the TEST description, then created the position and account successfully. Completed profiles were reused."
+  },
+  "summary": {
+    "accountsCreated": 13,
+    "accountsVerified": 13,
+    "sidebarsVerified": 13,
+    "pageChecks": 338,
+    "allowed": 40,
+    "denied": 298,
+    "apiErrorResponses": 1
+  }
+}

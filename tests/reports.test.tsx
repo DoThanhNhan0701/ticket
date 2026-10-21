@@ -59,7 +59,7 @@ beforeEach(() => {
     username: "Reporter",
     userId: 42,
     avatarUrl: null,
-    permissions: { can_report: true },
+    permissions: { can_report: true, can_export: true },
     userPermission: null,
     isInitializing: false,
     isLoading: false,
@@ -417,6 +417,32 @@ it("shows a clear empty state when no active groups exist", async () => {
   expect(calls("/api/report")).toHaveLength(0);
 });
 
+it.each([
+  ["/reports", { can_export: true, is_superuser: true }],
+  ["/reports/export", { can_report: true, is_superuser: true }],
+])(
+  "denies %s when only the other report permission is granted",
+  (path, permissions) => {
+    auth.permissions = permissions;
+    renderPage(path);
+    expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
+    expect(fetchMock).not.toHaveBeenCalled();
+  },
+);
+
+it("does not expand export scope through the Django superuser flag", () => {
+  expect(
+    getVisibleReportGroups(
+      groups,
+      42,
+      { can_export: true, is_superuser: true },
+      "export",
+    ),
+  ).toEqual(
+    groups.filter((group) => group.is_active && group.is_manager === 42),
+  );
+});
+
 it("restricts data export to managed groups and requires a selected type", async () => {
   renderPage("/reports/export");
   await chooseGroup();
@@ -464,8 +490,8 @@ it.each(["Tất cả loại yêu cầu", "Thiết bị"])(
 );
 
 it.each([
-  { can_report: true, can_report_all_groups: true },
-  { is_superuser: true },
+  { can_report: true, can_export: true, can_report_all_groups: true },
+  { can_export: true, can_report_all_groups: true, is_superuser: true },
 ])(
   "clears the selected type when privileged users switch groups: %j",
   async (permissions) => {
@@ -620,7 +646,7 @@ it("does not treat an unassigned group as managed by an unidentified account", (
     getVisibleReportGroups(
       [{ ...groups[0], is_manager: null }],
       null,
-      { can_report: true },
+      { can_report: true, can_export: true },
       "export",
     ),
   ).toEqual([]);
@@ -665,7 +691,11 @@ it("marks every available request type under All, preserves marks during search 
   expect(body("/api/export_ticket_type").ticket_type_id).toBe("All");
 });
 it("returns to one check when selecting an individual type and resets All when changing groups", async () => {
-  auth.permissions = { can_report: true, can_report_all_groups: true };
+  auth.permissions = {
+    can_report: true,
+    can_export: true,
+    can_report_all_groups: true,
+  };
   typeResponse = (group) =>
     Response.json({
       ...pagination,

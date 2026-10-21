@@ -48,7 +48,12 @@ function SettingsForm({
     useSettingsFormData(kind, record);
   const form = useForm({
     resolver: zodResolver(
-      getSettingsFormSchema(kind, Boolean(record), lookups.data ?? {}),
+      getSettingsFormSchema(
+        kind,
+        Boolean(record),
+        lookups.data ?? {},
+        currentRecord,
+      ),
     ),
     values: getSettingsDefaults(currentRecord),
   });

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@base-ui/react/dialog";
-import { ChevronDown, Menu, ShieldCheck, X } from "lucide-react";
+import { ChevronDown, Menu, ShieldCheck, LockKeyhole, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogHeading } from "@/components/ui/dialog";
 import {
@@ -185,6 +185,36 @@ export function AppSidebar({
             collapsed ? "flex flex-col items-center gap-2" : "space-y-1",
           )}
         >
+          {groups.length === 0 && (
+            <div
+              role="status"
+              title={
+                collapsed
+                  ? "Chưa có mục truy cập. Liên hệ quản trị viên để được cấp quyền cho các mục trong menu."
+                  : undefined
+              }
+              className={cn(
+                "rounded-xl border border-dashed border-sidebar-border bg-muted/30 text-muted-foreground",
+                collapsed
+                  ? "flex size-11 items-center justify-center"
+                  : "space-y-3 p-4",
+              )}
+            >
+              <LockKeyhole
+                className={collapsed ? "size-5" : "size-6"}
+                aria-hidden="true"
+              />
+              <div className={collapsed ? "sr-only" : "space-y-1"}>
+                <p className="text-sm font-semibold text-sidebar-foreground">
+                  Chưa có mục truy cập
+                </p>
+                <p className="text-xs leading-5">
+                  Liên hệ quản trị viên để được cấp quyền cho các mục trong
+                  menu.
+                </p>
+              </div>
+            </div>
+          )}
           {groups.map((group) => {
             const active = group.pages.some((page) =>
               isPageActive(page, pathname),

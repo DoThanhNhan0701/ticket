@@ -9,6 +9,7 @@ import type {
   SettingsLookups,
 } from "../types";
 import { settingsOptions } from "../utils/settings-form";
+import { getPositionPermissionOptions } from "../utils/position-permissions";
 
 export function SettingsFieldControl({
   field,
@@ -39,7 +40,15 @@ export function SettingsFieldControl({
     return (
       <MultiSelectField
         {...shared}
-        options={settingsOptions(lookups[field.lookup!] ?? [], value)}
+        className={field.name === "permission" ? "sm:col-span-2" : undefined}
+        options={
+          field.name === "permission"
+            ? getPositionPermissionOptions(
+                lookups[field.lookup!] ?? [],
+                Array.isArray(value) ? value : [],
+              )
+            : settingsOptions(lookups[field.lookup!] ?? [], value)
+        }
         placeholder={`Chọn ${field.label.toLowerCase()}`}
         noDataText="Không có dữ liệu"
         maxBadgeCount={3}

@@ -23,10 +23,7 @@ export function getVisibleReportGroups(
   permissions: UserPermissions | null,
   mode: ReportMode,
 ) {
-  const canViewAll =
-    mode === "dashboard" ||
-    permissions?.is_superuser ||
-    permissions?.can_report_all_groups;
+  const canViewAll = mode === "dashboard" || permissions?.can_report_all_groups;
   return groups.filter(
     (group) =>
       group.is_active &&

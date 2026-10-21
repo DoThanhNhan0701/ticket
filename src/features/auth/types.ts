@@ -14,6 +14,8 @@ export interface LoginRequest {
 
 export interface UserPermissions {
   can_create?: boolean;
+  can_view?: boolean;
+  can_export?: boolean;
   can_hr_rec?: boolean;
   can_cv_interview?: boolean;
   can_accept?: boolean;

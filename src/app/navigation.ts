@@ -30,13 +30,26 @@ import type { UserPermissions } from "@/features/auth/types";
 import { matchPath } from "react-router-dom";
 import { HOME_PATH } from "@/constants/auth";
 
+export type PagePermission =
+  | "can_view"
+  | "can_create"
+  | "can_allticket"
+  | "can_return_ticket"
+  | "can_accept"
+  | "can_process"
+  | "can_report"
+  | "can_export"
+  | "can_hr_rec"
+  | "can_cv_interview"
+  | "can_system";
+
 export interface WorkspacePageDefinition {
   path: string;
   legacyPaths?: readonly string[];
   label: string;
   description: string;
   icon: LucideIcon;
-  permissions?: readonly string[];
+  permission: PagePermission;
   activePaths?: readonly string[];
 }
 
@@ -52,7 +65,7 @@ export const createTicketPage: WorkspacePageDefinition = {
   label: "Tạo yêu cầu",
   description: "Tạo yêu cầu hỗ trợ và gửi đến bộ phận phụ trách.",
   icon: Plus,
-  permissions: ["can_create"],
+  permission: "can_create",
 };
 
 export const navigationGroups: NavigationGroup[] = [
@@ -66,7 +79,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Danh sách yêu cầu",
         description: "Theo dõi các yêu cầu bạn đã gửi.",
         icon: Inbox,
-        permissions: ["can_create"],
+        permission: "can_view",
         activePaths: ["/requests/:ticketID", "/tickets/from-email/:ticketID"],
       },
       {
@@ -75,7 +88,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Tất cả yêu cầu",
         description: "Tra cứu yêu cầu trên toàn hệ thống.",
         icon: ListFilter,
-        permissions: ["can_allticket"],
+        permission: "can_allticket",
       },
       {
         path: "/requests/change-status",
@@ -83,7 +96,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Chuyển trạng thái ticket",
         description: "Quản lý việc chuyển trạng thái của các yêu cầu.",
         icon: ArrowLeftRight,
-        permissions: ["can_return_ticket"],
+        permission: "can_return_ticket",
       },
     ],
   },
@@ -97,7 +110,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Chờ phê duyệt",
         description: "Xem các yêu cầu đang chờ bạn phê duyệt.",
         icon: Clock3,
-        permissions: ["can_accept"],
+        permission: "can_accept",
       },
       {
         path: "/approvals/approved",
@@ -105,7 +118,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Đã phê duyệt",
         description: "Theo dõi các yêu cầu đã được phê duyệt.",
         icon: CheckCheck,
-        permissions: ["can_accept"],
+        permission: "can_accept",
       },
     ],
   },
@@ -119,7 +132,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Nhiệm vụ cá nhân",
         description: "Theo dõi các nhiệm vụ được giao cho bạn.",
         icon: UserRoundCheck,
-        permissions: ["can_process"],
+        permission: "can_process",
       },
       {
         path: "/tasks",
@@ -127,7 +140,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Tất cả nhiệm vụ",
         description: "Theo dõi nhiệm vụ của bộ phận xử lý.",
         icon: FolderKanban,
-        permissions: ["can_process"],
+        permission: "can_process",
       },
     ],
   },
@@ -140,7 +153,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Báo cáo",
         description: "Tổng hợp tình hình tiếp nhận và xử lý yêu cầu.",
         icon: FileChartColumn,
-        permissions: ["can_report"],
+        permission: "can_report",
       },
       {
         path: "/reports/export",
@@ -148,7 +161,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Truy xuất dữ liệu",
         description: "Tra cứu và xuất dữ liệu yêu cầu.",
         icon: Database,
-        permissions: ["can_report"],
+        permission: "can_export",
       },
     ],
   },
@@ -162,7 +175,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Yêu cầu tuyển dụng",
         description: "Quản lý nhu cầu và đề xuất tuyển dụng.",
         icon: ClipboardList,
-        permissions: ["can_hr_rec"],
+        permission: "can_hr_rec",
       },
       {
         path: "/recruitment/candidates",
@@ -170,7 +183,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Quản lý ứng viên",
         description: "Quản lý thông tin và hồ sơ ứng viên.",
         icon: Users,
-        permissions: ["can_hr_rec"],
+        permission: "can_hr_rec",
       },
       {
         path: "/recruitment/interviews",
@@ -178,7 +191,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Lịch phỏng vấn",
         description: "Theo dõi và sắp xếp lịch phỏng vấn.",
         icon: CalendarDays,
-        permissions: ["can_hr_rec"],
+        permission: "can_hr_rec",
         activePaths: ["/recruitment/interviews/:codeInterview"],
       },
       {
@@ -187,7 +200,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Báo cáo tuyển dụng",
         description: "Tổng hợp tiến độ và kết quả tuyển dụng.",
         icon: BarChart3,
-        permissions: ["can_hr_rec"],
+        permission: "can_hr_rec",
       },
     ],
   },
@@ -200,7 +213,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Người dùng",
         description: "Quản lý danh sách người dùng.",
         icon: Users,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
         activePaths: ["/settings/users/new"],
       },
       {
@@ -209,7 +222,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Bộ phận sử dụng",
         description: "Quản lý các bộ phận gửi yêu cầu.",
         icon: Building2,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
       {
         path: "/settings/handling-departments",
@@ -217,7 +230,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Bộ phận xử lý",
         description: "Quản lý các bộ phận tiếp nhận và xử lý yêu cầu.",
         icon: FolderKanban,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
       {
         path: "/settings/request-types",
@@ -225,7 +238,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Loại yêu cầu",
         description: "Quản lý danh mục loại yêu cầu.",
         icon: Tags,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
       {
         path: "/settings/teams",
@@ -233,7 +246,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Team",
         description: "Quản lý danh sách nhóm làm việc.",
         icon: UsersRound,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
       {
         path: "/settings/positions",
@@ -241,7 +254,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Chức vụ",
         description: "Quản lý danh mục chức vụ.",
         icon: BadgeCheck,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
       {
         path: "/settings/offices",
@@ -249,7 +262,7 @@ export const navigationGroups: NavigationGroup[] = [
         label: "Văn phòng",
         description: "Quản lý danh sách văn phòng.",
         icon: Building2,
-        permissions: ["can_system", "is_system_manage"],
+        permission: "can_system",
       },
     ],
   },
@@ -262,7 +275,7 @@ const contextualPages: WorkspacePageDefinition[] = [
     label: "Tổng quan cấu hình",
     description: "Quản lý tài khoản và danh mục hệ thống.",
     icon: Settings,
-    permissions: ["can_system", "is_system_manage"],
+    permission: "can_system",
   },
   {
     path: "/requests/:ticketID",
@@ -270,6 +283,7 @@ const contextualPages: WorkspacePageDefinition[] = [
     label: "Chi tiết yêu cầu",
     description: "Xem nội dung và tiến độ xử lý yêu cầu.",
     icon: FileText,
+    permission: "can_view",
   },
   {
     path: "/tickets/from-email/:ticketID",
@@ -277,7 +291,7 @@ const contextualPages: WorkspacePageDefinition[] = [
     label: "Yêu cầu từ email",
     description: "Xem yêu cầu được tiếp nhận qua email.",
     icon: Inbox,
-    permissions: ["can_create"],
+    permission: "can_view",
   },
   {
     path: "/settings/users/new",
@@ -285,7 +299,7 @@ const contextualPages: WorkspacePageDefinition[] = [
     label: "Tạo người dùng",
     description: "Thêm tài khoản người dùng vào hệ thống.",
     icon: UserPlus,
-    permissions: ["can_system", "is_system_manage"],
+    permission: "can_system",
   },
   {
     path: "/recruitment/interviews/:codeInterview",
@@ -293,7 +307,7 @@ const contextualPages: WorkspacePageDefinition[] = [
     label: "Chi tiết CV phỏng vấn",
     description: "Xem hồ sơ và thông tin phỏng vấn của ứng viên.",
     icon: FileText,
-    permissions: ["can_cv_interview"],
+    permission: "can_cv_interview",
   },
 ];
 
@@ -307,11 +321,19 @@ export function canAccessPage(
   page: WorkspacePageDefinition,
   permissions: UserPermissions | null,
 ): boolean {
-  return (
-    !page.permissions ||
-    permissions?.is_superuser === true ||
-    page.permissions.some((permission) => permissions?.[permission] === true)
-  );
+  return permissions?.[page.permission] === true;
+}
+
+export function getDefaultWorkspacePath(
+  permissions: UserPermissions | null,
+): string {
+  const firstPage = navigationGroups
+    .flatMap((group) => group.pages)
+    .find((page) => canAccessPage(page, permissions));
+  if (firstPage) return firstPage.path;
+  return canAccessPage(createTicketPage, permissions)
+    ? createTicketPage.path
+    : HOME_PATH;
 }
 
 export function isPageActive(

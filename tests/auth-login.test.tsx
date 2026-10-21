@@ -38,7 +38,7 @@ const account = {
     "Ticket User",
     "https://ticket-api.aiminds.io.vn/media/avatar.png",
   ],
-  userPermission: ["can_create", "can_accept", "can_report"],
+  userPermission: ["can_create", "can_view", "can_accept", "can_report"],
   handlingPermission: { support: ["can_reply"] },
   is_handling: true,
   is_admin: false,
@@ -393,7 +393,7 @@ it.each(["network", 500, 403] as const)(
       JSON.stringify({
         username: "Cached User",
         userId: 42,
-        permission: { can_create: true },
+        permission: { can_create: true, can_view: true },
       }),
     );
     queryClient.setQueryData(["private-data"], "cached");

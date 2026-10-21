@@ -7,6 +7,7 @@ import {
   getSettingsDefaults,
   getSettingsFormSchema,
 } from "@/features/settings/utils/settings-form";
+import { getPositionPermissionOptions } from "@/features/settings/utils/position-permissions";
 import { templateFixture } from "./fixtures/settings";
 import {
   updateTemplateField,
@@ -17,6 +18,39 @@ import {
 function groups() {
   return templateResponseSchema.parse(templateFixture).forms;
 }
+
+it("blocks new retired permission grants while preserving or removing existing assignments", () => {
+  const permissions = [
+    { id: 1, name: "can_create", is_active: true },
+    { id: 5, name: "can_search", is_active: true },
+    { id: 7, name: "can_delete", is_active: true },
+  ];
+  const lookups = { "position-permissions": permissions };
+  const existing = {
+    id: 99,
+    name: "Legacy position",
+    is_active: true,
+    permission: [5],
+  };
+  const values = getSettingsDefaults(existing);
+  expect(getPositionPermissionOptions(permissions, [])).toEqual([
+    { value: "1", label: "Tạo yêu cầu" },
+  ]);
+  expect(getPositionPermissionOptions(permissions, ["5"])).toEqual([
+    { value: "1", label: "Tạo yêu cầu" },
+    { value: "5", label: "Tìm kiếm yêu cầu (Ngừng cấp mới)" },
+  ]);
+  expect(
+    getSettingsFormSchema("positions", false, lookups).safeParse(values)
+      .success,
+  ).toBe(false);
+  const schema = getSettingsFormSchema("positions", true, lookups, existing);
+  expect(schema.safeParse(values).success).toBe(true);
+  expect(schema.safeParse({ ...values, permission: [] }).success).toBe(true);
+  expect(schema.safeParse({ ...values, permission: ["5", "7"] }).success).toBe(
+    false,
+  );
+});
 it.each(["0", "-10", "50.5", "abc"])(
   "rejects invalid column width %s",
   (width) => {

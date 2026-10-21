@@ -7,6 +7,7 @@ import type {
   SettingsRecord,
 } from "../types";
 import { settingsConfig } from "./settings-config";
+import { getPositionPermissionInfo } from "./position-permissions";
 
 function recordText(
   record: SettingsRecord | undefined,
@@ -88,8 +89,27 @@ export function getSettingsFormSchema(
   kind: SettingsKind,
   editing: boolean,
   lookups: SettingsLookups,
+  record?: SettingsRecord,
 ) {
   return formSchema.superRefine((values, context) => {
+    if (
+      kind === "positions" &&
+      values.permission.some((id) => {
+        const permission = lookups["position-permissions"]?.find(
+          (option) => String(option.id) === id,
+        );
+        return (
+          permission &&
+          getPositionPermissionInfo(permission.name).retired &&
+          !(editing && record?.permission?.includes(permission.id))
+        );
+      })
+    )
+      context.addIssue({
+        code: "custom",
+        path: ["permission"],
+        message: "Quyền đã ngừng sử dụng, không thể cấp mới.",
+      });
     for (const field of settingsConfig[kind].fields) {
       if (editing && field.createOnly) continue;
       for (const message of validateField(field, values[field.name], lookups))

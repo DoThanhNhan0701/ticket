@@ -1,14 +1,13 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
-import { HOME_PATH } from "@/constants/auth";
 import { LoadingScreen } from "@/components/loading-screen";
 import { AppErrorBoundary } from "@/components/app-error-boundary";
 import { PrivateLayout } from "@/app/layouts/private-layout";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PublicLayout } from "./layouts/public-layout";
-import { workspacePages } from "./navigation";
+import { workspacePages, getDefaultWorkspacePath } from "./navigation";
 import { LegacyPageRedirect } from "./legacy-page-redirect";
 
 const LoginPage = lazy(() =>
@@ -20,6 +19,11 @@ const WorkspacePage = lazy(() =>
 
 export default function App() {
   const auth = useAuthContext();
+  const homeRedirect = auth.isInitializing ? (
+    <LoadingScreen />
+  ) : (
+    <Navigate to={getDefaultWorkspacePath(auth.permissions)} replace />
+  );
 
   return (
     <AppErrorBoundary>
@@ -41,7 +45,7 @@ export default function App() {
             </Route>
 
             <Route element={<PrivateLayout />}>
-              <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
+              <Route path="/" element={homeRedirect} />
               {workspacePages.map((page) => (
                 <Route
                   key={page.path}
@@ -60,7 +64,7 @@ export default function App() {
               )}
             </Route>
 
-            <Route path="*" element={<Navigate to={HOME_PATH} replace />} />
+            <Route path="*" element={homeRedirect} />
           </Routes>
           <Toaster position="top-right" />
         </TooltipProvider>

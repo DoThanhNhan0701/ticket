@@ -369,13 +369,11 @@ it.each([{}, { can_system: true }, { can_create: true }])(
   },
 );
 
-it("allows a superuser to use the page", async () => {
+it("does not allow Django superuser access without can_return_ticket", () => {
   auth.permissions = { is_superuser: true };
   renderPage();
-  await ready();
-  expect(
-    screen.getByRole("form", { name: "Chuyển trạng thái ticket" }),
-  ).toBeTruthy();
+  expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
+  expect(fetchMock).not.toHaveBeenCalled();
 });
 
 it.each([0, 1, -1, 1.5])(

@@ -21,6 +21,7 @@ import { SettingsEditor } from "./settings-editor";
 import { SettingsTable } from "./settings-table";
 import { RequestTemplateEditor } from "./template-editor";
 import { UserExportButton } from "./user-export-button";
+import { PositionPermissionsHelp } from "./position-permissions-help";
 
 const pageSizes = [100, 200] as const;
 export function SettingsList({
@@ -123,6 +124,14 @@ export function SettingsList({
                 <FilterX className="size-4" aria-hidden="true" />
                 <span className="hidden lg:inline">Xóa lọc</span>
               </Button>
+            )}
+            {kind === "positions" && (
+              <PositionPermissionsHelp
+                permissions={lookups.data?.["position-permissions"] ?? []}
+                loading={lookups.isPending}
+                error={lookups.error}
+                onRetry={() => void lookups.refetch()}
+              />
             )}
             <Button
               type="button"

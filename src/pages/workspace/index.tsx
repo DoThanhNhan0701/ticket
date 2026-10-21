@@ -35,10 +35,10 @@ export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
   const { permissions, userId } = useAuthContext();
-  if (page.path === "/requests/:ticketID")
+  const allowed = canAccessPage(page, permissions);
+  if (page.path === "/requests/:ticketID" && allowed)
     return <RequestDetail key={userId} />;
   const Icon = page.icon;
-  const allowed = canAccessPage(page, permissions);
   let content = (
     <EmptyState
       title="Trang đang được chuẩn bị"

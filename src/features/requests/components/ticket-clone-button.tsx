@@ -24,7 +24,7 @@ export function TicketCloneButton({
       void navigate(`/requests/new?clone=${ticket.id}`);
     },
   });
-  if (!permissions?.can_create && !permissions?.is_superuser) return null;
+  if (!permissions?.can_create) return null;
   return (
     <div className="min-w-0 space-y-2">
       <AsyncButton
