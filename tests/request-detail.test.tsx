@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
+import { templateCombinations } from "./fixtures/template-combinations";
 import {
   cleanup,
+  act,
   fireEvent,
   render,
   screen,
@@ -18,6 +20,7 @@ import { RequestDetail } from "@/features/requests/components/request-detail";
 import { requestDetailSchema } from "@/features/requests/schemas/request-detail-schema";
 import {
   canEditTicketField,
+  ticketFieldRoles,
   ticketDetailRows,
   sectionUpdateRows,
   ticketFileUrl,
@@ -318,9 +321,218 @@ it("denies editing for a reader who is neither creator nor processor", async () 
   tab("Chi tiết yêu cầu");
   expect(screen.queryByRole("button", { name: "Chỉnh sửa" })).toBeNull();
 });
+it.each([
+  { role: "unassigned staff", status: 3, assignment: null, editable: false },
+  {
+    role: "completed handler",
+    status: 3,
+    assignment: "Hoàn thành",
+    editable: false,
+  },
+  {
+    role: "active handler",
+    status: 3,
+    assignment: "Đang xử lý",
+    editable: true,
+  },
+  {
+    role: "not yet received",
+    status: 2,
+    assignment: "Đang xử lý",
+    editable: false,
+  },
+  {
+    role: "awaiting reprocess",
+    status: 6,
+    assignment: "Hoàn thành",
+    editable: false,
+  },
+  {
+    role: "completed ticket",
+    status: 5,
+    assignment: "Đang xử lý",
+    editable: false,
+  },
+  {
+    role: "cancelled ticket",
+    status: 4,
+    assignment: "Đang xử lý",
+    editable: false,
+  },
+  {
+    role: "closed ticket",
+    status: 7,
+    assignment: "Đang xử lý",
+    editable: false,
+  },
+])(
+  "limits section editing for $role",
+  async ({ status, assignment, editable }) => {
+    auth.username = "handler";
+    auth.permissions = { is_handling: true };
+    ticket.ticket_status = status;
+    ticket.list_user_received = assignment
+      ? [Object.assign({ username: "handler" }, { status: assignment })]
+      : [];
+    await ready();
+    tab("Chi tiết yêu cầu");
+    expect(Boolean(screen.queryByRole("button", { name: "Chỉnh sửa" }))).toBe(
+      editable,
+    );
+    expect(writes()).toHaveLength(0);
+  },
+);
+it("revokes an open editor when the handler is removed on refresh", async () => {
+  auth.username = "handler";
+  auth.permissions = { is_handling: true };
+  ticket.ticket_status = 3;
+  Object.assign(ticket.list_user_received[0], { status: "Đang xử lý" });
+  await ready();
+  tab("Chi tiết yêu cầu");
+  fireEvent.click(screen.getByRole("button", { name: "Chỉnh sửa" }));
+  const save = screen.getByRole("button", { name: "Lưu thay đổi" });
+  await act(async () => {
+    client.setQueryData(
+      ["request-detail", auth.userId, "42"],
+      requestDetailSchema.parse({ ...ticket, list_user_received: [] }),
+    );
+  });
+  await waitFor(() =>
+    expect(screen.queryByRole("button", { name: "Lưu thay đổi" })).toBeNull(),
+  );
+  expect(screen.queryByRole("button", { name: "Chỉnh sửa" })).toBeNull();
+  fireEvent.click(save);
+  expect(writes()).toHaveLength(0);
+});
+it("does not offer an editor when all processing fields are locked", async () => {
+  auth.username = "handler";
+  ticket.ticket_status = 3;
+  Object.assign(ticket.list_user_received[0], { status: "Đang xử lý" });
+  for (const field of ticket.data_item.dataform.header[1].children)
+    Object.assign(field, { handling: false });
+  await ready();
+  tab("Chi tiết yêu cầu");
+  expect(screen.queryByRole("button", { name: "Chỉnh sửa" })).toBeNull();
+});
+it("identifies ticket handlers by ID and only falls back to legacy usernames without an ID", () => {
+  const parsed = requestDetailSchema.parse({
+    ...ticket,
+    ticket_status: 3,
+    list_user_received: [
+      { user_id: "20", username: "old-name", status: "Đang xử lý" },
+    ],
+  });
+  expect(
+    ticketFieldRoles(parsed, { username: "renamed-handler", userId: 20 })
+      .editingProcessor,
+  ).toBe(true);
+  expect(
+    ticketFieldRoles(parsed, { username: "old-name", userId: 21 }).processor,
+  ).toBe(false);
+  expect(
+    canEditTicketField(
+      { title: "Creator field", type: "text", editable: true },
+      { creator: false, processor: false },
+    ),
+  ).toBe(false);
+});
+it("preserves server values for fields the actor cannot edit in section payloads", () => {
+  const parsed = requestDetailSchema.parse(ticket),
+    rows = ticketDetailRows(parsed);
+  rows[0].values.f2 = "22/10/2026";
+  rows[0].values.f3_start = "01/01/2030";
+  expect(
+    sectionUpdateRows(
+      parsed,
+      1,
+      rows,
+      (field) => field.title === "Ngày kết thúc",
+    ),
+  ).toEqual([
+    {
+      key: 7,
+      "Ngày kết thúc": "22/10/2026",
+      "Khoảng ngày": "20/10/2026 - 22/10/2026",
+    },
+  ]);
+});
+it.each([
+  { role: "creator", username: "ticket-user", processor: false, visible: true },
+  { role: "processor", username: "handler", processor: true, visible: true },
+  { role: "reader", username: "reader", processor: false, visible: false },
+])(
+  "applies restricted field visibility for the $role",
+  async ({ username, processor, visible }) => {
+    auth.username = username;
+    auth.permissions = { is_handling: processor };
+    Object.assign(ticket.data_item.dataform.header[0].children[0], {
+      status: true,
+    });
+    await ready();
+    tab("Chi tiết yêu cầu");
+    expect(Boolean(screen.queryByText("Dữ liệu đã lưu"))).toBe(visible);
+    expect(Boolean(screen.queryByRole("button", { name: /^Nội dung$/ }))).toBe(
+      visible,
+    );
+    expect(screen.getByText("20/10/2026")).toBeTruthy();
+  },
+);
+it("hides a section containing only restricted fields from other readers", async () => {
+  auth.username = "reader";
+  for (const field of ticket.data_item.dataform.header[0].children)
+    Object.assign(field, { status: true });
+  await ready();
+  tab("Chi tiết yêu cầu");
+  expect(screen.queryByRole("heading", { name: "Phần tạo" })).toBeNull();
+  expect(
+    screen.getByRole("heading", { name: "Phần cập nhật sau" }),
+  ).toBeTruthy();
+});
+it.each(templateCombinations)(
+  "applies processing edit and required validation independently for $name",
+  async (flags) => {
+    auth.username = "handler";
+    auth.userId = 20;
+    auth.permissions = { is_handling: true };
+    ticket.ticket_status = 3;
+    Object.assign(ticket.list_user_received[0], {
+      user_id: 20,
+      status: "Đang xử lý",
+    });
+    ticket.data_item.dataform.header = [
+      {
+        title: "TEST processing",
+        editable: false,
+        children: [
+          { title: "TEST field", type: "text", editable: true, ...flags },
+        ],
+      },
+    ] as typeof ticket.data_item.dataform.header;
+    Object.assign(ticket.data_item.dataform.data[0], { "TEST field": "" });
+    await ready();
+    tab("Chi tiết yêu cầu");
+    expect(Boolean(screen.queryByRole("button", { name: "Chỉnh sửa" }))).toBe(
+      flags.handling,
+    );
+    if (!flags.handling) return;
+    fireEvent.click(screen.getByRole("button", { name: "Chỉnh sửa" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    if (flags.required) {
+      expect(await screen.findByText("Vui lòng nhập TEST field.")).toBeTruthy();
+      expect(writes()).toHaveLength(0);
+      fireEvent.change(screen.getByLabelText(/TEST field/), {
+        target: { value: "TEST updated" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    }
+    await waitFor(() => expect(writes()).toHaveLength(1));
+  },
+);
 it("allows processors to update the later section according to field permissions", async () => {
   auth.username = "handler";
   auth.permissions = { is_handling: true };
+  ticket.ticket_status = 3;
+  Object.assign(ticket.list_user_received[0], { status: "Đang xử lý" });
   await ready();
   tab("Chi tiết yêu cầu");
   const section = screen
@@ -330,6 +542,33 @@ it("allows processors to update the later section according to field permissions
     within(section as HTMLElement).getByRole("button", { name: "Chỉnh sửa" }),
   ).toBeTruthy();
 });
+it("locks fields with changes disabled and excludes them from save validation", async () => {
+  auth.username = "handler";
+  auth.permissions = { is_handling: true };
+  ticket.ticket_status = 3;
+  Object.assign(ticket.list_user_received[0], { status: "Đang xử lý" });
+  Object.assign(ticket.data_item.dataform.header[1].children[1], {
+    handling: false,
+    required: true,
+  });
+  ticket.data_item.dataform.data[0]["Khoảng ngày"] = "";
+  await ready();
+  tab("Chi tiết yêu cầu");
+  fireEvent.click(screen.getByRole("button", { name: "Chỉnh sửa" }));
+  expect(
+    screen.getByLabelText(/Khoảng ngày - Từ ngày/).hasAttribute("disabled"),
+  ).toBe(true);
+  expect(
+    screen.getByLabelText(/Khoảng ngày - Đến ngày/).hasAttribute("disabled"),
+  ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+  await waitFor(() => expect(writes()).toHaveLength(1));
+  expect(
+    JSON.parse(String(writes()[0][1]?.body)).formDataTicket.dataform.data[0][
+      "Khoảng ngày"
+    ],
+  ).toBe("");
+});
 it.each([true, undefined])(
   "hides editing for sections visible during creation (editable=%s)",
   async (visibleOnCreate) => {
@@ -337,6 +576,9 @@ it.each([true, undefined])(
       editable: visibleOnCreate,
     });
     auth.permissions = { is_handling: true };
+    auth.username = "handler";
+    ticket.ticket_status = 3;
+    Object.assign(ticket.list_user_received[0], { status: "Đang xử lý" });
     await ready();
     tab("Chi tiết yêu cầu");
     const section = screen
@@ -482,7 +724,7 @@ it("preserves old field identifiers, row keys and date ranges on section updates
       { type: "text", title: "A", editable: true },
       { creator: false, processor: true },
     ),
-  ).toBe(false);
+  ).toBe(true);
 });
 
 it.each([true, false])(

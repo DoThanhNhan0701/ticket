@@ -75,9 +75,21 @@ function SettingsForm({
           "request-types",
           "handling-request-types",
           "request-teams",
+          ...(kind === "handling-departments"
+            ? [
+                "request-create-lookups",
+                "request-create-types",
+                "requests",
+                "request-detail",
+              ]
+            : []),
         ].map((key) => client.invalidateQueries({ queryKey: [key] })),
       );
-      if (kind === "positions" || kind === "users")
+      if (
+        kind === "positions" ||
+        kind === "users" ||
+        kind === "handling-departments"
+      )
         await refreshUserPermission();
       toast.success(record ? "Đã cập nhật dữ liệu." : "Đã thêm dữ liệu.");
       onClose();

@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { templateCombinations } from "./fixtures/template-combinations";
 import { Blob as NodeBlob } from "node:buffer";
 import {
   act,
@@ -368,6 +369,22 @@ it.each(settingsKinds)(
   },
 );
 
+it("refreshes current account permissions and ticket caches after changing a handling department", async () => {
+  const keys = [
+    ["request-create-lookups", 42],
+    ["request-create-types", 42, "5"],
+    ["requests", "all-tasks", 42],
+    ["request-detail", 42, "42"],
+  ];
+  for (const key of keys) client.setQueryData(key, { cached: true });
+  renderPage("handling-departments");
+  await editorReady("handling-departments", true);
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(auth.refreshUserPermission).toHaveBeenCalledOnce();
+  for (const key of keys)
+    expect(client.getQueryState(key)?.isInvalidated).toBe(true);
+});
 it("enforces the real API's 30-character requesting department name limit before writing", async () => {
   renderPage("requesting-departments");
   await editorReady("requesting-departments");
@@ -829,6 +846,62 @@ it("rejects non-PDF attachments and uploads a valid PDF without deleting the tem
   ).toBeInstanceOf(FormData);
   expect(requests("/api/template_form/186", "PUT")).toHaveLength(0);
 });
+it.each(templateCombinations)(
+  "saves and reopens all three template switches for $name",
+  async (flags) => {
+    templateData = {
+      forms: [
+        {
+          title: "TEST flags",
+          editable: false,
+          children: [
+            {
+              title: "TEST field",
+              type: "text",
+              editable: true,
+            },
+          ],
+        },
+      ],
+    };
+    renderPage("request-types");
+    await ready();
+    const openTemplate = async () => {
+      fireEvent.click(
+        screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
+      );
+      await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
+      fireEvent.click(screen.getByRole("button", { name: "Mở rộng phần 1" }));
+    };
+    await openTemplate();
+    const labels = {
+      required: "Bắt buộc",
+      handling: "Cho phép thay đổi",
+      status: "Chỉ hiển thị cho người tạo và người xử lý",
+    };
+    for (const key of ["required", "handling", "status"] as const) {
+      if (flags[key])
+        fireEvent.click(screen.getByRole("checkbox", { name: labels[key] }));
+    }
+    fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    const payload = JSON.parse(
+      String(requests("/api/template_form/186", "PUT")[0][1]?.body),
+    );
+    expect(payload.data_form.forms[0].children[0]).toMatchObject({
+      required: flags.required,
+      handling: flags.handling,
+      status: flags.status,
+    });
+    await openTemplate();
+    for (const key of ["required", "handling", "status"] as const)
+      expect(
+        screen
+          .getByRole("checkbox", { name: labels[key] })
+          .getAttribute("aria-checked"),
+      ).toBe(String(flags[key]));
+  },
+);
 it.each([true, undefined])(
   "edits an existing template with editable=%s while preserving unrecognized fields and validation rules",
   async (editable) => {
@@ -859,7 +932,7 @@ it.each([true, undefined])(
     for (const name of [
       "Bắt buộc",
       "Cho phép thay đổi",
-      "Chỉ người tạo và người xử lý",
+      "Chỉ hiển thị cho người tạo và người xử lý",
     ]) {
       fireEvent.click(within(section).getAllByRole("checkbox", { name })[0]);
     }

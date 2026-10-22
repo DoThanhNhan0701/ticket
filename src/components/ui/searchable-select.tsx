@@ -10,6 +10,7 @@ import { Input } from "./input";
 export interface SearchableSelectOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export function SearchableSelect({
@@ -132,7 +133,8 @@ export function SearchableSelect({
                 <Combobox.Item
                   key={option.value}
                   value={option}
-                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm outline-none data-highlighted:bg-accent data-highlighted:text-accent-foreground"
+                  disabled={option.disabled}
+                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm outline-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
                 >
                   <span
                     className="min-w-0 flex-1 truncate"

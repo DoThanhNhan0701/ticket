@@ -1,0 +1,1789 @@
+{
+  "prefix": "TEST_ACT22_IWA0TX",
+  "startedAt": "2026-10-22T02:01:09.045Z",
+  "accounts": {
+    "a": {
+      "id": 817,
+      "username": "test_act22_a_iwa0tx"
+    },
+    "b": {
+      "id": 818,
+      "username": "test_act22_b_iwa0tx"
+    }
+  },
+  "tickets": [
+    {
+      "id": 14474,
+      "code": "TEST_ACT22_IWA0TX_261022_001",
+      "title": "TEST_ACT22_IWA0TX · LIFECYCLE",
+      "scenario": "LIFECYCLE",
+      "creator": "test_p261021_all"
+    },
+    {
+      "id": 14475,
+      "code": "TEST_ACT22_IWA0TX_261022_002",
+      "title": "TEST_ACT22_IWA0TX · CANCEL_RETRY",
+      "scenario": "CANCEL_RETRY",
+      "creator": "test_p261021_all"
+    },
+    {
+      "id": 14476,
+      "code": "TEST_ACT22_IWA0TX_261022_003",
+      "title": "TEST_ACT22_IWA0TX · MANAGER_BRANCH",
+      "scenario": "MANAGER_BRANCH",
+      "creator": "test_p261021_all"
+    },
+    {
+      "id": 14477,
+      "code": "TEST_ACT22_IWA0TX_261022_004",
+      "title": "TEST_ACT22_IWA0TX · DENIED_ACTION",
+      "scenario": "DENIED_ACTION",
+      "creator": "test_p261021_all"
+    },
+    {
+      "id": 14478,
+      "code": "TEST_ACT22_IWA0TX_261022_005",
+      "title": "TEST_ACT22_IWA0TX · REVIEW_OPEN",
+      "scenario": "REVIEW_OPEN",
+      "creator": "test_p261021_all"
+    },
+    {
+      "id": 14479,
+      "code": "TEST_ACT22_IWA0TX_261022_006",
+      "title": "TEST_ACT22_IWA0TX · APPROVAL_UI",
+      "scenario": "APPROVAL_UI",
+      "creator": "test_p261021_all"
+    }
+  ],
+  "checks": [
+    {
+      "name": "isolated-TEST-config-and-real-roles",
+      "status": "passed",
+      "group": 24,
+      "type": 193,
+      "handlers": {
+        "a": {
+          "id": 817,
+          "username": "test_act22_a_iwa0tx"
+        },
+        "b": {
+          "id": 818,
+          "username": "test_act22_b_iwa0tx"
+        }
+      }
+    },
+    {
+      "name": "create-LIFECYCLE",
+      "status": "passed",
+      "id": 14474,
+      "code": "TEST_ACT22_IWA0TX_261022_001",
+      "ticketStatus": 1
+    },
+    {
+      "name": "create-CANCEL_RETRY",
+      "status": "passed",
+      "id": 14475,
+      "code": "TEST_ACT22_IWA0TX_261022_002",
+      "ticketStatus": 1
+    },
+    {
+      "name": "create-MANAGER_BRANCH",
+      "status": "passed",
+      "id": 14476,
+      "code": "TEST_ACT22_IWA0TX_261022_003",
+      "ticketStatus": 1
+    },
+    {
+      "name": "create-DENIED_ACTION",
+      "status": "passed",
+      "id": 14477,
+      "code": "TEST_ACT22_IWA0TX_261022_004",
+      "ticketStatus": 1
+    },
+    {
+      "name": "create-REVIEW_OPEN",
+      "status": "passed",
+      "id": 14478,
+      "code": "TEST_ACT22_IWA0TX_261022_005",
+      "ticketStatus": 1
+    },
+    {
+      "name": "API rejects approval from view-only account",
+      "status": "failed",
+      "ticketId": 14477,
+      "reason": "API changed ticket from status 1 to 2 for can_view-only account"
+    },
+    {
+      "name": "reader-has-no-approval-or-assignment-controls",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "due-date-rejects-same-or-earlier-without-write",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "due-date-update-persists",
+      "status": "passed",
+      "id": 14474,
+      "date": "2026-11-26"
+    },
+    {
+      "name": "real-files-upload-download-and-image-preview",
+      "status": "passed",
+      "id": 14474,
+      "files": ["TEST_ACT22_IWA0TX_main.txt", "TEST_ACT22_IWA0TX_main.png"],
+      "sha256Matched": true
+    },
+    {
+      "name": "empty-comment-does-not-call-api",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "comment-network-failure-preserves-draft-and-retry-saves-once",
+      "status": "passed",
+      "id": 14474,
+      "commentId": 14425
+    },
+    {
+      "name": "reply-with-real-attachment-persists",
+      "status": "passed",
+      "id": 14474,
+      "replyId": 2491
+    },
+    {
+      "name": "edit-own-comment-and-remove-existing-file-persists",
+      "status": "passed",
+      "id": 14474,
+      "commentId": 14425
+    },
+    {
+      "name": "edit-own-reply-and-remove-existing-file-persists",
+      "status": "passed",
+      "id": 14474,
+      "replyId": 2491
+    },
+    {
+      "name": "reader-cannot-edit-other-users-comments",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "real-mention-search-and-select",
+      "status": "passed",
+      "id": 14474,
+      "username": "test_act22_a_iwa0tx"
+    },
+    {
+      "name": "create-APPROVAL_UI",
+      "status": "passed",
+      "id": 14479,
+      "code": "TEST_ACT22_IWA0TX_261022_006",
+      "ticketStatus": 1
+    },
+    {
+      "name": "approve-double-click-only-one-real-post",
+      "status": "passed",
+      "actor": "test_form20_reader_ivdviv",
+      "id": 14479,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 2,
+      "ticketStatus": 2
+    },
+    {
+      "name": "designated-approver-accepts-main-ticket",
+      "status": "passed",
+      "actor": "test_p261021_accept",
+      "method": "real-api-designated-approver",
+      "id": 14474,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 9,
+      "ticketStatus": 2
+    },
+    {
+      "name": "receive-approved-ticket",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 11,
+      "ticketStatus": 3
+    },
+    {
+      "name": "sole-handler-cannot-be-deleted-and-empty-add-is-rejected",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "processing-fields-save-and-locked-field-stays-unchanged",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "assignment-add-a",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 13,
+      "ticketStatus": 3
+    },
+    {
+      "name": "assignment-change-empty-reason-no-post",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "assignment-change-a-to-b",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 14,
+      "ticketStatus": 3
+    },
+    {
+      "name": "assignment-add-a-again",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 15,
+      "ticketStatus": 3
+    },
+    {
+      "name": "assignment-delete-a-only",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 16,
+      "ticketStatus": 3
+    },
+    {
+      "name": "assignment-readback-matches-selected-users",
+      "status": "passed",
+      "id": 14474,
+      "active": ["admin", "test_act22_b_iwa0tx"],
+      "removalReasonInHistory": true
+    },
+    {
+      "name": "forward-admin-to-a",
+      "status": "passed",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 18,
+      "observedBehavior": "Recipient is assigned; sender remains active and must complete separately",
+      "ticketStatus": 3
+    },
+    {
+      "name": "complete-forwarding-admin",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 19,
+      "ticketStatus": 3
+    },
+    {
+      "name": "complete-handler-a",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 20,
+      "ticketStatus": 3
+    },
+    {
+      "name": "complete-last-handler-b",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "id": 14474,
+      "statusName": "Hoàn thành",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 22,
+      "ticketStatus": 5
+    },
+    {
+      "name": "reopen-requires-reason",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "reopen-with-persisted-reason",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "id": 14474,
+      "statusName": "Xử lý lại",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": ["Tiếp nhận", "Phân công", "Hoàn thành"],
+      "historyEntries": 23,
+      "ticketStatus": 6
+    },
+    {
+      "name": "manager-declines-reopen-with-reason",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14474,
+      "statusName": "Hoàn thành",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 25,
+      "ticketStatus": 5
+    },
+    {
+      "name": "decline-reopen-reason-visible-in-data-or-history",
+      "status": "passed",
+      "id": 14474,
+      "field": null,
+      "historyContainsReason": true
+    },
+    {
+      "name": "reopen-second-cycle",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "id": 14474,
+      "statusName": "Xử lý lại",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": ["Tiếp nhận", "Phân công", "Hoàn thành"],
+      "historyEntries": 26,
+      "ticketStatus": 6
+    },
+    {
+      "name": "handler-a-receives-reopened-ticket",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "id": 14474,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 28,
+      "ticketStatus": 3
+    },
+    {
+      "name": "handler-a-completes-reopened-ticket",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "id": 14474,
+      "statusName": "Hoàn thành",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 30,
+      "ticketStatus": 5
+    },
+    {
+      "name": "creator-closes-completed-ticket",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "id": 14474,
+      "statusName": "Đóng",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 31,
+      "ticketStatus": 7
+    },
+    {
+      "name": "closed-ticket-has-no-status-or-edit-actions",
+      "status": "passed",
+      "id": 14474
+    },
+    {
+      "name": "cancel-empty-reason-no-api",
+      "status": "passed",
+      "id": 14475
+    },
+    {
+      "name": "cancel-retry-skips-already-uploaded-file",
+      "status": "passed",
+      "id": 14475,
+      "uploads": 1,
+      "ticketStatus": 4
+    },
+    {
+      "name": "manager-branch-approve",
+      "status": "passed",
+      "actor": "test_p261021_accept",
+      "method": "real-api-designated-approver",
+      "id": 14476,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 2,
+      "ticketStatus": 2
+    },
+    {
+      "name": "manager-branch-receive",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14476,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 4,
+      "ticketStatus": 3
+    },
+    {
+      "name": "manager-branch-add-a",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14476,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 5,
+      "ticketStatus": 3
+    },
+    {
+      "name": "manager-branch-admin-completes",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14476,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 6,
+      "ticketStatus": 3
+    },
+    {
+      "name": "remove-all-active-retry-only-replacement-step",
+      "status": "passed",
+      "id": 14476,
+      "deleteRequests": 1,
+      "replacementRequests": 1
+    },
+    {
+      "name": "manager-branch-add-a-again",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14476,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 9,
+      "ticketStatus": 3
+    },
+    {
+      "name": "manager-branch-b-completes",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "id": 14476,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy"],
+      "historyEntries": 10,
+      "ticketStatus": 3
+    },
+    {
+      "name": "manager-removes-all-active-and-completes-request",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14476,
+      "statusName": "Hoàn thành",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 12,
+      "ticketStatus": 5
+    },
+    {
+      "name": "manager-branch-close",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "id": 14476,
+      "statusName": "Đóng",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 13,
+      "ticketStatus": 7
+    },
+    {
+      "name": "review-approve",
+      "status": "passed",
+      "actor": "test_p261021_accept",
+      "method": "real-api-designated-approver",
+      "id": 14478,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 2,
+      "ticketStatus": 2
+    },
+    {
+      "name": "review-receive",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14478,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 4,
+      "ticketStatus": 3
+    },
+    {
+      "name": "review-add-a-leave-b-available",
+      "status": "passed",
+      "actor": "admin",
+      "id": 14478,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 5,
+      "ticketStatus": 3
+    },
+    {
+      "name": "review-ticket-left-open-with-all-three-assignment-modes",
+      "status": "passed",
+      "id": 14478,
+      "url": "http://localhost:5173/requests/14478"
+    },
+    {
+      "name": "final-readback-and-history-all-test-tickets",
+      "status": "passed",
+      "tickets": [
+        {
+          "id": 14474,
+          "status": 7,
+          "statusName": "Đóng",
+          "handlers": [
+            {
+              "username": "admin",
+              "user_id": 334,
+              "status": "Hoàn thành"
+            },
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Hoàn thành"
+            },
+            {
+              "username": "test_act22_a_iwa0tx",
+              "user_id": 817,
+              "status": "Hoàn thành"
+            }
+          ],
+          "buttons": [],
+          "historyEntries": 31,
+          "code": "TEST_ACT22_IWA0TX_261022_001",
+          "scenario": "LIFECYCLE"
+        },
+        {
+          "id": 14475,
+          "status": 4,
+          "statusName": "Hủy",
+          "handlers": [],
+          "buttons": [],
+          "historyEntries": 3,
+          "code": "TEST_ACT22_IWA0TX_261022_002",
+          "scenario": "CANCEL_RETRY"
+        },
+        {
+          "id": 14476,
+          "status": 7,
+          "statusName": "Đóng",
+          "handlers": [
+            {
+              "username": "admin",
+              "user_id": 334,
+              "status": "Hoàn thành"
+            },
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Hoàn thành"
+            }
+          ],
+          "buttons": [],
+          "historyEntries": 13,
+          "code": "TEST_ACT22_IWA0TX_261022_003",
+          "scenario": "MANAGER_BRANCH"
+        },
+        {
+          "id": 14477,
+          "status": 2,
+          "statusName": "Đã duyệt",
+          "handlers": [],
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "historyEntries": 2,
+          "code": "TEST_ACT22_IWA0TX_261022_004",
+          "scenario": "DENIED_ACTION"
+        },
+        {
+          "id": 14478,
+          "status": 3,
+          "statusName": "Đang xử lý",
+          "handlers": [
+            {
+              "username": "admin",
+              "user_id": 334,
+              "status": "Đang xử lý"
+            },
+            {
+              "username": "test_act22_a_iwa0tx",
+              "user_id": 817,
+              "status": "Đang xử lý"
+            }
+          ],
+          "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+          "historyEntries": 5,
+          "code": "TEST_ACT22_IWA0TX_261022_005",
+          "scenario": "REVIEW_OPEN"
+        },
+        {
+          "id": 14479,
+          "status": 2,
+          "statusName": "Đã duyệt",
+          "handlers": [],
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "historyEntries": 2,
+          "code": "TEST_ACT22_IWA0TX_261022_006",
+          "scenario": "APPROVAL_UI"
+        }
+      ]
+    }
+  ],
+  "writes": [
+    {
+      "transport": "setup-api",
+      "user": "admin",
+      "path": "/usermmanager/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "setup-api",
+      "user": "admin",
+      "path": "/usermmanager/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "setup-api",
+      "user": "admin",
+      "path": "/handlinggroupmmanager/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "setup-api",
+      "user": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "setup-api",
+      "user": "admin",
+      "path": "/template_form/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14475,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14477,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14478,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/update_duedate/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/attachmentticketfile",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/attachmentticketfile",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_comment",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 503,
+      "forwarded": false
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_comment",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/ticket_item_comment",
+      "method": "POST",
+      "ticketId": null,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_comment",
+      "method": "PUT",
+      "ticketId": null,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/ticket_item_comment",
+      "method": "PUT",
+      "ticketId": null,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14479,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_form20_reader_ivdviv",
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "ticketId": 14479,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "setup-api",
+      "user": "test_p261021_accept",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/change_assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/delete_assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/forward_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_act22_a_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_act22_b_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/reprocess_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/reprocess_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_act22_a_iwa0tx",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_act22_a_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "ticketId": 14474,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/attachmentticketfile",
+      "method": "POST",
+      "ticketId": 14475,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/cancel_ticket/",
+      "method": "POST",
+      "ticketId": 14475,
+      "status": 503,
+      "forwarded": false
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/cancel_ticket/",
+      "method": "POST",
+      "ticketId": 14475,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "setup-api",
+      "user": "test_p261021_accept",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/delete_assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 503,
+      "forwarded": false
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_act22_b_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/delete_assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "test_p261021_all",
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "ticketId": 14476,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "setup-api",
+      "user": "test_p261021_accept",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14478,
+      "status": 200,
+      "forwarded": true
+    },
+    {
+      "transport": "browser",
+      "user": "admin",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14478,
+      "status": 200,
+      "forwarded": true
+    }
+  ],
+  "faults": [
+    {
+      "path": "/api/ticket_comment",
+      "ticketId": 14474,
+      "name": "TEST controlled comment offline",
+      "forwarded": false
+    },
+    {
+      "path": "/api/cancel_ticket/",
+      "ticketId": 14475,
+      "name": "TEST controlled cancel offline after file upload",
+      "forwarded": false
+    },
+    {
+      "path": "/api/assignment_ticket/",
+      "ticketId": 14476,
+      "name": "TEST controlled replacement offline after deletion",
+      "forwarded": false
+    }
+  ],
+  "errors": [],
+  "attemptFailures": [
+    {
+      "at": "2026-10-22T02:03:31.797Z",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "at": "2026-10-22T02:07:17.717Z",
+      "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Thông tin chung', exact: true }) to be visible\u001b[22m\n"
+    },
+    {
+      "at": "2026-10-22T02:09:07.713Z",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Phê duyệt', exact: true })\u001b[22m\n"
+    },
+    {
+      "at": "2026-10-22T02:11:18.683Z",
+      "error": "page.waitForFunction: Timeout 30000ms exceeded."
+    },
+    {
+      "at": "2026-10-22T02:13:01.577Z",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Phê duyệt', exact: true })\u001b[22m\n"
+    },
+    {
+      "at": "2026-10-22T02:14:16.634Z",
+      "error": "Cannot read properties of undefined (reading 'includes')"
+    },
+    {
+      "at": "2026-10-22T02:16:31.341Z",
+      "error": "The expression evaluated to a falsy value:\n\n  assert(t.list_user_received.some(u=>u.username===admin&&u.status==='Hoàn thành'))\n"
+    }
+  ],
+  "status": "completed-with-security-failure",
+  "authDiagnostic": {
+    "latestAdminCredentialStatus": 401,
+    "usedPreviouslyProvidedCredential": true
+  },
+  "groupId": 24,
+  "typeId": 193,
+  "templateSaved": true,
+  "roles": {
+    "test_p261021_all": {
+      "id": 811,
+      "is_handling": false,
+      "permissions": [
+        "can_create",
+        "can_report",
+        "can_system",
+        "can_view",
+        "can_search",
+        "can_accept",
+        "can_delete",
+        "can_export",
+        "can_allticket",
+        "can_cv_interview",
+        "can_return_ticket"
+      ]
+    },
+    "test_p261021_accept": {
+      "id": 804,
+      "is_handling": false,
+      "permissions": ["can_accept"]
+    },
+    "test_form20_reader_ivdviv": {
+      "id": 816,
+      "is_handling": false,
+      "permissions": [
+        "can_create",
+        "can_report",
+        "can_system",
+        "can_view",
+        "can_search",
+        "can_accept",
+        "can_delete",
+        "can_export",
+        "can_allticket",
+        "can_cv_interview",
+        "can_return_ticket"
+      ]
+    },
+    "test_act22_a_iwa0tx": {
+      "id": 817,
+      "is_handling": true,
+      "permissions": [
+        "can_create",
+        "can_report",
+        "can_system",
+        "can_view",
+        "can_search",
+        "can_accept",
+        "can_delete",
+        "can_export",
+        "can_allticket",
+        "can_cv_interview",
+        "can_return_ticket",
+        "can_process"
+      ]
+    },
+    "test_act22_b_iwa0tx": {
+      "id": 818,
+      "is_handling": true,
+      "permissions": [
+        "can_create",
+        "can_report",
+        "can_system",
+        "can_view",
+        "can_search",
+        "can_accept",
+        "can_delete",
+        "can_export",
+        "can_allticket",
+        "can_cv_interview",
+        "can_return_ticket",
+        "can_process"
+      ]
+    }
+  },
+  "reviewTicket": 14478,
+  "securityFindings": [
+    {
+      "name": "backend-approval-permission-bypass",
+      "severity": "critical",
+      "status": "open - backend enforcement required",
+      "ticketId": 14477,
+      "actor": "test_p261021_view",
+      "actualPermissions": ["can_view"],
+      "is_handling": false,
+      "endpoint": "/accept_ticket/",
+      "method": "POST",
+      "request": {
+        "ticket_id": 14477
+      },
+      "expected": "Reject actor without approval permission and leave ticket in status 1",
+      "actualStatus": 2,
+      "history": [
+        {
+          "id": 126817,
+          "log_type_name": "Status",
+          "username": "test_p261021_view",
+          "ticket_code": "TEST_ACT22_IWA0TX_261022_004",
+          "comment_content": "",
+          "created": "2026-10-22T09:03:31.319365+07:00",
+          "updated": "2026-10-22T09:03:31.319405+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Mới tạo thành Đã duyệt",
+          "user_log": null,
+          "ticket": 14477,
+          "user": 802,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126815,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "TEST_ACT22_IWA0TX_261022_004",
+          "comment_content": "",
+          "created": "2026-10-22T09:01:23.066890+07:00",
+          "updated": "2026-10-22T09:01:23.066916+07:00",
+          "log_type": 1,
+          "system_log": "Tạo mới yêu cầu",
+          "user_log": null,
+          "ticket": 14477,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        }
+      ],
+      "verifiedActorProfile": {
+        "userId": 802,
+        "username": "test_p261021_view",
+        "is_superuser": false,
+        "is_handling": false,
+        "userPermission": ["can_view"]
+      }
+    }
+  ],
+  "commentIds": [14425, 2491],
+  "parentCommentId": 14425,
+  "replyId": 2491,
+  "finalTickets": [
+    {
+      "id": 14474,
+      "status": 7,
+      "statusName": "Đóng",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 31,
+      "code": "TEST_ACT22_IWA0TX_261022_001",
+      "scenario": "LIFECYCLE"
+    },
+    {
+      "id": 14475,
+      "status": 4,
+      "statusName": "Hủy",
+      "handlers": [],
+      "buttons": [],
+      "historyEntries": 3,
+      "code": "TEST_ACT22_IWA0TX_261022_002",
+      "scenario": "CANCEL_RETRY"
+    },
+    {
+      "id": 14476,
+      "status": 7,
+      "statusName": "Đóng",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Hoàn thành"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Hoàn thành"
+        }
+      ],
+      "buttons": [],
+      "historyEntries": 13,
+      "code": "TEST_ACT22_IWA0TX_261022_003",
+      "scenario": "MANAGER_BRANCH"
+    },
+    {
+      "id": 14477,
+      "status": 2,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 2,
+      "code": "TEST_ACT22_IWA0TX_261022_004",
+      "scenario": "DENIED_ACTION"
+    },
+    {
+      "id": 14478,
+      "status": 3,
+      "statusName": "Đang xử lý",
+      "handlers": [
+        {
+          "username": "admin",
+          "user_id": 334,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        }
+      ],
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+      "historyEntries": 5,
+      "code": "TEST_ACT22_IWA0TX_261022_005",
+      "scenario": "REVIEW_OPEN"
+    },
+    {
+      "id": 14479,
+      "status": 2,
+      "statusName": "Đã duyệt",
+      "handlers": [],
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "historyEntries": 2,
+      "code": "TEST_ACT22_IWA0TX_261022_006",
+      "scenario": "APPROVAL_UI"
+    }
+  ],
+  "completedAt": "2026-10-22T02:18:36.421Z",
+  "summary": {
+    "passed": 58,
+    "failed": 1,
+    "tickets": 6,
+    "controlledNetworkFaults": 3,
+    "browserRuntimeErrors": 0,
+    "scope": "Real API and browser interactions on isolated TEST fixtures; not exhaustive proof of backend authorization for every endpoint."
+  },
+  "diagnosticNotes": [
+    "attemptFailures preserves harness development/retry diagnostics, including incorrect fixture-role assumptions, selectors, missing response fields and status bookkeeping. Final checks and securityFindings are the outcome.",
+    "The can_view-only approval bypass is a confirmed backend defect; UI visibility checks do not secure the API.",
+    "Forwarding assigns the recipient while the sender remains active on this API; the sender was completed separately.",
+    "Latest supplied admin credential returned 401; testing used a previously supplied valid credential. No credentials or tokens are stored in this report.",
+    "Controlled 503 faults are injected before forwarding a request; all other successful mutations were read back from the real API.",
+    "TEST accounts, group, type and six tickets are retained for user review. No existing employee account or unrelated ticket was changed."
+  ],
+  "validation": {
+    "unitTests": {
+      "passed": 1002,
+      "files": 39,
+      "command": "npm test",
+      "durationSeconds": 56.28
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "browserScriptSyntax": "passed",
+    "newArtifactsFormatting": "passed"
+  }
+}

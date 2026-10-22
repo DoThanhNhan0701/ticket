@@ -52,6 +52,25 @@ export function availableUsers(ticket: RequestDetailData) {
     .filter(([, id]) => /^\d+$/.test(String(id)) && Number(id) > 0)
     .map(([label, id]) => ({ label, value: String(id) }));
 }
+export function assignmentModes(ticket: RequestDetailData) {
+  const available = availableUsers(ticket);
+  const current = processingUsers(ticket);
+  return [
+    ...(available.length
+      ? [{ value: "add", label: "Thêm người xử lý", disabled: false }]
+      : []),
+    {
+      value: "delete",
+      label: "Xóa người xử lý",
+      disabled: !current.length || ticket.list_user_received.length <= 1,
+    },
+    {
+      value: "change",
+      label: "Thay đổi người xử lý",
+      disabled: !current.length || !available.length,
+    },
+  ];
+}
 export function actionReasonLabel(
   action: TicketActionOperation,
   status: number,

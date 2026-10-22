@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ export function RequestCreate() {
     navigate = useNavigate();
   const steps = useRequestCreateSteps(model);
   const [excelBusy, setExcelBusy] = useState(false);
+  const cloneLoading = useCloneFormLoading(model);
   const busy = model.mutation.isPending || excelBusy;
   const disabled =
     busy ||
@@ -39,6 +40,8 @@ export function RequestCreate() {
     excelBusy,
     waitingForData,
   );
+  if (cloneLoading)
+    return <LoadingState message="Đang tải yêu cầu cần sao chép..." />;
   return (
     <form
       aria-label="Tạo yêu cầu mới"
@@ -161,5 +164,35 @@ function requestResetDisabled(
 ) {
   return (
     busy || model.draft.loading || model.clone.loading || Boolean(model.created)
+  );
+}
+
+function useCloneFormLoading(model: ReturnType<typeof useCreateRequest>) {
+  const [cloneFormRevealed, setCloneFormRevealed] = useState(false);
+  useEffect(() => {
+    if (
+      model.clone.id &&
+      model.clone.ready &&
+      !model.draft.loading &&
+      model.lookups.isSuccess &&
+      !model.types.isFetching &&
+      !model.template.isFetching
+    )
+      setCloneFormRevealed(true);
+  }, [
+    model.clone.id,
+    model.clone.ready,
+    model.draft.loading,
+    model.lookups.isSuccess,
+    model.types.isFetching,
+    model.template.isFetching,
+  ]);
+  return Boolean(
+    model.clone.id &&
+    !cloneFormRevealed &&
+    !model.clone.error &&
+    !model.lookups.isError &&
+    !model.types.isError &&
+    !model.template.isError,
   );
 }

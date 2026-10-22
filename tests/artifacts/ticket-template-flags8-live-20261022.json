@@ -1,0 +1,1025 @@
+{
+  "prefix": "TEST_FLAGS8_IXEUTP",
+  "checks": [
+    {
+      "name": "configure-and-reopen-all-8-switch-combinations",
+      "status": "passed",
+      "typeId": 194,
+      "fields": 16,
+      "checkboxesVerified": 48
+    },
+    {
+      "name": "create-two-rows-all-8-required-and-change-combinations",
+      "status": "passed",
+      "ticketId": 14480,
+      "requiredValidated": 8,
+      "optionalBlankAccepted": true,
+      "rowsReadBack": 2
+    },
+    {
+      "name": "new-ticket-creator-visibility",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "editButtons": 0,
+      "privateVisible": true
+    },
+    {
+      "name": "new-ticket-unassigned-handler-visibility",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "editButtons": 0,
+      "privateVisible": false
+    },
+    {
+      "name": "approve",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 2
+    },
+    {
+      "name": "approved-unreceived-handler-cannot-edit",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "editButtons": 0,
+      "privateVisible": false
+    },
+    {
+      "name": "receive",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 3
+    },
+    {
+      "name": "processing-all-8-combinations-validate-save-reload",
+      "status": "passed",
+      "ticketId": 14480,
+      "rows": 2,
+      "lockedRequiredFieldsExcluded": true,
+      "optionalBlankAccepted": true,
+      "legacyEditableTrueAccepted": true
+    },
+    {
+      "name": "active-handler-visibility",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "editButtons": 1,
+      "privateVisible": true
+    },
+    {
+      "name": "unassigned-staff-cannot-edit-or-view-private",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "editButtons": 0,
+      "privateVisible": false
+    },
+    {
+      "name": "creator-visibility-after-processing",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "editButtons": 1,
+      "privateVisible": true
+    },
+    {
+      "name": "complete",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 5
+    },
+    {
+      "name": "completed-handler-read-only-with-history-access",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "editButtons": 0,
+      "privateVisible": true
+    },
+    {
+      "name": "reopen",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 6
+    },
+    {
+      "name": "reopen-before-receive-read-only",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "editButtons": 0,
+      "privateVisible": true
+    },
+    {
+      "name": "receive-reopened",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 3
+    },
+    {
+      "name": "reopened-handler-updates-optional-field",
+      "status": "passed"
+    },
+    {
+      "name": "complete-reopened",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 5
+    },
+    {
+      "name": "close",
+      "status": "passed",
+      "ticketId": 14480,
+      "ticketStatus": 7
+    },
+    {
+      "name": "closed-ticket-creator-read-only",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "editButtons": 0,
+      "privateVisible": true
+    },
+    {
+      "name": "clone-creator-and-unrelated-reader-privacy-all-8",
+      "status": "passed",
+      "source": 14480,
+      "actors": ["test_p261021_all", "test_form20_reader_ivdviv"]
+    },
+    {
+      "name": "clone-create-review-ticket",
+      "status": "passed",
+      "ticketId": 14481,
+      "processingValuesNotCopied": true
+    },
+    {
+      "name": "review-approve",
+      "status": "passed",
+      "ticketId": 14481,
+      "ticketStatus": 2
+    },
+    {
+      "name": "review-receive",
+      "status": "passed",
+      "ticketId": 14481,
+      "ticketStatus": 3
+    },
+    {
+      "name": "review-all-8-processing-switches-left-open",
+      "status": "passed",
+      "ticketId": 14481,
+      "url": "http://localhost:5173/requests/14481"
+    },
+    {
+      "name": "new-field-untouched-checkboxes-save-as-false",
+      "status": "passed",
+      "typeId": 194,
+      "field": "Unchecked default TEST",
+      "required": false,
+      "handling": false,
+      "private": false,
+      "originalCombinationsPreserved": true
+    }
+  ],
+  "tickets": [
+    {
+      "id": 14480,
+      "code": "TEST_ACT22_IWA0TX_261022_007",
+      "title": "TEST_FLAGS8_IXEUTP LIFECYCLE"
+    },
+    {
+      "id": 14481,
+      "code": "TEST_ACT22_IWA0TX_261022_008",
+      "title": "TEST_FLAGS8_IXEUTP REVIEW"
+    }
+  ],
+  "writes": [
+    {
+      "path": "/api/template_form/194",
+      "method": "PUT",
+      "status": 200
+    },
+    {
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/reprocess_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14480
+    },
+    {
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14481
+    },
+    {
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14481
+    },
+    {
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "status": 200,
+      "ticketId": 14481
+    },
+    {
+      "path": "/api/template_form/194",
+      "method": "PUT",
+      "status": 200
+    }
+  ],
+  "runtimeErrors": [],
+  "attemptFailures": [
+    {
+      "at": "2026-10-22T02:33:30.440Z",
+      "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').last().locator('#template-0-0-required')\u001b[22m\n\u001b[2m    - locator resolved to <input tabindex=\"-1\" type=\"checkbox\" aria-hidden=\"true\" id=\"template-0-0-required\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    30 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - element is outside of the viewport\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\u001b[2m    - waiting for\" http://127.0.0.1:5198/settings/request-types?search=TEST_FLAGS8_IXEUTP\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5198/settings/request-types?search=TEST_FLAGS8_IXEUTP\"\u001b[22m\n"
+    },
+    {
+      "at": "2026-10-22T02:34:45.620Z",
+      "message": "page.waitForURL: Timeout 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n  navigated to \"http://127.0.0.1:5198/requests\"\n============================================================"
+    }
+  ],
+  "startedAt": "2026-10-22T02:32:54.157Z",
+  "typeId": 194,
+  "templateSeeded": true,
+  "status": "passed",
+  "forms": [
+    {
+      "title": "Thông tin tạo TEST8",
+      "editable": true,
+      "children": [
+        {
+          "title": "Create R0H0S0",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R0H0S1",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R0H1S0",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R0H1S1",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R1H0S0",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R1H0S1",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R1H1S0",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R1H1S1",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": true
+        }
+      ]
+    },
+    {
+      "title": "Xử lý TEST8",
+      "editable": false,
+      "children": [
+        {
+          "title": "Process R0H0S0",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R0H0S1",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R0H1S0",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R0H1S1",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R1H0S0",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R1H0S1",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R1H1S0",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R1H1S1",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": true
+        }
+      ]
+    }
+  ],
+  "life": 14480,
+  "processingHeader": {
+    "title": "Xử lý TEST8",
+    "editable": false,
+    "children": [
+      {
+        "title": "Process R0H0S0",
+        "type": "text",
+        "required": false,
+        "handling": false,
+        "status": false,
+        "editable": true,
+        "dataIndex": "Process R0H0S0",
+        "key": "Process R0H0S0",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R0H0S1",
+        "type": "text",
+        "required": false,
+        "handling": false,
+        "status": true,
+        "editable": true,
+        "dataIndex": "Process R0H0S1",
+        "key": "Process R0H0S1",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R0H1S0",
+        "type": "text",
+        "required": false,
+        "handling": true,
+        "status": false,
+        "editable": true,
+        "dataIndex": "Process R0H1S0",
+        "key": "Process R0H1S0",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R0H1S1",
+        "type": "text",
+        "required": false,
+        "handling": true,
+        "status": true,
+        "editable": true,
+        "dataIndex": "Process R0H1S1",
+        "key": "Process R0H1S1",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R1H0S0",
+        "type": "text",
+        "required": true,
+        "handling": false,
+        "status": false,
+        "editable": true,
+        "dataIndex": "Process R1H0S0",
+        "key": "Process R1H0S0",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R1H0S1",
+        "type": "text",
+        "required": true,
+        "handling": false,
+        "status": true,
+        "editable": true,
+        "dataIndex": "Process R1H0S1",
+        "key": "Process R1H0S1",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R1H1S0",
+        "type": "text",
+        "required": true,
+        "handling": true,
+        "status": false,
+        "editable": true,
+        "dataIndex": "Process R1H1S0",
+        "key": "Process R1H1S0",
+        "width": 200,
+        "ellipsis": false
+      },
+      {
+        "title": "Process R1H1S1",
+        "type": "text",
+        "required": true,
+        "handling": true,
+        "status": true,
+        "editable": true,
+        "dataIndex": "Process R1H1S1",
+        "key": "Process R1H1S1",
+        "width": 200,
+        "ellipsis": false
+      }
+    ]
+  },
+  "history": [
+    {
+      "id": 126882,
+      "log_type_name": "Status",
+      "username": "test_p261021_all",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:16.716793+07:00",
+      "updated": "2026-10-22T09:36:16.716833+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Hoàn thành thành Kết thúc",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 811,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126881,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:13.704430+07:00",
+      "updated": "2026-10-22T09:36:13.704453+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Đang xử lý thành Hoàn thành",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126880,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:13.694628+07:00",
+      "updated": "2026-10-22T09:36:13.694652+07:00",
+      "log_type": 1,
+      "system_log": "Đã xử lý xong",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126879,
+      "log_type_name": "Chỉnh sửa",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:09.744514+07:00",
+      "updated": "2026-10-22T09:36:09.744542+07:00",
+      "log_type": 9,
+      "system_log": "Chỉnh sửa chi tiết yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126878,
+      "log_type_name": "Tiếp nhận",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:05.341230+07:00",
+      "updated": "2026-10-22T09:36:05.341249+07:00",
+      "log_type": 6,
+      "system_log": "Đã tiếp nhận yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126877,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:36:05.338192+07:00",
+      "updated": "2026-10-22T09:36:05.338217+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Xử lý lại thành Đang xử lý",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126876,
+      "log_type_name": "Status",
+      "username": "test_p261021_all",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:57.110192+07:00",
+      "updated": "2026-10-22T09:35:57.110216+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Hoàn thành thành Xử lý lại",
+      "user_log": "Lý do xử lý lại : TEST_FLAGS8_IXEUTP reopen all combinations",
+      "ticket": 14480,
+      "user": 811,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126875,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:49.128788+07:00",
+      "updated": "2026-10-22T09:35:49.128823+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Đang xử lý thành Hoàn thành",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126874,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:49.116083+07:00",
+      "updated": "2026-10-22T09:35:49.116146+07:00",
+      "log_type": 1,
+      "system_log": "Đã xử lý xong",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126873,
+      "log_type_name": "Chỉnh sửa",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:35.739852+07:00",
+      "updated": "2026-10-22T09:35:35.739892+07:00",
+      "log_type": 9,
+      "system_log": "Chỉnh sửa chi tiết yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126872,
+      "log_type_name": "Chỉnh sửa",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:34.167748+07:00",
+      "updated": "2026-10-22T09:35:34.167787+07:00",
+      "log_type": 9,
+      "system_log": "Chỉnh sửa chi tiết yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126871,
+      "log_type_name": "Tiếp nhận",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:29.282353+07:00",
+      "updated": "2026-10-22T09:35:29.282385+07:00",
+      "log_type": 6,
+      "system_log": "Đã tiếp nhận yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126870,
+      "log_type_name": "Status",
+      "username": "test_act22_a_iwa0tx",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:29.279844+07:00",
+      "updated": "2026-10-22T09:35:29.279885+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Đã duyệt thành Đang xử lý",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 817,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126869,
+      "log_type_name": "Status",
+      "username": "test_form20_reader_ivdviv",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:35:24.284101+07:00",
+      "updated": "2026-10-22T09:35:24.284131+07:00",
+      "log_type": 1,
+      "system_log": "Chuyển trạng thái từ Mới tạo thành Đã duyệt",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 816,
+      "log_comment": null,
+      "log_itemcomment": null
+    },
+    {
+      "id": 126868,
+      "log_type_name": "Status",
+      "username": "test_p261021_all",
+      "ticket_code": "TEST_ACT22_IWA0TX_261022_007",
+      "comment_content": "",
+      "created": "2026-10-22T09:34:15.644529+07:00",
+      "updated": "2026-10-22T09:34:15.644549+07:00",
+      "log_type": 1,
+      "system_log": "Tạo mới yêu cầu",
+      "user_log": null,
+      "ticket": 14480,
+      "user": 811,
+      "log_comment": null,
+      "log_itemcomment": null
+    }
+  ],
+  "finalStatus": 7,
+  "matrix": [
+    {
+      "name": "R0H0S0",
+      "required": false,
+      "handling": false,
+      "status": false
+    },
+    {
+      "name": "R0H0S1",
+      "required": false,
+      "handling": false,
+      "status": true
+    },
+    {
+      "name": "R0H1S0",
+      "required": false,
+      "handling": true,
+      "status": false
+    },
+    {
+      "name": "R0H1S1",
+      "required": false,
+      "handling": true,
+      "status": true
+    },
+    {
+      "name": "R1H0S0",
+      "required": true,
+      "handling": false,
+      "status": false
+    },
+    {
+      "name": "R1H0S1",
+      "required": true,
+      "handling": false,
+      "status": true
+    },
+    {
+      "name": "R1H1S0",
+      "required": true,
+      "handling": true,
+      "status": false
+    },
+    {
+      "name": "R1H1S1",
+      "required": true,
+      "handling": true,
+      "status": true
+    }
+  ],
+  "completedAt": "2026-10-22T02:38:54.132Z",
+  "reviewTicket": 14481,
+  "savedForms": [
+    {
+      "title": "Thông tin tạo TEST8",
+      "editable": true,
+      "children": [
+        {
+          "title": "Create R0H0S0",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R0H0S1",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R0H1S0",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R0H1S1",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R1H0S0",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R1H0S1",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Create R1H1S0",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Create R1H1S1",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": true
+        }
+      ]
+    },
+    {
+      "title": "Xử lý TEST8",
+      "editable": false,
+      "children": [
+        {
+          "title": "Process R0H0S0",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R0H0S1",
+          "type": "text",
+          "required": false,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R0H1S0",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R0H1S1",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R1H0S0",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R1H0S1",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": true,
+          "editable": true
+        },
+        {
+          "title": "Process R1H1S0",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Process R1H1S1",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": true
+        },
+        {
+          "key": "a1d612c2-54df-464a-a68b-4833fb193cb9",
+          "title": "Unchecked default TEST",
+          "type": "text",
+          "editable": true,
+          "required": false,
+          "handling": false,
+          "status": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "combinations": 8,
+    "fieldMatrix": ["required", "handling", "status"],
+    "checkboxStatesReadBack": 48,
+    "detailRowsPerTicket": 2,
+    "passedStages": 26,
+    "ticketsCreated": 2,
+    "runtimeErrors": 0,
+    "mainTicketFinalStatus": "Đóng",
+    "reviewTicketStatus": "Đang xử lý"
+  },
+  "fixes": [
+    "Active handlers can edit enabled fields in processing sections even when legacy field.editable is true. Creation sections remain read-only after creation.",
+    "Template saves write explicit booleans for all three switches; new fields start with false, preventing unchecked/missing handling from being treated as legacy change permission."
+  ],
+  "notes": [
+    "R=required, H=handling (allow change), S=status (private visibility). All eight combinations checked on both creation and processing sections.",
+    "attemptFailures contains corrected automation selectors and navigation expectations; these are not product failures. The same ticket was resumed without duplicate creates.",
+    "Template edits apply to future tickets; both retained tickets contain the original sixteen-field matrix snapshot. Current template also includes one untouched-default TEST field.",
+    "All writes were limited to isolated TEST_FLAGS8 type 194 and tickets owned by this test run. Credentials/tokens are not stored.",
+    "Browser UI actions and real API readbacks were used for configuration, create/clone, approval, receive, updates, completion, reopen, close and review. This does not certify backend authorization for all endpoints."
+  ],
+  "validation": {
+    "focusedTests": 201,
+    "lint": "passed",
+    "typecheck": "passed",
+    "fullTests": 1031,
+    "testFiles": 39,
+    "fullTestCommand": "npm test",
+    "fullTestDurationSeconds": 53.89,
+    "build": "passed - existing chunk-size advisory",
+    "browserScriptSyntax": "passed"
+  }
+}

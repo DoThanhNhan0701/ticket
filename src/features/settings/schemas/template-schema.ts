@@ -91,7 +91,15 @@ export function prepareTemplate(groups: readonly TemplateGroup[]) {
     throw new Error("Vui lòng thêm ít nhất một phần biểu mẫu.");
   const groupNames = new Set<string>();
   const fieldNames = new Set<string>();
-  const cleaned = normalizeTemplate(groups);
+  const cleaned = normalizeTemplate(groups).map((group) => ({
+    ...group,
+    children: group.children.map((field) => ({
+      ...field,
+      required: field.required === true,
+      handling: field.handling === true,
+      status: field.status === true,
+    })),
+  }));
   for (const group of cleaned) {
     const title = group.title;
     if (!title || groupNames.has(title.toLowerCase()))

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Pencil, Save, X } from "lucide-react";
@@ -14,13 +14,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TruncatedText } from "@/components/truncated-text";
+import type { TemplateField } from "@/features/settings/schemas/template-schema";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import type { CreateRequestValues } from "../schemas/create-request-schema";
 import { detailFields, validateDetailRows } from "../utils/request-detail-data";
 import {
   canEditTicketField,
+  canViewTicketField,
   sectionUpdateRows,
   ticketDetailRows,
+  ticketFieldRoles,
 } from "../utils/ticket-detail";
 import { updateTicketSection } from "../api/request-detail-api";
 import { RequestDetailField } from "./request-detail-field";
@@ -30,12 +33,26 @@ export function TicketTemplate({
   ticket,
   onSaved,
 }: Readonly<{ ticket: RequestDetailData; onSaved: () => Promise<unknown> }>) {
-  const { username, permissions } = useAuthContext();
-  const creator = ticket.username_create === username;
-  const processor = Boolean(permissions?.is_handling);
+  const { username, userId } = useAuthContext();
+  const { creator, processor, editingProcessor } = ticketFieldRoles(ticket, {
+    username,
+    userId,
+  });
   const groups = ticket.data_item?.dataform.header ?? [];
   const fields = detailFields(groups);
+  const mayEditField = (field: TemplateField) =>
+    canViewTicketField(field, { creator, processor }) &&
+    canEditTicketField(field, { creator, processor: editingProcessor });
+  const mayEditSection = (section: number) =>
+    [2, 3, 6].includes(ticket.ticket_status) &&
+    groups[section]?.editable === false &&
+    Boolean(ticket.data_item?.dataform.data.length) &&
+    fields.some((field) => field.groupIndex === section && mayEditField(field));
   const [editing, setEditing] = useState<number | null>(null);
+  const editingAllowed = editing !== null && mayEditSection(editing);
+  useEffect(() => {
+    if (editing !== null && !editingAllowed) setEditing(null);
+  }, [editing, editingAllowed]);
   const form = useForm<CreateRequestValues>({
     defaultValues: { rows: ticketDetailRows(ticket) },
     mode: "onSubmit",
@@ -43,10 +60,17 @@ export function TicketTemplate({
   });
   const mutation = useMutation({
     mutationFn: async (section: number) => {
+      if (!mayEditSection(section))
+        throw new Error("Bạn không còn quyền chỉnh sửa phần này.");
       await updateTicketSection(
         ticket.id,
         groups[section],
-        sectionUpdateRows(ticket, section, form.getValues("rows")),
+        sectionUpdateRows(
+          ticket,
+          section,
+          form.getValues("rows"),
+          mayEditField,
+        ),
       );
     },
     onSuccess: async () => {
@@ -59,15 +83,11 @@ export function TicketTemplate({
       }
     },
   });
-  const editable =
-    [2, 3, 6].includes(ticket.ticket_status) && (creator || processor);
   const save = (section: number) => {
-    if (mutation.isPending || groups[section]?.editable !== false) return;
+    if (mutation.isPending || !mayEditSection(section)) return;
     form.clearErrors();
     const allowed = fields.filter(
-      (field) =>
-        field.groupIndex === section &&
-        canEditTicketField(field, { creator, processor }),
+      (field) => field.groupIndex === section && mayEditField(field),
     );
     const keys = new Set(
       allowed.flatMap((field) => [
@@ -103,13 +123,13 @@ export function TicketTemplate({
         </p>
       )}
       {groups.map((group, index) => {
-        const selected = fields.filter((field) => field.groupIndex === index);
-        const canEdit =
-          group.editable === false &&
-          editable &&
-          selected.some((field) =>
-            canEditTicketField(field, { creator, processor }),
-          );
+        const selected = fields.filter(
+          (field) =>
+            field.groupIndex === index &&
+            canViewTicketField(field, { creator, processor }),
+        );
+        if (!selected.length) return null;
+        const canEdit = mayEditSection(index);
         const active = editing === index && canEdit;
         return (
           <Card
@@ -253,11 +273,7 @@ export function TicketTemplate({
                                 row={row}
                                 hideLabel
                                 disabled={
-                                  mutation.isPending ||
-                                  !canEditTicketField(field, {
-                                    creator,
-                                    processor,
-                                  })
+                                  mutation.isPending || !mayEditField(field)
                                 }
                               />
                             ) : (

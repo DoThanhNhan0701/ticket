@@ -182,6 +182,8 @@ export function TemplateGroupFields({
                   type: "text",
                   editable: true,
                   required: false,
+                  handling: false,
+                  status: false,
                 },
               ],
             })

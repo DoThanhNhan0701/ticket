@@ -32,6 +32,7 @@ import {
   actionReasonLabel,
   availableTicketActions,
   availableUsers,
+  assignmentModes,
   buildTicketActionPlan,
   type TicketAction,
   type TicketActionOperation,
@@ -183,7 +184,8 @@ function TicketActionDialog({
   const form = useForm<TicketActionValues>({
     defaultValues: {
       reason: "",
-      mode: available.length ? "add" : "delete",
+      mode:
+        assignmentModes(ticket).find((option) => !option.disabled)?.value ?? "",
       users: [],
       oldUser: "",
       newUser: "",

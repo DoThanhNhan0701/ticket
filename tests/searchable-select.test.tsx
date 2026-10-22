@@ -67,6 +67,26 @@ it("updates the input immediately but filters only after 300ms without requiring
       .querySelector(".lucide-check"),
   ).not.toBeNull();
 });
+it("shows a disabled option but prevents selecting it", () => {
+  const onValueChange = vi.fn();
+  render(
+    <SearchableSelect
+      id="assignment"
+      label="Loại phân công"
+      value="add"
+      options={[
+        { value: "add", label: "Thêm người xử lý" },
+        { value: "delete", label: "Xóa người xử lý", disabled: true },
+      ]}
+      onValueChange={onValueChange}
+    />,
+  );
+  fireEvent.click(screen.getByRole("combobox", { name: "Loại phân công" }));
+  const disabled = screen.getByRole("option", { name: "Xóa người xử lý" });
+  expect(disabled.getAttribute("aria-disabled")).toBe("true");
+  fireEvent.click(disabled);
+  expect(onValueChange).not.toHaveBeenCalled();
+});
 it("cancels earlier searches and applies the latest text after another 300ms", async () => {
   const input = await openSelect();
   type(input, "phan");

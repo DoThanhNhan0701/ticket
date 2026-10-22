@@ -39,18 +39,43 @@ export function ticketDetailRows(ticket: RequestDetailData): DetailRow[] {
     return row;
   });
 }
+export function ticketFieldRoles(
+  ticket: RequestDetailData,
+  { username, userId }: { username: string | null; userId: number | null },
+) {
+  const assignments = ticket.list_user_received.filter((user) =>
+    userId !== null && user.user_id !== null && user.user_id !== undefined
+      ? String(user.user_id) === String(userId)
+      : Boolean(username && user.username === username),
+  );
+  return {
+    creator: Boolean(username && ticket.username_create === username),
+    processor: assignments.length > 0,
+    editingProcessor:
+      ticket.ticket_status === 3 &&
+      assignments.some((user) => user.status === "Đang xử lý"),
+  };
+}
 export function canEditTicketField(
   field: TemplateField,
   { creator, processor }: { creator: boolean; processor: boolean },
 ) {
-  return processor
-    ? (creator && Boolean(field.editable)) || !field.editable
-    : Boolean(field.editable);
+  if (field.handling === false) return false;
+  // Section visibility controls when a section can be edited. Legacy field
+  // `editable` values must not override the active handler's change permission.
+  return processor || (creator && Boolean(field.editable));
+}
+export function canViewTicketField(
+  field: TemplateField,
+  { creator, processor }: { creator: boolean; processor: boolean },
+) {
+  return field.status !== true || creator || processor;
 }
 export function sectionUpdateRows(
   ticket: RequestDetailData,
   section: number,
   rows: DetailRow[],
+  canEdit?: (field: TemplateField) => boolean,
 ) {
   const groups = ticket.data_item?.dataform.header ?? [];
   const fields = detailFields(groups).filter(
@@ -59,7 +84,13 @@ export function sectionUpdateRows(
   return rows.map((row, index) => ({
     key: ticket.data_item?.dataform.data[index]?.key ?? index + 1,
     ...Object.fromEntries(
-      fields.map((field) => [fieldDataKey(field), detailValue(field, row)]),
+      fields.map((field) => [
+        fieldDataKey(field),
+        !canEdit || canEdit(field)
+          ? detailValue(field, row)
+          : (ticket.data_item?.dataform.data[index]?.[fieldDataKey(field)] ??
+            ""),
+      ]),
     ),
   }));
 }

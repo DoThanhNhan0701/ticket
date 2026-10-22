@@ -19,6 +19,7 @@ import {
 export interface SelectOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 interface SelectFieldProps<TFieldValues extends FieldValues> {
@@ -114,7 +115,7 @@ export function SelectField<TFieldValues extends FieldValues>({
                     <SelectItem
                       key={opt.value}
                       value={opt.value}
-                      className="text-xs py-1.5 px-2 cursor-pointer focus:bg-muted focus:text-foreground"
+                      disabled={opt.disabled}
                     >
                       {opt.label}
                     </SelectItem>

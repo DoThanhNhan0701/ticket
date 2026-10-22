@@ -143,10 +143,11 @@ export function RequestDetailRows({
         {form.formState.errors.rows?.root?.message && (
           <ErrorAlert message={form.formState.errors.rows.root.message} />
         )}
+        {/* Keep absolutely positioned field labels inside the scroll container. */}
         <div
           role="region"
           aria-label="Các dòng chi tiết yêu cầu"
-          className="min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
+          className="relative min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
         >
           <div
             className="min-w-full space-y-1.5"

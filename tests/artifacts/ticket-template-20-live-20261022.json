@@ -1,0 +1,715 @@
+{
+  "prefix": "TEST_FORM20_261022_IVDVIV",
+  "startedAt": "2026-10-22T01:36:09.175Z",
+  "cases": [
+    {
+      "id": 1,
+      "name": "Lưu và đọc lại toàn bộ cấu hình biểu mẫu thật",
+      "status": "passed",
+      "typeId": 192,
+      "groups": 3,
+      "fields": 18,
+      "settings": [
+        "required",
+        "handling",
+        "status",
+        "editable",
+        "type",
+        "option",
+        "widthcol",
+        "validate",
+        "order"
+      ],
+      "method": "real-api-write-readback"
+    },
+    {
+      "id": 2,
+      "name": "Chỉ phần hiển thị khi tạo xuất hiện trong form tạo",
+      "status": "passed",
+      "method": "browser-ui-real-template"
+    },
+    {
+      "id": 3,
+      "name": "Bắt buộc và không bắt buộc",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f0",
+              "message": "Vui lòng nhập Nội dung công khai."
+            }
+          ]
+        },
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f1",
+              "message": "Vui lòng nhập Nội dung riêng."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Số sai định dạng, vô hạn, số 0 và số thập phân âm",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f3",
+              "message": "Vui lòng nhập số hợp lệ."
+            }
+          ]
+        },
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f3",
+              "message": "Vui lòng nhập số hợp lệ."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Tùy chọn danh sách và khoảng ngày dạng lựa chọn",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f4",
+              "message": "Vui lòng chọn giá trị trong danh sách."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Ngày hợp lệ, sai lịch và bỏ trống",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f5",
+              "message": "Ngày không hợp lệ (DD/MM/YYYY)."
+            }
+          ]
+        },
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f5",
+              "message": "Vui lòng nhập Ngày gốc."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Khoảng ngày thiếu đầu cuối và đảo thứ tự",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f10_end",
+              "message": "Vui lòng nhập đủ khoảng ngày hợp lệ, ngày kết thúc không trước ngày bắt đầu."
+            }
+          ]
+        },
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f10_end",
+              "message": "Vui lòng nhập đủ khoảng ngày hợp lệ, ngày kết thúc không trước ngày bắt đầu."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Điều kiện ngày >",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f6",
+              "message": "Ngày phải > Ngày gốc."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Điều kiện ngày >=",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f7",
+              "message": "Ngày phải >= Ngày gốc."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Điều kiện ngày <",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f8",
+              "message": "Ngày phải < Ngày gốc."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Điều kiện ngày <=",
+      "status": "passed",
+      "method": "application-validation-on-real-api-template",
+      "evidence": [
+        {
+          "valid": false,
+          "issues": [
+            {
+              "path": "rows.0.values.f9",
+              "message": "Ngày phải <= Ngày gốc."
+            }
+          ]
+        },
+        {
+          "valid": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Tạo ticket bằng UI và đọc lại dữ liệu thật",
+      "status": "passed",
+      "method": "browser-ui-create-real-api-readback",
+      "ticketId": 14473
+    },
+    {
+      "id": 13,
+      "name": "Người tạo xem trường công khai và riêng tư",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 14,
+      "name": "Người xem khác bị ẩn tên, giá trị và phần chỉ có trường riêng",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 15,
+      "name": "Người xử lý xem đầy đủ trường riêng tư",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 16,
+      "name": "Cho phép thay đổi bật/tắt khi người xử lý cập nhật",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 17,
+      "name": "Người tạo chỉ sửa trường dành cho người tạo trong phần xử lý",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 18,
+      "name": "Thêm, sắp xếp, xóa phần/trường, cấu hình checkbox và độ rộng rồi lưu thật",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 19,
+      "name": "Clone của người tạo giữ nội dung riêng và bỏ phần xử lý",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    },
+    {
+      "id": 20,
+      "name": "Clone của người xem khác không sao chép nội dung riêng",
+      "status": "passed",
+      "method": "browser-ui-real-api-readback"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 14472,
+      "code": "TEST_CW75S53_261022_001"
+    },
+    {
+      "id": 14473,
+      "code": "TEST_CW75S53_261022_002",
+      "creator": "test_p261021_all"
+    }
+  ],
+  "runtimeErrors": [],
+  "initialFailures": [
+    {
+      "id": 13,
+      "name": "Người tạo xem trường công khai và riêng tư",
+      "status": "failed",
+      "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'Thông tin tạo TEST', exact: true }) to be visible\u001b[22m\n",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    },
+    {
+      "id": 16,
+      "name": "Cho phép thay đổi bật/tắt khi người xử lý cập nhật",
+      "status": "failed",
+      "error": "Trường handling=false phải khóa\n\nfalse !== true\n",
+      "classification": "product defect, fixed",
+      "resolved": true
+    },
+    {
+      "id": 17,
+      "name": "Người tạo chỉ sửa trường dành cho người tạo trong phần xử lý",
+      "status": "failed",
+      "error": "locator.waitFor: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'Thông tin tạo TEST', exact: true }) to be visible\u001b[22m\n",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    },
+    {
+      "id": 18,
+      "name": "Thêm, sắp xếp, xóa phần/trường, cấu hình checkbox và độ rộng rồi lưu thật",
+      "status": "failed",
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5198/settings/request-types?search=TEST_FORM20_261022_IVDVIV\", waiting until \"load\"\u001b[22m\n",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    },
+    {
+      "id": 19,
+      "name": "Clone của người tạo giữ nội dung riêng và bỏ phần xử lý",
+      "status": "failed",
+      "error": "page.goto: Target page, context or browser has been closed",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    },
+    {
+      "id": 20,
+      "name": "Clone của người xem khác không sao chép nội dung riêng",
+      "status": "failed",
+      "error": "page.goto: Target page, context or browser has been closed",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    },
+    {
+      "id": 14,
+      "name": "Người xem khác bị ẩn tên, giá trị và phần chỉ có trường riêng",
+      "status": "failed",
+      "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'Thông tin tạo TEST', exact: true }) to be visible\u001b[22m\n\u001b[2m    - waiting for navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5198/requests/14473?tab=details\"\u001b[22m\n",
+      "classification": "test harness/account selection, corrected",
+      "resolved": true
+    }
+  ],
+  "status": "passed",
+  "typeId": 192,
+  "templateSaved": true,
+  "forms": [
+    {
+      "title": "Thông tin tạo TEST",
+      "editable": true,
+      "children": [
+        {
+          "title": "Nội dung công khai",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "widthcol": 260
+        },
+        {
+          "title": "Nội dung riêng",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": true,
+          "widthcol": 280
+        },
+        {
+          "title": "Không bắt buộc",
+          "type": "text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Số lượng",
+          "type": "number",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Lựa chọn",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "option": ["Hà Nội", "Đà Nẵng", "日本語"]
+        },
+        {
+          "title": "Ngày gốc",
+          "type": "date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        },
+        {
+          "title": "Ngày lớn hơn",
+          "type": "date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "validate": {
+            "operator": ">",
+            "target": "Ngày gốc"
+          }
+        },
+        {
+          "title": "Ngày lớn hoặc bằng",
+          "type": "date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "validate": {
+            "operator": ">=",
+            "target": "Ngày gốc"
+          }
+        },
+        {
+          "title": "Ngày nhỏ hơn",
+          "type": "date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "validate": {
+            "operator": "<",
+            "target": "Ngày gốc"
+          }
+        },
+        {
+          "title": "Ngày nhỏ hoặc bằng",
+          "type": "date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "validate": {
+            "operator": "<=",
+            "target": "Ngày gốc"
+          }
+        },
+        {
+          "title": "Khoảng thời gian",
+          "type": "range-date-text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "widthcol": 460
+        },
+        {
+          "title": "Ca làm",
+          "type": "range-date-text",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true,
+          "option": ["Sáng", "Chiều"]
+        },
+        {
+          "title": "Số tùy chọn",
+          "type": "number",
+          "required": false,
+          "handling": true,
+          "status": false,
+          "editable": true
+        }
+      ]
+    },
+    {
+      "title": "Xử lý TEST",
+      "editable": false,
+      "children": [
+        {
+          "title": "Kết quả công khai",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": false
+        },
+        {
+          "title": "Ghi chú nội bộ",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": false
+        },
+        {
+          "title": "Khóa thay đổi",
+          "type": "text",
+          "required": true,
+          "handling": false,
+          "status": false,
+          "editable": false
+        },
+        {
+          "title": "Người tạo bổ sung",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": false,
+          "editable": true
+        }
+      ]
+    },
+    {
+      "title": "Phần riêng TEST",
+      "editable": false,
+      "children": [
+        {
+          "title": "Riêng hoàn toàn",
+          "type": "text",
+          "required": true,
+          "handling": true,
+          "status": true,
+          "editable": false
+        }
+      ]
+    }
+  ],
+  "values": {
+    "handling_group": "22",
+    "ticket_type": "192",
+    "approve_user": "804",
+    "fore_cus": "2",
+    "bophansudung": "31",
+    "other1": ["89"],
+    "vanphong": "8",
+    "title": "TEST_FORM20_261022_IVDVIV real ticket",
+    "description": "TEST cấu hình",
+    "duedate": "25/11/2026",
+    "rows": [
+      {
+        "values": {
+          "f0": "TEST_FORM20_261022_IVDVIV Unicode tiếng Việt 日本語 ✅",
+          "f1": "TEST_FORM20_261022_IVDVIV SECRET",
+          "f2": "",
+          "f3": "0",
+          "f4": "日本語",
+          "f5": "20/11/2026",
+          "f6": "21/11/2026",
+          "f7": "20/11/2026",
+          "f8": "19/11/2026",
+          "f9": "20/11/2026",
+          "f10_start": "20/11/2026",
+          "f10_end": "22/11/2026",
+          "f11": "Sáng",
+          "f12": ""
+        }
+      }
+    ]
+  },
+  "observations": {
+    "readerApiIncludesRestrictedData": false
+  },
+  "completedAt": "2026-10-22T01:46:16.929Z",
+  "mainTicket": 14473,
+  "readerAccount": {
+    "id": 816,
+    "username": "test_form20_reader_ivdviv",
+    "positionId": 39,
+    "teamId": 90,
+    "actualRoles": [
+      "can_create",
+      "can_report",
+      "can_system",
+      "can_view",
+      "can_search",
+      "can_accept",
+      "can_delete",
+      "can_export",
+      "can_allticket",
+      "can_cv_interview",
+      "can_return_ticket"
+    ],
+    "is_handling": false
+  },
+  "finalVerification": {
+    "templateId": 192,
+    "groups": 3,
+    "fields": 18,
+    "tickets": [
+      {
+        "id": 14472,
+        "code": "TEST_CW75S53_261022_001",
+        "creator": "test_p261021_create",
+        "status": 3,
+        "title": "TEST_FORM20_261022_IVDVIV real ticket",
+        "historyEntries": 4
+      },
+      {
+        "id": 14473,
+        "code": "TEST_CW75S53_261022_002",
+        "creator": "test_p261021_all",
+        "status": 3,
+        "title": "TEST_FORM20_261022_IVDVIV real ticket",
+        "historyEntries": 8
+      }
+    ],
+    "ownerAndProcessorReadback": "passed",
+    "readerApiOmitsRestrictedValues": true,
+    "lockedFieldUnchanged": true
+  },
+  "method": "One explicitly approved isolated TEST request type/template, real browser UI and real API. Cases 3–11 use application validation against the template fetched from the real API; invalid tickets are not forced onto the server. Other cases verify real configuration, UI persistence, actual account permissions and clone behavior. No mocked APIs/roles.",
+  "summary": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "templateId": 192,
+    "mainTicket": 14473,
+    "ticketIds": [14472, 14473],
+    "runtimeErrors": 0
+  },
+  "findings": [
+    {
+      "name": "Cho phép thay đổi=false was ignored",
+      "status": "fixed and retested",
+      "case": 16,
+      "file": "src/features/requests/utils/ticket-detail.ts",
+      "behavior": "Explicit handling=false now prevents editing and excludes the locked field from validation; existing values remain unchanged."
+    }
+  ],
+  "auditNote": "writes contains direct setup/workflow API requests; successful browser saves are additionally confirmed in finalVerification and case evidence.",
+  "writes": [
+    {
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/template_form/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/receive_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/receive_ticket/",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/usermmanager/",
+      "method": "POST",
+      "status": 200,
+      "username": "test_form20_reader_ivdviv"
+    }
+  ]
+}

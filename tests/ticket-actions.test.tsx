@@ -16,6 +16,7 @@ import {
 } from "@/features/requests/schemas/request-detail-schema";
 import {
   availableTicketActions,
+  assignmentModes,
   buildTicketActionPlan,
   ticketActionNames,
   type TicketActionValues,
@@ -294,6 +295,58 @@ it("does not permit actions missing from list_button", () => {
     "quyền",
   );
 });
+it("shows unavailable assignment modes disabled and prevents deleting the sole handler", async () => {
+  ticket.list_user_received = ticket.list_user_received.slice(0, 1);
+  open("Phân công");
+  fireEvent.click(screen.getByRole("combobox", { name: "Loại phân công" }));
+  expect(
+    screen
+      .getByRole("option", { name: "Thêm người xử lý" })
+      .getAttribute("aria-disabled"),
+  ).not.toBe("true");
+  expect(
+    screen
+      .getByRole("option", { name: "Xóa người xử lý" })
+      .getAttribute("aria-disabled"),
+  ).toBe("true");
+  expect(
+    screen
+      .getByRole("option", { name: "Thay đổi người xử lý" })
+      .getAttribute("aria-disabled"),
+  ).not.toBe("true");
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+it("allows adding only when there is no active handler, matching ticketV2 membership rules", () => {
+  ticket.list_user_received = [];
+  expect(
+    assignmentModes(ticket).map(({ value, disabled }) => [value, disabled]),
+  ).toEqual([
+    ["add", false],
+    ["delete", true],
+    ["change", true],
+  ]);
+});
+it("does not preselect a disabled operation when no assignment is possible", async () => {
+  ticket.list_user_received = ticket.list_user_received.slice(0, 1);
+  ticket.list_user_not_received = {};
+  open("Phân công");
+  expect(screen.getByText(/Hiện không có người phù hợp/)).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Người nhận xử lý" })).toBeNull();
+  confirm("Phân công");
+  await screen.findByText(/Loại phân công is required/);
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+it("keeps deletion available without replacement candidates when other handlers have completed", () => {
+  ticket.list_user_not_received = {};
+  ticket.list_user_received = ticket.list_user_received.slice(1);
+  expect(
+    assignmentModes(ticket).map(({ value, disabled }) => [value, disabled]),
+  ).toEqual([
+    ["delete", false],
+    ["change", true],
+  ]);
+});
+
 it("validates assignment membership and preserves at least one handler", () => {
   expect(() =>
     buildTicketActionPlan(ticket, "Phân công", { ...defaults, users: ["999"] }),

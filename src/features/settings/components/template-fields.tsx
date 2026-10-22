@@ -99,7 +99,10 @@ export function TemplateFieldControls({
           [
             { key: "required", label: "Bắt buộc" },
             { key: "handling", label: "Cho phép thay đổi" },
-            { key: "status", label: "Chỉ người tạo và người xử lý" },
+            {
+              key: "status",
+              label: "Chỉ hiển thị cho người tạo và người xử lý",
+            },
           ] as const
         ).map((option) => (
           <TemplateCheckbox

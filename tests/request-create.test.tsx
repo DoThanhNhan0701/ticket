@@ -1400,6 +1400,181 @@ it("clones again after repeated resets without restoring cleared edits or creati
   expect(screen.queryByText(/Không thể sao chép/)).toBeNull();
 });
 
+it("reveals the clone form only after source, catalogs, types and template have loaded, and keeps it visible on refetch", async () => {
+  cloneSource = {
+    ...requestDetailFixture,
+    handling_group: 5,
+    ticket_type: 186,
+    approve_user: 42,
+    fore_cus: 2,
+    bophansudung: 20,
+    vanphong: 3,
+    other1: "11",
+    title: "TEST clone loaded together",
+    data_item: {
+      dataform: {
+        header: createTemplate,
+        data: [
+          { key: 1, "Ghi chú chi tiết": "Copied detail", "Số lượng": "0" },
+        ],
+      },
+    },
+  };
+  const gates = new Map<string, Promise<void>>();
+  const releases = new Map<string, () => void>();
+  const pause = (path: string) => {
+    gates.set(
+      path,
+      new Promise<void>((resolve) => releases.set(path, resolve)),
+    );
+  };
+  const paths = [
+    "/ticket_manager/42",
+    "/list_customer/",
+    "/list_tickettype/",
+    "/template_form/186",
+  ];
+  paths.forEach(pause);
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation(async (input, options) => {
+    await gates.get(new URL(String(input)).pathname.replace(/^\/api/, ""));
+    return original(input, options);
+  });
+  renderPage("/requests/new?clone=42");
+  for (const path of paths) {
+    await waitFor(() => expect(calls(path).length).toBeGreaterThan(0));
+    expect(screen.getByText("Đang tải yêu cầu cần sao chép...")).toBeTruthy();
+    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(screen.queryByRole("form", { name: "Tạo yêu cầu mới" })).toBeNull();
+    await act(async () => releases.get(path)!());
+  }
+  await waitFor(() =>
+    expect(
+      (document.getElementById("detail-0-f0") as HTMLInputElement)?.value,
+    ).toBe("Copied detail"),
+  );
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("TEST clone loaded together");
+  change("detail-0-f0", "Keep my edit");
+  pause("/template_form/186");
+  let refresh: Promise<void>;
+  act(() => {
+    refresh = client.invalidateQueries({
+      queryKey: ["request-create-template"],
+    });
+  });
+  await waitFor(() => expect(calls("/template_form/186")).toHaveLength(2));
+  expect(screen.queryByText("Đang tải yêu cầu cần sao chép...")).toBeNull();
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("Keep my edit");
+  await act(async () => {
+    releases.get("/template_form/186")!();
+    await refresh;
+  });
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it.each([
+  ["catalogs", "Lookup offline", "Thử lại danh mục"],
+  ["types", "Types offline", "Thử lại loại yêu cầu"],
+  ["template", "Template offline", "Thử lại biểu mẫu"],
+])(
+  "allows retrying failed %s while initially loading a clone",
+  async (kind, error, retry) => {
+    cloneSource = {
+      ...requestDetailFixture,
+      handling_group: 5,
+      ticket_type: 186,
+      approve_user: 42,
+      fore_cus: 2,
+      bophansudung: 20,
+      vanphong: 3,
+      other1: "11",
+      title: "TEST clone retry",
+    };
+    lookupFailure = kind === "catalogs";
+    typeFailure = kind === "types";
+    templateFailure = kind === "template";
+    renderPage("/requests/new?clone=42");
+    await screen.findByText(new RegExp(error));
+    lookupFailure = typeFailure = templateFailure = false;
+    fireEvent.click(screen.getByRole("button", { name: retry }));
+    await waitFor(() => {
+      expect(screen.queryByText("Đang tải yêu cầu cần sao chép...")).toBeNull();
+      expect(
+        (document.getElementById("create-title") as HTMLInputElement)?.value,
+      ).toBe("TEST clone retry");
+    });
+    expect(calls("/ticket_manager")).toHaveLength(0);
+  },
+);
+
+it.each([
+  {
+    role: "creator",
+    username: "ticket-user",
+    processor: false,
+    expected: "Restricted detail",
+  },
+  {
+    role: "processor",
+    username: "handler",
+    processor: true,
+    expected: "Restricted detail",
+  },
+  { role: "reader", username: "reader", processor: false, expected: "" },
+  {
+    role: "unassigned processor",
+    username: "other-handler",
+    processor: true,
+    expected: "",
+  },
+])(
+  "does not expose restricted source fields through cloning for the $role",
+  async ({ username, processor, expected }) => {
+    auth.username = username;
+    auth.permissions = { can_create: true, is_handling: processor };
+    const header = structuredClone(createTemplate);
+    Object.assign(header[0].children[0], { status: true });
+    cloneSource = {
+      ...requestDetailFixture,
+      handling_group: 5,
+      ticket_type: 186,
+      approve_user: 42,
+      fore_cus: 2,
+      bophansudung: 20,
+      vanphong: 3,
+      other1: "11",
+      title: "TEST restricted clone",
+      data_item: {
+        dataform: {
+          header,
+          data: [
+            {
+              key: 1,
+              "Ghi chú chi tiết": "Restricted detail",
+              "Số lượng": "0",
+            },
+          ],
+        },
+      },
+    };
+    renderPage("/requests/new?clone=42");
+    await waitFor(() => {
+      expect(document.getElementById("detail-0-f0")).not.toBeNull();
+      expect(
+        (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+      ).toBe(expected);
+    });
+    expect(
+      (document.getElementById("detail-0-f1") as HTMLInputElement).value,
+    ).toBe("0");
+    expect(calls("/ticket_manager")).toHaveLength(0);
+  },
+);
+
 it("blocks a cloned training ticket with an empty required range and associates errors with both date inputs", async () => {
   template = {
     forms: [

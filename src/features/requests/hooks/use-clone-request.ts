@@ -7,7 +7,12 @@ import type { CreateRequestValues } from "../schemas/create-request-schema";
 import { getRequestDetail, validTicketId } from "../api/request-detail-api";
 import type { CreateRequestLookups } from "../api/create-request-api";
 import { detailFields, emptyDetailRow } from "../utils/request-detail-data";
-import { fieldDataKey } from "../utils/ticket-detail";
+import {
+  canViewTicketField,
+  fieldDataKey,
+  ticketFieldRoles,
+} from "../utils/ticket-detail";
+import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 
 export function useCloneRequest({
   userId,
@@ -28,6 +33,7 @@ export function useCloneRequest({
   groups: TemplateGroup[];
   templateReady: boolean;
 }) {
+  const { username } = useAuthContext();
   const [params] = useSearchParams();
   const id = params.get("clone");
   const stage = useRef(restored ? 3 : 0);
@@ -99,6 +105,13 @@ export function useCloneRequest({
               const original = sourceFields.find(
                 (source) => source.title === field.title,
               );
+              if (
+                !canViewTicketField(
+                  original ?? field,
+                  ticketFieldRoles(ticket, { username, userId }),
+                )
+              )
+                continue;
               const value = String(
                 record[original ? fieldDataKey(original) : field.title] ?? "",
               );
@@ -114,7 +127,7 @@ export function useCloneRequest({
     );
     stage.current = 3;
     setInitialized(true);
-  }, [ticket, templateReady, selectedType, groups, form]);
+  }, [ticket, templateReady, selectedType, groups, form, username, userId]);
   let error = source.error?.message;
   if (id && !validTicketId(id)) error = "Mã yêu cầu sao chép không hợp lệ.";
   else if (unavailable)

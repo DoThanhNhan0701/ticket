@@ -6,6 +6,7 @@ import { TextareaField } from "@/components/form/textarea-field";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import {
   availableUsers,
+  assignmentModes,
   processingUsers,
   type TicketActionValues,
 } from "../utils/ticket-actions";
@@ -38,15 +39,7 @@ export function TicketAssignmentFields({
     mode === "delete" &&
     current.length > 0 &&
     current.every(({ value }) => selected.includes(value));
-  const modes = [
-    ...(available.length ? [{ value: "add", label: "Thêm người xử lý" }] : []),
-    ...(current.length && ticket.list_user_received.length > 1
-      ? [{ value: "delete", label: "Xóa người xử lý" }]
-      : []),
-    ...(current.length && available.length
-      ? [{ value: "change", label: "Thay đổi người xử lý" }]
-      : []),
-  ];
+  const modes = assignmentModes(ticket);
   return (
     <div className="space-y-4">
       <SelectField
@@ -55,10 +48,17 @@ export function TicketAssignmentFields({
         id="ticket-assignment-mode"
         label="Loại phân công"
         options={modes}
+        placeholder="Chọn loại phân công"
         disabled={disabled}
         required
       />
-      {mode === "change" ? (
+      {!modes.some((option) => !option.disabled) && (
+        <p role="status" className="text-sm text-muted-foreground">
+          Hiện không có người phù hợp để thêm hoặc thay thế. Yêu cầu phải giữ ít
+          nhất một người xử lý.
+        </p>
+      )}
+      {mode === "change" && (
         <>
           <SelectField
             control={form.control}
@@ -81,7 +81,8 @@ export function TicketAssignmentFields({
             required
           />
         </>
-      ) : (
+      )}
+      {(mode === "add" || mode === "delete") && (
         <MultiSelectField
           control={form.control}
           name="users"
@@ -97,7 +98,7 @@ export function TicketAssignmentFields({
           required
         />
       )}
-      {mode !== "add" && (
+      {mode && mode !== "add" && (
         <TextareaField
           control={form.control}
           name="reason"

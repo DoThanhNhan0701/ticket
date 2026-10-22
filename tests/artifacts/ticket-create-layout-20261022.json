@@ -1,0 +1,161 @@
+{
+  "startedAt": "2026-10-22T01:16:59.533Z",
+  "source": 14464,
+  "checks": [
+    {
+      "name": "clone-wide-template-1914",
+      "status": "passed",
+      "viewport": {
+        "width": 1914,
+        "height": 1000
+      },
+      "mainWidth": 1626,
+      "mainScrollWidth": 1626,
+      "mainScrollLeft": 0,
+      "formWidth": 1578,
+      "formScrollWidth": 1578,
+      "tableWidth": 1536,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 1382
+    },
+    {
+      "name": "clone-wide-template-1440",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "mainWidth": 1152,
+      "mainScrollWidth": 1152,
+      "mainScrollLeft": 0,
+      "formWidth": 1104,
+      "formScrollWidth": 1104,
+      "tableWidth": 1062,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 1856
+    },
+    {
+      "name": "clone-wide-template-768",
+      "status": "passed",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "mainWidth": 768,
+      "mainScrollWidth": 768,
+      "mainScrollLeft": 0,
+      "formWidth": 720,
+      "formScrollWidth": 720,
+      "tableWidth": 678,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 2240
+    },
+    {
+      "name": "clone-wide-template-390",
+      "status": "passed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "mainScrollLeft": 0,
+      "formWidth": 366,
+      "formScrollWidth": 366,
+      "tableWidth": 332,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 2586
+    },
+    {
+      "name": "clone-wide-template-320",
+      "status": "passed",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "mainWidth": 320,
+      "mainScrollWidth": 320,
+      "mainScrollLeft": 0,
+      "formWidth": 296,
+      "formScrollWidth": 296,
+      "tableWidth": 262,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 2656
+    },
+    {
+      "name": "clone-collapsed-sidebar-1914",
+      "status": "passed",
+      "viewport": {
+        "width": 1914,
+        "height": 1000
+      },
+      "mainWidth": 1833,
+      "mainScrollWidth": 1833,
+      "mainScrollLeft": 0,
+      "formWidth": 1785,
+      "formScrollWidth": 1785,
+      "tableWidth": 1743,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 1175
+    },
+    {
+      "name": "clone-light-collapsed-sidebar-1914",
+      "status": "passed",
+      "viewport": {
+        "width": 1914,
+        "height": 1000
+      },
+      "mainWidth": 1842,
+      "mainScrollWidth": 1842,
+      "mainScrollLeft": 0,
+      "formWidth": 1794,
+      "formScrollWidth": 1794,
+      "tableWidth": 1752,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 1166
+    },
+    {
+      "name": "normal-create-restored-wide-draft-1440",
+      "status": "passed",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "mainWidth": 1368,
+      "mainScrollWidth": 1368,
+      "mainScrollLeft": 0,
+      "formWidth": 1320,
+      "formScrollWidth": 1320,
+      "tableWidth": 1278,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 1640
+    },
+    {
+      "name": "normal-create-restored-wide-draft-390",
+      "status": "passed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mainWidth": 390,
+      "mainScrollWidth": 390,
+      "mainScrollLeft": 0,
+      "formWidth": 366,
+      "formScrollWidth": 366,
+      "tableWidth": 332,
+      "tableScrollWidth": 2918,
+      "tableScrollLeft": 2586
+    }
+  ],
+  "runtimeErrors": [],
+  "blockedWrites": [],
+  "status": "passed",
+  "completedAt": "2026-10-22T01:17:07.053Z",
+  "method": "Chromium UI with real API reads for ticket 14464; clone and normal creation with restored local draft; horizontal scroll, focus, responsive widths 320–1914px, collapsed sidebar and light theme. All ticket writes blocked.",
+  "summary": {
+    "passed": 9,
+    "failed": 0,
+    "ticketWrites": 0,
+    "runtimeErrors": 0
+  }
+}

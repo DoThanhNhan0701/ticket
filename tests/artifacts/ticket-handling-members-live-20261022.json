@@ -1,0 +1,2876 @@
+{
+  "prefix": "TEST_HANDLING_IXWMUE",
+  "checks": [
+    {
+      "name": "normal-config-817-817-818",
+      "status": "passed",
+      "manager": 817,
+      "members": [817, 818]
+    },
+    {
+      "name": "normal-head-a-can-assign",
+      "status": "passed",
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"]
+    },
+    {
+      "name": "normal-member-b-not-manager",
+      "status": "passed",
+      "buttons": ["Tiếp nhận"]
+    },
+    {
+      "name": "normal-outsider-c-not-candidate",
+      "status": "passed"
+    },
+    {
+      "name": "normal-config-818-817-818",
+      "status": "passed",
+      "manager": 818,
+      "members": [817, 818]
+    },
+    {
+      "name": "normal-new-head-b-can-assign",
+      "status": "passed"
+    },
+    {
+      "name": "normal-old-head-a-loses-assign",
+      "status": "passed"
+    },
+    {
+      "name": "normal-config-819-817-818",
+      "status": "passed",
+      "manager": 819,
+      "members": [817, 818]
+    },
+    {
+      "name": "normal-manager-independent-of-members",
+      "status": "passed",
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+      "candidates": [
+        {
+          "name": "test_act22_a_iwa0tx",
+          "id": 817
+        },
+        {
+          "name": "test_act22_b_iwa0tx",
+          "id": 818
+        }
+      ]
+    },
+    {
+      "name": "normal-config-819-817-818-819",
+      "status": "passed",
+      "manager": 819,
+      "members": [817, 818, 819]
+    },
+    {
+      "name": "normal-candidates-match-members-3",
+      "status": "passed",
+      "expected": [817, 818, 819],
+      "actual": [
+        {
+          "name": "test_act22_a_iwa0tx",
+          "id": 817
+        },
+        {
+          "name": "test_act22_b_iwa0tx",
+          "id": 818
+        },
+        {
+          "name": "test_handling_ixwmue",
+          "id": 819
+        }
+      ]
+    },
+    {
+      "name": "normal-candidates-match-members-2",
+      "status": "passed",
+      "expected": [817, 818],
+      "actual": [
+        {
+          "name": "test_act22_a_iwa0tx",
+          "id": 817
+        },
+        {
+          "name": "test_act22_b_iwa0tx",
+          "id": 818
+        }
+      ]
+    },
+    {
+      "name": "normal-config-819-817",
+      "status": "passed",
+      "manager": 819,
+      "members": [817]
+    },
+    {
+      "name": "normal-candidates-match-members-1",
+      "status": "passed",
+      "expected": [817],
+      "actual": [
+        {
+          "name": "test_act22_a_iwa0tx",
+          "id": 817
+        }
+      ]
+    },
+    {
+      "name": "normal-config-819-",
+      "status": "passed",
+      "manager": 819,
+      "members": []
+    },
+    {
+      "name": "normal-candidates-match-members-0",
+      "status": "passed",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "name": "normal-assign-member-b-processing",
+      "status": "passed"
+    },
+    {
+      "name": "normal-config-817-817",
+      "status": "passed",
+      "manager": 817,
+      "members": [817]
+    },
+    {
+      "name": "normal-group-change-keeps-existing-assignment",
+      "status": "passed",
+      "memberButtons": ["Hoàn thành"],
+      "received": [
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "name": "normal-removed-member-not-offered-again",
+      "status": "passed"
+    },
+    {
+      "name": "normal-new-head-c-assign-on-processing-ticket",
+      "status": "passed"
+    },
+    {
+      "name": "normal-old-head-a-no-assign-during-processing",
+      "status": "passed"
+    },
+    {
+      "name": "normal-new-manager-can-add-a",
+      "status": "passed"
+    },
+    {
+      "name": "ga-config-19-817-818",
+      "status": "passed",
+      "manager": 19,
+      "members": [187, 365, 19, 795, 817, 818]
+    },
+    {
+      "name": "ga-config-817-817-818",
+      "status": "passed",
+      "manager": 817,
+      "members": [187, 365, 19, 795, 817, 818]
+    },
+    {
+      "name": "ga-head-a-has-assign",
+      "status": "passed",
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"]
+    },
+    {
+      "name": "ga-head-a-assigns-test-member-b",
+      "status": "passed"
+    },
+    {
+      "name": "ga-config-818-817-818",
+      "status": "passed",
+      "manager": 818,
+      "members": [187, 365, 19, 795, 817, 818]
+    },
+    {
+      "name": "ga-new-head-b-has-assign",
+      "status": "passed",
+      "buttons": ["Phân công", "Hủy", "Hoàn thành"]
+    },
+    {
+      "name": "ga-config-818-818",
+      "status": "passed",
+      "manager": 818,
+      "members": [187, 365, 19, 795, 818]
+    },
+    {
+      "name": "ga-removed-test-member-a-not-candidate",
+      "status": "passed",
+      "candidates": [
+        {
+          "name": "HaNTT",
+          "id": 187
+        },
+        {
+          "name": "MaiHTH",
+          "id": 365
+        },
+        {
+          "name": "LyNH",
+          "id": 19
+        },
+        {
+          "name": "nhandt02",
+          "id": 795
+        }
+      ],
+      "removedActorButtons": []
+    },
+    {
+      "name": "ga-assigned-handler-b-completes",
+      "status": "passed",
+      "ticketStatus": 5
+    },
+    {
+      "name": "ga-original-head-members-and-other-config-restored",
+      "status": "passed"
+    },
+    {
+      "name": "ga-manager-independent-of-members",
+      "status": "passed",
+      "buttons": ["Tiếp nhận", "Phân công", "Hủy"]
+    },
+    {
+      "name": "ga-qa-candidates-match-members-3",
+      "status": "passed",
+      "expected": [817, 818, 819],
+      "actual": [817, 818, 819],
+      "preservedRealMembers": [187, 365, 19, 795]
+    },
+    {
+      "name": "ga-qa-candidates-match-members-2",
+      "status": "passed",
+      "expected": [817, 818],
+      "actual": [817, 818],
+      "preservedRealMembers": [187, 365, 19, 795]
+    },
+    {
+      "name": "ga-qa-candidates-match-members-1",
+      "status": "passed",
+      "expected": [817],
+      "actual": [817],
+      "preservedRealMembers": [187, 365, 19, 795]
+    },
+    {
+      "name": "ga-qa-candidates-match-members-0",
+      "status": "passed",
+      "expected": [],
+      "actual": [],
+      "preservedRealMembers": [187, 365, 19, 795]
+    },
+    {
+      "name": "ga-manager-c-assigns-a",
+      "status": "passed"
+    },
+    {
+      "name": "ga-manager-c-changes-a-to-b",
+      "status": "passed"
+    },
+    {
+      "name": "ga-removing-group-member-keeps-ticket-assignment",
+      "status": "passed",
+      "removedMemberButtons": ["Hoàn thành"]
+    },
+    {
+      "name": "ga-removed-member-completes-existing-assignment",
+      "status": "passed",
+      "ticketStatus": 5
+    },
+    {
+      "name": "ga-matrix-ticket-closed",
+      "status": "passed"
+    },
+    {
+      "name": "ga-restored-after-extra-member-matrix",
+      "status": "passed"
+    }
+  ],
+  "snapshots": [
+    {
+      "name": "normal-initial-head-a",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-head-changed-a-to-b",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-head-c-not-in-members",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-members-3",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-members-2",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-members-1",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-members-0",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": [],
+          "candidates": [],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": [],
+          "candidates": [],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-before-assign",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-assigned-member-b-removed-from-group",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Hoàn thành"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "normal-manager-changed-during-processing",
+      "ticketId": 14482,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Hoàn thành"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-original-head-with-test-members",
+      "ticketId": 14483,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-head-a",
+      "ticketId": 14483,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-head-changed-a-to-b",
+      "ticketId": 14483,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-test-member-a-removed",
+      "ticketId": 14483,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Phân công", "Hủy", "Hoàn thành"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-head-c-not-member",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-qa-members-3",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            },
+            {
+              "name": "test_handling_ixwmue",
+              "id": 819
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-qa-members-2",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            },
+            {
+              "name": "test_act22_b_iwa0tx",
+              "id": 818
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-qa-members-1",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-qa-members-0",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            }
+          ],
+          "received": [],
+          "status": 2,
+          "is_handling": true,
+          "handlingPermission": {}
+        }
+      }
+    },
+    {
+      "name": "ga-assigned-b-removed-member-head-a",
+      "ticketId": 14485,
+      "actors": {
+        "test_act22_a_iwa0tx": {
+          "buttons": ["Tiếp nhận", "Phân công", "Hủy"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_act22_b_iwa0tx": {
+          "buttons": ["Hoàn thành"],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": true,
+          "handlingPermission": {}
+        },
+        "test_handling_ixwmue": {
+          "buttons": [],
+          "candidates": [
+            {
+              "name": "HaNTT",
+              "id": 187
+            },
+            {
+              "name": "MaiHTH",
+              "id": 365
+            },
+            {
+              "name": "LyNH",
+              "id": 19
+            },
+            {
+              "name": "nhandt02",
+              "id": 795
+            },
+            {
+              "name": "test_act22_a_iwa0tx",
+              "id": 817
+            }
+          ],
+          "received": [
+            {
+              "username": "test_act22_b_iwa0tx",
+              "user_id": 818,
+              "status": "Đang xử lý"
+            }
+          ],
+          "status": 3,
+          "is_handling": false,
+          "handlingPermission": {}
+        }
+      }
+    }
+  ],
+  "tickets": [
+    {
+      "id": 14482,
+      "title": "TEST_HANDLING_IXWMUE NORMAL_APPROVED",
+      "groupId": 25,
+      "code": "TEST_HND_IXWMUE_261022_001"
+    },
+    {
+      "id": 14483,
+      "title": "TEST_HANDLING_IXWMUE GA_APPROVED",
+      "groupId": 2,
+      "code": "GA_261022_001"
+    },
+    {
+      "id": 14485,
+      "title": "TEST_HANDLING_IXWMUE GA_MEMBERS_MATRIX",
+      "groupId": 2,
+      "code": "GA_261022_002"
+    }
+  ],
+  "writes": [
+    {
+      "actor": "admin",
+      "path": "/usermmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "username": "test_handling_ixwmue",
+        "msnv": "THIXWMUE",
+        "first_name": "Handler C",
+        "last_name": "TEST",
+        "email": "test_handling_ixwmue@example.invalid",
+        "team": "90",
+        "bophan": "32",
+        "chucvu": "39",
+        "nhomquyen": "",
+        "is_active": "true"
+      },
+      "response": {
+        "id": 819,
+        "is_superuser": false,
+        "username": "test_handling_ixwmue",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-10-22T09:46:46.315600+07:00",
+        "msnv": "THIXWMUE",
+        "email": "test_handling_ixwmue@example.invalid",
+        "avatar": null,
+        "last_name": "TEST",
+        "first_name": "Handler C",
+        "last_login": "2026-10-22T09:46:46.315977+07:00",
+        "date_lock": null,
+        "updated": "2026-10-22T09:46:46.315996+07:00",
+        "birthday": null,
+        "team": 90,
+        "bophan": 32,
+        "chucvu": 39,
+        "groups": [],
+        "user_permissions": [],
+        "ls_permission": []
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25,
+        "username_manager": "test_act22_a_iwa0tx",
+        "created": "2026-10-22T09:46:47.207952+07:00",
+        "updated": "2026-10-22T09:46:47.207977+07:00",
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "is_manager": 817,
+        "ls_member": [817, 818]
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE_NORMAL",
+        "handling_group": "25",
+        "is_active": "true"
+      },
+      "response": {
+        "id": 195,
+        "handling_group_name": "TEST_HANDLING_IXWMUE",
+        "created": "2026-10-22T09:46:47.410157+07:00",
+        "updated": "2026-10-22T09:46:47.410185+07:00",
+        "name": "TEST_HANDLING_IXWMUE_NORMAL",
+        "slug_name": "test_handling_ixwmue_normal",
+        "file_name": null,
+        "attachment_file": null,
+        "is_active": true,
+        "handling_group": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25,
+        "username_manager": "test_act22_a_iwa0tx",
+        "created": "2026-10-22T09:46:47.207952+07:00",
+        "updated": "2026-10-22T09:46:47.622320+07:00",
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "is_manager": 817,
+        "ls_member": [817, 818]
+      }
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/ticket_manager",
+      "method": "POST",
+      "httpStatus": 500,
+      "body": {
+        "handling_group": 25,
+        "ticket_type": 195,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_HANDLING_IXWMUE NORMAL_APPROVED",
+        "description": "TEST manager/member assignments only",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {}
+      },
+      "response": {
+        "nonJson": true
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25,
+        "username_manager": "test_act22_a_iwa0tx",
+        "created": "2026-10-22T09:46:47.207952+07:00",
+        "updated": "2026-10-22T09:46:48.588759+07:00",
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "is_manager": 817,
+        "ls_member": [817, 818]
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/ticket_manager",
+      "method": "POST",
+      "httpStatus": 500,
+      "body": {
+        "handling_group": 25,
+        "ticket_type": 195,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_HANDLING_IXWMUE NORMAL_APPROVED",
+        "description": "TEST manager/member assignments only",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "header": [],
+            "original_header": [],
+            "data": [
+              {
+                "key": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/ticket_manager",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 25,
+        "ticket_type": 195,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_HANDLING_IXWMUE NORMAL_APPROVED",
+        "description": "TEST manager/member assignments only",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "header": [],
+            "original_header": [],
+            "data": [
+              {
+                "key": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "id": 14482
+      }
+    },
+    {
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14482
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818, 819]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": []
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/assignment_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14482,
+        "ls_user_assignment": [818]
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "test_handling_ixwmue",
+      "path": "/assignment_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14482,
+        "ls_user_assignment": [817]
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/25",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HND_IXWMUE",
+        "description": "TEST manager and membership regression; isolated fixture",
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "test_handling_ixwmue@example.invalid",
+        "ls_member": [817, 818]
+      },
+      "response": {
+        "id": 25
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 19,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_HANDLING_IXWMUE_GA",
+        "handling_group": "2",
+        "is_active": "true"
+      },
+      "response": {
+        "id": 196
+      }
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/ticket_manager",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 2,
+        "ticket_type": 196,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_HANDLING_IXWMUE GA_APPROVED",
+        "description": "TEST manager/member assignments only",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "header": [],
+            "original_header": [],
+            "data": [
+              {
+                "key": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "id": 14483
+      }
+    },
+    {
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14483
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/assignment_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14483,
+        "ls_user_assignment": [818]
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/done_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14483
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 19,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/ticket_manager",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 2,
+        "ticket_type": 196,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_HANDLING_IXWMUE GA_MEMBERS_MATRIX",
+        "description": "TEST manager/member assignments only",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "header": [],
+            "original_header": [],
+            "data": [
+              {
+                "key": 1
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "id": 14485
+      }
+    },
+    {
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/accept_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14485
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818, 819]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 819,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817, 818]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "test_handling_ixwmue",
+      "path": "/assignment_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14485,
+        "ls_user_assignment": [817]
+      },
+      "response": {}
+    },
+    {
+      "actor": "test_handling_ixwmue",
+      "path": "/change_assignment_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14485,
+        "user_assignment_old": 817,
+        "user_assignment": 818,
+        "lydothaydoinguoixuly": "TEST_HANDLING_IXWMUE GA replace TEST A by B"
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795, 817]
+      },
+      "response": {
+        "id": 2
+      }
+    },
+    {
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/done_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14485
+      },
+      "response": {}
+    },
+    {
+      "actor": "test_p261021_all",
+      "path": "/close_ticket/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14485
+      },
+      "response": {}
+    },
+    {
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/2",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "GA",
+        "description": null,
+        "is_active": true,
+        "is_manager": 19,
+        "group_email": "ga_dep@rainscales.com.vn",
+        "ls_member": [187, 365, 19, 795]
+      },
+      "response": {
+        "id": 2
+      }
+    }
+  ],
+  "findings": [],
+  "startedAt": "2026-10-22T02:46:43.622Z",
+  "c": {
+    "id": 819,
+    "username": "test_handling_ixwmue"
+  },
+  "groupId": 25,
+  "normalBase": {
+    "name": "TEST_HND_IXWMUE",
+    "description": "TEST manager and membership regression; isolated fixture",
+    "is_active": true,
+    "is_manager": 817,
+    "group_email": "test_handling_ixwmue@example.invalid",
+    "ls_member": [817, 818]
+  },
+  "typeId": 195,
+  "normalRestored": true,
+  "status": "passed",
+  "groupName": "TEST_HND_IXWMUE",
+  "normalTicket": 14482,
+  "gaOriginal": {
+    "name": "GA",
+    "description": null,
+    "is_active": true,
+    "is_manager": 19,
+    "group_email": "ga_dep@rainscales.com.vn",
+    "ls_member": [187, 365, 19, 795]
+  },
+  "gaOriginalVersion": "2026-06-02T11:24:57.308300+07:00",
+  "gaRestoreRequired": false,
+  "gaTypeId": 196,
+  "gaTicket": 14483,
+  "gaObserved": {
+    "oldHeadAfterChange": ["Tiếp nhận"],
+    "newHeadAfterChange": ["Phân công", "Hủy", "Hoàn thành"],
+    "outsider": []
+  },
+  "gaRestoredAt": "2026-10-22T02:52:04.873Z",
+  "gaRestored": {
+    "name": "GA",
+    "description": null,
+    "is_active": true,
+    "is_manager": 19,
+    "group_email": "ga_dep@rainscales.com.vn",
+    "ls_member": [187, 365, 19, 795]
+  },
+  "completedAt": "2026-10-22T02:52:04.878Z",
+  "gaMatrixTicket": 14485,
+  "ui": {
+    "startedAt": "2026-10-22T02:55:52.690Z",
+    "checks": [
+      {
+        "name": "ui-original-head-only-sees-assign",
+        "status": "passed"
+      },
+      {
+        "name": "ui-updates-head-and-three-members-and-refreshes-profile",
+        "status": "passed",
+        "permissionReadsBefore": 1,
+        "permissionReadsAfter": 2
+      },
+      {
+        "name": "ui-old-head-loses-assign-new-head-gains-assign",
+        "status": "passed"
+      },
+      {
+        "name": "ui-new-member-c-appears-as-assignment-candidate",
+        "status": "passed"
+      },
+      {
+        "name": "ui-run-confirms-ga-original-configuration-restored",
+        "status": "passed",
+        "manager": 19,
+        "members": [187, 365, 19, 795]
+      },
+      {
+        "name": "normal-group-original-fixture-restored",
+        "status": "passed"
+      }
+    ],
+    "writes": [
+      {
+        "path": "/api/handlinggroupmmanager/25",
+        "body": {
+          "name": "TEST_HND_IXWMUE",
+          "description": "TEST manager and membership regression; isolated fixture",
+          "is_active": true,
+          "is_manager": 818,
+          "group_email": "test_handling_ixwmue@example.invalid",
+          "ls_member": [817, 818, 819]
+        }
+      }
+    ],
+    "runtimeErrors": [],
+    "status": "passed",
+    "completedAt": "2026-10-22T02:56:18.568Z"
+  },
+  "summary": {
+    "apiChecksPassed": 44,
+    "uiChecksPassed": 6,
+    "totalPassed": 50,
+    "normalGroupId": 25,
+    "gaGroupId": 2,
+    "ticketsCreated": 3,
+    "testUsersCreated": 1,
+    "gaRestored": true,
+    "normalTestGroupRestored": true
+  },
+  "validation": {
+    "unitTests": 1032,
+    "testFiles": 39,
+    "focusedTests": 174,
+    "lint": "passed",
+    "typecheck": "passed",
+    "formatting": "passed"
+  },
+  "notes": [
+    "GA is the existing production group ID 2; its original real members were preserved during every update. The 3/2/1/0 GA membership matrix refers only to additional TEST members, not removal of real staff.",
+    "All real GA settings were restored in finally and confirmed again by the UI run: original manager, member list, active flag, email, name and description.",
+    "Normal group manager and members were restored to the retained TEST baseline after both API and UI runs. Ticket 14482 remains processing for review.",
+    "The first two direct API setup creates failed with HTTP 500 because the original TEST group name exceeded the existing ticket-code length limit by one character. The frontend already guards this condition; the fixture was renamed to TEST_HND_IXWMUE, reconciled before retry and successful creates were read back.",
+    "The API and UI assert department-specific permissions from list_button and current candidate lists. GA hidden business rules beyond these exercised cases are not inferred.",
+    "Group edits now refresh the current account profile and invalidate ticket/create lookup caches so stale assignment controls are not retained in the same client.",
+    "User creation response was sanitized: password hashes and credentials are excluded from this report. No unrelated ticket or existing employee account was edited."
+  ]
+}

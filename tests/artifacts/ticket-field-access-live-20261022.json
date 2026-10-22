@@ -1,0 +1,41 @@
+{
+  "startedAt": "2026-10-22T02:27:13.655Z",
+  "checks": [
+    {
+      "actor": "test_act22_a_iwa0tx",
+      "ticketId": 14478,
+      "ticketStatus": 3,
+      "expectedEditButtons": 2,
+      "actualEditButtons": 2,
+      "status": "passed"
+    },
+    {
+      "actor": "test_act22_b_iwa0tx",
+      "ticketId": 14478,
+      "ticketStatus": 3,
+      "expectedEditButtons": 0,
+      "actualEditButtons": 0,
+      "status": "passed"
+    },
+    {
+      "actor": "test_act22_a_iwa0tx",
+      "ticketId": 14474,
+      "ticketStatus": 7,
+      "expectedEditButtons": 0,
+      "actualEditButtons": 0,
+      "status": "passed"
+    },
+    {
+      "actor": "admin",
+      "ticketId": 14478,
+      "ticketStatus": 3,
+      "expectedEditButtons": 2,
+      "actualEditButtons": 2,
+      "status": "passed"
+    }
+  ],
+  "mutations": [],
+  "runtimeErrors": [],
+  "status": "passed",
+  "completedAt": "2026-10-22T02:27:22.614Z"
+}
