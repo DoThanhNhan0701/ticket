@@ -12,16 +12,17 @@ export function useRequestCreateSteps(
   const values = useWatch({ control: model.form.control });
   const rows = useWatch({ control: model.form.control, name: "rows" });
   const general = Boolean(
-    model.lookups.isSuccess &&
-    model.types.isSuccess &&
-    !model.types.isFetching &&
+    model.lookups.data &&
+    model.types.data &&
     model.selectedType &&
     requestAssignmentSchema.safeParse(values).success,
   );
   const details = general && requestGeneralSchema.safeParse(values).success;
   const additional =
     details &&
-    model.ready &&
+    model.template.data &&
+    !model.clone.loading &&
+    !model.clone.error &&
     validateDetailRows(model.groups, rows).length === 0;
   return { general, details, additional };
 }

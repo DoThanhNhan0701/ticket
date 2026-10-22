@@ -26,6 +26,7 @@ export function RequestCreate() {
   const busy = model.mutation.isPending || excelBusy;
   const disabled =
     busy ||
+    model.draft.loading ||
     model.lookups.isPending ||
     model.clone.loading ||
     Boolean(model.created);
@@ -33,6 +34,11 @@ export function RequestCreate() {
     !model.lookups.isSuccess ||
     model.types.isFetching ||
     model.template.isFetching;
+  const submitDisabled = requestSubmitDisabled(
+    model,
+    excelBusy,
+    waitingForData,
+  );
   return (
     <form
       aria-label="Tạo yêu cầu mới"
@@ -77,7 +83,7 @@ export function RequestCreate() {
           onBusyChange={setExcelBusy}
         />
       )}
-      {steps.additional && (
+      {(steps.additional || model.created) && (
         <RequestFormSection
           step={4}
           title="Thông tin bổ sung"
@@ -88,7 +94,7 @@ export function RequestCreate() {
             <RequestAttachments
               files={model.files}
               onChange={model.setFiles}
-              disabled={disabled}
+              disabled={busy || model.draft.loading}
             />
           </div>
         </RequestFormSection>
@@ -110,7 +116,7 @@ export function RequestCreate() {
           <Button
             type="button"
             variant="ghost"
-            disabled={busy || Boolean(model.created)}
+            disabled={requestResetDisabled(model, busy)}
             aria-label="Làm lại"
             title="Làm lại"
             className="size-11 p-0 sm:w-auto sm:px-4"
@@ -123,7 +129,7 @@ export function RequestCreate() {
             type={model.created ? "button" : "submit"}
             loading={model.mutation.isPending}
             loadingText="Đang gửi..."
-            disabled={excelBusy || (waitingForData && !model.created)}
+            disabled={submitDisabled}
             onClick={model.created ? model.retryAttachments : undefined}
             className="min-w-0 flex-1 sm:flex-none"
             icon={<Send className="size-4" aria-hidden="true" />}
@@ -133,5 +139,27 @@ export function RequestCreate() {
         </div>
       </div>
     </form>
+  );
+}
+
+function requestSubmitDisabled(
+  model: ReturnType<typeof useCreateRequest>,
+  excelBusy: boolean,
+  waitingForData: boolean,
+) {
+  return (
+    excelBusy ||
+    model.draft.loading ||
+    model.draft.missing.length > 0 ||
+    (!model.created && waitingForData)
+  );
+}
+
+function requestResetDisabled(
+  model: ReturnType<typeof useCreateRequest>,
+  busy: boolean,
+) {
+  return (
+    busy || model.draft.loading || model.clone.loading || Boolean(model.created)
   );
 }

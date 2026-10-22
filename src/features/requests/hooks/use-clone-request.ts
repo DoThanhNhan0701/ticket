@@ -11,6 +11,7 @@ import { fieldDataKey } from "../utils/ticket-detail";
 
 export function useCloneRequest({
   userId,
+  restored = false,
   form,
   lookups,
   types,
@@ -19,6 +20,7 @@ export function useCloneRequest({
   templateReady,
 }: {
   userId: number | null;
+  restored?: boolean;
   form: UseFormReturn<CreateRequestValues>;
   lookups?: CreateRequestLookups;
   types?: { id: number }[];
@@ -28,13 +30,14 @@ export function useCloneRequest({
 }) {
   const [params] = useSearchParams();
   const id = params.get("clone");
-  const stage = useRef(0);
-  const [initialized, setInitialized] = useState(false);
+  const stage = useRef(restored ? 3 : 0);
+  const [initialized, setInitialized] = useState(restored);
   const source = useQuery({
     queryKey: ["request-clone", userId, id],
     queryFn: ({ signal }) => getRequestDetail(id!, signal),
-    enabled: Boolean(id && validTicketId(id)),
+    enabled: Boolean(!restored && id && validTicketId(id)),
     retry: false,
+    refetchOnReconnect: true,
   });
   const ticket = source.data;
   const unavailable =
@@ -116,5 +119,12 @@ export function useCloneRequest({
   if (id && !validTicketId(id)) error = "Mã yêu cầu sao chép không hợp lệ.";
   else if (unavailable)
     error = "Bộ phận hoặc loại yêu cầu đã bị vô hiệu hóa. Không thể sao chép.";
-  return { error, loading: Boolean(id && !initialized && !error) };
+  return {
+    id,
+    ready: !id || initialized,
+    error,
+    loading: Boolean(id && !initialized && !error),
+    canRetry: source.isError,
+    retry: () => void source.refetch(),
+  };
 }

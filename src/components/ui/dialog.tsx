@@ -20,7 +20,7 @@ function DialogContent({
         <DialogPrimitive.Popup
           data-slot="dialog-content"
           className={cn(
-            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-xl border border-border bg-card p-4 sm:p-6 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0",
+            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-xl border border-border bg-card p-4 sm:p-6 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0 data-nested-dialog-open:blur-[1px] data-nested-dialog-open:brightness-90",
             className,
           )}
           {...props}

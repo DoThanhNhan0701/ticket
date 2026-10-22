@@ -1,0 +1,654 @@
+{
+  "prefix": "TEST_TKT_261021_I8P818",
+  "startedAt": "2026-10-21T15:01:07.436Z",
+  "creator": {
+    "id": 811,
+    "username": "test_p261021_all",
+    "canCreate": true
+  },
+  "approver": {
+    "id": 804,
+    "username": "test_p261021_accept",
+    "first_name": "Phê duyệt yêu cầu",
+    "last_name": "TEST QC",
+    "is_active": true
+  },
+  "group": {
+    "id": 22,
+    "name": "TEST_CW75S53"
+  },
+  "types": [
+    {
+      "id": 190,
+      "name": "TEST_C_W75S53N",
+      "visibleSections": 0
+    },
+    {
+      "id": 189,
+      "name": "TEST_C_W75S53F",
+      "visibleSections": 1
+    }
+  ],
+  "checks": [
+    {
+      "name": "actual-catalog-valid-reference-and-test-only-approver",
+      "status": "passed",
+      "creatorId": 811,
+      "approverId": 804
+    },
+    {
+      "name": "real-template-validation-missing-handling-group",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-missing-request-type",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-missing-approver",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-missing-company",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-missing-department",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-missing-office",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-title-whitespace",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-title-301-characters",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-notes-1001-characters",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-invalid-date-format",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-past-due-date",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-unknown-type-id",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-unknown-team-id",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-empty-detail-rows",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-required-detail-whitespace",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-invalid-number",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-validation-invalid-option",
+      "status": "passed",
+      "method": "Client validation against actual catalog/template; no ticket POST"
+    },
+    {
+      "name": "real-template-valid-title-300-notes-1000-boundaries",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-date-valid-reference",
+      "status": "passed",
+      "method": "Actual template, including later processing fields; no configuration change"
+    },
+    {
+      "name": "real-template-invalid-date-Ngày mốc",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-invalid-date-Ngày lớn hơn hoặc bằng",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-date-rule->=",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-invalid-date-Ngày lớn hơn",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-date-rule->",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-invalid-date-Ngày nhỏ hơn",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-date-rule-<",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-invalid-date-Ngày nhỏ hơn hoặc bằng",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-date-rule-<=",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng thực hiện-missing-end",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng thực hiện-reversed",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng thực hiện-invalid-date",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng sau ngày mốc-missing-end",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng sau ngày mốc-reversed",
+      "status": "passed"
+    },
+    {
+      "name": "real-template-range-Khoảng sau ngày mốc-invalid-date",
+      "status": "passed"
+    },
+    {
+      "name": "real-create-and-read-back-all-30-detail-records",
+      "status": "passed",
+      "id": 14466,
+      "ticket_code": "TEST_CW75S53_261021_002",
+      "records": 30,
+      "verifiedCells": 330,
+      "hiddenSectionBlank": true
+    },
+    {
+      "name": "real-text-json-pdf-png-attachments-read-back",
+      "status": "passed",
+      "id": 14466,
+      "count": 4,
+      "names": [
+        "TEST_TKT_261021_I8P818_api.txt",
+        "TEST_TKT_261021_I8P818_api.json",
+        "TEST_TKT_261021_I8P818_api.pdf",
+        "TEST_TKT_261021_I8P818_api.png"
+      ]
+    },
+    {
+      "name": "real-excel-template-export",
+      "status": "passed",
+      "bytes": 6112
+    },
+    {
+      "name": "real-ui-empty-form-blocked-before-post",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-step3-required-and-step4-gating",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-csv-import-blocked-without-api",
+      "status": "passed"
+    },
+    {
+      "name": "real-api-invalid-excel-header-keeps-entered-data",
+      "status": "passed"
+    },
+    {
+      "name": "real-api-valid-excel-import-two-rows-and-zero",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-copy-delete-and-single-shared-column-labels",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-attachments-selection-and-same-file-deduplication",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-local-image-preview",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-over-50mb-file-blocked-before-ticket-post",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-excel-ticket-two-files-read-back-single-post",
+      "status": "passed",
+      "id": 14467,
+      "ticket_code": "TEST_CW75S53_261021_003"
+    },
+    {
+      "name": "real-ui-success-clears-draft",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-clone-30-rows-and-step4-revalidates-added-row",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-mobile-no-page-overflow-and-44px-excel-actions",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-mobile-clone-created-and-source-unchanged",
+      "status": "passed",
+      "id": 14468,
+      "ticket_code": "TEST_CW75S53_261021_004"
+    },
+    {
+      "name": "real-ui-mobile-no-template-ticket-read-back",
+      "status": "passed",
+      "id": 14469,
+      "ticket_code": "TEST_CW75S53_261021_005"
+    },
+    {
+      "name": "real-api-template-refetch-retains-entered-form-and-file",
+      "status": "passed"
+    },
+    {
+      "name": "real-api-template-outage-and-retry-retains-draft",
+      "status": "passed",
+      "fault": "One controlled 503, then actual API retry"
+    },
+    {
+      "name": "real-api-reload-restores-draft-and-indexeddb-file",
+      "status": "passed"
+    },
+    {
+      "name": "real-auth-token-refresh-retains-form",
+      "status": "passed",
+      "fault": "One controlled 401; token refresh and retry use the real API"
+    },
+    {
+      "name": "real-browser-offline-online-keeps-form-and-file",
+      "status": "passed"
+    },
+    {
+      "name": "real-sign-out-sign-in-restores-draft-and-file-same-account",
+      "status": "passed"
+    },
+    {
+      "name": "real-ui-create-outage-keeps-draft-before-manual-retry",
+      "status": "passed",
+      "fault": "Controlled 503 without forwarding ticket POST"
+    },
+    {
+      "name": "real-created-ticket-resumes-only-pending-file-after-reload",
+      "status": "passed",
+      "id": 14470,
+      "ticket_code": "TEST_CW75S53_261021_006",
+      "alreadyUploaded": 1,
+      "totalAttachments": 2,
+      "duplicatePost": false,
+      "fault": "Controlled failure on second upload; all successful writes/read-backs hit real API"
+    },
+    {
+      "name": "real-created-test-tickets-visible-in-request-list",
+      "status": "passed",
+      "count": 5
+    },
+    {
+      "name": "real-ui-no-javascript-errors-and-no-out-of-scope-writes",
+      "status": "passed"
+    },
+    {
+      "name": "real-all-created-ticket-assignment-and-base-fields-read-back",
+      "status": "passed",
+      "tickets": 5,
+      "approverId": 804
+    },
+    {
+      "name": "real-clone-entire-30-row-matrix-read-back",
+      "status": "passed",
+      "records": 30,
+      "verifiedCells": 330
+    },
+    {
+      "name": "real-ui-uploaded-file-download-sha256-matches-originals",
+      "status": "passed",
+      "files": [
+        {
+          "ticketId": 14467,
+          "name": "TEST_TKT_261021_I8P818_ui.txt",
+          "bytes": 39
+        },
+        {
+          "ticketId": 14467,
+          "name": "TEST_TKT_261021_I8P818_ui.png",
+          "bytes": 67
+        },
+        {
+          "ticketId": 14470,
+          "name": "TEST_TKT_261021_I8P818_resume-one.txt",
+          "bytes": 26
+        },
+        {
+          "ticketId": 14470,
+          "name": "TEST_TKT_261021_I8P818_resume-two.txt",
+          "bytes": 26
+        }
+      ]
+    }
+  ],
+  "tickets": [
+    {
+      "id": 14466,
+      "ticket_code": "TEST_CW75S53_261021_002",
+      "title": "TEST_TKT_261021_I8P818 API 30 dòng"
+    },
+    {
+      "id": 14467,
+      "ticket_code": "TEST_CW75S53_261021_003",
+      "title": "TEST_TKT_261021_I8P818 UI Excel"
+    },
+    {
+      "id": 14468,
+      "ticket_code": "TEST_CW75S53_261021_004",
+      "title": "TEST_TKT_261021_I8P818 UI clone 30 dòng"
+    },
+    {
+      "id": 14469,
+      "ticket_code": "TEST_CW75S53_261021_005",
+      "title": "TEST_TKT_261021_I8P818 UI no template"
+    },
+    {
+      "id": 14470,
+      "ticket_code": "TEST_CW75S53_261021_006",
+      "title": "TEST_TKT_261021_I8P818 UI recovery"
+    }
+  ],
+  "writes": [
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200,
+      "kind": "create"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment"
+    },
+    {
+      "method": "POST",
+      "path": "/api/export_ticket_type_template",
+      "status": 200,
+      "kind": "excel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 500,
+      "kind": "excel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 500,
+      "kind": "excel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 500,
+      "kind": "excel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/import_excel_ticket_form_data",
+      "status": 200,
+      "kind": "excel",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200,
+      "kind": "create"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200,
+      "kind": "create"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200,
+      "kind": "create"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_manager",
+      "status": 200,
+      "kind": "create"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 503,
+      "kind": "attachment",
+      "transport": "browser-direct"
+    },
+    {
+      "method": "POST",
+      "path": "/api/attachmentticketfile",
+      "status": 200,
+      "kind": "attachment",
+      "transport": "browser-direct"
+    }
+  ],
+  "faultInjections": [
+    {
+      "name": "TEST controlled template outage",
+      "path": "/api/template_form/189",
+      "method": "GET",
+      "status": 503,
+      "forwarded": false
+    },
+    {
+      "name": "TEST controlled expired access",
+      "path": "/api/list_customer/",
+      "method": "GET",
+      "status": 401,
+      "forwarded": false
+    },
+    {
+      "name": "TEST controlled create failure before delivery",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "status": 503,
+      "forwarded": false
+    },
+    {
+      "name": "TEST controlled second upload failure",
+      "path": "/api/attachmentticketfile",
+      "method": "POST",
+      "status": 503,
+      "forwarded": false
+    }
+  ],
+  "blocked": [],
+  "runtimeErrors": [],
+  "status": "passed",
+  "limits": [
+    "Existing TEST configuration only. Date-rule cases use actual template fields; the current creation form intentionally hides the date section."
+  ],
+  "backendIssues": [],
+  "diagnostics": [
+    {
+      "name": "multipart-harness-forwarding",
+      "status": "resolved",
+      "detail": "The initial harness received import errors when forwarding multipart Excel through Playwright route.fetch. Importing the same files through the unmodified browser request succeeded. Final UI cases use browser-direct multipart. These initial errors were harness-induced, not reproduced application/backend failures. Attachment SHA-256 audits matched the source files."
+    }
+  ],
+  "transportAudit": [
+    {
+      "name": "TEST_TKT_261021_I8P818_api.txt",
+      "match": true,
+      "bytes": 42,
+      "expectedBytes": 42
+    },
+    {
+      "name": "TEST_TKT_261021_I8P818_api.json",
+      "match": true,
+      "bytes": 43,
+      "expectedBytes": 43
+    },
+    {
+      "name": "TEST_TKT_261021_I8P818_api.pdf",
+      "match": true,
+      "bytes": 44,
+      "expectedBytes": 44
+    },
+    {
+      "name": "TEST_TKT_261021_I8P818_api.png",
+      "match": true,
+      "bytes": 67,
+      "expectedBytes": 67
+    }
+  ],
+  "finishedAt": "2026-10-21T15:18:09.782Z",
+  "summary": {
+    "checks": 66,
+    "passed": 66,
+    "tickets": 5,
+    "detailsRecords": 63,
+    "controlledFaults": 4,
+    "realApiData": true,
+    "configurationChanged": false
+  },
+  "testEnvironment": {
+    "frontend": "http://127.0.0.1:5198",
+    "api": "https://ticket-api.aiminds.io.vn",
+    "data": "Actual API records, existing TEST accounts and existing TEST types 189/190",
+    "faults": "Four controlled one-response failures before forwarding; successful requests and read-backs use actual API. Browser offline/online and logout/login are exercised directly."
+  },
+  "configurationReview": {
+    "newConfigurationCreated": false,
+    "reason": "Automatic approval review rejected adding a new persistent request type/template as outside the test-ticket authorization; the suite used existing TEST configuration instead."
+  },
+  "review": {
+    "retainedTicketIds": [14466, 14467, 14468, 14469, 14470],
+    "searchPrefix": "TEST_TKT_261021_I8P818",
+    "recordsCreatedByThisRunOnly": true,
+    "apiReadBackVerified": true
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "startedAt": "2026-10-21T15:41:32.067Z",
+  "source": 14466,
+  "checks": [
+    {
+      "name": "clone-loads-30-real-source-records",
+      "status": "passed",
+      "rows": 30
+    },
+    {
+      "name": "reset-removes-clone-draft-and-exits-clone-1",
+      "status": "passed"
+    },
+    {
+      "name": "reload-after-reset-does-not-resurrect-clone-1",
+      "status": "passed"
+    },
+    {
+      "name": "clone-again-restores-all-30-original-records-1",
+      "status": "passed"
+    },
+    {
+      "name": "reset-removes-clone-draft-and-exits-clone-2",
+      "status": "passed"
+    },
+    {
+      "name": "reload-after-reset-does-not-resurrect-clone-2",
+      "status": "passed"
+    },
+    {
+      "name": "clone-again-restores-all-30-original-records-2",
+      "status": "passed"
+    },
+    {
+      "name": "reset-removes-clone-draft-and-exits-clone-3",
+      "status": "passed"
+    },
+    {
+      "name": "reload-after-reset-does-not-resurrect-clone-3",
+      "status": "passed"
+    },
+    {
+      "name": "clone-again-restores-all-30-original-records-3",
+      "status": "passed"
+    },
+    {
+      "name": "unreset-clone-draft-still-survives-reload",
+      "status": "passed"
+    },
+    {
+      "name": "source-remains-unchanged-after-local-edits-and-resets",
+      "status": "passed"
+    },
+    {
+      "name": "no-ticket-create-upload-update-or-delete-request",
+      "status": "passed"
+    }
+  ],
+  "runtimeErrors": [],
+  "blockedWrites": [],
+  "status": "passed",
+  "completedAt": "2026-10-21T15:41:54.246Z",
+  "method": "Chromium UI login and actual Sao chép button on existing TEST ticket; real API reads; three Clone → Làm lại → Clone again cycles, reset reload, unreset draft reload, 30-row source comparison. Ticket writes blocked.",
+  "summary": {
+    "passed": 13,
+    "failed": 0,
+    "recordsPerClone": 30,
+    "resetCycles": 3,
+    "ticketWrites": 0
+  }
+}

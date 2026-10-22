@@ -8,9 +8,10 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createTicketPage } from "@/app/navigation";
 import {
@@ -49,6 +50,7 @@ const page = (results: unknown[]) => ({
   results,
 });
 beforeEach(() => {
+  sessionStorage.clear();
   vi.stubGlobal("PointerEvent", MouseEvent);
   vi.stubGlobal("Blob", NodeBlob);
   vi.stubGlobal(
@@ -173,11 +175,14 @@ afterEach(() => {
   client.clear();
   clearAuthSession();
 });
-function renderPage(url = "/requests/new") {
+function renderPage(url = "/requests/new", cloneAgain = false) {
   render(
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[url]}>
+          {cloneAgain && (
+            <Link to="/requests/new?clone=42">Clone lại ticket nguồn</Link>
+          )}
           <Routes>
             <Route
               path="/requests/new"
@@ -284,6 +289,7 @@ it("reveals each section only after the previous section is complete without sub
     screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
   ).toBeNull();
   await fillDetails();
+  change("create-description", "Ghi chú giữ nguyên khi sửa chi tiết");
   expect(
     screen.getByRole("heading", { name: "Thông tin bổ sung" }),
   ).toBeTruthy();
@@ -295,6 +301,9 @@ it("reveals each section only after the previous section is complete without sub
   expect(
     screen.getByRole("heading", { name: "Thông tin bổ sung" }),
   ).toBeTruthy();
+  expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
+    "Ghi chú giữ nguyên khi sửa chi tiết",
+  );
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
 
@@ -445,6 +454,20 @@ it("revalidates dependent date comparisons when only the reference changes and k
   await fillBase();
   await fillDetails();
   fireEvent.click(screen.getByRole("button", { name: "Sao chép dòng 1" }));
+  expect(
+    screen.getAllByRole("group", { name: "Tiêu đề các cột chi tiết" }),
+  ).toHaveLength(1);
+  const columns = within(
+    screen.getByRole("group", { name: "Tiêu đề các cột chi tiết" }),
+  );
+  expect(columns.getAllByText("Ghi chú chi tiết")).toHaveLength(1);
+  for (const row of ["Dòng 1", "Dòng 2"]) {
+    expect(
+      within(screen.getByRole("group", { name: row })).getByRole("textbox", {
+        name: "Ghi chú chi tiết",
+      }),
+    ).toBeTruthy();
+  }
   change("detail-0-f3", "19/10/2026");
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByText("Ngày phải >= Từ ngày.");
@@ -1300,7 +1323,7 @@ it("does not fetch any data without the create permission", async () => {
   expect(fetchMock).not.toHaveBeenCalled();
 });
 
-it("hydrates a cloned ticket after dependent lookups load and permits changing the group", async () => {
+it("clones again after repeated resets without restoring cleared edits or creating a ticket", async () => {
   cloneSource = {
     ...requestDetailFixture,
     handling_group: 5,
@@ -1328,7 +1351,7 @@ it("hydrates a cloned ticket after dependent lookups load and permits changing t
       },
     },
   };
-  renderPage("/requests/new?clone=42");
+  renderPage("/requests/new?clone=42", true);
   await waitFor(() =>
     expect(
       (document.getElementById("detail-0-f0") as HTMLInputElement | null)
@@ -1342,6 +1365,36 @@ it("hydrates a cloned ticket after dependent lookups load and permits changing t
     (document.getElementById("create-title") as HTMLInputElement).value,
   ).toBe("Bản sao từ ticket");
   expect(calls("/ticket_manager")).toHaveLength(0);
+  for (let cycle = 0; cycle < 3; cycle++) {
+    change("create-title", `Bản nháp cần xóa ${cycle}`);
+    change("detail-0-f0", "Nội dung cần xóa");
+    expect(sessionStorage.getItem("request-create-draft:v1:42:42")).toContain(
+      "Nội dung cần xóa",
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
+    await waitFor(() =>
+      expect(document.getElementById("create-title")).toBeNull(),
+    );
+    expect(sessionStorage.getItem("request-create-draft:v1:42:42")).toBeNull();
+    expect(document.getElementById("detail-0-f0")).toBeNull();
+    fireEvent.click(
+      screen.getByRole("link", { name: "Clone lại ticket nguồn" }),
+    );
+    await waitFor(() =>
+      expect(
+        (document.getElementById("detail-0-f0") as HTMLInputElement | null)
+          ?.value,
+      ).toBe("Giữ nội dung"),
+    );
+    expect(
+      (document.getElementById("create-title") as HTMLInputElement).value,
+    ).toBe("Bản sao từ ticket");
+    expect(
+      (document.getElementById("detail-0-f1") as HTMLInputElement).value,
+    ).toBe("0");
+    expect(calls("/ticket_manager")).toHaveLength(0);
+    expect(calls("/attachmentticketfile")).toHaveLength(0);
+  }
   await select("Bộ phận xử lý", "IT");
   await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
   expect(screen.queryByText(/Không thể sao chép/)).toBeNull();
@@ -1411,4 +1464,144 @@ it("blocks a cloned training ticket with an empty required range and associates 
   expect(body.formDataTicket.dataform.data[0]["Thời gian đào tạo"]).toBe(
     "20/10/2026 - 20/10/2026",
   );
+});
+
+it("keeps entered rows, notes and attachments when template and lookup APIs reload or fail", async () => {
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  change("create-description", "Keep this note");
+  const attachment = new File(["draft"], "keep.txt");
+  fireEvent.change(screen.getByLabelText("Tệp đính kèm"), {
+    target: { files: [attachment] },
+  });
+  const refreshed = structuredClone(createTemplate);
+  refreshed[0].colortitle = "#123456";
+  template = { forms: refreshed };
+  await act(async () => {
+    await client.refetchQueries({ queryKey: ["request-create-template", 42] });
+  });
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("Nội dung mẫu");
+  expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
+    "Keep this note",
+  );
+  expect(screen.getByRole("button", { name: "Bỏ tệp keep.txt" })).toBeTruthy();
+  templateFailure = true;
+  await act(async () => {
+    await client.refetchQueries({ queryKey: ["request-create-template", 42] });
+  });
+  await screen.findByText(/Template offline/);
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("Nội dung mẫu");
+  templateFailure = false;
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
+  await waitFor(() =>
+    expect(screen.queryByText(/Template offline/)).toBeNull(),
+  );
+  lookupFailure = true;
+  await act(async () => {
+    await client.refetchQueries({ queryKey: ["request-create-lookups", 42] });
+  });
+  await screen.findByText(/Lookup offline/);
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("Nội dung mẫu");
+  expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
+    "Keep this note",
+  );
+  expect(screen.getByRole("button", { name: "Bỏ tệp keep.txt" })).toBeTruthy();
+  expect(calls("/ticket_manager")).toHaveLength(0);
+});
+
+it("restores an incomplete draft after remount and isolates it from another account", async () => {
+  renderPage();
+  await fillBase();
+  change("detail-0-f0", "Saved unfinished row");
+  change("create-title", "Saved request title");
+  cleanup();
+  client.clear();
+  auth = { ...auth, userId: 99 };
+  renderPage();
+  await ready();
+  expect(screen.queryByLabelText("Tiêu đề yêu cầu")).toBeNull();
+  cleanup();
+  client.clear();
+  auth = { ...auth, userId: 42 };
+  renderPage();
+  await screen.findByRole("group", { name: "Dòng 1" });
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("Saved request title");
+  expect(
+    (document.getElementById("detail-0-f0") as HTMLInputElement).value,
+  ).toBe("Saved unfinished row");
+  expect(
+    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
+  ).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
+  cleanup();
+  client.clear();
+  renderPage();
+  await ready();
+  expect(screen.queryByLabelText("Tiêu đề yêu cầu")).toBeNull();
+});
+
+it("resumes a created ticket after remount without recreating it or reuploading successful files", async () => {
+  let uploaded = 0;
+  uploadResponse = () =>
+    ++uploaded === 2
+      ? Response.json({ detail: "Upload interrupted" }, { status: 500 })
+      : Response.json({ message: "success" });
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  const first = new File(["one"], "one.txt");
+  const second = new File(["two"], "two.txt");
+  fireEvent.change(screen.getByLabelText("Tệp đính kèm"), {
+    target: { files: [first, second] },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByText("Upload interrupted");
+  expect(calls("/ticket_manager")).toHaveLength(1);
+  cleanup();
+  client.clear();
+  renderPage();
+  const remove = await screen.findByRole("button", {
+    name: "Bỏ tệp cần chọn lại two.txt",
+  });
+  expect(remove).toBeTruthy();
+  expect(
+    screen.queryByRole("button", { name: "Bỏ tệp cần chọn lại one.txt" }),
+  ).toBeNull();
+  const retry = screen.getByRole("button", { name: "Tải lại đính kèm" });
+  expect((retry as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.change(screen.getByLabelText("Tệp đính kèm"), {
+    target: { files: [second] },
+  });
+  await waitFor(() =>
+    expect((retry as HTMLButtonElement).disabled).toBe(false),
+  );
+  fireEvent.click(retry);
+  await screen.findByRole("heading", { name: "Đã về danh sách" });
+  expect(calls("/ticket_manager")).toHaveLength(1);
+  expect(calls("/attachmentticketfile")).toHaveLength(3);
+  expect(sessionStorage.getItem("request-create-draft:v1:42:new")).toBeNull();
+});
+
+it("keeps typing and submission usable when draft storage is blocked", async () => {
+  vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+    throw new Error("Quota exceeded");
+  });
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  expect(
+    screen.getByText(/Trình duyệt không thể lưu đầy đủ bản nháp/),
+  ).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  await screen.findByRole("heading", { name: "Đã về danh sách" });
+  expect(calls("/ticket_manager")).toHaveLength(1);
 });

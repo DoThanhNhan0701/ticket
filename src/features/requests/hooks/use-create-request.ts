@@ -12,6 +12,10 @@ import {
   prepareTemplate,
 } from "@/features/settings/schemas/template-schema";
 import { normalizeSearchText } from "@/lib/search";
+import {
+  useRequestCreateDraft,
+  useRequestCreateDraftKey,
+} from "./use-request-create-draft";
 import { useCloneRequest } from "./use-clone-request";
 import {
   emptyDetailRow,
@@ -46,16 +50,22 @@ function defaults(company = ""): CreateRequestValues {
 }
 export function useCreateRequest() {
   const { userId } = useAuthContext();
+  const draftKey = useRequestCreateDraftKey(userId);
   const navigate = useNavigate(),
     client = useQueryClient();
   const lookups = useQuery({
     queryKey: ["request-create-lookups", userId],
     queryFn: ({ signal }) => getCreateRequestLookups(signal),
     retry: false,
+    refetchOnReconnect: true,
   });
   const [files, setFiles] = useState<File[]>([]);
-  const [created, setCreated] = useState<CreatedRequest>();
-  const createdRef = useRef<CreatedRequest | undefined>(undefined),
+  const [created, setCreated] = useState<CreatedRequest | undefined>(
+    draftKey.saved?.created,
+  );
+  const createdRef = useRef<CreatedRequest | undefined>(
+      draftKey.saved?.created,
+    ),
     submitting = useRef(false),
     pendingFiles = useRef<File[]>([]);
   const form: UseFormReturn<CreateRequestValues> = useForm<CreateRequestValues>(
@@ -74,7 +84,7 @@ export function useCreateRequest() {
             other1: lookups.data?.teams,
           }),
         )(values, context, options),
-      defaultValues: defaults(),
+      defaultValues: draftKey.saved?.values ?? defaults(),
       mode: "onSubmit",
       reValidateMode: "onChange",
     },
@@ -89,6 +99,7 @@ export function useCreateRequest() {
       lookups.data?.groups.some((row) => String(row.id) === group),
     ),
     retry: false,
+    refetchOnReconnect: true,
   });
   const selectedType = types.data?.find(
     (row) => String(row.id) === type && String(row.handling_group) === group,
@@ -109,6 +120,7 @@ export function useCreateRequest() {
     },
     enabled: Boolean(selectedType),
     retry: false,
+    refetchOnReconnect: true,
   });
   const templateGroups = useMemo(
     () => (selectedType ? (template.data?.forms ?? []) : []),
@@ -125,7 +137,12 @@ export function useCreateRequest() {
     // endpoints and comparison targets, including added/deleted/imported rows.
     if (isSubmitted) void form.trigger("rows");
   }, [rows, groups, isSubmitted, form]);
+  const previousGroup = useRef(group);
+  const previousType = useRef(type);
+  const initializedType = useRef(draftKey.saved?.values.ticket_type);
   useEffect(() => {
+    if (previousGroup.current === group) return;
+    previousGroup.current = group;
     form.setValue("ticket_type", "", {
       shouldValidate: form.formState.isSubmitted,
     });
@@ -133,9 +150,18 @@ export function useCreateRequest() {
     form.clearErrors("rows");
   }, [group, form]);
   useEffect(() => {
+    if (previousType.current !== type) {
+      previousType.current = type;
+      initializedType.current = undefined;
+      form.setValue("rows", [{ values: {} }]);
+      form.clearErrors("rows");
+    }
+    if (!template.data || !selectedType || initializedType.current === type)
+      return;
+    initializedType.current = type;
     form.setValue("rows", [emptyDetailRow(groups)]);
     form.clearErrors("rows");
-  }, [type, groups, form]);
+  }, [type, groups, form, template.data, selectedType]);
   useEffect(() => {
     if (lookups.data?.customers.length === 1 && !form.getValues("fore_cus"))
       form.setValue("fore_cus", String(lookups.data.customers[0].id), {
@@ -152,6 +178,7 @@ export function useCreateRequest() {
       });
   }, [lookups.data, teams, form]);
   const clone = useCloneRequest({
+    restored: Boolean(draftKey.saved),
     userId,
     form,
     lookups: lookups.data,
@@ -160,7 +187,17 @@ export function useCreateRequest() {
     groups,
     templateReady: template.isSuccess && !template.isFetching,
   });
+  const draft = useRequestCreateDraft({
+    ...draftKey,
+    enabled: clone.ready,
+    form,
+    files,
+    setFiles,
+    createdRef,
+    pendingFiles,
+  });
   const ready = Boolean(
+    !draft.loading &&
     !clone.error &&
     !clone.loading &&
     userId &&
@@ -180,6 +217,7 @@ export function useCreateRequest() {
       if (!createdRef.current) {
         createdRef.current = await createRequest(values, templateGroups);
         setCreated(createdRef.current);
+        draft.persist();
       }
       while (pendingFiles.current.length) {
         await uploadRequestAttachment(
@@ -187,11 +225,14 @@ export function useCreateRequest() {
           pendingFiles.current[0],
         );
         pendingFiles.current.shift();
+        setFiles([...pendingFiles.current]);
+        draft.persist();
       }
       return createdRef.current;
     },
     retry: false,
     onSuccess: async () => {
+      draft.clear();
       await client.invalidateQueries({ queryKey: ["requests"] });
       toast.success("Đã tạo yêu cầu.");
       navigate("/requests");
@@ -201,7 +242,13 @@ export function useCreateRequest() {
     },
   });
   const submit = (values: CreateRequestValues) => {
-    if (submitting.current || createdRef.current || !ready || attachmentError)
+    if (
+      submitting.current ||
+      createdRef.current ||
+      !ready ||
+      attachmentError ||
+      draft.missing.length
+    )
       return;
     pendingFiles.current = [...files];
     submitting.current = true;
@@ -209,6 +256,14 @@ export function useCreateRequest() {
   };
   const reset = () => {
     if (createdRef.current || mutation.isPending) return;
+    if (clone.id) {
+      // Leave the clone context so a later clone starts from its source,
+      // rather than restoring an empty draft marked as already initialized.
+      draft.clear();
+      navigate("/requests/new", { replace: true });
+      return;
+    }
+    draft.restart();
     form.reset(
       defaults(
         lookups.data?.customers.length === 1
@@ -220,12 +275,20 @@ export function useCreateRequest() {
     mutation.reset();
   };
   const retryAttachments = () => {
-    if (submitting.current || !createdRef.current) return;
+    if (
+      submitting.current ||
+      !createdRef.current ||
+      draft.loading ||
+      draft.missing.length
+    )
+      return;
+    pendingFiles.current = [...files];
     submitting.current = true;
     mutation.mutate(form.getValues());
   };
   return {
     form,
+    draft,
     lookups,
     types,
     template,

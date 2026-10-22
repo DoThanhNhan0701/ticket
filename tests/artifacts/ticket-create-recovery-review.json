@@ -1,0 +1,27 @@
+{
+  "mode": "Fixture APIs; no real backend writes",
+  "checks": [
+    {
+      "name": "reconnect-refetch-keeps-rows-notes-and-file",
+      "result": "passed"
+    },
+    {
+      "name": "reload-with-failed-api-then-retry-restores-fields-and-file-bytes",
+      "result": "passed"
+    },
+    {
+      "name": "same-account-sign-in-restores-draft",
+      "result": "passed"
+    },
+    {
+      "name": "another-account-cannot-see-draft",
+      "result": "passed"
+    },
+    {
+      "name": "resume-pending-file-after-reload-without-duplicate-post-or-upload",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "result": "passed"
+}

@@ -1,6 +1,6 @@
 import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
 import { ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { LegacyPageRedirect } from "@/app/legacy-page-redirect";
 import {
   canAccessPage,
@@ -40,6 +40,7 @@ export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
   const { permissions, userId } = useAuthContext();
+  const [params] = useSearchParams();
   const allowed = canAccessPage(page, permissions);
   if (page.path === "/requests/:ticketID" && allowed)
     return <RequestDetail key={userId} />;
@@ -56,7 +57,10 @@ export function WorkspacePage({
   if (listScope) content = <RequestList key={listScope} scope={listScope} />;
   if (page.path === "/requests/change-status")
     content = <RequestChangeStatus />;
-  if (page.path === "/requests/new") content = <RequestCreate key={userId} />;
+  if (page.path === "/requests/new")
+    content = (
+      <RequestCreate key={`${userId}:${params.get("clone") ?? "new"}`} />
+    );
   if (page.path === "/reports")
     content = <ReportsPage key="report-dashboard" />;
   if (page.path === "/reports/export")

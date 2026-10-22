@@ -10,10 +10,64 @@ type Model = ReturnType<typeof useCreateRequest>;
 export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
   return (
     <>
+      {model.draft.restored && !model.created && (
+        <p role="status" className="text-sm text-muted-foreground">
+          Đã khôi phục bản nháp yêu cầu của bạn.
+        </p>
+      )}
+      {model.draft.loading && (
+        <LoadingState message="Đang khôi phục tệp đính kèm..." />
+      )}
+      {model.draft.storageError && (
+        <p role="status" className="text-sm text-warning">
+          Trình duyệt không thể lưu đầy đủ bản nháp. Hãy giữ trang này mở cho
+          đến khi gửi xong.
+        </p>
+      )}
+      {model.draft.missing.length > 0 && (
+        <div role="status" className="space-y-2 text-sm text-warning">
+          <p>
+            Thông tin đã được khôi phục. Vui lòng chọn lại các tệp chưa khôi
+            phục được, hoặc bỏ tệp nếu không còn cần đính kèm.
+          </p>
+          {model.draft.missing.map((file) => (
+            <div
+              key={`${file.name}:${file.lastModified}`}
+              className="flex items-center gap-2"
+            >
+              <span>{file.name}</span>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                aria-label={`Bỏ tệp cần chọn lại ${file.name}`}
+                onClick={() => model.draft.discardMissing(file)}
+              >
+                Bỏ tệp
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+      {model.created && !model.mutation.isError && (
+        <p role="status" className="text-sm">
+          Yêu cầu #{model.created.ticket_code ?? model.created.id} đã được tạo;
+          chỉ tải tiếp các tệp đính kèm còn lại.
+        </p>
+      )}
       {model.clone.loading && (
         <LoadingState message="Đang tải yêu cầu cần sao chép..." />
       )}
-      {model.clone.error && <ErrorAlert message={model.clone.error} />}
+      {model.clone.error && (
+        <div className="space-y-2">
+          <ErrorAlert message={model.clone.error} />
+          {model.clone.canRetry && (
+            <Button type="button" variant="outline" onClick={model.clone.retry}>
+              Thử lại yêu cầu sao chép
+            </Button>
+          )}
+        </div>
+      )}
       {model.lookups.isError && (
         <div className="space-y-2">
           <ErrorAlert
@@ -25,6 +79,20 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
             onClick={() => void model.lookups.refetch()}
           >
             Thử lại danh mục
+          </Button>
+        </div>
+      )}
+      {model.template.isError && model.template.data && (
+        <div className="space-y-2">
+          <ErrorAlert
+            message={`Không tải được biểu mẫu: ${model.template.error.message}`}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => void model.template.refetch()}
+          >
+            Thử lại biểu mẫu
           </Button>
         </div>
       )}
@@ -117,11 +185,11 @@ export function RequestTemplateSection({
   onBusyChange: (value: boolean) => void;
 }>) {
   const templateLoading = Boolean(
-    model.selectedType && model.template.isFetching,
+    model.selectedType && !model.template.data && model.template.isFetching,
   );
   if (
     model.selectedType &&
-    model.template.isSuccess &&
+    model.template.data &&
     !templateLoading &&
     model.groups.length > 0
   ) {

@@ -80,26 +80,19 @@ export function RequestDetailRows({
     widths.reduce((total, width) => total + width, 26) +
     Math.max(0, fields.length - 1) * 16;
   const columns = widths.map((width) => `minmax(${width}px, 1fr)`).join(" ");
+  const groupTitle = groups.map((group) => group.title).join(" · ");
   return (
     <section aria-label="Chi tiết yêu cầu" className="min-w-0">
       <RequestFormSection
         step={3}
         title={
-          <>
-            <span className="min-w-0 truncate sm:shrink-0">
-              Chi tiết yêu cầu
-            </span>
-            <span
-              aria-hidden="true"
-              className="hidden text-muted-foreground sm:inline"
-            >
-              ·
-            </span>
-            <TruncatedText
-              text={groups.map((group) => group.title).join(" · ")}
-              className="hidden text-muted-foreground sm:block"
-            />
-          </>
+          <span
+            className="block min-w-0 truncate"
+            title={`Chi tiết yêu cầu · ${groupTitle}`}
+          >
+            Chi tiết yêu cầu
+            <span className="hidden sm:inline">{` · ${groupTitle}`}</span>
+          </span>
         }
         description={`${rows.fields.length} dòng · Cuộn ngang khi cần để xem thêm trường.`}
         actions={
@@ -156,14 +149,61 @@ export function RequestDetailRows({
           className="min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
         >
           <div
-            className="min-w-full space-y-4"
+            className="min-w-full space-y-1.5"
             style={{ minWidth: minimumWidth }}
           >
+            <div
+              role="group"
+              aria-label="Tiêu đề các cột chi tiết"
+              className="grid items-end gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/40 px-3 py-2"
+              style={{ gridTemplateColumns: columns }}
+            >
+              {groups.length > 1 &&
+                groups.map((group, index) => (
+                  <h3
+                    key={index}
+                    title={group.title}
+                    className="min-w-0 truncate border-b border-border pb-1 text-sm font-medium"
+                    style={{ gridColumn: `span ${group.children.length}` }}
+                  >
+                    {group.title}
+                  </h3>
+                ))}
+              {fields.map((field, column) => (
+                <div
+                  key={field.fieldKey}
+                  className="min-w-0 text-sm font-semibold"
+                  style={{
+                    gridColumn: column + 1,
+                    gridRow: groups.length > 1 ? 2 : 1,
+                  }}
+                >
+                  <div className="flex min-w-0 items-center gap-1">
+                    <TruncatedText text={field.title} />
+                    {field.required && (
+                      <span
+                        className="shrink-0 text-destructive"
+                        aria-hidden="true"
+                      >
+                        *
+                      </span>
+                    )}
+                  </div>
+                  {field.type === "range-date-text" &&
+                    !fieldOptions(field).length && (
+                      <div className="mt-1 grid grid-cols-2 gap-3 text-xs font-normal text-muted-foreground">
+                        <span>Từ ngày</span>
+                        <span>Đến ngày</span>
+                      </div>
+                    )}
+                </div>
+              ))}
+            </div>
             {rows.fields.map((row, index) => (
               <fieldset
                 key={row.id}
                 aria-label={`Dòng ${index + 1}`}
-                className="min-w-0 rounded-lg border border-border px-3 pb-3 pt-3"
+                className="min-w-0 rounded-lg border border-border px-3 pt-1 pb-2"
               >
                 <legend className="sticky left-0 z-10 rounded-lg bg-card px-2 text-sm font-semibold">
                   <div className="flex items-center gap-2">
@@ -206,20 +246,6 @@ export function RequestDetailRows({
                   className="grid items-start gap-4"
                   style={{ gridTemplateColumns: columns }}
                 >
-                  {groups.length > 1 &&
-                    groups.map((group, groupIndex) => (
-                      <h3
-                        key={groupIndex}
-                        title={group.title}
-                        className="min-w-0 truncate border-b border-border pb-2 text-sm font-medium"
-                        style={{
-                          gridColumn: `span ${group.children.length}`,
-                          gridRow: 1,
-                        }}
-                      >
-                        {group.title}
-                      </h3>
-                    ))}
                   {fields.map((field, column) => (
                     <div
                       key={field.fieldKey}
@@ -227,10 +253,10 @@ export function RequestDetailRows({
                       className="min-w-0"
                       style={{
                         gridColumn: column + 1,
-                        gridRow: groups.length > 1 ? 2 : 1,
                       }}
                     >
                       <RequestDetailField
+                        hideLabel
                         form={form}
                         field={field}
                         fields={fields}
