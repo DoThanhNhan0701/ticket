@@ -23,6 +23,45 @@ function attachmentLabelClass(compact: boolean, hidden?: boolean) {
     : "flex items-center gap-2 text-sm font-semibold";
 }
 
+function pickerClassName(compact: boolean, style: "dropzone" | "inline") {
+  if (compact)
+    return "size-9 rounded-xl text-muted-foreground hover:text-foreground";
+  if (style === "inline")
+    return "min-h-11 w-full border-dashed text-primary hover:border-primary/50";
+  return "h-auto min-h-28 w-full flex-col gap-2 border-dashed px-3 py-4 whitespace-normal text-center hover:border-primary/50";
+}
+
+function PickerContent({
+  compact,
+  style,
+  description,
+  multiple,
+}: Readonly<{
+  compact: boolean;
+  style: "dropzone" | "inline";
+  description?: string;
+  multiple: boolean;
+}>) {
+  if (compact) return <Paperclip className="size-5" aria-hidden="true" />;
+  if (style === "inline")
+    return (
+      <>
+        <Paperclip className="size-5" aria-hidden="true" />
+        <span>Thêm tệp đính kèm</span>
+      </>
+    );
+  return (
+    <>
+      <Upload className="size-5 text-muted-foreground" aria-hidden="true" />
+      <span>Chọn tệp hoặc kéo thả vào đây</span>
+      <span className="text-xs font-normal text-muted-foreground">
+        {description ??
+          (multiple ? "Có thể đính kèm nhiều tệp." : "Chọn một tệp đính kèm.")}
+      </span>
+    </>
+  );
+}
+
 export function RequestAttachments({
   files,
   onChange,
@@ -30,12 +69,14 @@ export function RequestAttachments({
   compact = false,
   layout,
   actions,
+  existingAttachments,
   inputId,
   label = "Tệp đính kèm",
   hideLabel,
   previewAllFiles,
   multiple = true,
   description,
+  pickerStyle = "dropzone",
 }: Readonly<{
   files: File[];
   onChange: (files: File[]) => void;
@@ -43,12 +84,14 @@ export function RequestAttachments({
   compact?: boolean;
   layout?: "list" | "tiles";
   actions?: ReactNode;
+  existingAttachments?: ReactNode;
   inputId?: string;
   label?: string;
   hideLabel?: boolean;
   previewAllFiles?: boolean;
   multiple?: boolean;
   description?: string;
+  pickerStyle?: "dropzone" | "inline";
 }>) {
   const generatedId = useId();
   const id = inputId ?? generatedId;
@@ -85,11 +128,7 @@ export function RequestAttachments({
       title={compact ? "Đính kèm tệp" : undefined}
       disabled={disabled}
       aria-label={`Chọn ${label.toLowerCase()}`}
-      className={
-        compact
-          ? "size-9 rounded-xl text-muted-foreground hover:text-foreground"
-          : "h-auto min-h-28 w-full flex-col gap-2 border-dashed px-3 py-4 whitespace-normal text-center hover:border-primary/50"
-      }
+      className={pickerClassName(compact, pickerStyle)}
       onClick={() => input.current?.click()}
       onDragOver={(event) => event.preventDefault()}
       onDrop={(event) => {
@@ -98,20 +137,12 @@ export function RequestAttachments({
         addFiles(event.dataTransfer.files);
       }}
     >
-      {compact ? (
-        <Paperclip className="size-5" aria-hidden="true" />
-      ) : (
-        <Upload className="size-5 text-muted-foreground" aria-hidden="true" />
-      )}
-      {!compact && <span>Chọn tệp hoặc kéo thả vào đây</span>}
-      {!compact && (
-        <span className="text-xs font-normal text-muted-foreground">
-          {description ??
-            (multiple
-              ? "Có thể đính kèm nhiều tệp."
-              : "Chọn một tệp đính kèm.")}
-        </span>
-      )}
+      <PickerContent
+        compact={compact}
+        style={pickerStyle}
+        description={description}
+        multiple={multiple}
+      />
     </Button>
   );
   return (
@@ -134,15 +165,26 @@ export function RequestAttachments({
         }}
       />
       {!compact && picker}
-      {files.length > 0 && (
-        <AttachmentList
-          files={files}
-          tiles={tiles}
-          disabled={disabled}
-          previewAllFiles={previewAllFiles}
-          onPreview={setPreviewFile}
-          onChange={onChange}
-        />
+      {(existingAttachments || files.length > 0) && (
+        <div
+          className={
+            tiles
+              ? "flex min-w-0 flex-wrap items-start gap-2"
+              : "min-w-0 space-y-2"
+          }
+        >
+          {existingAttachments}
+          {files.length > 0 && (
+            <AttachmentList
+              files={files}
+              tiles={tiles}
+              disabled={disabled}
+              previewAllFiles={previewAllFiles}
+              onPreview={setPreviewFile}
+              onChange={onChange}
+            />
+          )}
+        </div>
       )}
       {compact && (
         <div className="flex min-w-0 items-center justify-between gap-2">

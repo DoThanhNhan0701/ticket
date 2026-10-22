@@ -288,7 +288,11 @@ it("requests the next page and resets pagination when changing page size", async
   fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
   await waitFor(() => expect(lastParams().page).toBe("2"));
   await ready();
-  expect(screen.getByText("Trang 2 / 3")).toBeTruthy();
+  expect(
+    (screen.getByRole("spinbutton", { name: "Đến trang" }) as HTMLInputElement)
+      .value,
+  ).toBe("2");
+  expect(screen.getByText("/ 3")).toBeTruthy();
   expect(
     within(screen.getByRole("table")).getByRole("cell", {
       name: "101",

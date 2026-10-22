@@ -110,6 +110,39 @@ const writes = () =>
     ["POST", "PUT"].includes(options?.method ?? ""),
   );
 const rootForm = () => screen.getByRole("form", { name: "Phản hồi mới" });
+it("sends with Enter and prevents duplicate keyboard submissions", async () => {
+  open();
+  const input = within(rootForm()).getByLabelText("Phản hồi");
+  fireEvent.change(input, { target: { value: "Gửi bằng Enter" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  fireEvent.keyDown(input, { key: "Enter" });
+  await waitFor(() => expect(onSaved).toHaveBeenCalledOnce());
+  expect(writes()).toHaveLength(1);
+  expect((writes()[0][1]!.body as FormData).get("ticket_comment")).toBe(
+    "Gửi bằng Enter",
+  );
+});
+
+it.each([{ shiftKey: true }, { isComposing: true }, { keyCode: 229 }])(
+  "does not submit a newline or an unfinished IME composition: %j",
+  (keys) => {
+    open();
+    const input = within(rootForm()).getByLabelText("Phản hồi");
+    fireEvent.change(input, { target: { value: "Đang nhập phản hồi" } });
+    expect(fireEvent.keyDown(input, { key: "Enter", ...keys })).toBe(true);
+    expect(writes()).toHaveLength(0);
+  },
+);
+
+it("validates empty comments when Enter is pressed", async () => {
+  open();
+  fireEvent.keyDown(within(rootForm()).getByLabelText("Phản hồi"), {
+    key: "Enter",
+  });
+  expect(await screen.findByText("Vui lòng nhập phản hồi.")).toBeTruthy();
+  expect(writes()).toHaveLength(0);
+});
+
 const files = () => [
   new File(["first"], "first.txt", { type: "text/plain" }),
   new File(["second"], "second.pdf", { type: "application/pdf" }),

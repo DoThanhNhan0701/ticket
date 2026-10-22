@@ -298,20 +298,110 @@ it("supports multiple independent pagers and configurable page sizes without dup
   expect(pagination.onPage).toHaveBeenCalledWith(2);
 });
 
-it("shows static page indicators and navigates with previous and next buttons", () => {
+it("shows the current page in a jump input and navigates with previous and next buttons", () => {
   const onPage = vi.fn();
   render(
     <DataPagination {...pagination} page={2} count={65} onPage={onPage} />,
   );
-  expect(screen.getByText("Trang 2 / 4")).toBeTruthy();
-  expect(screen.getByText("2/4")).toBeTruthy();
+  expect(
+    (screen.getByRole("spinbutton", { name: "Đến trang" }) as HTMLInputElement)
+      .value,
+  ).toBe("2");
+  expect(screen.getByText("/ 4")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Chọn trang" })).toBeNull();
   expect(screen.queryByRole("button", { name: "Đến trang" })).toBeNull();
-  expect(screen.queryByRole("spinbutton")).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Trang trước" }));
   expect(onPage).toHaveBeenCalledWith(1);
   fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
   expect(onPage).toHaveBeenCalledWith(3);
+});
+
+it("jumps only on Enter and resets the draft when navigation or page size changes", () => {
+  const onPage = vi.fn();
+  const { rerender } = render(
+    <DataPagination {...pagination} count={125} onPage={onPage} />,
+  );
+  const input = screen.getByRole("spinbutton", { name: "Đến trang" });
+  fireEvent.change(input, { target: { value: "5" } });
+  expect(onPage).not.toHaveBeenCalled();
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(onPage).toHaveBeenCalledExactlyOnceWith(5);
+  rerender(
+    <DataPagination {...pagination} page={5} count={125} onPage={onPage} />,
+  );
+  const current = screen.getByRole("spinbutton", {
+    name: "Đến trang",
+  }) as HTMLInputElement;
+  expect(current.value).toBe("5");
+  fireEvent.change(current, { target: { value: "6" } });
+  fireEvent.blur(current);
+  expect(current.value).toBe("5");
+  rerender(
+    <DataPagination
+      {...pagination}
+      page={1}
+      pageSize={40}
+      count={125}
+      onPage={onPage}
+    />,
+  );
+  expect(
+    (screen.getByRole("spinbutton", { name: "Đến trang" }) as HTMLInputElement)
+      .value,
+  ).toBe("1");
+  expect(screen.getByText("/ 4")).toBeTruthy();
+});
+
+it.each(["", "1.5", "2"])(
+  "rejects invalid or unchanged jump page %s",
+  (value) => {
+    const onPage = vi.fn();
+    render(
+      <DataPagination {...pagination} page={2} count={65} onPage={onPage} />,
+    );
+    const input = screen.getByRole("spinbutton", { name: "Đến trang" });
+    fireEvent.change(input, { target: { value } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(onPage).not.toHaveBeenCalled();
+  },
+);
+
+it.each([
+  ["0", 1],
+  ["-1", 1],
+  ["5", 4],
+  ["145", 4],
+] as const)(
+  "clamps jump page %s to the available page %s",
+  (value, expected) => {
+    const onPage = vi.fn();
+    render(
+      <DataPagination {...pagination} page={2} count={65} onPage={onPage} />,
+    );
+    const input = screen.getByRole("spinbutton", {
+      name: "Đến trang",
+    }) as HTMLInputElement;
+    fireEvent.change(input, { target: { value } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(onPage).toHaveBeenCalledExactlyOnceWith(expected);
+    expect(input.value).toBe(String(expected));
+    expect(input.validity.valid).toBe(true);
+  },
+);
+
+it("restores the last page without refetching when an excessive page is entered there", () => {
+  const onPage = vi.fn();
+  render(
+    <DataPagination {...pagination} page={144} count={2880} onPage={onPage} />,
+  );
+  const input = screen.getByRole("spinbutton", {
+    name: "Đến trang",
+  }) as HTMLInputElement;
+  fireEvent.change(input, { target: { value: "145" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(input.value).toBe("144");
+  expect(input.validity.valid).toBe(true);
+  expect(onPage).not.toHaveBeenCalled();
 });
 
 it("resets search drafts without remounting the filter drawer action", async () => {
@@ -352,6 +442,11 @@ it("hides empty pagination and disables every paging control during updates", ()
   for (const control of screen.getAllByRole("button"))
     expect(control.hasAttribute("disabled")).toBe(true);
   expect(screen.getByRole("combobox").hasAttribute("disabled")).toBe(true);
+  const input = screen.getByRole("spinbutton", { name: "Đến trang" });
+  expect(input.hasAttribute("disabled")).toBe(true);
+  fireEvent.change(input, { target: { value: "3" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(pagination.onPage).not.toHaveBeenCalled();
 });
 
 const readyQuery: DataListQuery<Employee> = {

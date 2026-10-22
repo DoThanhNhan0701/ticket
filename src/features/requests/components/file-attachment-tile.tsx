@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import { FileText, Image, RotateCcw, X } from "lucide-react";
+import { Copy, FileText, Image, RotateCcw, X } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { getFileTileColor } from "../utils/file-tile-color";
 
 interface FileAttachmentTileProps {
@@ -72,7 +68,7 @@ export function FileAttachmentTile({
   );
   const className = `flex size-full items-center justify-center overflow-hidden rounded-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${onRestore ? "opacity-40 grayscale" : ""}`;
   let action = (
-    <span role="img" aria-label={name} className={className}>
+    <span role="img" aria-label={name} title={name} className={className}>
       {content}
     </span>
   );
@@ -81,6 +77,7 @@ export function FileAttachmentTile({
       <button
         type="button"
         aria-label={previewLabel}
+        title={name}
         disabled={disabled}
         className={className}
         onClick={onPreview}
@@ -95,19 +92,18 @@ export function FileAttachmentTile({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={name}
+        title={name}
         className={className}
       >
         {content}
       </a>
     );
   return (
-    <li className="relative size-18 shrink-0 rounded-xl border border-border bg-muted/20">
-      <Tooltip>
-        <TooltipTrigger render={action} />
-        <TooltipContent className="whitespace-normal wrap-anywhere">
-          {name}
-        </TooltipContent>
-      </Tooltip>
+    <li className="group/file relative size-18 shrink-0 rounded-xl border border-border bg-muted/20">
+      {action}
+      {url && !onRestore && (
+        <CopyFileLink name={name} url={url} disabled={disabled} />
+      )}
       <FileTileAction
         name={name}
         removeLabel={removeLabel}
@@ -116,6 +112,34 @@ export function FileAttachmentTile({
         disabled={disabled}
       />
     </li>
+  );
+}
+
+function CopyFileLink({
+  name,
+  url,
+  disabled,
+}: Readonly<{ name: string; url: string; disabled?: boolean }>) {
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="icon"
+      title="Sao chép liên kết"
+      aria-label={`Sao chép liên kết ${name}`}
+      disabled={disabled}
+      className="pointer-events-none absolute right-1 bottom-1 z-10 size-7 rounded-md bg-card/95 opacity-0 shadow-xs group-hover/file:pointer-events-auto group-hover/file:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          toast.success("Đã sao chép liên kết tệp.");
+        } catch {
+          toast.error("Không thể sao chép liên kết. Vui lòng thử lại.");
+        }
+      }}
+    >
+      <Copy className="size-3.5" aria-hidden="true" />
+    </Button>
   );
 }
 

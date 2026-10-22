@@ -46,7 +46,9 @@ export function TicketHistory({
               className="space-y-2 rounded-lg border border-border p-3 text-sm"
             >
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <strong>{entry.username}</strong>
+                <strong className="min-w-0 wrap-anywhere">
+                  {entry.username}
+                </strong>
                 <time className="text-xs text-muted-foreground">
                   {timestamp && `- cập nhật lúc ${timestamp}`}
                 </time>

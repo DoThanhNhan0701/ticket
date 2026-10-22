@@ -122,6 +122,23 @@ it("retries only the remaining uploads after partial success", async () => {
   ).toEqual(["one.txt", "two.txt", "two.txt"]);
   await waitFor(() => expect(onSaved).toHaveBeenCalledTimes(2));
 });
+it("does not reload the ticket or retry automatically when the first upload fails", async () => {
+  fetchMock.mockResolvedValue(Response.json({ error: "Upload failed" }));
+  const { container } = open(
+    <TicketAttachments ticket={ticket()} onSaved={onSaved} />,
+  );
+  fireEvent.change(container.querySelector('input[type="file"]')!, {
+    target: {
+      files: [new File(["one"], "one.txt"), new File(["two"], "two.txt")],
+    },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Tải lên đính kèm" }));
+  await screen.findByText("Upload failed");
+  expect(fetchMock).toHaveBeenCalledOnce();
+  expect(onSaved).not.toHaveBeenCalled();
+  expect(screen.getByText("one.txt")).toBeTruthy();
+  expect(screen.getByText("two.txt")).toBeTruthy();
+});
 it("rejects access-denied success responses for comments, details, and uploads", async () => {
   fetchMock.mockImplementation(async () =>
     Response.json({ message: "You do not have access" }),

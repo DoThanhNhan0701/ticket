@@ -109,7 +109,6 @@ export function TicketTemplate({
   };
   return (
     <RequestFormSection
-      step={3}
       title="Chi tiết yêu cầu"
       description={
         groups.length

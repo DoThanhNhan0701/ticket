@@ -32,6 +32,8 @@ export function TicketCloneButton({
         type="button"
         variant="outline"
         size="sm"
+        mobileIconOnly
+        title="Sao chép"
         loading={mutation.isPending}
         icon={<Copy className="size-4" />}
         onClick={() => {

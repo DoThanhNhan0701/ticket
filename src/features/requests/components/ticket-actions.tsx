@@ -100,6 +100,8 @@ export function TicketActions({
               type="button"
               variant="outline"
               size="sm"
+              mobileIconOnly
+              title={name}
               className={`gap-1.5 ${actionColors[name]}`}
               onClick={() => setAction(name)}
             >

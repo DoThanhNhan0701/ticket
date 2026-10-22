@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { Pencil, Save, X } from "lucide-react";
+import { CalendarDays, Pencil, Save, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
 import { ErrorAlert } from "@/components/error-alert";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { formatDataDate } from "@/components/data-management";
@@ -90,24 +88,26 @@ export function TicketDueDate({
       </form>
     );
   return (
-    <div className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-      <label htmlFor="ticket-due-date">Ngày mong muốn</label>
-      <div className="relative">
-        <Input
-          id="ticket-due-date"
-          readOnly
-          value={formatDataDate(ticket.duedate)}
-          title={formatDataDate(ticket.duedate)}
-          className={cn("font-normal", editable && "pl-11")}
-        />
+    <div className={`relative min-w-0 space-y-1.5 ${editable ? "pr-14" : ""}`}>
+      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <CalendarDays className="size-3.5 shrink-0" aria-hidden="true" />
+        Ngày mong muốn
+      </p>
+      <div className="flex min-h-5 min-w-0 items-center text-sm font-medium">
+        <span
+          aria-label="Ngày mong muốn"
+          className="min-w-0 flex-1 wrap-anywhere"
+        >
+          {formatDataDate(ticket.duedate)}
+        </span>
         {editable && (
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             size="icon"
             aria-label="Đổi ngày mong muốn"
             title="Đổi ngày mong muốn"
-            className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
+            className="absolute top-1/2 right-0 size-9 -translate-y-1/2 text-muted-foreground pointer-coarse:size-11"
             onClick={() => {
               form.reset({ duedate: ticket.duedate });
               mutation.reset();

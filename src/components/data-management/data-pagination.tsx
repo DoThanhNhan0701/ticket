@@ -1,7 +1,8 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectTrigger,
@@ -14,19 +15,50 @@ import type { DataPaginationProps } from "./types";
 function PageIndicator({
   page,
   totalPages,
+  disabled,
+  onPage,
 }: Readonly<{
   page: number;
   totalPages: number;
+  disabled: boolean;
+  onPage: (page: number) => void;
 }>) {
+  const [draft, setDraft] = useState(String(page));
   return (
-    <>
-      <span className="hidden min-w-24 px-2 text-center text-sm whitespace-nowrap tabular-nums sm:inline">
-        Trang {page} / {totalPages}
-      </span>
-      <span className="min-w-11 px-1 text-center text-xs tabular-nums sm:hidden">
-        {page}/{totalPages}
-      </span>
-    </>
+    <div className="flex min-w-0 items-center gap-1.5 px-1 text-xs tabular-nums sm:gap-2 sm:text-sm">
+      <span className="hidden sm:inline">Trang</span>
+      <Input
+        type="number"
+        inputMode="numeric"
+        min={1}
+        max={totalPages}
+        step={1}
+        required
+        aria-label="Đến trang"
+        title={`Nhập trang từ 1 đến ${totalPages}, nhấn Enter để chuyển`}
+        value={draft}
+        disabled={disabled}
+        className="h-11 w-12 px-1 text-center text-xs [appearance:textfield] sm:h-9 sm:w-14 sm:text-sm sm:pointer-coarse:h-11 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        onFocus={(event) => event.currentTarget.select()}
+        onChange={(event) => setDraft(event.target.value)}
+        onBlur={() => setDraft(String(page))}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter") return;
+          event.preventDefault();
+          event.stopPropagation();
+          if (disabled) return;
+          const entered = Number(draft);
+          if (!draft.trim() || !Number.isSafeInteger(entered)) {
+            setDraft(String(page));
+            return;
+          }
+          const next = Math.max(1, Math.min(totalPages, entered));
+          setDraft(String(next));
+          if (next !== page) onPage(next);
+        }}
+      />
+      <span className="whitespace-nowrap">/ {totalPages}</span>
+    </div>
   );
 }
 
@@ -112,7 +144,13 @@ export function DataPagination({
         >
           <ChevronLeft className="size-4" aria-hidden="true" />
         </Button>
-        <PageIndicator page={page} totalPages={totalPages} />
+        <PageIndicator
+          key={`${page}-${totalPages}`}
+          page={page}
+          totalPages={totalPages}
+          disabled={disabled}
+          onPage={onPage}
+        />
         <Button
           type="button"
           variant="outline"

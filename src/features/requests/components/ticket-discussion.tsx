@@ -24,6 +24,7 @@ import {
 import { ticketFileUrl } from "../utils/ticket-detail";
 import { CommentComposer } from "./comment-composer";
 import { TicketFiles } from "./ticket-files";
+import { RequestFormSection } from "./request-form-section";
 
 function MentionContent({ text }: Readonly<{ text: string }>) {
   return (
@@ -182,14 +183,17 @@ export function TicketDiscussion({
   const [editing, setEditing] = useState<EditingComment | null>(null);
   return (
     <div className="min-w-0 space-y-4">
-      <Card className="min-w-0 gap-0 p-4 sm:p-5">
+      <RequestFormSection
+        title="Trao đổi"
+        description="Gửi phản hồi, đính kèm tệp và nhắc đến người dùng để trao đổi về yêu cầu."
+      >
         <CommentComposer
           onSend={(draft) =>
             addTicketComment(ticket.id, draft.content, draft.files)
           }
           onSaved={onSaved}
         />
-      </Card>
+      </RequestFormSection>
       {ticket.comments.length > 0 ? (
         <div className="min-w-0 space-y-3">
           <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">

@@ -9,7 +9,11 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  focusManager,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import {
@@ -34,7 +38,7 @@ import { clearAuthSession } from "@/lib/auth-session";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
 import { requestDetailFixture } from "./fixtures/request-detail";
 
-vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 let client: QueryClient;
 let ticket: typeof requestDetailFixture;
 let auth: AuthContextValue;
@@ -151,13 +155,13 @@ it("leaves missing general fields, dates and detail cells blank", async () => {
   ticket.data_item.dataform.data[0]["old-key"] = "";
   await ready();
   for (const label of [
-    "Department",
+    "Bộ phận sử dụng",
     "Team sử dụng",
     "Ngày phê duyệt",
     "Người xử lý",
     "Ghi chú",
   ]) {
-    expect((screen.getByLabelText(label) as HTMLInputElement).value).toBe("");
+    expect(screen.getByLabelText(label).textContent).toBe("");
   }
   expect(screen.queryByText("—")).toBeNull();
   tab("Chi tiết yêu cầu");
@@ -206,10 +210,10 @@ it("persists the selected tab across remounts while preserving query and hash", 
   expect(screen.getByRole("heading", { name: "Phần tạo" })).toBeTruthy();
 });
 
-it("shows only the selected create-style step and keeps all template sections", async () => {
+it("groups general information and processing details while keeping all template sections", async () => {
   await ready();
   expect(screen.getAllByRole("tabpanel")).toHaveLength(1);
-  expect(screen.getByRole("heading", { name: "Loại yêu cầu" })).toBeTruthy();
+  expect(screen.getByRole("region", { name: "Thông tin xử lý" })).toBeTruthy();
   expect(screen.getAllByRole("tab")).toHaveLength(4);
   expect(
     screen.queryByRole("tab", {
@@ -217,21 +221,20 @@ it("shows only the selected create-style step and keeps all template sections", 
     }),
   ).toBeNull();
   const panel = within(screen.getByRole("tabpanel"));
-  expect(
-    (panel.getByLabelText("Bộ phận xử lý") as HTMLInputElement).readOnly,
-  ).toBe(true);
+  expect(panel.getByLabelText("Bộ phận xử lý").textContent).toBe(
+    ticket.handling_group_name,
+  );
   expect(panel.getByLabelText("Ngày mong muốn")).toBeTruthy();
-  expect((panel.getByLabelText("Ghi chú") as HTMLTextAreaElement).rows).toBe(3);
+  expect(panel.getByLabelText("Ghi chú").textContent).toBe(ticket.description);
+  expect(panel.queryAllByRole("textbox")).toHaveLength(0);
   expect(
     panel.getByRole("heading", { name: "Thông tin yêu cầu" }),
   ).toBeTruthy();
-  expect(
-    panel.getByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeTruthy();
+  expect(panel.getByRole("heading", { name: /^Tệp đính kèm/ })).toBeTruthy();
   expect(panel.getByRole("link", { name: "report.pdf" })).toBeTruthy();
   tab("Thông tin chung");
   expect(
-    within(screen.getByRole("tabpanel")).getByDisplayValue("handler"),
+    within(screen.getByRole("tabpanel")).getByText("handler"),
   ).toBeTruthy();
   tab("Chi tiết yêu cầu");
   expect(screen.getByRole("heading", { name: "Phần tạo" })).toBeTruthy();
@@ -256,8 +259,35 @@ it("supports keyboard tab navigation and lazy-loads history", async () => {
   expect(screen.getByText("- cập nhật lúc 21/10/2026 01:04:05")).toBeTruthy();
   expect(document.activeElement?.getAttribute("aria-selected")).toBe("true");
   fireEvent.keyDown(document.activeElement!, { key: "ArrowRight" });
-  expect(screen.getByRole("heading", { name: "Loại yêu cầu" })).toBeTruthy();
+  expect(
+    screen.getByRole("heading", { name: "Thông tin yêu cầu" }),
+  ).toBeTruthy();
 });
+it("reveals the selected tab inside a narrow tab bar without scrolling the page", async () => {
+  await ready();
+  const list = screen.getByRole("tablist");
+  Object.defineProperties(list, {
+    clientWidth: { configurable: true, value: 160 },
+    offsetLeft: { configurable: true, value: 60 },
+  });
+  screen.getAllByRole("tab").forEach((item, index) => {
+    Object.defineProperties(item, {
+      offsetLeft: { configurable: true, value: 4 + index * 148 },
+      offsetWidth: { configurable: true, value: 144 },
+    });
+  });
+  tab("Lịch sử");
+  await waitFor(() => expect(list.scrollLeft).toBe(432));
+  fireEvent.keyDown(screen.getByRole("tab", { name: "Lịch sử" }), {
+    key: "Home",
+  });
+  await waitFor(() => expect(list.scrollLeft).toBe(4));
+  expect(document.activeElement).toBe(
+    screen.getByRole("tab", { name: "Thông tin chung" }),
+  );
+  expect(window.scrollY).toBe(0);
+});
+
 it("allows one section to be edited and preserves draft when switching tabs", async () => {
   ticket.data_item.dataform.header[0].editable = false;
   await ready();
@@ -661,6 +691,108 @@ it("hides cached ticket controls when access is revoked and can retry loading", 
   failure = 0;
   fireEvent.click(screen.getByRole("button", { name: "Tải lại yêu cầu" }));
   await screen.findByRole("tab", { name: "Thông tin chung" });
+});
+it("uploads each attachment once and reloads detail once for the complete batch", async () => {
+  const originalFetch = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation(async (input, options) => {
+    if (new URL(String(input)).pathname === "/api/attachmentticketfile") {
+      const body = options?.body as FormData;
+      expect(body.get("ticket_id")).toBe("42");
+      const file = body.get("att_file") as File;
+      Object.assign(ticket.attachment_files, {
+        [file.name]: `/media/${file.name}`,
+      });
+      return json({ message: "OK" });
+    }
+    return originalFetch(input, options);
+  });
+  const listKey = ["requests", "mine", 1];
+  const reportsKey = ["reports", 1];
+  client.setQueryData(listKey, { cached: true });
+  client.setQueryData(reportsKey, { cached: true });
+  await ready();
+  fireEvent.change(
+    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    {
+      target: {
+        files: [new File(["one"], "one.txt"), new File(["two"], "two.txt")],
+      },
+    },
+  );
+  const upload = screen.getByRole("button", { name: "Tải lên đính kèm" });
+  fireEvent.click(upload);
+  fireEvent.click(upload);
+  await screen.findByRole("link", { name: "two.txt" });
+  expect(screen.getByRole("link", { name: "one.txt" })).toBeTruthy();
+  expect(writes()).toHaveLength(2);
+  expect(
+    fetchMock.mock.calls.filter(
+      ([url]) => new URL(String(url)).pathname === "/api/ticket_manager/42",
+    ),
+  ).toHaveLength(2);
+  expect(client.getQueryState(listKey)?.isInvalidated).toBe(true);
+  expect(client.getQueryState(reportsKey)?.isInvalidated).toBe(true);
+});
+
+it("does not reload detail when returning from the file picker with unsent attachments", async () => {
+  await ready();
+  fireEvent.change(
+    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    {
+      target: { files: [new File(["draft"], "draft.txt")] },
+    },
+  );
+  try {
+    await act(async () => {
+      focusManager.setFocused(false);
+      focusManager.setFocused(true);
+    });
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(writes()).toHaveLength(0);
+    expect(screen.getByText("draft.txt")).toBeTruthy();
+  } finally {
+    focusManager.setFocused(undefined);
+  }
+});
+
+it("keeps remaining uploads after partial success when refreshing detail fails", async () => {
+  const originalFetch = fetchMock.getMockImplementation()!;
+  let uploaded = 0;
+  fetchMock.mockImplementation(async (input, options) => {
+    if (new URL(String(input)).pathname === "/api/attachmentticketfile") {
+      uploaded += 1;
+      if (uploaded === 2) return json({ error: "Upload failed" });
+      const file = (options!.body as FormData).get("att_file") as File;
+      Object.assign(ticket.attachment_files, {
+        [file.name]: `/media/${file.name}`,
+      });
+      if (uploaded === 1) failure = 503;
+      return json({ message: "OK" });
+    }
+    return originalFetch(input, options);
+  });
+  await ready();
+  fireEvent.change(
+    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    {
+      target: {
+        files: [new File(["one"], "one.txt"), new File(["two"], "two.txt")],
+      },
+    },
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tải lên đính kèm" }));
+  await screen.findByText("Server unavailable");
+  expect(screen.getByRole("tab", { name: "Thông tin chung" })).toBeTruthy();
+  expect(screen.getByText("two.txt")).toBeTruthy();
+  failure = 0;
+  fireEvent.click(screen.getByRole("button", { name: "Tải lại tệp còn lại" }));
+  await screen.findByRole("link", { name: "two.txt" });
+  expect(
+    writes().map(
+      ([, options]) =>
+        ((options!.body as FormData).get("att_file") as File).name,
+    ),
+  ).toEqual(["one.txt", "two.txt", "two.txt"]);
 });
 it("refreshes recently cached status and actions when reopening a ticket", async () => {
   client.setDefaultOptions({ queries: { retry: false, staleTime: 300_000 } });

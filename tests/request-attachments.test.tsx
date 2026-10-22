@@ -12,10 +12,19 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { RequestAttachments } from "@/features/requests/components/request-attachments";
 import { TicketFiles } from "@/features/requests/components/ticket-files";
 import { FilePreviewDialog } from "@/components/file-preview-dialog";
+import { toast } from "sonner";
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 const createUrl = vi.fn<(file: Blob) => string>();
 const revokeUrl = vi.fn<(url: string) => void>();
+const writeText = vi.fn<(text: string) => Promise<void>>();
 beforeEach(() => {
+  writeText.mockReset().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText },
+  });
   createUrl
     .mockReset()
     .mockImplementation(() => `blob:preview-${createUrl.mock.calls.length}`);
@@ -35,7 +44,59 @@ beforeEach(() => {
     }),
   );
 });
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  Reflect.deleteProperty(navigator, "clipboard");
+});
+
+it("copies the saved file URL without opening its preview", async () => {
+  render(
+    <TicketFiles files={{ "photo.png": "/media/photo.png" }} layout="tiles" />,
+  );
+  fireEvent.click(
+    screen.getByRole("button", { name: "Sao chép liên kết photo.png" }),
+  );
+  await waitFor(() =>
+    expect(writeText).toHaveBeenCalledExactlyOnceWith(
+      new URL("/media/photo.png", window.location.origin).href,
+    ),
+  );
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(toast.success).toHaveBeenCalledWith("Đã sao chép liên kết tệp.");
+});
+
+it("reports clipboard failures without claiming the link was copied", async () => {
+  writeText.mockRejectedValueOnce(new Error("Clipboard denied"));
+  render(
+    <TicketFiles
+      files={{ "report.pdf": "/media/report.pdf" }}
+      layout="tiles"
+    />,
+  );
+  fireEvent.click(
+    screen.getByRole("button", { name: "Sao chép liên kết report.pdf" }),
+  );
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không thể sao chép liên kết. Vui lòng thử lại.",
+    ),
+  );
+  expect(toast.success).not.toHaveBeenCalled();
+});
+
+it("does not offer a link for files that have not been uploaded", () => {
+  render(
+    <RequestAttachments
+      compact
+      files={[new File(["draft"], "draft.txt")]}
+      onChange={vi.fn()}
+      disabled={false}
+    />,
+  );
+  expect(
+    screen.queryByRole("button", { name: /Sao chép liên kết/ }),
+  ).toBeNull();
+});
 
 it.each(["list", "tiles"] as const)(
   "uses a download callback for protected note files in %s layout and blocks it while downloading",

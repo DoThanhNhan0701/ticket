@@ -223,12 +223,10 @@ export function RequestTable({
         {
           id: "row_number",
           label: "#",
-          width: "4%",
+          width: "64px",
           align: "center",
-          className: "tabular-nums",
-          render: (_request, index) => (
-            <DataText text={String(rowOffset + index + 1)} />
-          ),
+          className: "whitespace-nowrap tabular-nums",
+          render: (_request, index) => rowOffset + index + 1,
         },
         ...columnsByScope[scope],
       ]}

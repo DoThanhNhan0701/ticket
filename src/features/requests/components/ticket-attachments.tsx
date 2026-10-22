@@ -19,11 +19,13 @@ export function TicketAttachments({
   const [files, setFiles] = useState<File[]>([]);
   const pending = useRef<File[]>([]);
   const submitting = useRef(false);
+  const uploadedCount = useRef(0);
   const mutation = useMutation({
     retry: false,
     mutationFn: async () => {
       while (pending.current.length) {
         await uploadRequestAttachment(ticket.id, pending.current[0]);
+        uploadedCount.current += 1;
         pending.current.shift();
         setFiles([...pending.current]);
       }
@@ -33,7 +35,7 @@ export function TicketAttachments({
     },
     onSettled: async () => {
       try {
-        await onSaved();
+        if (uploadedCount.current > 0) await onSaved();
       } catch {
         toast.error("Vui lòng tải lại yêu cầu để xem tệp đã lưu.");
       } finally {
@@ -41,39 +43,67 @@ export function TicketAttachments({
       }
     },
   });
+  const canUpload = [2, 3, 6].includes(ticket.ticket_status);
+  const existingAttachments =
+    Object.keys(ticket.attachment_files).length > 0 ? (
+      <TicketFiles files={ticket.attachment_files} layout="tiles" />
+    ) : null;
   return (
     <div className="min-w-0 space-y-3">
-      {Object.keys(ticket.attachment_files).length ? (
-        <TicketFiles files={ticket.attachment_files} />
-      ) : (
+      {!existingAttachments && (
         <p className="text-sm text-muted-foreground">Không có tệp đính kèm.</p>
       )}
-      {[2, 3, 6].includes(ticket.ticket_status) && (
+      {!canUpload && existingAttachments}
+      {canUpload && (
         <>
           <RequestAttachments
+            compact
+            existingAttachments={existingAttachments}
             files={files}
             onChange={setFiles}
             disabled={mutation.isPending}
+            actions={
+              files.length > 0 && (
+                <AsyncButton
+                  type="button"
+                  size="icon"
+                  className="size-9 rounded-xl"
+                  aria-label={
+                    mutation.isError
+                      ? "Tải lại tệp còn lại"
+                      : "Tải lên đính kèm"
+                  }
+                  title={
+                    mutation.isError
+                      ? "Tải lại tệp còn lại"
+                      : "Tải lên đính kèm"
+                  }
+                  loadingText={<span className="sr-only">Đang tải lên...</span>}
+                  loading={mutation.isPending}
+                  icon={<Upload className="size-4" />}
+                  onClick={() => {
+                    if (submitting.current) return;
+                    if (files.some((file) => file.size > 50 * 1024 * 1024)) {
+                      toast.error(
+                        "Mỗi tệp đính kèm không được vượt quá 50 MB.",
+                      );
+                      return;
+                    }
+                    submitting.current = true;
+                    uploadedCount.current = 0;
+                    pending.current = [...files];
+                    mutation.mutate();
+                  }}
+                >
+                  <span className="sr-only">
+                    {mutation.isError
+                      ? "Tải lại tệp còn lại"
+                      : "Tải lên đính kèm"}
+                  </span>
+                </AsyncButton>
+              )
+            }
           />
-          {files.length > 0 && (
-            <AsyncButton
-              type="button"
-              loading={mutation.isPending}
-              icon={<Upload className="size-4" />}
-              onClick={() => {
-                if (submitting.current) return;
-                if (files.some((file) => file.size > 50 * 1024 * 1024)) {
-                  toast.error("Mỗi tệp đính kèm không được vượt quá 50 MB.");
-                  return;
-                }
-                submitting.current = true;
-                pending.current = [...files];
-                mutation.mutate();
-              }}
-            >
-              {mutation.isError ? "Tải lại tệp còn lại" : "Tải lên đính kèm"}
-            </AsyncButton>
-          )}
           {mutation.isError && <ErrorAlert message={mutation.error.message} />}
         </>
       )}

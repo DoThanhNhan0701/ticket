@@ -1,14 +1,22 @@
 import { APP_ROUTES } from "@/constants/routes";
-import { useRef, type KeyboardEvent } from "react";
+import { useEffect, useRef, type KeyboardEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, RefreshCw } from "lucide-react";
+import {
+  FileText,
+  History,
+  Info,
+  ListChecks,
+  MessageSquare,
+  RefreshCw,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TruncatedText } from "@/components/truncated-text";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { PageHeader } from "@/components/layout/page-header";
 import { ApiError } from "@/lib/api/api-error";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getRequestDetail, validTicketId } from "../api/request-detail-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
@@ -18,7 +26,12 @@ import { TicketActions } from "./ticket-actions";
 import { TicketCloneButton } from "./ticket-clone-button";
 import { TicketDiscussion, TicketHistory } from "./ticket-activity";
 
-const tabs = ["Thông tin chung", "Chi tiết yêu cầu", "Trao đổi", "Lịch sử"];
+const tabs = [
+  { label: "Thông tin chung", icon: Info },
+  { label: "Chi tiết yêu cầu", icon: ListChecks },
+  { label: "Trao đổi", icon: MessageSquare },
+  { label: "Lịch sử", icon: History },
+];
 const tabKeys = ["general", "details", "discussion", "history"];
 function TicketStatusSummary({
   ticket,
@@ -31,7 +44,7 @@ function TicketStatusSummary({
     <div
       role="group"
       aria-label="Trạng thái yêu cầu"
-      className="flex h-10 min-w-0 max-w-[40vw] items-center justify-center rounded-lg border px-3 sm:max-w-xs"
+      className="flex h-10 min-w-0 max-w-[25vw] items-center justify-center rounded-lg border px-2 sm:max-w-xs sm:px-3"
       style={{
         borderColor: `color-mix(in srgb, ${color} 50%, var(--card))`,
         backgroundColor: `color-mix(in srgb, ${color} 12%, var(--card))`,
@@ -71,6 +84,23 @@ function DetailTabs({
     );
   };
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const { ref: tabList, isDragging, handlers: dragHandlers } = useDragScroll();
+  useEffect(() => {
+    const list = tabList.current;
+    const selectedTab = tabRefs.current[active];
+    if (!list || !selectedTab) return;
+    const reveal = () => {
+      const left = selectedTab.offsetLeft;
+      const right = left + selectedTab.offsetWidth;
+      if (left < list.scrollLeft) list.scrollLeft = left;
+      else if (right > list.scrollLeft + list.clientWidth)
+        list.scrollLeft = right - list.clientWidth;
+    };
+    reveal();
+    const observer = new ResizeObserver(reveal);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [active, tabList]);
   const switchWithKeyboard = (event: KeyboardEvent, index: number) => {
     let next: number;
     switch (event.key) {
@@ -91,34 +121,38 @@ function DetailTabs({
     }
     event.preventDefault();
     setActive(next);
-    tabRefs.current[next]?.focus();
-    tabRefs.current[next]?.scrollIntoView?.({
-      block: "nearest",
-      inline: "nearest",
-    });
+    tabRefs.current[next]?.focus({ preventScroll: true });
   };
   return (
     <>
       <div className="min-w-0 shrink-0 rounded-xl border border-border bg-card p-3 sm:p-4">
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="min-w-0 flex-1 font-semibold">
-            <TruncatedText text={ticket.ticket_code || `#${ticket.id}`} />
-          </span>
-          <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2">
+        <div className="flex min-w-0 items-start justify-between gap-2">
+          <div className="flex min-h-11 min-w-0 flex-1 flex-col justify-center gap-1 sm:min-h-0 sm:block">
+            <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase sm:hidden">
+              Mã yêu cầu
+            </span>
+            <TruncatedText
+              text={ticket.ticket_code || `#${ticket.id}`}
+              className="font-mono text-xs font-medium text-muted-foreground sm:font-sans sm:text-sm sm:font-semibold sm:text-foreground"
+            />
+          </div>
+          <div className="ml-auto flex min-w-0 max-w-3/4 shrink-0 flex-wrap items-start justify-end gap-2 sm:max-w-full">
             <TicketCloneButton ticket={ticket} />
             <TicketActions ticket={ticket} onSaved={onSaved} />
           </div>
         </div>
-        <p className="mt-2 min-w-0 text-sm whitespace-pre-wrap wrap-anywhere">
+        <p className="mt-3 min-w-0 text-sm leading-5 font-medium whitespace-pre-wrap wrap-anywhere sm:mt-2 sm:font-normal">
           {ticket.title}
         </p>
       </div>
       <div
+        ref={tabList}
+        {...dragHandlers}
         role="tablist"
         aria-label="Các bước yêu cầu"
-        className="flex min-w-0 shrink-0 gap-1 overflow-x-auto rounded-xl border border-border bg-card p-1"
+        className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(4,minmax(9rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-xl border border-border bg-card p-1 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       >
-        {tabs.map((label, index) => (
+        {tabs.map(({ label, icon: Icon }, index) => (
           <button
             key={label}
             ref={(node) => {
@@ -132,8 +166,9 @@ function DetailTabs({
             tabIndex={active === index ? 0 : -1}
             onKeyDown={(event) => switchWithKeyboard(event, index)}
             onClick={() => setActive(index)}
-            className={`flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring pointer-coarse:min-h-11 ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+            className={`flex min-h-9 min-w-0 cursor-inherit items-center justify-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring pointer-coarse:min-h-11 ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
           >
+            <Icon className="size-4 shrink-0" aria-hidden="true" />
             {label}
             {tabKeys[index] === "discussion" && (
               <span
@@ -147,7 +182,7 @@ function DetailTabs({
           </button>
         ))}
       </div>
-      {tabs.map((label, index) => (
+      {tabs.map(({ label }, index) => (
         <div
           key={label}
           role="tabpanel"
@@ -186,17 +221,17 @@ export function RequestDetail() {
     queryFn: ({ signal }) => getRequestDetail(ticketID, signal),
     enabled: valid,
     staleTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
   const refresh = async () => {
     await Promise.all([
       client.invalidateQueries({
-        queryKey: ["ticket-history", Number(ticketID)],
+        queryKey: ["ticket-history", Number(ticketID), userId],
       }),
-      client.invalidateQueries({ queryKey: ["requests"] }),
-      client.invalidateQueries({ queryKey: ["reports"] }),
+      client.invalidateQueries({ queryKey: ["requests"], refetchType: "none" }),
+      client.invalidateQueries({ queryKey: ["reports"], refetchType: "none" }),
+      query.refetch({ throwOnError: true }),
     ]);
-    return query.refetch({ throwOnError: true });
   };
   const error = query.error;
   let message = error?.message;
@@ -204,6 +239,9 @@ export function RequestDetail() {
     message = "Không tìm thấy yêu cầu.";
   if (error instanceof ApiError && error.status === 403)
     message = "Bạn không có quyền xem yêu cầu này.";
+  const canShowTicket =
+    Boolean(query.data) &&
+    !(error instanceof ApiError && [401, 403, 404].includes(error.status));
   return (
     <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3 overflow-hidden">
       <PageHeader
@@ -214,7 +252,7 @@ export function RequestDetail() {
         backLabel="Quay lại"
         actions={
           <>
-            {query.data && !query.isError && (
+            {query.data && canShowTicket && (
               <TicketStatusSummary ticket={query.data} />
             )}
             <Button
@@ -241,7 +279,7 @@ export function RequestDetail() {
       {query.isError && (
         <ErrorAlert message={message ?? "Không tải được yêu cầu."} />
       )}
-      {query.data && !query.isError && (
+      {query.data && canShowTicket && (
         <DetailTabs key={ticketID} ticket={query.data} onSaved={refresh} />
       )}
     </div>

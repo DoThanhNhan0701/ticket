@@ -89,7 +89,15 @@ export function CommentMentions({
           }}
           onSelect={(event) => setCaret(event.currentTarget.selectionStart)}
           onKeyDown={(event) => {
-            if (!open) return;
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+            if (!open) {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                if (!disabled && !event.repeat)
+                  event.currentTarget.form?.requestSubmit();
+              }
+              return;
+            }
             if (event.key === "Escape") {
               event.preventDefault();
               event.stopPropagation();
@@ -121,7 +129,8 @@ export function CommentMentions({
         {children}
       </CommentInputFrame>
       <p id={`${id}-hint`} className="text-xs text-muted-foreground">
-        Gõ @ và tên để nhắc đến người dùng. Mỗi tệp tối đa 50 MB.
+        Enter để gửi, Shift+Enter để xuống dòng. Gõ @ và tên để nhắc đến người
+        dùng. Mỗi tệp tối đa 50 MB.
       </p>
       {invalid && (
         <p id={`${id}-error`} className="text-sm text-destructive">
