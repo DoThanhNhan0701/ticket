@@ -1,0 +1,2230 @@
+{
+  "prefix": "TEST_SPEC_J0KHF7",
+  "cases": {
+    "5": {
+      "original": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 795,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33
+        ]
+      },
+      "typeId": 197,
+      "templateSaved": true,
+      "ticketId": 14493,
+      "ticketCode": "ISMS_261022_001",
+      "restoreRequired": false,
+      "history": [
+        {
+          "id": 126951,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:57.965768+07:00",
+          "updated": "2026-10-22T11:07:57.965808+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Hoàn thành thành Kết thúc",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126950,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:43.910656+07:00",
+          "updated": "2026-10-22T11:07:43.910675+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đang xử lý thành Hoàn thành",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126949,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:43.903181+07:00",
+          "updated": "2026-10-22T11:07:43.903205+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126948,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:31.520632+07:00",
+          "updated": "2026-10-22T11:07:31.520671+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126947,
+          "log_type_name": "Chỉnh sửa",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:27.426878+07:00",
+          "updated": "2026-10-22T11:07:27.426910+07:00",
+          "log_type": 9,
+          "system_log": "Chỉnh sửa chi tiết yêu cầu",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126946,
+          "log_type_name": "Phân công - Thêm",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:19.903159+07:00",
+          "updated": "2026-10-22T11:07:19.903184+07:00",
+          "log_type": 3,
+          "system_log": "Phân công yêu cầu cho test_act22_a_iwa0tx, test_act22_b_iwa0tx",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126945,
+          "log_type_name": "Tiếp nhận",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:05.167168+07:00",
+          "updated": "2026-10-22T11:07:05.167199+07:00",
+          "log_type": 6,
+          "system_log": "Đã tiếp nhận yêu cầu",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126944,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:07:05.164232+07:00",
+          "updated": "2026-10-22T11:07:05.164271+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đã duyệt thành Đã tiếp nhận",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126943,
+          "log_type_name": "Status",
+          "username": "test_form20_reader_ivdviv",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:06:53.579401+07:00",
+          "updated": "2026-10-22T11:06:53.579432+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Mới tạo thành Đã duyệt",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 816,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126942,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "ISMS_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:01:28.363872+07:00",
+          "updated": "2026-10-22T11:01:28.363906+07:00",
+          "log_type": 1,
+          "system_log": "Tạo mới yêu cầu",
+          "user_log": null,
+          "ticket": 14493,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        }
+      ],
+      "finalTicketStatus": 7,
+      "done": true,
+      "restoredAt": "2026-10-22T04:08:05.544Z"
+    },
+    "18": {
+      "original": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 795,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19]
+      },
+      "typeId": 198,
+      "templateSaved": true,
+      "ticketId": 14494,
+      "ticketCode": "Tài sản_261022_001",
+      "restoreRequired": false,
+      "history": [
+        {
+          "id": 126961,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:04.547086+07:00",
+          "updated": "2026-10-22T11:09:04.547122+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Hoàn thành thành Kết thúc",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126960,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:58.750098+07:00",
+          "updated": "2026-10-22T11:08:58.750122+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đang xử lý thành Hoàn thành",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126959,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:58.740107+07:00",
+          "updated": "2026-10-22T11:08:58.740138+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126958,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:53.678128+07:00",
+          "updated": "2026-10-22T11:08:53.678165+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126957,
+          "log_type_name": "Chỉnh sửa",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:51.588985+07:00",
+          "updated": "2026-10-22T11:08:51.589035+07:00",
+          "log_type": 9,
+          "system_log": "Chỉnh sửa chi tiết yêu cầu",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126956,
+          "log_type_name": "Phân công - Thêm",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:46.568157+07:00",
+          "updated": "2026-10-22T11:08:46.568192+07:00",
+          "log_type": 3,
+          "system_log": "Phân công yêu cầu cho test_act22_a_iwa0tx, test_act22_b_iwa0tx",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126955,
+          "log_type_name": "Tiếp nhận",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:32.757735+07:00",
+          "updated": "2026-10-22T11:08:32.757754+07:00",
+          "log_type": 6,
+          "system_log": "Đã tiếp nhận yêu cầu",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126954,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:32.755635+07:00",
+          "updated": "2026-10-22T11:08:32.755676+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đã duyệt thành Đã tiếp nhận",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126953,
+          "log_type_name": "Status",
+          "username": "test_form20_reader_ivdviv",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:19.972214+07:00",
+          "updated": "2026-10-22T11:08:19.972247+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Mới tạo thành Đã duyệt",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 816,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126952,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "Tài sản_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:08:15.017753+07:00",
+          "updated": "2026-10-22T11:08:15.017782+07:00",
+          "log_type": 1,
+          "system_log": "Tạo mới yêu cầu",
+          "user_log": null,
+          "ticket": 14494,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        }
+      ],
+      "finalTicketStatus": 7,
+      "done": true,
+      "restoredAt": "2026-10-22T04:09:08.207Z"
+    },
+    "20": {
+      "original": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 33,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33]
+      },
+      "typeId": 199,
+      "templateSaved": true,
+      "ticketId": 14495,
+      "ticketCode": "Phân quyền_261022_001",
+      "restoreRequired": false,
+      "history": [
+        {
+          "id": 126971,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:54.614500+07:00",
+          "updated": "2026-10-22T11:09:54.614526+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Hoàn thành thành Kết thúc",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126970,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:48.586749+07:00",
+          "updated": "2026-10-22T11:09:48.586769+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đang xử lý thành Hoàn thành",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126969,
+          "log_type_name": "Status",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:48.578461+07:00",
+          "updated": "2026-10-22T11:09:48.578485+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126968,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:43.426056+07:00",
+          "updated": "2026-10-22T11:09:43.426079+07:00",
+          "log_type": 1,
+          "system_log": "Đã xử lý xong",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126967,
+          "log_type_name": "Chỉnh sửa",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:41.284236+07:00",
+          "updated": "2026-10-22T11:09:41.284308+07:00",
+          "log_type": 9,
+          "system_log": "Chỉnh sửa chi tiết yêu cầu",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126966,
+          "log_type_name": "Phân công - Thêm",
+          "username": "test_act22_b_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:36.432575+07:00",
+          "updated": "2026-10-22T11:09:36.432604+07:00",
+          "log_type": 3,
+          "system_log": "Phân công yêu cầu cho test_act22_a_iwa0tx, test_act22_b_iwa0tx",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 818,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126965,
+          "log_type_name": "Tiếp nhận",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:22.826654+07:00",
+          "updated": "2026-10-22T11:09:22.826686+07:00",
+          "log_type": 6,
+          "system_log": "Đã tiếp nhận yêu cầu",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126964,
+          "log_type_name": "Status",
+          "username": "test_act22_a_iwa0tx",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:22.823896+07:00",
+          "updated": "2026-10-22T11:09:22.823934+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Đã duyệt thành Đã tiếp nhận",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 817,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126963,
+          "log_type_name": "Status",
+          "username": "test_form20_reader_ivdviv",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:15.437050+07:00",
+          "updated": "2026-10-22T11:09:15.437070+07:00",
+          "log_type": 1,
+          "system_log": "Chuyển trạng thái từ Mới tạo thành Đã duyệt",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 816,
+          "log_comment": null,
+          "log_itemcomment": null
+        },
+        {
+          "id": 126962,
+          "log_type_name": "Status",
+          "username": "test_p261021_all",
+          "ticket_code": "Phân quyền_261022_001",
+          "comment_content": "",
+          "created": "2026-10-22T11:09:12.690641+07:00",
+          "updated": "2026-10-22T11:09:12.690673+07:00",
+          "log_type": 1,
+          "system_log": "Tạo mới yêu cầu",
+          "user_log": null,
+          "ticket": 14495,
+          "user": 811,
+          "log_comment": null,
+          "log_itemcomment": null
+        }
+      ],
+      "finalTicketStatus": 7,
+      "done": true,
+      "restoredAt": "2026-10-22T04:09:57.723Z"
+    }
+  },
+  "checks": [
+    {
+      "groupId": 5,
+      "name": "create-test-ticket-through-ui",
+      "status": "passed",
+      "ticketId": 14493
+    },
+    {
+      "groupId": 5,
+      "name": "approve-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "approved-manager-receive-without-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Tiếp nhận", "Hủy"]
+    },
+    {
+      "groupId": 5,
+      "name": "approved-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "approved-outsider-no-actions",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "receive-is-status-8-and-does-not-assign-manager",
+      "status": "passed",
+      "ticketStatus": 8,
+      "handlers": []
+    },
+    {
+      "groupId": 5,
+      "name": "received-manager-only-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 5,
+      "name": "received-member-awaits-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "received-manager-not-treated-as-editing-processor",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "received-disables-change-delete-and-validates-empty-add",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "received-old-manager-loses-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "received-new-manager-gains-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 5,
+      "name": "received-removed-member-has-no-actions",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "received-member-removal-updates-candidates-without-creating-handlers",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "new-manager-assigns-two-test-users-and-enters-status-3",
+      "status": "passed",
+      "handlers": [
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "groupId": 5,
+      "name": "processing-unassigned-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "processing-assigned-member-can-complete",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Hoàn thành"]
+    },
+    {
+      "groupId": 5,
+      "name": "assigned-member-edits-processing-section",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "one-handler-done-ticket-still-processing",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "completed-member-cannot-complete-or-receive-again",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "assigned-manager-can-assign-cancel-and-complete",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công", "Hoàn thành", "Hủy"]
+    },
+    {
+      "groupId": 5,
+      "name": "last-handler-completes-ticket",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "completed-creator-only-close-no-reprocess",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": ["Đóng"]
+    },
+    {
+      "groupId": 5,
+      "name": "completed-manager-has-no-process-actions",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "creator-closes-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 5,
+      "name": "closed-ticket-no-actions",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": []
+    },
+    {
+      "groupId": 5,
+      "name": "original-production-department-config-restored",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "create-test-ticket-through-ui",
+      "status": "passed",
+      "ticketId": 14494
+    },
+    {
+      "groupId": 18,
+      "name": "approve-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "approved-manager-receive-without-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Tiếp nhận", "Hủy"]
+    },
+    {
+      "groupId": 18,
+      "name": "approved-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "approved-outsider-no-actions",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "receive-is-status-8-and-does-not-assign-manager",
+      "status": "passed",
+      "ticketStatus": 8,
+      "handlers": []
+    },
+    {
+      "groupId": 18,
+      "name": "received-manager-only-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 18,
+      "name": "received-member-awaits-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "received-manager-not-treated-as-editing-processor",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "received-disables-change-delete-and-validates-empty-add",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "received-old-manager-loses-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "received-new-manager-gains-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 18,
+      "name": "received-removed-member-has-no-actions",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "received-member-removal-updates-candidates-without-creating-handlers",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "new-manager-assigns-two-test-users-and-enters-status-3",
+      "status": "passed",
+      "handlers": [
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "groupId": 18,
+      "name": "processing-unassigned-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "processing-assigned-member-can-complete",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Hoàn thành"]
+    },
+    {
+      "groupId": 18,
+      "name": "assigned-member-edits-processing-section",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "one-handler-done-ticket-still-processing",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "completed-member-cannot-complete-or-receive-again",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "assigned-manager-can-assign-cancel-and-complete",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công", "Hoàn thành", "Hủy"]
+    },
+    {
+      "groupId": 18,
+      "name": "last-handler-completes-ticket",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "completed-creator-only-close-no-reprocess",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": ["Đóng"]
+    },
+    {
+      "groupId": 18,
+      "name": "completed-manager-has-no-process-actions",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "creator-closes-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 18,
+      "name": "closed-ticket-no-actions",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": []
+    },
+    {
+      "groupId": 18,
+      "name": "original-production-department-config-restored",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "create-test-ticket-through-ui",
+      "status": "passed",
+      "ticketId": 14495
+    },
+    {
+      "groupId": 20,
+      "name": "approve-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "approved-manager-receive-without-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Tiếp nhận", "Hủy"]
+    },
+    {
+      "groupId": 20,
+      "name": "approved-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "approved-outsider-no-actions",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "receive-is-status-8-and-does-not-assign-manager",
+      "status": "passed",
+      "ticketStatus": 8,
+      "handlers": []
+    },
+    {
+      "groupId": 20,
+      "name": "received-manager-only-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 20,
+      "name": "received-member-awaits-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "received-manager-not-treated-as-editing-processor",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "received-disables-change-delete-and-validates-empty-add",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "received-old-manager-loses-assignment",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "received-new-manager-gains-assignment",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công"]
+    },
+    {
+      "groupId": 20,
+      "name": "received-removed-member-has-no-actions",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "received-member-removal-updates-candidates-without-creating-handlers",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "new-manager-assigns-two-test-users-and-enters-status-3",
+      "status": "passed",
+      "handlers": [
+        {
+          "username": "test_act22_a_iwa0tx",
+          "user_id": 817,
+          "status": "Đang xử lý"
+        },
+        {
+          "username": "test_act22_b_iwa0tx",
+          "user_id": 818,
+          "status": "Đang xử lý"
+        }
+      ]
+    },
+    {
+      "groupId": 20,
+      "name": "processing-unassigned-member-cannot-self-receive",
+      "status": "passed",
+      "actor": "test_handling_ixwmue",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "processing-assigned-member-can-complete",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": ["Hoàn thành"]
+    },
+    {
+      "groupId": 20,
+      "name": "assigned-member-edits-processing-section",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "one-handler-done-ticket-still-processing",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "completed-member-cannot-complete-or-receive-again",
+      "status": "passed",
+      "actor": "test_act22_a_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "assigned-manager-can-assign-cancel-and-complete",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": ["Phân công", "Hoàn thành", "Hủy"]
+    },
+    {
+      "groupId": 20,
+      "name": "last-handler-completes-ticket",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "completed-creator-only-close-no-reprocess",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": ["Đóng"]
+    },
+    {
+      "groupId": 20,
+      "name": "completed-manager-has-no-process-actions",
+      "status": "passed",
+      "actor": "test_act22_b_iwa0tx",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "creator-closes-through-ui",
+      "status": "passed"
+    },
+    {
+      "groupId": 20,
+      "name": "closed-ticket-no-actions",
+      "status": "passed",
+      "actor": "test_p261021_all",
+      "actions": []
+    },
+    {
+      "groupId": 20,
+      "name": "original-production-department-config-restored",
+      "status": "passed"
+    }
+  ],
+  "writes": [
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_SPEC_J0KHF7_5",
+        "handling_group": "5",
+        "is_active": "true"
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/template_form/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_type": 197,
+        "user": 334,
+        "data_form": {
+          "forms": [
+            {
+              "title": "Thông tin TEST",
+              "editable": true,
+              "children": [
+                {
+                  "title": "Nội dung TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": false,
+                  "status": false,
+                  "editable": true
+                }
+              ]
+            },
+            {
+              "title": "Xử lý TEST",
+              "editable": false,
+              "children": [
+                {
+                  "title": "Kết quả TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": true,
+                  "status": false,
+                  "editable": false
+                }
+              ]
+            }
+          ]
+        },
+        "mota": "TEST_SPEC_J0KHF7",
+        "ghichu": "Special department state 8 browser regression"
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 5,
+        "ticket_type": 197,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_SPEC_J0KHF7 5",
+        "description": "TEST special 2 → 8 → 3 → 5 → 7",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "data": [
+              {
+                "Nội dung TEST": "TEST_SPEC_J0KHF7 detail 5",
+                "Kết quả TEST": "",
+                "key": 1
+              }
+            ],
+            "header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "original_header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33,
+          817, 818
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33,
+          817, 818
+        ]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33, 818
+        ]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33,
+          817, 818
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493,
+        "ls_user_assignment": [817, 818]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33,
+          817, 818, 819
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493,
+        "formDataTicket": {
+          "dataform": {
+            "header": [
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "key": "Kết quả TEST",
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "width": 200,
+                    "dataIndex": "Kết quả TEST",
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "data": [
+              {
+                "key": 1,
+                "Kết quả TEST": "TEST_SPEC_J0KHF7 RESULT 5"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "ticketId": 14493,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14493
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/5",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "ISMS",
+        "description": null,
+        "is_active": true,
+        "is_manager": 795,
+        "group_email": "isms@rainscales.com.vn",
+        "ls_member": [
+          615, 616, 697, 704, 386, 187, 365, 20, 668, 334, 706, 19, 795, 33
+        ]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_SPEC_J0KHF7_18",
+        "handling_group": "18",
+        "is_active": "true"
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/template_form/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_type": 198,
+        "user": 334,
+        "data_form": {
+          "forms": [
+            {
+              "title": "Thông tin TEST",
+              "editable": true,
+              "children": [
+                {
+                  "title": "Nội dung TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": false,
+                  "status": false,
+                  "editable": true
+                }
+              ]
+            },
+            {
+              "title": "Xử lý TEST",
+              "editable": false,
+              "children": [
+                {
+                  "title": "Kết quả TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": true,
+                  "status": false,
+                  "editable": false
+                }
+              ]
+            }
+          ]
+        },
+        "mota": "TEST_SPEC_J0KHF7",
+        "ghichu": "Special department state 8 browser regression"
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 18,
+        "ticket_type": 198,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_SPEC_J0KHF7 18",
+        "description": "TEST special 2 → 8 → 3 → 5 → 7",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "data": [
+              {
+                "Nội dung TEST": "TEST_SPEC_J0KHF7 detail 18",
+                "Kết quả TEST": "",
+                "key": 1
+              }
+            ],
+            "header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "original_header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19, 795, 817, 818]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19, 795, 817, 818]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19, 795, 818]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19, 795, 817, 818]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494,
+        "ls_user_assignment": [817, 818]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19, 795, 817, 818, 819]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494,
+        "formDataTicket": {
+          "dataform": {
+            "header": [
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "key": "Kết quả TEST",
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "width": 200,
+                    "dataIndex": "Kết quả TEST",
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "data": [
+              {
+                "key": 1,
+                "Kết quả TEST": "TEST_SPEC_J0KHF7 RESULT 18"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "ticketId": 14494,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14494
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/18",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Tài sản",
+        "description": null,
+        "is_active": true,
+        "is_manager": 795,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 668, 706, 19]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/tickettypemmanager/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "name": "TEST_SPEC_J0KHF7_20",
+        "handling_group": "20",
+        "is_active": "true"
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/template_form/",
+      "method": "POST",
+      "httpStatus": 200,
+      "body": {
+        "ticket_type": 199,
+        "user": 334,
+        "data_form": {
+          "forms": [
+            {
+              "title": "Thông tin TEST",
+              "editable": true,
+              "children": [
+                {
+                  "title": "Nội dung TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": false,
+                  "status": false,
+                  "editable": true
+                }
+              ]
+            },
+            {
+              "title": "Xử lý TEST",
+              "editable": false,
+              "children": [
+                {
+                  "title": "Kết quả TEST",
+                  "type": "text",
+                  "required": true,
+                  "handling": true,
+                  "status": false,
+                  "editable": false
+                }
+              ]
+            }
+          ]
+        },
+        "mota": "TEST_SPEC_J0KHF7",
+        "ghichu": "Special department state 8 browser regression"
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/ticket_manager",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "handling_group": 20,
+        "ticket_type": 199,
+        "approve_user": 816,
+        "fore_cus": 2,
+        "bophansudung": 31,
+        "other1": "89",
+        "vanphong": 8,
+        "title": "TEST_SPEC_J0KHF7 20",
+        "description": "TEST special 2 → 8 → 3 → 5 → 7",
+        "duedate": "2026-11-25",
+        "ticket_status": 1,
+        "formDataTicket": {
+          "dataform": {
+            "data": [
+              {
+                "Nội dung TEST": "TEST_SPEC_J0KHF7 detail 20",
+                "Kết quả TEST": "",
+                "key": 1
+              }
+            ],
+            "header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "original_header": [
+              {
+                "title": "Thông tin TEST",
+                "editable": true,
+                "children": [
+                  {
+                    "title": "Nội dung TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": false,
+                    "status": false,
+                    "editable": true,
+                    "dataIndex": "Nội dung TEST",
+                    "key": "Nội dung TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              },
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "dataIndex": "Kết quả TEST",
+                    "key": "Kết quả TEST",
+                    "width": 200,
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 817,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [
+          615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33, 817, 818
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_form20_reader_ivdviv",
+      "path": "/api/accept_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/receive_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [
+          615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33, 817, 818
+        ]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [
+          615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33, 818
+        ]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [
+          615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33, 817, 818
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/assignment_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495,
+        "ls_user_assignment": [817, 818]
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 818,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [
+          615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33, 817, 818,
+          819
+        ]
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/edit_item_data/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495,
+        "formDataTicket": {
+          "dataform": {
+            "header": [
+              {
+                "title": "Xử lý TEST",
+                "editable": false,
+                "children": [
+                  {
+                    "key": "Kết quả TEST",
+                    "title": "Kết quả TEST",
+                    "type": "text",
+                    "required": true,
+                    "handling": true,
+                    "status": false,
+                    "editable": false,
+                    "width": 200,
+                    "dataIndex": "Kết quả TEST",
+                    "ellipsis": false
+                  }
+                ]
+              }
+            ],
+            "data": [
+              {
+                "key": 1,
+                "Kết quả TEST": "TEST_SPEC_J0KHF7 RESULT 20"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_a_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_act22_b_iwa0tx",
+      "path": "/api/done_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495
+      }
+    },
+    {
+      "transport": "browser",
+      "actor": "test_p261021_all",
+      "path": "/api/close_ticket/",
+      "method": "POST",
+      "ticketId": 14495,
+      "httpStatus": 200,
+      "body": {
+        "ticket_id": 14495
+      }
+    },
+    {
+      "transport": "setup-or-config",
+      "actor": "admin",
+      "path": "/handlinggroupmmanager/20",
+      "method": "PUT",
+      "httpStatus": 200,
+      "body": {
+        "name": "Phân quyền",
+        "description": null,
+        "is_active": true,
+        "is_manager": 33,
+        "group_email": "nhly@rainscales.com",
+        "ls_member": [615, 616, 697, 704, 187, 365, 668, 796, 706, 19, 779, 33]
+      }
+    }
+  ],
+  "attemptFailures": [
+    {
+      "at": "2026-10-22T04:01:32.336Z",
+      "message": "fetch failed"
+    }
+  ],
+  "runtimeErrors": [],
+  "startedAt": "2026-10-22T04:01:15.571Z",
+  "status": "passed",
+  "notes": [
+    "Only TEST tickets and TEST request types were created. Original department configurations were restored and verified by API readback.",
+    "TEST tickets remain available for review in closed state 7.",
+    "A local DNS interruption required a process-only DNS lookup override; no server or application DNS configuration was changed. Earlier failed attempts are retained in attemptFailures."
+  ],
+  "completedAt": "2026-10-22T04:09:57.725Z",
+  "validation": {
+    "liveChecksPassed": 81,
+    "testFilesPassed": 39,
+    "unitIntegrationTestsPassed": 1068,
+    "focusedTestsPassed": 135,
+    "typecheck": "passed",
+    "lint": "passed"
+  }
+}

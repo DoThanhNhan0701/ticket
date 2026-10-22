@@ -109,6 +109,67 @@ it("uses only API-provided allowed actions and ignores unknown buttons", () => {
     availableTicketActions(requestDetailSchema.parse(requestDetailFixture)),
   ).toEqual([]);
 });
+const specialHandlingCases = [
+  { role: "manager before receipt", status: 2, actions: ["Tiếp nhận", "Hủy"] },
+  { role: "member before receipt", status: 2, actions: [] },
+  { role: "manager awaiting assignment", status: 8, actions: ["Phân công"] },
+  { role: "member awaiting assignment", status: 8, actions: [] },
+  { role: "unassigned manager", status: 3, actions: ["Phân công", "Hủy"] },
+  { role: "unassigned member", status: 3, actions: [] },
+  { role: "assigned member", status: 3, actions: ["Hoàn thành"] },
+  { role: "creator after completion", status: 5, actions: ["Đóng"] },
+  { role: "creator after closure", status: 7, actions: [] },
+];
+it.each(
+  [5, 18, 20].flatMap((group) =>
+    specialHandlingCases.map((scenario) => ({ ...scenario, group })),
+  ),
+)(
+  "renders the BE action contract for department $group: $role",
+  ({ group, status, actions }) => {
+    ticket.handling_group = group;
+    ticket.ticket_status = status;
+    ticket.list_button = Object.fromEntries(
+      actions.map((name) => [name, "#123456"]),
+    );
+    open();
+    expect(
+      screen.queryAllByRole("button").map((button) => button.textContent),
+    ).toEqual(ticketActionNames.filter((name) => actions.includes(name)));
+  },
+);
+it.each([5, 18, 20])(
+  "assigns the first handler in received status 8 for department %s",
+  async (group) => {
+    ticket.handling_group = group;
+    ticket.ticket_status = 8;
+    ticket.list_button = { "Phân công": "#123456" };
+    ticket.list_user_received = [];
+    open("Phân công");
+    fireEvent.click(screen.getByRole("combobox", { name: "Loại phân công" }));
+    expect(
+      screen
+        .getByRole("option", { name: "Xóa người xử lý" })
+        .getAttribute("aria-disabled"),
+    ).toBe("true");
+    expect(
+      screen
+        .getByRole("option", { name: "Thay đổi người xử lý" })
+        .getAttribute("aria-disabled"),
+    ).toBe("true");
+    const addOption = screen.getByRole("option", { name: "Thêm người xử lý" });
+    fireEvent.pointerDown(addOption, { pointerType: "mouse" });
+    fireEvent.mouseUp(addOption);
+    fireEvent.click(addOption);
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+    fireEvent.click(screen.getByRole("button", { name: "Người nhận xử lý" }));
+    fireEvent.click(screen.getByRole("button", { name: "new-handler" }));
+    fireEvent.keyDown(document, { key: "Escape" });
+    confirm("Phân công");
+    await waitFor(() => expect(onSaved).toHaveBeenCalledOnce());
+    expect(body()).toEqual({ ticket_id: 42, ls_user_assignment: [20] });
+  },
+);
 it.each([
   ["Phê duyệt", "/accept_ticket/"],
   ["Tiếp nhận", "/receive_ticket/"],

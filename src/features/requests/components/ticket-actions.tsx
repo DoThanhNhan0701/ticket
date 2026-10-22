@@ -53,7 +53,7 @@ const icons: Record<TicketAction, LucideIcon> = {
 };
 const actionDescriptions: Record<TicketActionOperation, string> = {
   "Phê duyệt": "Phê duyệt để yêu cầu được chuyển sang bước xử lý.",
-  "Tiếp nhận": "Xác nhận nhận yêu cầu để bắt đầu xử lý.",
+  "Tiếp nhận": "Xác nhận tiếp nhận yêu cầu theo quy trình của bộ phận xử lý.",
   "Phân công": "Thêm, thay thế hoặc gỡ người xử lý yêu cầu.",
   "Hoàn thành": "Xác nhận bạn đã hoàn tất phần việc được giao.",
   Đóng: "Đóng yêu cầu sau khi đã kiểm tra kết quả xử lý.",

@@ -739,6 +739,143 @@ it.each([true, false])(
   },
 );
 
+it.each([5, 18, 20])(
+  "runs the special department %s flow through received status 8 before assignment",
+  async (group) => {
+    const states = {
+      2: { name: "Đã duyệt", actions: ["Tiếp nhận", "Hủy"] },
+      8: { name: "Đã tiếp nhận", actions: ["Phân công"] },
+      3: { name: "Đang xử lý", actions: ["Phân công", "Hủy", "Hoàn thành"] },
+      5: { name: "Hoàn thành", actions: ["Đóng"] },
+      7: { name: "Đóng", actions: [] },
+    };
+    let status: keyof typeof states = 2;
+    auth.permissions = { can_create: true, is_handling: true };
+    fetchMock.mockImplementation(async (input, options) => {
+      const path = new URL(String(input)).pathname;
+      if (path === "/api/ticket_manager/42")
+        return json({
+          ...ticket,
+          handling_group: group,
+          ticket_status: status,
+          ticket_status_name: states[status].name,
+          list_button: Object.fromEntries(
+            states[status].actions.map((name) => [name, "#123456"]),
+          ),
+          list_user_received:
+            status === 2 || status === 8
+              ? []
+              : [
+                  {
+                    username: "ticket-user",
+                    user_id: 1,
+                    status: status === 3 ? "Đang xử lý" : "Hoàn thành",
+                  },
+                ],
+          list_user_not_received:
+            status === 2 || status === 8 ? { "ticket-user": 1 } : {},
+        });
+      if (options?.method === "POST") {
+        if (path === "/api/receive_ticket/") {
+          expect(status).toBe(2);
+          status = 8;
+        } else if (path === "/api/assignment_ticket/") {
+          expect(status).toBe(8);
+          expect(JSON.parse(String(options.body)).ls_user_assignment).toEqual([
+            1,
+          ]);
+          status = 3;
+        } else if (path === "/api/done_ticket/") {
+          expect(status).toBe(3);
+          status = 5;
+        } else if (path === "/api/close_ticket/") {
+          expect(status).toBe(5);
+          status = 7;
+        } else throw new Error(`Unexpected write ${path}`);
+        return json({ status: 200 });
+      }
+      if (path === "/api/list_ticket_history/") return json([]);
+      throw new Error(`Unexpected endpoint ${path}`);
+    });
+    const confirmAction = async (name: string) => {
+      fireEvent.click(screen.getByRole("button", { name }));
+      fireEvent.click(
+        within(screen.getByRole("dialog")).getByRole("button", { name }),
+      );
+      await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    };
+    await ready();
+    expect(screen.queryByRole("button", { name: "Phân công" })).toBeNull();
+    await confirmAction("Tiếp nhận");
+    expect(
+      within(
+        screen.getByRole("group", { name: "Trạng thái yêu cầu" }),
+      ).getByText("Đã tiếp nhận"),
+    ).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Hoàn thành" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Tiếp nhận" })).toBeNull();
+    tab("Chi tiết yêu cầu");
+    expect(screen.queryByRole("button", { name: "Chỉnh sửa" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Phân công" }));
+    fireEvent.click(screen.getByRole("button", { name: "Người nhận xử lý" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "ticket-user", pressed: false }),
+    );
+    fireEvent.keyDown(document, { key: "Escape" });
+    fireEvent.click(
+      within(screen.getByRole("dialog")).getByRole("button", {
+        name: "Phân công",
+      }),
+    );
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(
+      within(
+        screen.getByRole("group", { name: "Trạng thái yêu cầu" }),
+      ).getByText("Đang xử lý"),
+    ).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Chỉnh sửa" })).toBeTruthy();
+    await confirmAction("Hoàn thành");
+    expect(screen.queryByRole("button", { name: "Xử lý lại" })).toBeNull();
+    await confirmAction("Đóng");
+    expect(
+      screen.queryByRole("group", { name: "Thao tác yêu cầu" }),
+    ).toBeNull();
+    expect(writes().map(([url]) => new URL(String(url)).pathname)).toEqual([
+      "/api/receive_ticket/",
+      "/api/assignment_ticket/",
+      "/api/done_ticket/",
+      "/api/close_ticket/",
+    ]);
+  },
+);
+it.each([5, 18, 20])(
+  "revokes the received-ticket assignment dialog after department %s changes manager",
+  async (group) => {
+    let manager = true;
+    fetchMock.mockImplementation(async (input) => {
+      if (new URL(String(input)).pathname === "/api/ticket_manager/42")
+        return json({
+          ...ticket,
+          handling_group: group,
+          ticket_status: 8,
+          ticket_status_name: "Đã tiếp nhận",
+          list_button: manager ? { "Phân công": "#123456" } : {},
+          list_user_received: [],
+        });
+      throw new Error(`Unexpected endpoint: ${input}`);
+    });
+    await ready();
+    fireEvent.click(screen.getByRole("button", { name: "Phân công" }));
+    expect(screen.getByRole("dialog")).toBeTruthy();
+    manager = false;
+    await act(async () => {
+      await client.refetchQueries({ queryKey: ["request-detail", 1, "42"] });
+    });
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(screen.queryByRole("button", { name: "Phân công" })).toBeNull();
+    expect(writes()).toHaveLength(0);
+  },
+);
 it("refreshes status, available actions, and history after a ticket operation", async () => {
   let received = false;
   fetchMock.mockImplementation(async (input, options) => {
