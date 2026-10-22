@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { postRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
 import {
@@ -15,9 +16,12 @@ export async function changeRequestStatusRequest(
     values,
     "Thông tin chuyển trạng thái không hợp lệ.",
   );
-  const response = await postRequest<unknown>("/change_status_ticket/", {
-    body,
-  });
+  const response = await postRequest<unknown>(
+    API_ENDPOINTS.tickets.changeStatus,
+    {
+      body,
+    },
+  );
   const result = parseApiResponse(
     changeRequestStatusResponseSchema,
     response,

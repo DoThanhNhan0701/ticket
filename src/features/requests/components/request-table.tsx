@@ -1,3 +1,4 @@
+import { PAGE_LINKS } from "@/constants/routes";
 import {
   DataTable,
   DataText,
@@ -11,7 +12,7 @@ import { requestListConfig } from "../utils/request-list-config";
 import { isRequestOverdue } from "../utils/request-overdue";
 
 const getRequestHref = (request: RequestTicket) =>
-  `/requests/${encodeURIComponent(String(request.id))}`;
+  PAGE_LINKS.requestDetail(request.id);
 
 function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
   if (!request.ticket_status_name) return null;

@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Browser-only live test. Supply { username: password } credentials through stdin.
 // BASE_URL, PLAYWRIGHT_MODULE, BROWSER_EXECUTABLE, JOURNEY_REPORT and JOURNEY_ARTIFACTS are optional.
 const fs = require("node:fs");
@@ -6,7 +7,7 @@ const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const credentials = JSON.parse(fs.readFileSync(0, "utf8"));
 const mode = process.argv[2] || "all";
-const base = process.env.BASE_URL || "http://127.0.0.1:5173";
+const base = ticketTestEnv.baseUrl;
 const reportPath = path.resolve(
   process.env.JOURNEY_REPORT || "tests/artifacts/ticket-user-journey.json",
 );

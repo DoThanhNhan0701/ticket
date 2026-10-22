@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
@@ -5,8 +6,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 // Input: {cases:[{username,password,ticketId,expectedEditButtons}]}.
 (async () => {
   const { cases } = JSON.parse(fs.readFileSync(0, "utf8"));
-  const root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
-  const base = process.env.BASE_URL || "http://127.0.0.1:5198";
+  const root = ticketTestEnv.apiUrl;
+  const base = ticketTestEnv.baseUrl;
   const report = {
     startedAt: new Date().toISOString(),
     checks: [],

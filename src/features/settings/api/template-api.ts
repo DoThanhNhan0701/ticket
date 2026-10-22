@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { z } from "zod";
 import { getRequest, postRequest, putRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
@@ -8,9 +9,12 @@ import {
 } from "../schemas/template-schema";
 
 export async function getRequestTemplate(id: number, signal?: AbortSignal) {
-  const response = await getRequest<unknown>(`/template_form/${id}`, {
-    signal,
-  });
+  const response = await getRequest<unknown>(
+    API_ENDPOINTS.settings.template(id),
+    {
+      signal,
+    },
+  );
   const missing = z
     .object({ message: z.literal("The ticket type template does not exist") })
     .safeParse(response);
@@ -38,8 +42,8 @@ export async function saveRequestTemplate(
     ghichu: "auto",
   };
   const response = await (exists
-    ? putRequest<unknown>(`/template_form/${id}`, { body })
-    : postRequest<unknown>("/template_form/", { body }));
+    ? putRequest<unknown>(API_ENDPOINTS.settings.template(id), { body })
+    : postRequest<unknown>(API_ENDPOINTS.settings.templates, { body }));
   if (
     typeof response === "object" &&
     response !== null &&

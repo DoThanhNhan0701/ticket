@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { Paperclip } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -44,9 +45,11 @@ export function RecruitmentCandidateProfile({
       : ["vietnam-address-v2-wards", city],
     queryFn: ({ signal }) =>
       legacy
-        ? recruitmentArray("/list_district/", { city_code: city }, signal).then(
-            (rows) => recruitmentOptions(rows, "code"),
-          )
+        ? recruitmentArray(
+            API_ENDPOINTS.recruitment.districts,
+            { city_code: city },
+            signal,
+          ).then((rows) => recruitmentOptions(rows, "code"))
         : listVietnamWards(city, signal),
     enabled: Boolean(city && district && !row.district_name),
     staleTime: legacy ? 60000 : 86400000,

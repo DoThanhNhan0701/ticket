@@ -1,9 +1,10 @@
+const ticketTestEnv = require("../env.cjs");
 // Live regression: credentials {username,password} on stdin; no credentials/state fixtures saved.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
-const api = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
+const base = ticketTestEnv.baseUrl;
+const api = ticketTestEnv.apiUrl;
 const reportPath =
   process.env.DATE_REPORT || "tests/artifacts/ticket-clone-dates.json";
 const report = {

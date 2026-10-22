@@ -1,8 +1,9 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 // Read-only real-data QC. JSON stdin: {username,password}.
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5196";
+const base = ticketTestEnv.baseUrl;
 const screenshotDir = process.env.SCREENSHOT_DIR || "/tmp";
 (async () => {
   const credentials = JSON.parse(fs.readFileSync(0, "utf8"));

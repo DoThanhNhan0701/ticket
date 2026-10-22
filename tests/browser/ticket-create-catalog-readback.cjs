@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Read-only UI audit of every ticket created by ticket-create-catalog.cjs.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
@@ -8,7 +9,7 @@ const {
   plannedDates,
   fieldValue,
 } = require("./ticket-create-catalog-data.cjs");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const sourcePath =
   process.env.CATALOG_REPORT || "tests/artifacts/ticket-create-catalog.json";
 const reportPath =

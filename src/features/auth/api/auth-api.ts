@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { getRequest, postRequest } from "@/lib/api/client";
 import type {
   AuthResponse,
@@ -13,7 +14,7 @@ export async function loginRequest(
   password: string,
 ): Promise<AuthResponse> {
   const body: LoginRequest = { username: username.trim(), password };
-  const response = await postRequest<unknown>("/token/", {
+  const response = await postRequest<unknown>(API_ENDPOINTS.auth.login, {
     body,
   });
   return parseApiResponse(
@@ -26,7 +27,7 @@ export async function loginRequest(
 export async function getUserPermissionRequest(): Promise<UserPermissionResponse> {
   const response = parseApiResponse(
     ticketUserPermissionSchema,
-    await getRequest<unknown>("/list_permission/"),
+    await getRequest<unknown>(API_ENDPOINTS.lookups.permissions),
     "Invalid account information received from the server.",
   );
 

@@ -1,8 +1,9 @@
+const ticketTestEnv = require("../env.cjs");
 // UI/edge-case QC against the real API. Credentials: {admin:{username,password}} on stdin.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const artifact = "tests/artifacts/ticket-recruitment-ui-boundaries.json";
 (async () => {
   const credentials = JSON.parse(fs.readFileSync(0, "utf8"));

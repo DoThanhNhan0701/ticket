@@ -1,11 +1,12 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs"),
   assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 // Credentials map {username:password} arrives on stdin. Keep the working report outside Vite's watched tree.
 const statePath =
     process.env.TEMPLATE_REPORT || "/tmp/ticket-template-20-live-state.json",
-  apiBase = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api",
-  base = process.env.BASE_URL || "http://127.0.0.1:5198";
+  apiBase = ticketTestEnv.apiUrl,
+  base = ticketTestEnv.baseUrl;
 const report = fs.existsSync(statePath)
   ? JSON.parse(fs.readFileSync(statePath, "utf8"))
   : {

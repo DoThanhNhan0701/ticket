@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BriefcaseBusiness } from "lucide-react";
@@ -56,7 +57,11 @@ export function RecruitmentEditor({
   const duplicate = useQuery({
     queryKey: ["recruitment-duplicate", userId, state.row.id],
     queryFn: ({ signal }) =>
-      recruitmentObject(`/check-cv/${state.row.id}`, undefined, signal),
+      recruitmentObject(
+        API_ENDPOINTS.recruitment.checkCandidate(state.row.id),
+        undefined,
+        signal,
+      ),
     enabled: state.action === "duplicate",
     retry: false,
   });

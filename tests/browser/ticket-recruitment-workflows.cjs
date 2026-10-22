@@ -1,8 +1,9 @@
+const ticketTestEnv = require("../env.cjs");
 // Real browser UI QC; credentials arrive through stdin. Resume reuses TEST records.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const path =
   process.env.RECRUITMENT_REPORT ||
   "tests/artifacts/ticket-recruitment-workflows.json";

@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
@@ -46,7 +47,7 @@ const check = (name, details = {}) => {
       save();
       return route.abort();
     });
-    const base = process.env.BASE_URL || "http://127.0.0.1:5198";
+    const base = ticketTestEnv.baseUrl;
     await page.goto(base + "/login");
     await page.locator("#login-username").fill(credentials.username);
     await page.locator("#login-password").fill(credentials.password);

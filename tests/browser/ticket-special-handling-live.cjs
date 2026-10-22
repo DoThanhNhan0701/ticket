@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Live API/UI regression for special handling groups 5, 18 and 20.
 // Requires explicit authorization to temporarily update their manager/member configuration.
 // Run against a Vite dev server; pass QA credentials as a JSON object on stdin.
@@ -8,8 +9,8 @@ const fs = require("node:fs"),
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const work =
     process.env.SPECIAL_REPORT || "/tmp/special-handling-live-state.json",
-  root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api",
-  base = process.env.BASE_URL || "http://127.0.0.1:5198";
+  root = ticketTestEnv.apiUrl,
+  base = ticketTestEnv.baseUrl;
 // Explicitly authorized tests on real special departments; original members are preserved.
 // Credentials arrive on stdin. Work state must remain outside Vite's watched tree.
 const r = fs.existsSync(work)

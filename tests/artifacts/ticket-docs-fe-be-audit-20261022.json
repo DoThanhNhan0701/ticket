@@ -1,0 +1,1389 @@
+{
+  "auditDate": "2026-10-22",
+  "mode": "read-only-business-audit",
+  "manual": "docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx",
+  "findings": [
+    {
+      "id": "A01",
+      "severity": "Nghiêm trọng",
+      "title": "Quyền hiển thị nút FE chưa được BE cưỡng chế tương ứng",
+      "impact": "FE chỉ mở các hành động trong list_button. Các API thay đổi nghiệp vụ được đọc không kiểm tra quyền trên ticket/trạng thái/vai trò trước khi cập nhật. Settings BE đặt mặc định AllowAny; nhiều APIView nghiệp vụ không ghi đè bằng quyền chặt hơn. Lọc nút ở FE không bảo vệ được lời gọi trực tiếp.",
+      "evidence": [
+        "src/features/requests/utils/ticket-actions.ts:37",
+        "BE core/views.py:561",
+        "BE core/views.py:896",
+        "BE core/views.py:684",
+        "BE ticket-v2/settings.py: DEFAULT_PERMISSION_CLASSES = rest_framework.permissions.AllowAny; middleware đã đọc không có kiểm tra quyền ticket"
+      ],
+      "recommendation": "BE phải xác thực và kiểm tra quyền đối tượng, trạng thái hợp lệ, phạm vi người nhận; dùng cùng quy tắc với list_button. Bổ sung kiểm tra cho công cụ chuyển trạng thái và API cấu hình. Giữ kiểm tra FE để hỗ trợ UX.",
+      "verification": "Đã đọc handler, middleware, cấu hình quyền mặc định; 5 kiểm tra AST xác nhận các handler trọng yếu chưa gọi guard trên ticket. Chưa gửi POST vượt quyền trong lượt này. Bằng chứng live cũ từng ghi nhận tài khoản chỉ xem phê duyệt được ticket TEST 14477; không tái thực hiện.",
+      "manualChapter": "2, 6, 9, 13"
+    },
+    {
+      "id": "A02",
+      "severity": "Cao",
+      "title": "Các cờ trường biểu mẫu chỉ được bảo vệ đầy đủ ở FE",
+      "impact": "FE kiểm tra trường được sửa, vai trò, trạng thái, required và riêng tư; BE EditItemData trộn trực tiếp các key/giá trị từ payload vào dữ liệu cũ. Không thấy kiểm tra theo cấu hình trường ở handler. Một request ngoài UI có thể không tuân theo khóa trường hoặc phạm vi phần.",
+      "evidence": [
+        "src/features/requests/utils/ticket-detail.ts:59",
+        "src/features/requests/components/ticket-template.tsx:46",
+        "BE core/views.py:543"
+      ],
+      "recommendation": "BE xác minh section/field theo biểu mẫu đã lưu, vai trò thực tế và trạng thái; bỏ hoặc từ chối trường ngoài quyền; kiểm tra bắt buộc/kiểu/ngày trước khi ghi. Không dùng header do client gửi làm nguồn cấp quyền.",
+      "verification": "Đã đọc toàn bộ handler và logic FE; chưa gửi payload sửa trái quyền trên dữ liệu thật. Ca required + không cho thay đổi ở phần chỉ sau tạo vẫn là giới hạn được mô tả tại mục 14.6 của hướng dẫn.",
+      "manualChapter": "6.4, 14"
+    },
+    {
+      "id": "A03",
+      "severity": "Cao",
+      "title": "Sửa hồ sơ ứng viên có thể đưa trạng thái về 1",
+      "impact": "FE đặt cv_status là chỉ đọc và loại trường này khỏi payload sửa. BE DetailCV PUT dùng cv_status = 1 khi không có key, sau đó gán vào hồ sơ; đồng thời tạo lịch sử trạng thái dù người dùng chỉ sửa thông tin. Lý do chuyển trạng thái còn có thể bị đặt về None.",
+      "evidence": [
+        "src/features/recruitment/utils/recruitment-fields.ts:176",
+        "src/features/recruitment/utils/recruitment-actions.ts:114",
+        "BE core/views_cv.py:550",
+        "BE core/views_cv.py:596"
+      ],
+      "recommendation": "Ưu tiên sửa BE: PUT hồ sơ không thay đổi trạng thái/lý do khi không gửi, chỉ API chuyển trạng thái xử lý nghiệp vụ này. Nếu cần giải pháp FE tạm thời phải giữ trạng thái hiện tại và có readback, tránh hiểu rằng đây là phân quyền ở server.",
+      "verification": "Đã thực thi chính hàm BE DetailCV qua AST trong môi trường cô lập với ORM giả: hồ sơ ban đầu trạng thái 6, bỏ cv_status → trả 200 và lưu trạng thái 1, lịch sử 6→1. Không ghi vào DB thật. GET thật hồ sơ TEST 439 trả trạng thái 2; không sửa hồ sơ này.",
+      "manualChapter": "11.3"
+    },
+    {
+      "id": "A04",
+      "severity": "Cao",
+      "title": "Gỡ thành viên có thể làm người vẫn được phân công mất quyền xem ticket",
+      "impact": "GET ticket cho phép quản trị/toàn quyền, quản lý, thành viên bộ phận, người tạo, người duyệt hoặc người được nhắc; điều kiện này không tính riêng TicketUserHandling. Trong khi đó đổi thành viên không xóa phân công. Người được giao cũ bị gỡ khỏi bộ phận có thể còn việc phải làm nhưng không mở được ticket.",
+      "evidence": [
+        "BE core/views.py:511",
+        "src/features/requests/utils/ticket-detail.ts:46"
+      ],
+      "recommendation": "Chốt quy tắc với nghiệp vụ: giữ quyền đọc cho người được giao hoặc buộc chuyển giao trước khi gỡ khỏi bộ phận. Đồng bộ cả read permission và action permission; cần test riêng handler bị gỡ ở trạng thái 3.",
+      "verification": "Xác nhận bằng đọc điều kiện GET và quan hệ phân công; chưa gỡ thành viên thật trong lượt này. Các ca live trước chỉ kiểm chứng gỡ thành viên tại bước 8, không thay thế ca này.",
+      "manualChapter": "7.2, 13.4"
+    },
+    {
+      "id": "A05",
+      "severity": "Cao",
+      "title": "Nhóm quyền bổ sung chỉ cộng thêm, không thay thế hoặc gỡ",
+      "impact": "FE hiển thị một Select “Nhóm quyền bổ sung”. BE usermmanager PUT gọi ls_permission.add cho giá trị mới; không set/clear/remove khi đổi hoặc bỏ chọn. Vì vậy có thể tồn tại cả quyền cũ và quyền mới sau khi lưu.",
+      "evidence": [
+        "src/features/settings/utils/settings-config.ts:48",
+        "BE core/views.py:2166",
+        "BE core/views.py:2205"
+      ],
+      "recommendation": "Làm rõ chọn một hay nhiều nhóm. Nếu chọn một, BE thay đúng nhóm thuộc phạm vi được quản trị và hỗ trợ gỡ khi bỏ chọn; tránh clear các nhóm nghiệp vụ khác ngoài ý định người dùng. Readback quyền sau lưu.",
+      "verification": "AST xác nhận cả create và update chỉ có add; không có set/clear/remove trong hàm. Không thay đổi quyền user thật.",
+      "manualChapter": "13.2, 13.7"
+    },
+    {
+      "id": "A06",
+      "severity": "Vừa",
+      "title": "Người phụ trách ứng viên được FE cho sửa nhưng BE không lưu trường đó",
+      "impact": "FE mở chọn nhiều ls_user_received và gửi qua values. BE DetailCV PUT không sử dụng key này; GET trả người phụ trách từ ListRecruitment.user_received. Người dùng có thể thấy lưu thành công nhưng lựa chọn không được áp dụng.",
+      "evidence": [
+        "src/features/recruitment/utils/recruitment-fields.ts:170",
+        "BE core/views_cv.py:344",
+        "BE core/views_cv.py:499"
+      ],
+      "recommendation": "Nếu trách nhiệm thuộc yêu cầu tuyển dụng/ticket, hiển thị chỉ đọc và hướng dẫn phân công tại nguồn; nếu cho thay riêng hồ sơ thì BE cần endpoint và mô hình dữ liệu hỗ trợ tương ứng.",
+      "verification": "Đã đọc GET/PUT và kiểm tra AST: hàm DetailCV không có thao tác ghi ls_user_received. Không đổi phân công dữ liệu thật.",
+      "manualChapter": "11.3"
+    },
+    {
+      "id": "A07",
+      "severity": "Vừa",
+      "title": "Nhãn bộ lọc trạng thái yêu cầu tuyển dụng bị gán sai ID",
+      "impact": "FE đang gắn 4 với “Hoàn thành”, 7 với “Hủy” và thiếu 5. API thật trả 4=Hủy, 5=Hoàn thành, 7=Đóng. Người dùng lọc theo nhãn có thể nhận kết quả mang ý nghĩa khác.",
+      "evidence": [
+        "src/features/recruitment/components/recruitment-filters.tsx:121",
+        "src/features/recruitment/components/recruitment-filters.tsx:123",
+        "GET /api/list_ticketstatus/: 4 Hủy; 5 Hoàn thành; 7 Đóng"
+      ],
+      "recommendation": "Lấy nhãn/ID từ danh mục BE hoặc từ một mapping thống nhất có kiểm tra. Nếu tuyển dụng chỉ hỗ trợ một số trạng thái, lọc danh mục đúng các ID đó thay vì đổi tên ID.",
+      "verification": "Xác nhận bằng code FE và GET API thật ngày 22/10/2026; không đổi trạng thái ticket.",
+      "manualChapter": "11.1"
+    },
+    {
+      "id": "A08",
+      "severity": "Vừa",
+      "title": "Giới hạn tệp của yêu cầu tuyển dụng lệch FE 50 MB và BE 10 MB",
+      "impact": "Form tuyển dụng đặt file_upload của action request tối đa 50 MB. BE DetailYCTD từ chối khi vượt 10 MB. Tệp từ hơn 10 đến 50 MB có thể chọn hợp lệ trên FE nhưng bị lỗi khi lưu.",
+      "evidence": [
+        "src/features/recruitment/components/recruitment-editor-form.tsx:167",
+        "BE core/views_recruitment.py:336"
+      ],
+      "recommendation": "Thống nhất 10 MB nếu giữ BE hiện tại; dùng chung cấu hình giới hạn và mô tả. Nếu muốn 50 MB cần đổi BE và kiểm tra giới hạn proxy/storage. CV 10 MB và ghi chú 50 MB hiện đã khớp.",
+      "verification": "Xác nhận giới hạn ở hai lớp bằng đọc source; không tải tệp lớn vào hệ thống thật.",
+      "manualChapter": "11.1, 11.2, 11.5"
+    },
+    {
+      "id": "A09",
+      "severity": "Vừa",
+      "title": "Tên Quận/Huyện cũ trong chi tiết ứng viên có thể sai",
+      "impact": "BE vòng lặp tìm District gán district_name = iCity[\"name\"] thay vì iDi[\"name\"]. FE trang xem hồ sơ ưu tiên district_name từ BE nên có thể hiển thị nhầm tên tỉnh/thành; khi danh mục tỉnh rỗng còn có nguy cơ biến iCity chưa tồn tại.",
+      "evidence": [
+        "BE core/views_cv.py:371",
+        "src/features/recruitment/components/recruitment-candidate-profile.tsx:71"
+      ],
+      "recommendation": "Sửa BE gán đúng district và kiểm tra trường hợp không tìm thấy; FE kiểm tra tên theo mã địa chỉ, không coi mọi chuỗi trả về là tên hợp lệ.",
+      "verification": "Xác nhận biểu thức gán trong source, không cập nhật địa chỉ thật. Danh mục địa chỉ mới là dịch vụ ngoài và cần được xem là phụ thuộc riêng.",
+      "manualChapter": "11.2, 12.4"
+    },
+    {
+      "id": "A10",
+      "severity": "Vừa",
+      "title": "Tìm kiếm email tại Chi tiết CV phỏng vấn chưa được BE hỗ trợ",
+      "impact": "FE và hướng dẫn mô tả tìm theo tên, email, điện thoại. BE RegistationIntervew GET chỉ lọc first_name hoặc numberphone, không có email trong điều kiện search.",
+      "evidence": [
+        "src/features/recruitment/components/interview-candidate-filters.tsx:59",
+        "BE core/views_interview.py:289"
+      ],
+      "recommendation": "Thêm điều kiện email ở BE hoặc đổi placeholder/hướng dẫn thành đúng phạm vi tên và điện thoại. Kiểm tra dữ liệu thử có email không chứa tên/số để tránh ca dương tính giả.",
+      "verification": "Đọc điều kiện query thực tế; không tạo lịch/ứng viên mới.",
+      "manualChapter": "12.4"
+    },
+    {
+      "id": "A11",
+      "severity": "Vừa",
+      "title": "User không có Chức vụ vẫn làm lỗi API quyền ở BE",
+      "impact": "FE form bắt buộc chức vụ nhưng dữ liệu cũ hoặc user tạo ngoài FE có thể chucvu=null. BE get_user_permission/get_list_button truy cập trực tiếp chucvu.permission. Vì vậy đăng nhập lấy token được nhưng khôi phục tài khoản hoặc xem ticket có thể lỗi.",
+      "evidence": [
+        "BE core/crud.py:39",
+        "BE core/crud.py:107",
+        "tests/artifacts/ticket-user-no-position-api.json: token 200, list_permission 500 (lượt trước)"
+      ],
+      "recommendation": "BE xử lý null chức vụ thành tập quyền rỗng theo chính sách; kiểm tra quyền bộ phận độc lập và trả lỗi có cấu trúc. Giữ validation FE nhưng không dùng nó thay xử lý dữ liệu cũ ở server.",
+      "verification": "Source hiện vẫn có truy cập null không guard; kết quả API thật trước đây đã ghi lỗi 500. Không đăng nhập hoặc sửa user thiếu chức vụ trong lượt này.",
+      "manualChapter": "2, 13.2"
+    },
+    {
+      "id": "A12",
+      "severity": "Cần chốt",
+      "title": "Trường riêng tư: BE có ngoại lệ superuser, FE không có",
+      "impact": "BE mask_dataform_if_not_allowed giữ dữ liệu riêng tư cho superuser, nhưng canViewTicketField của FE chỉ xét người tạo hoặc người xử lý. Do đó admin không thuộc hai vai trò có thể nhận dữ liệu từ BE mà UI ẩn đi; đây là khác biệt cần chốt, không nên tự xem admin mặc nhiên có quyền sửa.",
+      "evidence": [
+        "BE core/views.py:413",
+        "src/features/requests/utils/ticket-detail.ts:72"
+      ],
+      "recommendation": "Chốt có hay không ngoại lệ superuser cho quyền xem trường. Thống nhất cả dữ liệu API, UI xem và clone; quyền sửa vẫn kiểm tra riêng.",
+      "verification": "Đối chiếu hai predicate; chưa đổi cấu hình trường hoặc mở dữ liệu riêng tư của người thật.",
+      "manualChapter": "14.4"
+    }
+  ],
+  "liveReadOnlySmoke": {
+    "startedAt": "2026-10-22T04:33:53.791Z",
+    "mode": "Read-only GET checks; authentication POST only. No business mutations.",
+    "checks": [
+      {
+        "path": "/list_permission/",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "infoUser",
+          "userPermission",
+          "handlingPermission",
+          "is_handling",
+          "is_superuser",
+          "ls_permission",
+          "ls_department",
+          "ls_cv_status",
+          "ls_ticket_status"
+        ],
+        "permissions": {
+          "is_superuser": true,
+          "userPermission": [
+            "can_create",
+            "can_report",
+            "can_system",
+            "can_view",
+            "can_search",
+            "can_accept",
+            "can_delete",
+            "can_export",
+            "can_allticket",
+            "can_cv_interview",
+            "can_return_ticket",
+            "can_process",
+            "can_report",
+            "can_export"
+          ],
+          "handlingPermission": {
+            "HR": ["can_hr_rec"]
+          }
+        }
+      },
+      {
+        "path": "/list_ticketstatus/",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 8,
+        "statuses": [
+          {
+            "id": 1,
+            "name": "Mới tạo"
+          },
+          {
+            "id": 2,
+            "name": "Đã duyệt"
+          },
+          {
+            "id": 3,
+            "name": "Đang xử lý"
+          },
+          {
+            "id": 4,
+            "name": "Hủy"
+          },
+          {
+            "id": 5,
+            "name": "Hoàn thành"
+          },
+          {
+            "id": 6,
+            "name": "Xử lý lại"
+          },
+          {
+            "id": 7,
+            "name": "Đóng"
+          },
+          {
+            "id": 8,
+            "name": "Đã tiếp nhận"
+          }
+        ]
+      },
+      {
+        "path": "/list_handling_group/?page=1&page_size=1000&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 19
+      },
+      {
+        "path": "/list_ticket/?typeView=create&page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 184
+      },
+      {
+        "path": "/list_ticket/?typeView=pendingAccept&page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 0
+      },
+      {
+        "path": "/list_ticket/?typeView=accepted&page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 1
+      },
+      {
+        "path": "/list_ticket_all_SupAD/?page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 14385
+      },
+      {
+        "path": "/list_ticket_personal/?page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 12
+      },
+      {
+        "path": "/list_ticket_all/?page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 1097
+      },
+      {
+        "path": "/ticket_manager/14493",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "id",
+          "color",
+          "textcolor",
+          "ticket_status_name",
+          "ticket_type_name",
+          "ticket_type_att_file",
+          "username_create",
+          "vanphong_name",
+          "handling_group_name",
+          "approve_user_name",
+          "bophansudung_name",
+          "ticket_code",
+          "data_item",
+          "attachment_files",
+          "comments",
+          "list_button",
+          "list_user_handling",
+          "list_user_received",
+          "list_user_not_received",
+          "customer_name",
+          "list_name_team_use",
+          "title",
+          "slug_title",
+          "description",
+          "created",
+          "duedate",
+          "approve_date",
+          "is_handling_group_cancel",
+          "lydohuyyeucau",
+          "lydoxulylai",
+          "lydokhongxulylai",
+          "data_form",
+          "is_rehandling",
+          "time_close",
+          "time_delete",
+          "time_done",
+          "other1",
+          "other2",
+          "fore_cus",
+          "user_create",
+          "handling_group",
+          "vanphong",
+          "bophansudung",
+          "approve_user",
+          "updating_user",
+          "cancel_user",
+          "ticket_type",
+          "ticket_status",
+          "assigned_team"
+        ]
+      },
+      {
+        "path": "/list_ticket_history/?ticket_id=14493",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 10
+      },
+      {
+        "path": "/list_useraccept/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 37
+      },
+      {
+        "path": "/list_customer/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 1
+      },
+      {
+        "path": "/list_tickettype/?handling_group=5&page_size=1000&page=1",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 13
+      },
+      {
+        "path": "/template_form/197",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["results", "forms"]
+      },
+      {
+        "path": "/list_handling_tickettype/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 87
+      },
+      {
+        "path": "/list_handling_alltickettype/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 87
+      },
+      {
+        "path": "/list_team/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 90
+      },
+      {
+        "path": "/list_chucvu/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 31
+      },
+      {
+        "path": "/list_position_permission/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 11
+      },
+      {
+        "path": "/list_bophan_sudung/?page=1&page_size=1000&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 27
+      },
+      {
+        "path": "/list_bophansudung/",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 22
+      },
+      {
+        "path": "/list_vanphong/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 8
+      },
+      {
+        "path": "/list_ticket_type/?page=1&page_size=1&columnSort=id&typeSort=descend",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["count", "next", "previous", "results"],
+        "count": 128
+      },
+      {
+        "path": "/handlinggroupmmanager/5",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "id",
+          "username_manager",
+          "created",
+          "updated",
+          "name",
+          "description",
+          "is_active",
+          "group_email",
+          "is_manager",
+          "ls_member"
+        ]
+      },
+      {
+        "path": "/tickettypemmanager/197",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "id",
+          "handling_group_name",
+          "created",
+          "updated",
+          "name",
+          "slug_name",
+          "file_name",
+          "attachment_file",
+          "is_active",
+          "handling_group"
+        ]
+      },
+      {
+        "path": "/list_department/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 22
+      },
+      {
+        "path": "/list_status_cv/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 9
+      },
+      {
+        "path": "/list_city/",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 64
+      },
+      {
+        "path": "/infor_input/",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["list_education_level", "list_candidate_source"]
+      },
+      {
+        "path": "/list_cv/?from_date=2026-10-01&to_date=2026-10-31&page=1&page_size=1",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "count",
+          "next",
+          "previous",
+          "department",
+          "list_status",
+          "list_city",
+          "list_district",
+          "list_education_level",
+          "list_candidate_source",
+          "list_user_hr",
+          "results"
+        ],
+        "count": 52
+      },
+      {
+        "path": "/detail_cv/439",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["results"],
+        "testRecord": {
+          "id": 439,
+          "code": "CV_261021_439",
+          "isTest": true,
+          "status": 2
+        }
+      },
+      {
+        "path": "/check-cv/439",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": ["results"]
+      },
+      {
+        "path": "/note-cv/439",
+        "httpStatus": 200,
+        "shape": "array",
+        "count": 1
+      },
+      {
+        "path": "/list_recruitment/?from_date=2026-10-01&to_date=2026-10-31&page=1&page_size=1",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "count",
+          "next",
+          "previous",
+          "list_user_received",
+          "list_candidate_source",
+          "list_education_level",
+          "ls_language_skill",
+          "list_user_hr",
+          "results"
+        ],
+        "count": 24
+      },
+      {
+        "path": "/list-interview/?from_date=2026-10-01&to_date=2026-10-31",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "count",
+          "next",
+          "previous",
+          "list_status_interview",
+          "results"
+        ]
+      },
+      {
+        "path": "/report_rect/?from_date=2026-10-01&to_date=2026-10-22",
+        "httpStatus": 200,
+        "shape": "object",
+        "keys": [
+          "result_rect",
+          "result_hr",
+          "result_candidate_source",
+          "result_time_recruitment",
+          "result_cv_conversion_rate",
+          "result_cv_status",
+          "result_department",
+          "result_department_month"
+        ]
+      }
+    ],
+    "completedAt": "2026-10-22T04:34:02.235Z"
+  },
+  "routeAudit": {
+    "sourceReadOnly": true,
+    "matchedRoutes": {
+      "/list_handling_group/": {
+        "backend": {
+          "path": "/list_handling_group/",
+          "view": "Handling_Group_ListView.as_view()",
+          "line": 31
+        },
+        "frontend": [
+          "src/features/reports/api/reports-api.ts:13",
+          "src/features/settings/utils/settings-config.ts:63"
+        ]
+      },
+      "/list_tickettype/": {
+        "backend": {
+          "path": "/list_tickettype/",
+          "view": "TicketType_ListView.as_view()",
+          "line": 36
+        },
+        "frontend": [
+          "src/features/reports/api/reports-api.ts:34",
+          "src/features/requests/api/create-request-api.ts:71"
+        ]
+      },
+      "/report": {
+        "backend": {
+          "path": "/report",
+          "view": "Report_View.as_view()",
+          "line": 70
+        },
+        "frontend": ["src/features/reports/api/reports-api.ts:62"]
+      },
+      "/export_excel": {
+        "backend": {
+          "path": "/export_excel",
+          "view": "Report_Export_Excel.as_view()",
+          "line": 71
+        },
+        "frontend": ["src/features/reports/api/reports-api.ts:75"]
+      },
+      "/export_ticket_type": {
+        "backend": {
+          "path": "/export_ticket_type",
+          "view": "Export_Ticket_Type.as_view()",
+          "line": 72
+        },
+        "frontend": ["src/features/reports/api/reports-api.ts:99"]
+      },
+      "/ticket_manager/<pk>": {
+        "backend": {
+          "path": "/ticket_manager/<pk>",
+          "view": "ticketmanager",
+          "line": 28
+        },
+        "frontend": ["src/features/requests/api/request-detail-api.ts:16"]
+      },
+      "/list_ticket_history/": {
+        "backend": {
+          "path": "/list_ticket_history/",
+          "view": "Ticket_History_ListView.as_view()",
+          "line": 48
+        },
+        "frontend": ["src/features/requests/api/request-detail-api.ts:33"]
+      },
+      "/update_duedate/": {
+        "backend": {
+          "path": "/update_duedate/",
+          "view": "Update_Duedate.as_view()",
+          "line": 66
+        },
+        "frontend": ["src/features/requests/api/request-detail-api.ts:49"]
+      },
+      "/edit_item_data/": {
+        "backend": {
+          "path": "/edit_item_data/",
+          "view": "EditItemData.as_view()",
+          "line": 30
+        },
+        "frontend": ["src/features/requests/api/request-detail-api.ts:61"]
+      },
+      "/change_status_ticket/": {
+        "backend": {
+          "path": "/change_status_ticket/",
+          "view": "ChangeStatusTicket.as_view()",
+          "line": 67
+        },
+        "frontend": [
+          "src/features/requests/api/change-request-status-api.ts:18"
+        ]
+      },
+      "/list_handling_tickettype/": {
+        "backend": {
+          "path": "/list_handling_tickettype/",
+          "view": "TicketType_Handling_ListView.as_view()",
+          "line": 37
+        },
+        "frontend": ["src/features/requests/api/requests-api.ts:72"]
+      },
+      "/list_handling_alltickettype/": {
+        "backend": {
+          "path": "/list_handling_alltickettype/",
+          "view": "AllTicketType_Handling_ListView.as_view()",
+          "line": 103
+        },
+        "frontend": ["src/features/requests/api/requests-api.ts:73"]
+      },
+      "/list_team/": {
+        "backend": {
+          "path": "/list_team/",
+          "view": "Team_ListView.as_view()",
+          "line": 82
+        },
+        "frontend": [
+          "src/features/requests/api/requests-api.ts:87",
+          "src/features/settings/utils/settings-config.ts:103"
+        ]
+      },
+      "/list_ticketstatus/": {
+        "backend": {
+          "path": "/list_ticketstatus/",
+          "view": "TicketStatus_ListView.as_view()",
+          "line": 38
+        },
+        "frontend": ["src/features/requests/api/requests-api.ts:98"]
+      },
+      "/list_useraccept/": {
+        "backend": {
+          "path": "/list_useraccept/",
+          "view": "UserAccept_ListView.as_view()",
+          "line": 50
+        },
+        "frontend": ["src/features/requests/api/create-request-api.ts:31"]
+      },
+      "/list_customer/": {
+        "backend": {
+          "path": "/list_customer/",
+          "view": "Customer_ListView.as_view()",
+          "line": 53
+        },
+        "frontend": ["src/features/requests/api/create-request-api.ts:35"]
+      },
+      "/ticket_manager": {
+        "backend": {
+          "path": "/ticket_manager",
+          "view": "ticketmanager",
+          "line": 29
+        },
+        "frontend": ["src/features/requests/api/create-request-api.ts:119"]
+      },
+      "/attachmentticketfile": {
+        "backend": {
+          "path": "/attachmentticketfile",
+          "view": "attachmentticketfile",
+          "line": 41
+        },
+        "frontend": [
+          "src/features/requests/api/create-request-api.ts:132",
+          "src/features/requests/utils/ticket-actions.ts:34",
+          "src/features/requests/utils/ticket-actions.ts:211"
+        ]
+      },
+      "/export_ticket_type_template": {
+        "backend": {
+          "path": "/export_ticket_type_template",
+          "view": "Export_Ticket_Type_Template.as_view()",
+          "line": 73
+        },
+        "frontend": ["src/features/requests/api/create-request-api.ts:141"]
+      },
+      "/import_excel_ticket_form_data": {
+        "backend": {
+          "path": "/import_excel_ticket_form_data",
+          "view": "Import_Excel_Ticket_From_Data.as_view()",
+          "line": 74
+        },
+        "frontend": ["src/features/requests/api/create-request-api.ts:164"]
+      },
+      "/ticket_comment": {
+        "backend": {
+          "path": "/ticket_comment",
+          "view": "ticketcomment",
+          "line": 42
+        },
+        "frontend": [
+          "src/features/requests/api/ticket-discussion-api.ts:31",
+          "src/features/requests/api/ticket-discussion-api.ts:51"
+        ]
+      },
+      "/ticket_item_comment": {
+        "backend": {
+          "path": "/ticket_item_comment",
+          "view": "ticketitemcomment",
+          "line": 43
+        },
+        "frontend": [
+          "src/features/requests/api/ticket-discussion-api.ts:37",
+          "src/features/requests/api/ticket-discussion-api.ts:51"
+        ]
+      },
+      "/list_user_v2/": {
+        "backend": {
+          "path": "/list_user_v2/",
+          "view": "GetListUser",
+          "line": 78
+        },
+        "frontend": [
+          "src/features/requests/api/ticket-discussion-api.ts:65",
+          "src/features/recruitment/api/recruitment-api.ts:99",
+          "src/features/settings/utils/settings-config.ts:11"
+        ]
+      },
+      "/template_form/<pk>": {
+        "backend": {
+          "path": "/template_form/<pk>",
+          "view": "templateformmanager",
+          "line": 51
+        },
+        "frontend": [
+          "src/features/settings/api/template-api.ts:11",
+          "src/features/settings/api/template-api.ts:41"
+        ]
+      },
+      "/template_form/": {
+        "backend": {
+          "path": "/template_form/",
+          "view": "templateformmanager",
+          "line": 52
+        },
+        "frontend": ["src/features/settings/api/template-api.ts:42"]
+      },
+      "/list_position_permission/": {
+        "backend": {
+          "path": "/list_position_permission/",
+          "view": "PositionPermission_ListView.as_view()",
+          "line": 84
+        },
+        "frontend": ["src/features/settings/api/settings-api.ts:110"]
+      },
+      "/list_permission/": {
+        "backend": {
+          "path": "/list_permission/",
+          "view": "ListPermission.as_view()",
+          "line": 24
+        },
+        "frontend": [
+          "src/features/settings/api/settings-api.ts:116",
+          "src/features/auth/api/auth-api.ts:29"
+        ]
+      },
+      "/token/": {
+        "backend": {
+          "path": "/token/",
+          "view": "CustomAuthToken.as_view()",
+          "line": 17
+        },
+        "frontend": ["src/features/auth/api/auth-api.ts:16"]
+      },
+      "/list_recruitment/": {
+        "backend": {
+          "path": "/list_recruitment/",
+          "view": "views_recruitment.InforYCTD",
+          "line": 107
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:27"]
+      },
+      "/list_cv/": {
+        "backend": {
+          "path": "/list_cv/",
+          "view": "views_cv.InforCV",
+          "line": 115
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:28"]
+      },
+      "/list-interview/": {
+        "backend": {
+          "path": "/list-interview/",
+          "view": "views_interview.InforInterview",
+          "line": 137
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:38"]
+      },
+      "/list_department/": {
+        "backend": {
+          "path": "/list_department/",
+          "view": "views_recruitment.InforDepartment",
+          "line": 106
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:96"]
+      },
+      "/list_status_cv/": {
+        "backend": {
+          "path": "/list_status_cv/",
+          "view": "views_cv.ListStatusCV",
+          "line": 114
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:97"]
+      },
+      "/list_city/": {
+        "backend": {
+          "path": "/list_city/",
+          "view": "views_cv.City_List",
+          "line": 151
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:98"]
+      },
+      "/infor_input/": {
+        "backend": {
+          "path": "/infor_input/",
+          "view": "views_cv.InforInputCV",
+          "line": 134
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:100"]
+      },
+      "/export-recruitment/": {
+        "backend": {
+          "path": "/export-recruitment/",
+          "view": "views_recruitment.ExportRecruitment",
+          "line": 109
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:153"]
+      },
+      "/export-cv/": {
+        "backend": {
+          "path": "/export-cv/",
+          "view": "views_cv.ExportCV",
+          "line": 129
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:154"]
+      },
+      "/export_rect/": {
+        "backend": {
+          "path": "/export_rect/",
+          "view": "views_report_recruitment.ExportRecruiment",
+          "line": 148
+        },
+        "frontend": ["src/features/recruitment/api/recruitment-api.ts:155"]
+      },
+      "/regis-interview/": {
+        "backend": {
+          "path": "/regis-interview/",
+          "view": "views_interview.RegistationIntervew",
+          "line": 138
+        },
+        "frontend": [
+          "src/features/recruitment/api/recruitment-api.ts:172",
+          "src/features/recruitment/utils/recruitment-actions.ts:35"
+        ]
+      },
+      "/usermmanager/": {
+        "backend": {
+          "path": "/usermmanager/",
+          "view": "usermmanager",
+          "line": 80
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:12"]
+      },
+      "/list_bophan_sudung/": {
+        "backend": {
+          "path": "/list_bophan_sudung/",
+          "view": "Bophan_ListView.as_view()",
+          "line": 90
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:56"]
+      },
+      "/bophanmmanager/": {
+        "backend": {
+          "path": "/bophanmmanager/",
+          "view": "bophanmmanager",
+          "line": 91
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:57"]
+      },
+      "/handlinggroupmmanager/": {
+        "backend": {
+          "path": "/handlinggroupmmanager/",
+          "view": "handlinggroupmmanager",
+          "line": 93
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:64"]
+      },
+      "/list_ticket_type/": {
+        "backend": {
+          "path": "/list_ticket_type/",
+          "view": "TicketTypeALL_ListView.as_view()",
+          "line": 94
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:87"]
+      },
+      "/tickettypemmanager/": {
+        "backend": {
+          "path": "/tickettypemmanager/",
+          "view": "tickettypemmanager",
+          "line": 96
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:88"]
+      },
+      "/teammanager/": {
+        "backend": {
+          "path": "/teammanager/",
+          "view": "teammanager",
+          "line": 88
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:104"]
+      },
+      "/list_chucvu/": {
+        "backend": {
+          "path": "/list_chucvu/",
+          "view": "Chucvu_ListView.as_view()",
+          "line": 83
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:120"]
+      },
+      "/chucvumanager/": {
+        "backend": {
+          "path": "/chucvumanager/",
+          "view": "chucvumanager",
+          "line": 86
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:121"]
+      },
+      "/list_vanphong/": {
+        "backend": {
+          "path": "/list_vanphong/",
+          "view": "Vanphong_ListView.as_view()",
+          "line": 32
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:137"]
+      },
+      "/vanphongmanager/": {
+        "backend": {
+          "path": "/vanphongmanager/",
+          "view": "vanphongmanager",
+          "line": 35
+        },
+        "frontend": ["src/features/settings/utils/settings-config.ts:138"]
+      },
+      "/list_ticket/": {
+        "backend": {
+          "path": "/list_ticket/",
+          "view": "Ticket_ListView.as_view()",
+          "line": 25
+        },
+        "frontend": [
+          "src/features/requests/utils/request-list-config.ts:15",
+          "src/features/requests/utils/request-list-config.ts:31"
+        ]
+      },
+      "/list_ticket_all_SupAD/": {
+        "backend": {
+          "path": "/list_ticket_all_SupAD/",
+          "view": "Ticket_All_SupAD_ListView.as_view()",
+          "line": 101
+        },
+        "frontend": [
+          "src/features/requests/utils/request-list-config.ts:16",
+          "src/features/requests/utils/request-list-config.ts:44"
+        ]
+      },
+      "/list_ticket_personal/": {
+        "backend": {
+          "path": "/list_ticket_personal/",
+          "view": "Ticket_Personal_ListView.as_view()",
+          "line": 26
+        },
+        "frontend": [
+          "src/features/requests/utils/request-list-config.ts:17",
+          "src/features/requests/utils/request-list-config.ts:67"
+        ]
+      },
+      "/list_ticket_all/": {
+        "backend": {
+          "path": "/list_ticket_all/",
+          "view": "Ticket_All_ListView.as_view()",
+          "line": 27
+        },
+        "frontend": [
+          "src/features/requests/utils/request-list-config.ts:18",
+          "src/features/requests/utils/request-list-config.ts:78"
+        ]
+      },
+      "/accept_ticket/": {
+        "backend": {
+          "path": "/accept_ticket/",
+          "view": "AcceptTicket.as_view()",
+          "line": 56
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:24",
+          "src/features/requests/utils/ticket-actions.ts:187"
+        ]
+      },
+      "/receive_ticket/": {
+        "backend": {
+          "path": "/receive_ticket/",
+          "view": "Receive_Ticket.as_view()",
+          "line": 58
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:25",
+          "src/features/requests/utils/ticket-actions.ts:188"
+        ]
+      },
+      "/assignment_ticket/": {
+        "backend": {
+          "path": "/assignment_ticket/",
+          "view": "Assignment_Ticket.as_view()",
+          "line": 59
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:26",
+          "src/features/requests/utils/ticket-actions.ts:107",
+          "src/features/requests/utils/ticket-actions.ts:147"
+        ]
+      },
+      "/delete_assignment_ticket/": {
+        "backend": {
+          "path": "/delete_assignment_ticket/",
+          "view": "Delete_Assignment_Ticket.as_view()",
+          "line": 61
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:27",
+          "src/features/requests/utils/ticket-actions.ts:135"
+        ]
+      },
+      "/change_assignment_ticket/": {
+        "backend": {
+          "path": "/change_assignment_ticket/",
+          "view": "Change_Assignment_Ticket.as_view()",
+          "line": 60
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:28",
+          "src/features/requests/utils/ticket-actions.ts:117"
+        ]
+      },
+      "/done_ticket/": {
+        "backend": {
+          "path": "/done_ticket/",
+          "view": "Done_Ticket.as_view()",
+          "line": 63
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:29",
+          "src/features/requests/utils/ticket-actions.ts:154",
+          "src/features/requests/utils/ticket-actions.ts:189"
+        ]
+      },
+      "/close_ticket/": {
+        "backend": {
+          "path": "/close_ticket/",
+          "view": "Close_Ticket.as_view()",
+          "line": 65
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:30",
+          "src/features/requests/utils/ticket-actions.ts:190"
+        ]
+      },
+      "/cancel_ticket/": {
+        "backend": {
+          "path": "/cancel_ticket/",
+          "view": "CancelTicket.as_view()",
+          "line": 57
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:31",
+          "src/features/requests/utils/ticket-actions.ts:191"
+        ]
+      },
+      "/reprocess_ticket/": {
+        "backend": {
+          "path": "/reprocess_ticket/",
+          "view": "Reprocess_Ticket.as_view()",
+          "line": 64
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:32",
+          "src/features/requests/utils/ticket-actions.ts:192"
+        ]
+      },
+      "/forward_ticket/": {
+        "backend": {
+          "path": "/forward_ticket/",
+          "view": "Forward_Ticket.as_view()",
+          "line": 62
+        },
+        "frontend": [
+          "src/features/requests/utils/ticket-actions.ts:33",
+          "src/features/requests/utils/ticket-actions.ts:176"
+        ]
+      },
+      "/detail_recruitment/<pk>": {
+        "backend": {
+          "path": "/detail_recruitment/<pk>",
+          "view": "views_recruitment.DetailYCTD",
+          "line": 108
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:24"]
+      },
+      "/detail_cv/<pk>": {
+        "backend": {
+          "path": "/detail_cv/<pk>",
+          "view": "views_cv.DetailCV",
+          "line": 117
+        },
+        "frontend": [
+          "src/features/recruitment/utils/recruitment-actions.ts:27",
+          "src/features/recruitment/utils/recruitment-actions.ts:32"
+        ]
+      },
+      "/change_status_cv/<pk>": {
+        "backend": {
+          "path": "/change_status_cv/<pk>",
+          "view": "views_cv.ChangeStatusCV",
+          "line": 118
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:56"]
+      },
+      "/regis-interview/<pk>": {
+        "backend": {
+          "path": "/regis-interview/<pk>",
+          "view": "views_interview.RegistationIntervew",
+          "line": 139
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:59"]
+      },
+      "/del-data-cv/": {
+        "backend": {
+          "path": "/del-data-cv/",
+          "view": "views_cv.DelDataCV",
+          "line": 127
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:61"]
+      },
+      "/del-file-cv/": {
+        "backend": {
+          "path": "/del-file-cv/",
+          "view": "views_cv.DelFileCV",
+          "line": 126
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:66"]
+      },
+      "/add-cv-interview/": {
+        "backend": {
+          "path": "/add-cv-interview/",
+          "view": "views_cv.AddCVIntervew",
+          "line": 123
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:72"]
+      },
+      "/note-cv/": {
+        "backend": {
+          "path": "/note-cv/",
+          "view": "views_cv.NoteCV",
+          "line": 124
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:79"]
+      },
+      "/del-cv-interview/": {
+        "backend": {
+          "path": "/del-cv-interview/",
+          "view": "views_interview.DeleteCVIntervew",
+          "line": 143
+        },
+        "frontend": ["src/features/recruitment/utils/recruitment-actions.ts:82"]
+      },
+      "/detail-cv-interview/": {
+        "backend": {
+          "path": "/detail-cv-interview/",
+          "view": "views_interview.DetailCVInterview",
+          "line": 144
+        },
+        "frontend": [
+          "src/features/recruitment/utils/recruitment-actions.ts:103"
+        ]
+      }
+    },
+    "unmatchedLiteralsForReview": {
+      "/detail_recruitment/": [
+        "src/features/recruitment/api/recruitment-api.ts:81"
+      ],
+      "/detail_cv/": ["src/features/recruitment/api/recruitment-api.ts:81"],
+      "/download-note-cv/${id}": [
+        "src/features/recruitment/api/recruitment-api.ts:192"
+      ],
+      "/p/": ["src/features/recruitment/api/vietnam-address-api.ts:27"],
+      "/settings/${kind}": [
+        "src/features/settings/utils/settings-config.ts:145"
+      ]
+    },
+    "sourceHashes": {
+      "views_cv.py": "ccfc5e460720b7e5e790ef29cd10e99eade8f0cee99766446b11a1a9ddacf3e6",
+      "views_report_recruitment.py": "d2d0ba86f4e0701f8f88d88f4701a758ef1bac0501a2dbe3f2876384342e0803",
+      "library.py": "80f37502ed7e123d5421dc1b0a1b68372d15c59ba28faa37fa35c21df71702b9",
+      "crud.py": "2a225360cfe74febddad90b3fbc97ddd064fbb5f92ef8bd894081e60b54aa312",
+      "models.py": "64094421e53a0d105ce45902cdbf1128c35f167c495762fd491599c2110a4b8e",
+      "urls.py": "9e3f218fd3c60013a5d423887aa11a1dc7d8f914b75595ce9ee9a52d67937adc",
+      "export_file.py": "12316e47b3906e368cf50faee1a06dd95caac80360bdb5d3ad7b325906dd9ff8",
+      "views_check_file.py": "e579cbb8d770f958bc256808a6e84cc8b6147e974d545d3549fe9e11d67ff4ce",
+      "serializers.py": "fa8dc4eb447e35e7d0b58b86f87401b98ebda1b4e086c8980930fb745a45402e",
+      "views_interview.py": "59136ecd8fac40b8d4bff82f216b8b3e13416fc0f960aef71ff90b93144f8e7f",
+      "views.py": "7b648c08dc3aaba3068b8dfad0072869b72e80bc557566101adec953807cfce9",
+      "views_recruitment.py": "053eeaff1466fdbd974c58f3aa310ffdd917568641c86a391b9f2c0e3f0dddaa"
+    }
+  },
+  "isolatedContractChecks": {
+    "method": "Isolated execution of actual BE function AST with fake ORM plus static contract assertions; no database or business API writes.",
+    "checks": [
+      {
+        "name": "BE candidate edit response",
+        "expected": 200,
+        "actual": 200,
+        "matchesExpected": true
+      },
+      {
+        "name": "Omitting cv_status resets existing status from 6 to 1",
+        "expected": 1,
+        "actual": 1,
+        "matchesExpected": true
+      },
+      {
+        "name": "Every edit creates status history",
+        "expected": true,
+        "actual": true,
+        "matchesExpected": true
+      },
+      {
+        "name": "Candidate edit ignores ls_user_received",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "Legacy district label uses province variable",
+        "expected": true,
+        "actual": true,
+        "matchesExpected": true
+      },
+      {
+        "name": "Additional permission groups are add-only",
+        "expected": ["user.ls_permission.add", "user.ls_permission.add"],
+        "actual": ["user.ls_permission.add", "user.ls_permission.add"],
+        "matchesExpected": true
+      },
+      {
+        "name": "AcceptTicket lacks per-ticket permission guard",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "Assignment_Ticket lacks per-ticket permission guard",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "EditItemData lacks per-ticket permission guard",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "Update_Duedate lacks per-ticket permission guard",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "ChangeStatusTicket lacks per-ticket permission guard",
+        "expected": false,
+        "actual": false,
+        "matchesExpected": true
+      },
+      {
+        "name": "Recruitment request BE cap 10MB",
+        "expected": true,
+        "actual": true,
+        "matchesExpected": true
+      }
+    ],
+    "allConfirmed": true
+  },
+  "frontendRegression": {
+    "files": 4,
+    "passed": 270,
+    "mockedAPI": true
+  },
+  "businessMutationsThisAudit": 0,
+  "report": "docs/Rainscales-Ticket-Bao-cao-doi-chieu-FE-BE-20261022.docx"
+}

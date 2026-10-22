@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 
 export const ticketActionNames = [
@@ -21,17 +22,17 @@ export interface TicketActionValues {
 }
 export interface TicketActionStep {
   endpoint:
-    | "/accept_ticket/"
-    | "/receive_ticket/"
-    | "/assignment_ticket/"
-    | "/delete_assignment_ticket/"
-    | "/change_assignment_ticket/"
-    | "/done_ticket/"
-    | "/close_ticket/"
-    | "/cancel_ticket/"
-    | "/reprocess_ticket/"
-    | "/forward_ticket/"
-    | "/attachmentticketfile";
+    | typeof API_ENDPOINTS.tickets.accept
+    | typeof API_ENDPOINTS.tickets.receive
+    | typeof API_ENDPOINTS.tickets.assign
+    | typeof API_ENDPOINTS.tickets.deleteAssignment
+    | typeof API_ENDPOINTS.tickets.changeAssignment
+    | typeof API_ENDPOINTS.tickets.done
+    | typeof API_ENDPOINTS.tickets.close
+    | typeof API_ENDPOINTS.tickets.cancel
+    | typeof API_ENDPOINTS.tickets.reprocess
+    | typeof API_ENDPOINTS.tickets.forward
+    | typeof API_ENDPOINTS.tickets.attachment;
   body: Record<string, unknown> | FormData;
 }
 export function availableTicketActions(ticket: RequestDetailData) {
@@ -104,7 +105,7 @@ function assignmentPlan(
   if (values.mode === "add")
     return [
       {
-        endpoint: "/assignment_ticket/",
+        endpoint: API_ENDPOINTS.tickets.assign,
         body: {
           ...base,
           ls_user_assignment: requireUsers(values.users, available),
@@ -114,7 +115,7 @@ function assignmentPlan(
   if (values.mode === "change")
     return [
       {
-        endpoint: "/change_assignment_ticket/",
+        endpoint: API_ENDPOINTS.tickets.changeAssignment,
         body: {
           ...base,
           user_assignment_old: requireUsers([values.oldUser], current)[0],
@@ -132,7 +133,7 @@ function assignmentPlan(
     );
   const steps: TicketActionStep[] = [
     {
-      endpoint: "/delete_assignment_ticket/",
+      endpoint: API_ENDPOINTS.tickets.deleteAssignment,
       body: {
         ...base,
         ls_user_delete: users,
@@ -144,14 +145,14 @@ function assignmentPlan(
     steps.push(
       values.replacements.length
         ? {
-            endpoint: "/assignment_ticket/",
+            endpoint: API_ENDPOINTS.tickets.assign,
             body: {
               ...base,
               ls_user_assignment: requireUsers(values.replacements, available),
             },
           }
         : {
-            endpoint: "/done_ticket/",
+            endpoint: API_ENDPOINTS.tickets.done,
             body: { ...base, is_manage_done: true },
           },
     );
@@ -173,7 +174,7 @@ export function buildTicketActionPlan(
   if (action === "Chuyển tiếp")
     return [
       {
-        endpoint: "/forward_ticket/",
+        endpoint: API_ENDPOINTS.tickets.forward,
         body: {
           ticket_id: ticket.id,
           user_forward: requireUsers(
@@ -184,12 +185,12 @@ export function buildTicketActionPlan(
       },
     ];
   const endpoints = {
-    "Phê duyệt": "/accept_ticket/",
-    "Tiếp nhận": "/receive_ticket/",
-    "Hoàn thành": "/done_ticket/",
-    Đóng: "/close_ticket/",
-    Hủy: "/cancel_ticket/",
-    "Xử lý lại": "/reprocess_ticket/",
+    "Phê duyệt": API_ENDPOINTS.tickets.accept,
+    "Tiếp nhận": API_ENDPOINTS.tickets.receive,
+    "Hoàn thành": API_ENDPOINTS.tickets.done,
+    Đóng: API_ENDPOINTS.tickets.close,
+    Hủy: API_ENDPOINTS.tickets.cancel,
+    "Xử lý lại": API_ENDPOINTS.tickets.reprocess,
   } as const;
   const body: Record<string, unknown> = { ticket_id: ticket.id };
   if (actionReasonLabel(action, ticket.ticket_status)) {
@@ -208,7 +209,7 @@ export function buildTicketActionPlan(
       const upload = new FormData();
       upload.append("ticket_id", String(ticket.id));
       upload.append("att_file", file);
-      steps.push({ endpoint: "/attachmentticketfile", body: upload });
+      steps.push({ endpoint: API_ENDPOINTS.tickets.attachment, body: upload });
     }
   steps.push({ endpoint: endpoints[action], body });
   return steps;

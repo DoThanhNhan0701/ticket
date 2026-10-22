@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { z } from "zod";
 import { getRequest, postRequest, putRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
@@ -28,13 +29,13 @@ export async function addTicketComment(
   const body = commentBody(content, files);
   body.append("ticket_id", String(id));
   body.append("ticket_comment", content.trim());
-  assertTicketSaved(await postRequest("/ticket_comment", { body }));
+  assertTicketSaved(await postRequest(API_ENDPOINTS.tickets.comment, { body }));
 }
 export async function replyTicketComment(id: number, draft: DiscussionDraft) {
   const body = commentBody(draft.content, draft.files);
   body.append("comment_id", String(id));
   body.append("comment_content", draft.content.trim());
-  assertTicketSaved(await postRequest("/ticket_item_comment", { body }));
+  assertTicketSaved(await postRequest(API_ENDPOINTS.tickets.reply, { body }));
 }
 export async function editTicketComment(
   id: number,
@@ -48,7 +49,9 @@ export async function editTicketComment(
   if (!draft.removedFiles.length) body.append("deleted_old_files", "");
   assertTicketSaved(
     await putRequest(
-      level === "comment" ? "/ticket_comment" : "/ticket_item_comment",
+      level === "comment"
+        ? API_ENDPOINTS.tickets.comment
+        : API_ENDPOINTS.tickets.reply,
       { body },
     ),
   );
@@ -62,7 +65,7 @@ const mentionUserSchema = z.object({
 export async function searchMentionUsers(search: string, signal?: AbortSignal) {
   return parseApiResponse(
     z.array(mentionUserSchema),
-    await getRequest("/list_user_v2/", {
+    await getRequest(API_ENDPOINTS.lookups.users, {
       params: { search, type_api: "tag_comment" },
       signal,
     }),

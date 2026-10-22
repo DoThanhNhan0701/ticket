@@ -5,7 +5,12 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   cacheDir: "node_modules/.vite-test",
   plugins: [react()],
-  define: { "import.meta.env.VITE_API_BASE_URL": JSON.stringify("/api") },
+  define: {
+    "import.meta.env.VITE_API_BASE_URL": JSON.stringify("/api"),
+    "import.meta.env.VITE_VIETNAM_ADDRESS_API_URL": JSON.stringify(
+      "https://address.example.test/api/v2",
+    ),
+  },
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },

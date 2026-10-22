@@ -1,10 +1,11 @@
+const ticketTestEnv = require("../env.cjs");
 // Credentials arrive on stdin; run normal, ga, then ga-extra.
 // GA modes temporarily change the real GA group and always restore its snapshot.
 // Reuse only with explicit authorization to test GA. Retain the report outside Vite.
 const fs = require("node:fs"),
   assert = require("node:assert/strict");
 const work = process.env.HANDLING_REPORT || "/tmp/handling-live-state.json",
-  root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
+  root = ticketTestEnv.apiUrl;
 const r = fs.existsSync(work)
   ? JSON.parse(fs.readFileSync(work, "utf8"))
   : {

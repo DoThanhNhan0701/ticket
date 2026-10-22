@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { z } from "zod";
 import { assertTicketSaved } from "./ticket-response";
 import { format } from "date-fns";
@@ -28,11 +29,11 @@ export async function getCreateRequestLookups(signal?: AbortSignal) {
       ["handling-departments", "requesting-departments", "teams", "offices"],
       signal,
     ),
-    getRequest<unknown>("/list_useraccept/", {
+    getRequest<unknown>(API_ENDPOINTS.lookups.acceptingUsers, {
       params: { is_active: "true" },
       signal,
     }),
-    getRequest<unknown>("/list_customer/", { signal }),
+    getRequest<unknown>(API_ENDPOINTS.lookups.customers, { signal }),
   ]);
   return {
     groups: (lookups["handling-departments"] ?? []).filter(
@@ -68,7 +69,7 @@ export async function getCreateRequestTypes(
   while (rows.length < count) {
     const result = parseApiResponse(
       paginatedResponseSchema(requestTypeSchema),
-      await getRequest<unknown>("/list_tickettype/", {
+      await getRequest<unknown>(API_ENDPOINTS.lookups.ticketTypes, {
         params: {
           handling_group: group,
           page_size: "1000",
@@ -116,7 +117,9 @@ export async function createRequest(
       Number(values.ticket_type),
     ),
   };
-  const response = await postRequest<unknown>("/ticket_manager", { body });
+  const response = await postRequest<unknown>(API_ENDPOINTS.tickets.create, {
+    body,
+  });
   return parseApiResponse(
     createdRequestSchema,
     response,
@@ -129,16 +132,19 @@ export async function uploadRequestAttachment(id: number, file: File) {
   const body = new FormData();
   body.append("ticket_id", String(id));
   body.append("att_file", file);
-  const response = await postRequest<unknown>("/attachmentticketfile", {
-    body,
-  });
+  const response = await postRequest<unknown>(
+    API_ENDPOINTS.tickets.attachment,
+    {
+      body,
+    },
+  );
   assertTicketSaved(response);
 }
 export async function exportRequestTemplate(id: number) {
   const body = new FormData();
   body.append("ticket_type_id", String(id));
   return parseSpreadsheet(
-    await postRequest<unknown>("/export_ticket_type_template", {
+    await postRequest<unknown>(API_ENDPOINTS.tickets.exportTemplate, {
       body,
       responseType: "blob",
     }),
@@ -161,7 +167,7 @@ export async function importRequestTemplate(id: number, file: File) {
         })
         .optional(),
     }),
-    await postRequest<unknown>("/import_excel_ticket_form_data", { body }),
+    await postRequest<unknown>(API_ENDPOINTS.tickets.importFormData, { body }),
     "Phản hồi nhập Excel không hợp lệ.",
   );
   if (response.message !== "success" || !response.dataform)

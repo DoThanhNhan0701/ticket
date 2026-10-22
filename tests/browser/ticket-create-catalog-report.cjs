@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Build the reviewable CSV after both UI runners have completed.
 const fs = require("node:fs");
 const path =
@@ -82,7 +83,7 @@ for (const group of report.groups)
       result.readback?.verifiedCells,
       result.fixedLegacyTemplate ? "Có" : "",
       result.reason || result.readback?.reason,
-      result.id ? "https://ticket-new.aiminds.io.vn/requests/" + result.id : "",
+      result.id ? ticketTestEnv.baseUrl + "/requests/" + result.id : "",
       result.formScreenshot,
       result.createdScreenshot || result.failureScreenshot,
     ]);

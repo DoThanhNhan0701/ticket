@@ -1,3 +1,4 @@
+import { PAGE_LINKS } from "@/constants/routes";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
@@ -21,7 +22,7 @@ export function TicketCloneButton({
         );
     },
     onSuccess: () => {
-      void navigate(`/requests/new?clone=${ticket.id}`);
+      void navigate(PAGE_LINKS.cloneRequest(ticket.id));
     },
   });
   if (!permissions?.can_create) return null;

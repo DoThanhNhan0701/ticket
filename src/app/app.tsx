@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
@@ -16,6 +17,9 @@ const LoginPage = lazy(() =>
 const WorkspacePage = lazy(() =>
   import("@/pages/workspace").then((m) => ({ default: m.WorkspacePage })),
 );
+const UserGuidePage = lazy(() =>
+  import("@/pages/help").then((m) => ({ default: m.UserGuidePage })),
+);
 
 export default function App() {
   const auth = useAuthContext();
@@ -32,7 +36,7 @@ export default function App() {
           <Routes>
             <Route element={<PublicLayout />}>
               <Route
-                path="/login"
+                path={APP_ROUTES.login}
                 element={
                   <LoginPage
                     onLogin={auth.login}
@@ -45,7 +49,8 @@ export default function App() {
             </Route>
 
             <Route element={<PrivateLayout />}>
-              <Route path="/" element={homeRedirect} />
+              <Route path={APP_ROUTES.root} element={homeRedirect} />
+              <Route path={APP_ROUTES.help} element={<UserGuidePage />} />
               {workspacePages.map((page) => (
                 <Route
                   key={page.path}
@@ -64,7 +69,7 @@ export default function App() {
               )}
             </Route>
 
-            <Route path="*" element={homeRedirect} />
+            <Route path={APP_ROUTES.notFound} element={homeRedirect} />
           </Routes>
           <Toaster position="top-right" />
         </TooltipProvider>

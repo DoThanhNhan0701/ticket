@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { Copy, Paperclip } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,9 @@ export function RecruitmentFormExtras({
               void navigator.clipboard
                 .writeText(
                   recruitmentFileHref(
-                    `/cv/${encodeURIComponent(recruitmentText(state.row.link_cv))}`,
+                    API_ENDPOINTS.recruitment.publicCv(
+                      recruitmentText(state.row.link_cv),
+                    ),
                   )!,
                 )
                 .then(

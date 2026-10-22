@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import {
   COOKIE_REFRESH_KEY,
   COOKIE_TOKEN_KEY,
@@ -107,7 +108,10 @@ function refreshAccessToken(version: number): Promise<string> {
     const body: TokenRefreshRequest = { refresh };
     // A shared refresh must not be cancelled by one caller's AbortSignal.
     const response = await fetch(
-      new URL(`${API_BASE_URL}/token/refresh/`, window.location.origin),
+      new URL(
+        `${API_BASE_URL}${API_ENDPOINTS.auth.refresh}`,
+        window.location.origin,
+      ),
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

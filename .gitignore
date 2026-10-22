@@ -11,6 +11,15 @@ node_modules
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
+
+# Environment files; only the example is versioned
+.env
+.env.*
+!.env.example
+
+# Local credentials
+.aws/
 
 # Editor directories and files
 .vscode/*
@@ -26,3 +35,5 @@ dist-ssr
 # Quality reports
 coverage/
 .scannerwork/
+playwright-report/
+test-results/

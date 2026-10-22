@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { z } from "zod";
 import {
   getRequest,
@@ -24,8 +25,8 @@ const listSchema = z.looseObject({
 });
 const objectSchema = z.record(z.string(), z.unknown());
 export const recruitmentEndpoints = {
-  requests: "/list_recruitment/",
-  candidates: "/list_cv/",
+  requests: API_ENDPOINTS.recruitment.requests,
+  candidates: API_ENDPOINTS.recruitment.candidates,
 } as const;
 export async function listRecruitment(
   kind: RecruitmentKind | "interviews",
@@ -35,7 +36,9 @@ export async function listRecruitment(
   const result = parseApiResponse(
     listSchema,
     await getRequest<unknown>(
-      kind === "interviews" ? "/list-interview/" : recruitmentEndpoints[kind],
+      kind === "interviews"
+        ? API_ENDPOINTS.recruitment.interviews
+        : recruitmentEndpoints[kind],
       {
         params: Object.fromEntries(
           Object.entries(params).filter(([, value]) => value !== ""),
@@ -78,7 +81,9 @@ export async function recruitmentDetail(
   signal?: AbortSignal,
 ) {
   const result = await recruitmentObject(
-    `${kind === "requests" ? "/detail_recruitment/" : "/detail_cv/"}${id}`,
+    kind === "requests"
+      ? API_ENDPOINTS.recruitment.requestDetail(id)
+      : API_ENDPOINTS.recruitment.candidateDetail(id),
     undefined,
     signal,
   );
@@ -93,11 +98,11 @@ export async function recruitmentLookups(
   signal?: AbortSignal,
 ): Promise<RecruitmentLookups> {
   const [departments, status, city, users, info] = await Promise.all([
-    recruitmentArray("/list_department/", undefined, signal),
-    recruitmentArray("/list_status_cv/", undefined, signal),
-    recruitmentArray("/list_city/", undefined, signal),
-    recruitmentArray("/list_user_v2/", undefined, signal),
-    recruitmentObject("/infor_input/", undefined, signal),
+    recruitmentArray(API_ENDPOINTS.recruitment.departments, undefined, signal),
+    recruitmentArray(API_ENDPOINTS.recruitment.statuses, undefined, signal),
+    recruitmentArray(API_ENDPOINTS.recruitment.cities, undefined, signal),
+    recruitmentArray(API_ENDPOINTS.lookups.users, undefined, signal),
+    recruitmentObject(API_ENDPOINTS.recruitment.inputInfo, undefined, signal),
   ]);
   return {
     departments: recruitmentOptions(departments),
@@ -150,9 +155,9 @@ export async function exportRecruitment(
   for (const [key, value] of Object.entries(params))
     if (value) body.append(key, value);
   const paths = {
-    requests: "/export-recruitment/",
-    candidates: "/export-cv/",
-    reports: "/export_rect/",
+    requests: API_ENDPOINTS.recruitment.exportRequests,
+    candidates: API_ENDPOINTS.recruitment.exportCandidates,
+    reports: API_ENDPOINTS.recruitment.exportReport,
   };
   const result = await postRequest<unknown>(paths[kind], {
     body,
@@ -169,7 +174,7 @@ export async function interviewDetail(
 ) {
   try {
     return await recruitmentArray(
-      "/regis-interview/" + encodeURIComponent(code),
+      API_ENDPOINTS.recruitment.interviewDetail(code),
       params,
       signal,
     );
@@ -189,9 +194,12 @@ export const interviewCandidates = (row: RecruitmentRow) =>
   );
 
 export async function downloadRecruitmentNote(id: number) {
-  const result = await getRequest<unknown>(`/download-note-cv/${id}`, {
-    responseType: "file",
-  });
+  const result = await getRequest<unknown>(
+    API_ENDPOINTS.recruitment.downloadNote(id),
+    {
+      responseType: "file",
+    },
+  );
   if (!(result instanceof Blob) || result.size === 0)
     throw new Error("Không tải được tệp ghi chú.");
   return result;

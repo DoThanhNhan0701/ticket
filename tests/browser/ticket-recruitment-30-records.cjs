@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Live recruitment regression. JSON credentials {username,password} arrive on stdin.
 // Browser login; live API readback for 30 isolated TEST profiles; no mocked responses.
 // Run QC_PHASE=create, workflows, edges, then ui. Reuse the report to resume.
@@ -6,7 +7,7 @@ const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5198";
+const base = ticketTestEnv.baseUrl;
 const artifact =
   process.env.QC_REPORT || "tests/artifacts/ticket-recruitment-30-records.json";
 const phase = process.env.QC_PHASE || "create";

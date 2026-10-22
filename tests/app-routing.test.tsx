@@ -163,6 +163,45 @@ function renderApp(path = "/") {
   return render(appElement(path));
 }
 
+it("opens the guide from the header and lets signed-in users read chapters without feature permissions", async () => {
+  auth.permissions = {};
+  renderApp("/requests");
+  const help = await screen.findByRole("button", {
+    name: "Hướng dẫn sử dụng",
+  });
+  expect(help.closest("header")).toBeTruthy();
+  fireEvent.click(help);
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+  expect(screen.getByTestId("current-path").textContent).toBe("/help");
+  fireEvent.click(
+    screen.getByRole("button", { name: "4. Tạo một yêu cầu mới" }),
+  );
+  await screen.findByRole("heading", { name: "4. Tạo một yêu cầu mới" });
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/help?chapter=4",
+  );
+  expect(
+    screen.getByRole("heading", { name: "4.7. Gửi và kiểm tra kết quả" }),
+  ).toBeTruthy();
+  const download = screen.getByRole("link", { name: "Tải tài liệu Word" });
+  expect(download.getAttribute("href")).toBe(
+    "/docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx",
+  );
+  expect(download.hasAttribute("download")).toBe(true);
+});
+
+it("falls back to the first guide chapter for an invalid chapter link", async () => {
+  renderApp("/help?chapter=999");
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+});
+
+it("requires sign-in before opening the user guide", async () => {
+  auth.token = null;
+  renderApp("/help");
+  await screen.findByRole("button", { name: "Sign In to Ticket" });
+  expect(screen.getByTestId("current-path").textContent).toBe("/login");
+});
+
 it("redirects the root to the request list with no overview navigation", async () => {
   renderApp();
   expect(

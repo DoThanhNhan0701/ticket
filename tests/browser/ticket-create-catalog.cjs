@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // UI-only QC sweep. Credentials {username,password} arrive on stdin.
 // Modes: inventory (read only), run (create one TEST ticket per selectable type).
 // Resume uses CATALOG_REPORT; successful creations are never submitted twice.
@@ -6,7 +7,7 @@ const assert = require("node:assert/strict");
 const { format, addDays, startOfToday } = require("date-fns");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const mode = process.argv[2] || "inventory";
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const reportPath =
   process.env.CATALOG_REPORT || "tests/artifacts/ticket-create-catalog.json";
 const report = fs.existsSync(reportPath)

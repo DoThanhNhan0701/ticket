@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { getRequest, postRequest } from "@/lib/api/client";
 import { ApiError } from "@/lib/api/api-error";
 import { format } from "date-fns";
@@ -13,7 +14,7 @@ export function validTicketId(id: string) {
 }
 export async function getRequestDetail(id: string, signal?: AbortSignal) {
   if (!validTicketId(id)) throw new Error("Mã yêu cầu không hợp lệ.");
-  const response = await getRequest<unknown>(`/ticket_manager/${id}`, {
+  const response = await getRequest<unknown>(API_ENDPOINTS.tickets.detail(id), {
     signal,
   });
   if (
@@ -30,7 +31,7 @@ export async function getRequestDetail(id: string, signal?: AbortSignal) {
 }
 export async function getTicketHistory(id: number, signal?: AbortSignal) {
   return ticketHistorySchema.parse(
-    await getRequest("/list_ticket_history/", {
+    await getRequest(API_ENDPOINTS.tickets.history, {
       params: { ticket_id: String(id) },
       signal,
     }),
@@ -46,7 +47,7 @@ export async function updateTicketDueDate(
   if (!date || (oldDate && date <= oldDate))
     throw new Error("Ngày mong muốn mới phải sau ngày mong muốn hiện tại.");
   assertTicketSaved(
-    await postRequest("/update_duedate/", {
+    await postRequest(API_ENDPOINTS.tickets.updateDueDate, {
       body: { ticket_id: id, duedate: format(date, "yyyy-MM-dd") },
     }),
   );
@@ -58,7 +59,7 @@ export async function updateTicketSection(
   data: readonly Record<string, unknown>[],
 ) {
   assertTicketSaved(
-    await postRequest("/edit_item_data/", {
+    await postRequest(API_ENDPOINTS.tickets.editItem, {
       body: {
         ticket_id: id,
         formDataTicket: { dataform: { header: [header], data } },

@@ -1,3 +1,5 @@
+import { APP_ROUTES } from "@/constants/routes";
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { SettingsConfig, SettingsKind } from "../types";
 
 const nameField = (label: string) => ({
@@ -8,8 +10,8 @@ const nameField = (label: string) => ({
 export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   users: {
     label: "người dùng",
-    listEndpoint: "/list_user_v2/",
-    writeEndpoint: "/usermmanager/",
+    listEndpoint: API_ENDPOINTS.lookups.users,
+    writeEndpoint: API_ENDPOINTS.settings.users,
     paginated: false,
     listLookups: ["requesting-departments", "teams", "positions"],
     fields: [
@@ -53,15 +55,15 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   },
   "requesting-departments": {
     label: "bộ phận sử dụng",
-    listEndpoint: "/list_bophan_sudung/",
-    writeEndpoint: "/bophanmmanager/",
+    listEndpoint: API_ENDPOINTS.settings.departments,
+    writeEndpoint: API_ENDPOINTS.settings.department,
     paginated: true,
     fields: [{ ...nameField("Tên bộ phận"), maxLength: 30 }],
   },
   "handling-departments": {
     label: "bộ phận xử lý",
-    listEndpoint: "/list_handling_group/",
-    writeEndpoint: "/handlinggroupmmanager/",
+    listEndpoint: API_ENDPOINTS.lookups.handlingGroups,
+    writeEndpoint: API_ENDPOINTS.settings.handlingGroup,
     paginated: true,
     fields: [
       nameField("Tên bộ phận"),
@@ -84,8 +86,8 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   },
   "request-types": {
     label: "loại yêu cầu",
-    listEndpoint: "/list_ticket_type/",
-    writeEndpoint: "/tickettypemmanager/",
+    listEndpoint: API_ENDPOINTS.settings.ticketTypes,
+    writeEndpoint: API_ENDPOINTS.settings.ticketType,
     paginated: true,
     fields: [
       nameField("Tên loại yêu cầu"),
@@ -100,8 +102,8 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   },
   teams: {
     label: "team",
-    listEndpoint: "/list_team/",
-    writeEndpoint: "/teammanager/",
+    listEndpoint: API_ENDPOINTS.lookups.teams,
+    writeEndpoint: API_ENDPOINTS.settings.team,
     paginated: false,
     listLookups: ["requesting-departments"],
     fields: [
@@ -117,8 +119,8 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   },
   positions: {
     label: "chức vụ",
-    listEndpoint: "/list_chucvu/",
-    writeEndpoint: "/chucvumanager/",
+    listEndpoint: API_ENDPOINTS.settings.positions,
+    writeEndpoint: API_ENDPOINTS.settings.position,
     paginated: false,
     listLookups: ["position-permissions"],
     fields: [
@@ -134,14 +136,14 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
   },
   offices: {
     label: "văn phòng",
-    listEndpoint: "/list_vanphong/",
-    writeEndpoint: "/vanphongmanager/",
+    listEndpoint: API_ENDPOINTS.settings.offices,
+    writeEndpoint: API_ENDPOINTS.settings.office,
     paginated: false,
     fields: [nameField("Tên văn phòng")],
   },
 };
 export function getSettingsKind(path: string): SettingsKind | undefined {
   return (Object.keys(settingsConfig) as SettingsKind[]).find(
-    (kind) => path === `/settings/${kind}`,
+    (kind) => path === APP_ROUTES.settings[kind],
   );
 }

@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs"),
   assert = require("node:assert/strict"),
   crypto = require("node:crypto");
@@ -10,8 +11,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const work =
     process.env.INTERACTIONS_REPORT ||
     "/tmp/ticket-interactions-live-state.json",
-  base = process.env.BASE_URL || "http://127.0.0.1:5198",
-  root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
+  base = ticketTestEnv.baseUrl,
+  root = ticketTestEnv.apiUrl;
 const r = fs.existsSync(work)
   ? JSON.parse(fs.readFileSync(work, "utf8"))
   : {
@@ -1420,7 +1421,7 @@ const own = (id) => r.tickets.some((t) => t.id === Number(id));
       await d.getByRole("button", { name: "Thoát", exact: true }).click();
       record("review-ticket-left-open-with-all-three-assignment-modes", {
         id: review,
-        url: "http://localhost:5173/requests/" + review,
+        url: ticketTestEnv.baseUrl + "/requests/" + review,
       });
     }
     if (!has("final-readback-and-history-all-test-tickets")) {

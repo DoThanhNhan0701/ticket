@@ -1,3 +1,4 @@
+import { PAGE_LINKS } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
@@ -171,7 +172,10 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           .filter(Boolean)
           .slice(-1)[0];
         return id && /^\d+$/.test(id) ? (
-          <Link className="text-primary underline" to={`/requests/${id}`}>
+          <Link
+            className="text-primary underline"
+            to={PAGE_LINKS.requestDetail(id)}
+          >
             {text(row.ticket_code)}
           </Link>
         ) : (

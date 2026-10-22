@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // Credentials arrive on stdin; only the isolated TEST group is edited.
 const fs = require("node:fs"),
   assert = require("node:assert/strict");
@@ -11,8 +12,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
     ),
     creds = JSON.parse(fs.readFileSync(0, "utf8")),
     tokens = {};
-  const root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api",
-    base = process.env.BASE_URL || "http://127.0.0.1:5198";
+  const root = ticketTestEnv.apiUrl,
+    base = ticketTestEnv.baseUrl;
   const report = {
     startedAt: new Date().toISOString(),
     checks: [],

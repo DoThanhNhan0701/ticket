@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useWatch, type UseFormReturn } from "react-hook-form";
@@ -55,9 +56,11 @@ export function useRecruitmentAddress(
       : ["vietnam-address-v2-wards", city],
     queryFn: ({ signal }) =>
       legacy
-        ? recruitmentArray("/list_district/", { city_code: city }, signal).then(
-            (rows) => recruitmentOptions(rows, "code"),
-          )
+        ? recruitmentArray(
+            API_ENDPOINTS.recruitment.districts,
+            { city_code: city },
+            signal,
+          ).then((rows) => recruitmentOptions(rows, "code"))
         : listVietnamWards(city, signal),
     enabled: enabled && Boolean(city),
     staleTime: legacy ? 60000 : 86400000,

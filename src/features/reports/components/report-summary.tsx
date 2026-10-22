@@ -1,3 +1,4 @@
+import { PAGE_LINKS } from "@/constants/routes";
 import { useState } from "react";
 import { ChartNoAxesColumn } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -60,7 +61,7 @@ export function ReportSummaryCards({
               {detail.list_code.map(([code, id]) => (
                 <li key={id}>
                   <Link
-                    to={`/requests/${encodeURIComponent(String(id))}`}
+                    to={PAGE_LINKS.requestDetail(String(id))}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block rounded-lg border border-border px-3 py-2 text-sm text-brand-700 focus-visible:outline-2 focus-visible:outline-ring dark:text-brand-200"

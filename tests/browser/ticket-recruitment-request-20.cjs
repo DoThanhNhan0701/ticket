@@ -1,8 +1,9 @@
+const ticketTestEnv = require("../env.cjs");
 // Live recruitment-request QC: browser UI only. Credentials {admin,approver} on stdin.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5195";
+const base = ticketTestEnv.baseUrl;
 const phase = process.env.QC_PHASE || "inspect";
 const path = "tests/artifacts/ticket-recruitment-request-20.json";
 const prefix = "TEST_HRREQ20_261021";

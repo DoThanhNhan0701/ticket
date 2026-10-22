@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import {
   ArrowLeftRight,
   BadgeCheck,
@@ -60,8 +61,8 @@ export interface NavigationGroup {
 }
 
 export const createTicketPage: WorkspacePageDefinition = {
-  path: "/requests/new",
-  legacyPaths: ["/create_ticket"],
+  path: APP_ROUTES.requests.create,
+  legacyPaths: [APP_ROUTES.legacy.createRequest],
   label: "Tạo yêu cầu",
   description: "Tạo yêu cầu hỗ trợ và gửi đến bộ phận phụ trách.",
   icon: Plus,
@@ -75,24 +76,27 @@ export const navigationGroups: NavigationGroup[] = [
     pages: [
       {
         path: HOME_PATH,
-        legacyPaths: ["/danhsachyeucau"],
+        legacyPaths: [APP_ROUTES.legacy.requests],
         label: "Danh sách yêu cầu",
         description: "Theo dõi các yêu cầu bạn đã gửi.",
         icon: Inbox,
         permission: "can_view",
-        activePaths: ["/requests/:ticketID", "/tickets/from-email/:ticketID"],
+        activePaths: [
+          APP_ROUTES.requests.detail,
+          APP_ROUTES.requests.fromEmail,
+        ],
       },
       {
-        path: "/requests/all",
-        legacyPaths: ["/tatcayeucau"],
+        path: APP_ROUTES.requests.all,
+        legacyPaths: [APP_ROUTES.legacy.allRequests],
         label: "Tất cả yêu cầu",
         description: "Tra cứu yêu cầu trên toàn hệ thống.",
         icon: ListFilter,
         permission: "can_allticket",
       },
       {
-        path: "/requests/change-status",
-        legacyPaths: ["/change_status"],
+        path: APP_ROUTES.requests.changeStatus,
+        legacyPaths: [APP_ROUTES.legacy.changeStatus],
         label: "Chuyển trạng thái ticket",
         description: "Quản lý việc chuyển trạng thái của các yêu cầu.",
         icon: ArrowLeftRight,
@@ -105,16 +109,16 @@ export const navigationGroups: NavigationGroup[] = [
     icon: ClipboardCheck,
     pages: [
       {
-        path: "/approvals/pending",
-        legacyPaths: ["/chopheduyet"],
+        path: APP_ROUTES.approvals.pending,
+        legacyPaths: [APP_ROUTES.legacy.pendingApprovals],
         label: "Chờ phê duyệt",
         description: "Xem các yêu cầu đang chờ bạn phê duyệt.",
         icon: Clock3,
         permission: "can_accept",
       },
       {
-        path: "/approvals/approved",
-        legacyPaths: ["/dapheduyet"],
+        path: APP_ROUTES.approvals.approved,
+        legacyPaths: [APP_ROUTES.legacy.approvedRequests],
         label: "Đã phê duyệt",
         description: "Theo dõi các yêu cầu đã được phê duyệt.",
         icon: CheckCheck,
@@ -127,16 +131,16 @@ export const navigationGroups: NavigationGroup[] = [
     icon: ListChecks,
     pages: [
       {
-        path: "/tasks/mine",
-        legacyPaths: ["/danhsachxulycanhan"],
+        path: APP_ROUTES.tasks.mine,
+        legacyPaths: [APP_ROUTES.legacy.personalTasks],
         label: "Nhiệm vụ cá nhân",
         description: "Theo dõi các nhiệm vụ được giao cho bạn.",
         icon: UserRoundCheck,
         permission: "can_process",
       },
       {
-        path: "/tasks",
-        legacyPaths: ["/danhsachxuly"],
+        path: APP_ROUTES.tasks.all,
+        legacyPaths: [APP_ROUTES.legacy.tasks],
         label: "Tất cả nhiệm vụ",
         description: "Theo dõi nhiệm vụ của bộ phận xử lý.",
         icon: FolderKanban,
@@ -149,15 +153,15 @@ export const navigationGroups: NavigationGroup[] = [
     icon: BarChart3,
     pages: [
       {
-        path: "/reports",
+        path: APP_ROUTES.reports.overview,
         label: "Báo cáo",
         description: "Tổng hợp tình hình tiếp nhận và xử lý yêu cầu.",
         icon: FileChartColumn,
         permission: "can_report",
       },
       {
-        path: "/reports/export",
-        legacyPaths: ["/export_data"],
+        path: APP_ROUTES.reports.export,
+        legacyPaths: [APP_ROUTES.legacy.exportData],
         label: "Truy xuất dữ liệu",
         description: "Tra cứu và xuất dữ liệu yêu cầu.",
         icon: Database,
@@ -170,33 +174,33 @@ export const navigationGroups: NavigationGroup[] = [
     icon: BriefcaseBusiness,
     pages: [
       {
-        path: "/recruitment/requests",
-        legacyPaths: ["/recruitment_system"],
+        path: APP_ROUTES.recruitment.requests,
+        legacyPaths: [APP_ROUTES.legacy.recruitmentRequests],
         label: "Yêu cầu tuyển dụng",
         description: "Quản lý nhu cầu và đề xuất tuyển dụng.",
         icon: ClipboardList,
         permission: "can_hr_rec",
       },
       {
-        path: "/recruitment/candidates",
-        legacyPaths: ["/candidate_management"],
+        path: APP_ROUTES.recruitment.candidates,
+        legacyPaths: [APP_ROUTES.legacy.candidates],
         label: "Quản lý ứng viên",
         description: "Quản lý thông tin và hồ sơ ứng viên.",
         icon: Users,
         permission: "can_hr_rec",
       },
       {
-        path: "/recruitment/interviews",
-        legacyPaths: ["/interview-schedule-table"],
+        path: APP_ROUTES.recruitment.interviews,
+        legacyPaths: [APP_ROUTES.legacy.interviews],
         label: "Lịch phỏng vấn",
         description: "Theo dõi và sắp xếp lịch phỏng vấn.",
         icon: CalendarDays,
         permission: "can_hr_rec",
-        activePaths: ["/recruitment/interviews/:codeInterview"],
+        activePaths: [APP_ROUTES.recruitment.interviewDetail],
       },
       {
-        path: "/recruitment/reports",
-        legacyPaths: ["/report_recruitment"],
+        path: APP_ROUTES.recruitment.reports,
+        legacyPaths: [APP_ROUTES.legacy.recruitmentReports],
         label: "Báo cáo tuyển dụng",
         description: "Tổng hợp tiến độ và kết quả tuyển dụng.",
         icon: BarChart3,
@@ -209,56 +213,56 @@ export const navigationGroups: NavigationGroup[] = [
     icon: Settings,
     pages: [
       {
-        path: "/settings/users",
+        path: APP_ROUTES.settings.users,
         label: "Người dùng",
         description: "Quản lý danh sách người dùng.",
         icon: Users,
         permission: "can_system",
-        activePaths: ["/settings/users/new"],
+        activePaths: [APP_ROUTES.settings.createUser],
       },
       {
-        path: "/settings/requesting-departments",
-        legacyPaths: ["/settings/bophansudung"],
+        path: APP_ROUTES.settings["requesting-departments"],
+        legacyPaths: [APP_ROUTES.legacy.requestingDepartments],
         label: "Bộ phận sử dụng",
         description: "Quản lý các bộ phận gửi yêu cầu.",
         icon: Building2,
         permission: "can_system",
       },
       {
-        path: "/settings/handling-departments",
-        legacyPaths: ["/settings/bophanxuly"],
+        path: APP_ROUTES.settings["handling-departments"],
+        legacyPaths: [APP_ROUTES.legacy.handlingDepartments],
         label: "Bộ phận xử lý",
         description: "Quản lý các bộ phận tiếp nhận và xử lý yêu cầu.",
         icon: FolderKanban,
         permission: "can_system",
       },
       {
-        path: "/settings/request-types",
-        legacyPaths: ["/settings/loaiyeucau"],
+        path: APP_ROUTES.settings["request-types"],
+        legacyPaths: [APP_ROUTES.legacy.requestTypes],
         label: "Loại yêu cầu",
         description: "Quản lý danh mục loại yêu cầu.",
         icon: Tags,
         permission: "can_system",
       },
       {
-        path: "/settings/teams",
-        legacyPaths: ["/settings/team"],
+        path: APP_ROUTES.settings.teams,
+        legacyPaths: [APP_ROUTES.legacy.teams],
         label: "Team",
         description: "Quản lý danh sách nhóm làm việc.",
         icon: UsersRound,
         permission: "can_system",
       },
       {
-        path: "/settings/positions",
-        legacyPaths: ["/settings/chucvu"],
+        path: APP_ROUTES.settings.positions,
+        legacyPaths: [APP_ROUTES.legacy.positions],
         label: "Chức vụ",
         description: "Quản lý danh mục chức vụ.",
         icon: BadgeCheck,
         permission: "can_system",
       },
       {
-        path: "/settings/offices",
-        legacyPaths: ["/settings/vanphong"],
+        path: APP_ROUTES.settings.offices,
+        legacyPaths: [APP_ROUTES.legacy.offices],
         label: "Văn phòng",
         description: "Quản lý danh sách văn phòng.",
         icon: Building2,
@@ -271,39 +275,39 @@ export const navigationGroups: NavigationGroup[] = [
 // Pages available by URL but not listed in the sidebar.
 const contextualPages: WorkspacePageDefinition[] = [
   {
-    path: "/settings",
+    path: APP_ROUTES.settings.overview,
     label: "Tổng quan cấu hình",
     description: "Quản lý tài khoản và danh mục hệ thống.",
     icon: Settings,
     permission: "can_system",
   },
   {
-    path: "/requests/:ticketID",
-    legacyPaths: ["/tickets/:ticketID"],
+    path: APP_ROUTES.requests.detail,
+    legacyPaths: [APP_ROUTES.legacy.ticketDetail],
     label: "Chi tiết yêu cầu",
     description: "Xem nội dung và tiến độ xử lý yêu cầu.",
     icon: FileText,
     permission: "can_view",
   },
   {
-    path: "/tickets/from-email/:ticketID",
-    legacyPaths: ["/tickets-from-mail/view/:ticketID"],
+    path: APP_ROUTES.requests.fromEmail,
+    legacyPaths: [APP_ROUTES.legacy.ticketFromEmail],
     label: "Yêu cầu từ email",
     description: "Xem yêu cầu được tiếp nhận qua email.",
     icon: Inbox,
     permission: "can_view",
   },
   {
-    path: "/settings/users/new",
-    legacyPaths: ["/settings/create_user"],
+    path: APP_ROUTES.settings.createUser,
+    legacyPaths: [APP_ROUTES.legacy.createUser],
     label: "Tạo người dùng",
     description: "Thêm tài khoản người dùng vào hệ thống.",
     icon: UserPlus,
     permission: "can_system",
   },
   {
-    path: "/recruitment/interviews/:codeInterview",
-    legacyPaths: ["/detail-interview/:codeInterview"],
+    path: APP_ROUTES.recruitment.interviewDetail,
+    legacyPaths: [APP_ROUTES.legacy.interviewDetail],
     label: "Chi tiết CV phỏng vấn",
     description: "Xem hồ sơ và thông tin phỏng vấn của ứng viên.",
     icon: FileText,
@@ -344,7 +348,7 @@ export function isPageActive(
     pathname === page.path ||
     (page.activePaths ?? []).some((path) => {
       const match = matchPath(path, pathname);
-      if (path === "/requests/:ticketID")
+      if (path === APP_ROUTES.requests.detail)
         return /^[1-9]\d*$/.test(match?.params.ticketID ?? "");
       return match !== null;
     })

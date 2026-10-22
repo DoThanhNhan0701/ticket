@@ -1,9 +1,10 @@
+const ticketTestEnv = require("../env.cjs");
 // Direct API regression for users imported/created without a position.
 // Input: { admin: { username, password }, testPassword } on stdin.
 // Only isolated TEST users may be created; no existing records are modified.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
-const base = process.env.API_BASE_URL || "https://ticket-api.aiminds.io.vn/api";
+const base = ticketTestEnv.apiUrl;
 const reportPath =
   process.env.NO_POSITION_API_REPORT ||
   "tests/artifacts/ticket-user-no-position-api.json";

@@ -1,10 +1,11 @@
+const ticketTestEnv = require("../env.cjs");
 // Real-browser create validation. Pass {username,password} on stdin; never saves credentials.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { format, addDays, startOfToday } = require("date-fns");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
-const api = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
+const base = ticketTestEnv.baseUrl;
+const api = ticketTestEnv.apiUrl;
 const reportPath =
   process.env.VALIDATION_REPORT ||
   "tests/artifacts/ticket-create-validation.json";

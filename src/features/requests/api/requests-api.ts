@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { getRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
 import {
@@ -69,8 +70,8 @@ export async function listRequestTypesRequest(
 ): Promise<RequestType[]> {
   const endpoint =
     source === "handling"
-      ? "/list_handling_tickettype/"
-      : "/list_handling_alltickettype/";
+      ? API_ENDPOINTS.lookups.handlingTicketTypes
+      : API_ENDPOINTS.lookups.allHandlingTicketTypes;
   const response = await getRequest<unknown>(endpoint, {
     signal,
   });
@@ -84,7 +85,9 @@ export async function listRequestTypesRequest(
 export async function listRequestTeamsRequest(
   signal?: AbortSignal,
 ): Promise<RequestTeam[]> {
-  const response = await getRequest<unknown>("/list_team/", { signal });
+  const response = await getRequest<unknown>(API_ENDPOINTS.lookups.teams, {
+    signal,
+  });
   return parseApiResponse(
     requestTeamsResponseSchema,
     response,
@@ -95,7 +98,10 @@ export async function listRequestTeamsRequest(
 export async function listRequestStatusesRequest(
   signal?: AbortSignal,
 ): Promise<RequestStatus[]> {
-  const response = await getRequest<unknown>("/list_ticketstatus/", { signal });
+  const response = await getRequest<unknown>(
+    API_ENDPOINTS.lookups.ticketStatuses,
+    { signal },
+  );
   return parseApiResponse(
     requestStatusesResponseSchema,
     response,

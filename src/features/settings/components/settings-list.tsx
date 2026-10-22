@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -80,7 +81,7 @@ export function SettingsList({
   ]);
   const closeEditor = () => {
     setEditor(null);
-    if (createUser) navigate("/settings/users", { replace: true });
+    if (createUser) navigate(APP_ROUTES.settings.users, { replace: true });
   };
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3">

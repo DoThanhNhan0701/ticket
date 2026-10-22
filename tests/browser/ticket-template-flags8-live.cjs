@@ -1,9 +1,10 @@
+const ticketTestEnv = require("../env.cjs");
 const fs = require("node:fs"),
   assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const work = process.env.FLAGS_REPORT || "/tmp/ticket-flags8-live-state.json",
-  base = process.env.BASE_URL || "http://127.0.0.1:5198",
-  root = process.env.API_URL || "https://ticket-api.aiminds.io.vn/api";
+  base = ticketTestEnv.baseUrl,
+  root = ticketTestEnv.apiUrl;
 // Credentials map on stdin, isolated TEST type in existing TEST group 24 only.
 const r = fs.existsSync(work)
   ? JSON.parse(fs.readFileSync(work, "utf8"))
@@ -565,7 +566,7 @@ const record = (name, detail = {}) => {
       await p.getByTitle("Hủy chỉnh sửa", { exact: true }).click();
       record("review-all-8-processing-switches-left-open", {
         ticketId: r.reviewTicket,
-        url: "http://localhost:5173/requests/" + r.reviewTicket,
+        url: ticketTestEnv.baseUrl + "/requests/" + r.reviewTicket,
       });
     }
     if (!has("new-field-untouched-checkboxes-save-as-false")) {

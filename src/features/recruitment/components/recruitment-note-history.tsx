@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { History, MessageSquareText, Paperclip, UserRound } from "lucide-react";
@@ -31,7 +32,11 @@ export function RecruitmentNoteHistory({
   const query = useQuery({
     queryKey: ["recruitment-notes", userId, candidateId],
     queryFn: ({ signal }) =>
-      recruitmentArray(`/note-cv/${candidateId}`, undefined, signal),
+      recruitmentArray(
+        API_ENDPOINTS.recruitment.notes(candidateId),
+        undefined,
+        signal,
+      ),
     retry: false,
   });
   const notes = query.data ?? [];

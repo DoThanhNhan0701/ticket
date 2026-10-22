@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -39,7 +40,7 @@ export function InterviewCandidates() {
   const statuses = useQuery({
     queryKey: ["recruitment-interview-statuses", userId],
     queryFn: ({ signal }) =>
-      recruitmentArray("/list_status_cv/", undefined, signal),
+      recruitmentArray(API_ENDPOINTS.recruitment.statuses, undefined, signal),
     enabled: !canManage,
     retry: false,
   });

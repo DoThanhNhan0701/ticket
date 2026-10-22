@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { DataFilterField } from "@/components/data-management";
 import {
   allRequestFilterFields,
@@ -12,10 +13,10 @@ import {
 interface RequestListConfig {
   label: string;
   endpoint:
-    | "/list_ticket/"
-    | "/list_ticket_all_SupAD/"
-    | "/list_ticket_personal/"
-    | "/list_ticket_all/";
+    | typeof API_ENDPOINTS.tickets.list
+    | typeof API_ENDPOINTS.tickets.all
+    | typeof API_ENDPOINTS.tickets.personalTasks
+    | typeof API_ENDPOINTS.tickets.allTasks;
   typeView?: "create" | "pendingAccept" | "accepted";
   statusKey: "ticket_status_name" | "ticket_status";
   excludeInitialStatus: boolean;
@@ -28,7 +29,7 @@ interface RequestListConfig {
 
 const createdConfig: RequestListConfig = {
   label: "Danh sách yêu cầu",
-  endpoint: "/list_ticket/",
+  endpoint: API_ENDPOINTS.tickets.list,
   typeView: "create",
   statusKey: "ticket_status_name",
   excludeInitialStatus: false,
@@ -41,7 +42,7 @@ export const requestListConfig: Readonly<
   created: createdConfig,
   all: {
     label: "Tất cả yêu cầu",
-    endpoint: "/list_ticket_all_SupAD/",
+    endpoint: API_ENDPOINTS.tickets.all,
     statusKey: "ticket_status",
     excludeInitialStatus: true,
     filterFields: allRequestFilterFields,
@@ -64,7 +65,7 @@ export const requestListConfig: Readonly<
   },
   "personal-tasks": {
     label: "Nhiệm vụ cá nhân",
-    endpoint: "/list_ticket_personal/",
+    endpoint: API_ENDPOINTS.tickets.personalTasks,
     statusKey: "ticket_status",
     excludeInitialStatus: true,
     filterFields: personalTaskFilterFields,
@@ -75,7 +76,7 @@ export const requestListConfig: Readonly<
   },
   "all-tasks": {
     label: "Tất cả nhiệm vụ",
-    endpoint: "/list_ticket_all/",
+    endpoint: API_ENDPOINTS.tickets.allTasks,
     statusKey: "ticket_status",
     excludeInitialStatus: true,
     filterFields: allTaskFilterFields,

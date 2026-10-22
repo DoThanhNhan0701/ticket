@@ -1,9 +1,10 @@
+const ticketTestEnv = require("../env.cjs");
 // Read-only UI regression for a real account without functional permissions.
 // Supply { username, password } on stdin. Credentials never enter the report.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const reportPath =
   process.env.NO_PERMISSION_REPORT ||
   "tests/artifacts/ticket-no-permission.json";

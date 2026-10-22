@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { z } from "zod";
 import { getRequest, postRequest, putRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
@@ -107,13 +108,15 @@ async function lookup(
   if (kind === "position-permissions")
     return parseApiResponse(
       z.array(positionPermissionSchema),
-      await getRequest<unknown>("/list_position_permission/", { signal }),
+      await getRequest<unknown>(API_ENDPOINTS.lookups.positionPermissions, {
+        signal,
+      }),
       "Dữ liệu quyền hạn không hợp lệ.",
     );
   if (kind === "permission-groups") {
     const data = parseApiResponse(
       ticketUserPermissionSchema,
-      await getRequest<unknown>("/list_permission/", { signal }),
+      await getRequest<unknown>(API_ENDPOINTS.lookups.permissions, { signal }),
       "Dữ liệu nhóm quyền không hợp lệ.",
     );
     return data.ls_permission.map((group) => ({ ...group, is_active: true }));

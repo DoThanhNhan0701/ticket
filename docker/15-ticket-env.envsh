@@ -1,0 +1,4 @@
+#!/bin/sh
+
+. /etc/ticket/development.env
+export API_UPSTREAM="${API_UPSTREAM:-${VITE_API_BASE_URL:?Missing VITE_API_BASE_URL}}"

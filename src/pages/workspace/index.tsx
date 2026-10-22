@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
 import { ShieldCheck } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -29,11 +30,11 @@ const requestListScopesByPath: Readonly<
   Partial<Record<string, RequestListScope>>
 > = {
   [HOME_PATH]: "created",
-  "/requests/all": "all",
-  "/approvals/pending": "pending",
-  "/approvals/approved": "approved",
-  "/tasks/mine": "personal-tasks",
-  "/tasks": "all-tasks",
+  [APP_ROUTES.requests.all]: "all",
+  [APP_ROUTES.approvals.pending]: "pending",
+  [APP_ROUTES.approvals.approved]: "approved",
+  [APP_ROUTES.tasks.mine]: "personal-tasks",
+  [APP_ROUTES.tasks.all]: "all-tasks",
 };
 
 export function WorkspacePage({
@@ -42,7 +43,7 @@ export function WorkspacePage({
   const { permissions, userId } = useAuthContext();
   const [params] = useSearchParams();
   const allowed = canAccessPage(page, permissions);
-  if (page.path === "/requests/:ticketID" && allowed)
+  if (page.path === APP_ROUTES.requests.detail && allowed)
     return <RequestDetail key={userId} />;
   const Icon = page.icon;
   let content = (
@@ -55,42 +56,42 @@ export function WorkspacePage({
   );
   const listScope = requestListScopesByPath[page.path];
   if (listScope) content = <RequestList key={listScope} scope={listScope} />;
-  if (page.path === "/requests/change-status")
+  if (page.path === APP_ROUTES.requests.changeStatus)
     content = <RequestChangeStatus />;
-  if (page.path === "/requests/new")
+  if (page.path === APP_ROUTES.requests.create)
     content = (
       <RequestCreate key={`${userId}:${params.get("clone") ?? "new"}`} />
     );
-  if (page.path === "/reports")
+  if (page.path === APP_ROUTES.reports.overview)
     content = <ReportsPage key="report-dashboard" />;
-  if (page.path === "/reports/export")
+  if (page.path === APP_ROUTES.reports.export)
     content = <ReportsPage key="report-export" mode="export" />;
-  if (page.path === "/recruitment/requests")
+  if (page.path === APP_ROUTES.recruitment.requests)
     content = (
       <RecruitmentList key={`recruitment-requests-${userId}`} kind="requests" />
     );
-  if (page.path === "/recruitment/candidates")
+  if (page.path === APP_ROUTES.recruitment.candidates)
     content = (
       <RecruitmentList
         key={`recruitment-candidates-${userId}`}
         kind="candidates"
       />
     );
-  if (page.path === "/recruitment/interviews")
+  if (page.path === APP_ROUTES.recruitment.interviews)
     content = <RecruitmentCalendar key={`recruitment-calendar-${userId}`} />;
-  if (page.path === "/recruitment/reports")
+  if (page.path === APP_ROUTES.recruitment.reports)
     content = <RecruitmentReport key={`recruitment-reports-${userId}`} />;
-  if (page.path === "/recruitment/interviews/:codeInterview")
+  if (page.path === APP_ROUTES.recruitment.interviewDetail)
     content = <InterviewCandidates key={`recruitment-interview-${userId}`} />;
 
-  if (page.path === "/settings")
-    content = <LegacyPageRedirect to="/settings/users" />;
+  if (page.path === APP_ROUTES.settings.overview)
+    content = <LegacyPageRedirect to={APP_ROUTES.settings.users} />;
   const settingsKind = getSettingsKind(page.path);
   if (settingsKind)
     content = (
       <SettingsList key={`${settingsKind}-${userId}`} kind={settingsKind} />
     );
-  if (page.path === "/settings/users/new")
+  if (page.path === APP_ROUTES.settings.createUser)
     content = (
       <SettingsList key={`create-user-${userId}`} kind="users" createUser />
     );

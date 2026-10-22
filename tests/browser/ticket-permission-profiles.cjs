@@ -1,3 +1,4 @@
+const ticketTestEnv = require("../env.cjs");
 // UI-only real-data QC. Credentials and testPassword arrive through stdin.
 // Modes: smoke (first profile), create (all profiles), verify (read-only).
 // Resuming reuses exact TEST names and never resubmits an existing account.
@@ -5,7 +6,7 @@ const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const mode = process.argv[2] || "verify";
-const base = process.env.BASE_URL || "http://127.0.0.1:5189";
+const base = ticketTestEnv.baseUrl;
 const reportPath =
   process.env.PROFILE_REPORT ||
   "tests/artifacts/ticket-permission-profiles.json";

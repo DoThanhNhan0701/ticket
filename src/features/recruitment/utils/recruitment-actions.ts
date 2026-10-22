@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { recruitmentMultipart, recruitmentWrite } from "../api/recruitment-api";
 import type { RecruitmentEditorState, RecruitmentValues } from "../types";
 import {
@@ -21,18 +22,26 @@ export async function saveRecruitmentAction(
     recruitmentMultipart({ ...data, ...extra }, files);
   switch (state.action) {
     case "request":
-      return recruitmentWrite(`/detail_recruitment/${id}`, "PUT", body());
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.requestDetail(id),
+        "PUT",
+        body(),
+      );
     case "create-candidate":
       return recruitmentWrite(
-        `/detail_cv/${id}`,
+        API_ENDPOINTS.recruitment.candidateDetail(id),
         "POST",
         body({ department_recruited: state.row.department_recruited }),
       );
     case "candidate":
-      return recruitmentWrite(`/detail_cv/${id}`, "PUT", body());
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.candidateDetail(id),
+        "PUT",
+        body(),
+      );
     case "interview":
       return recruitmentWrite(
-        "/regis-interview/",
+        API_ENDPOINTS.recruitment.interview,
         id ? "PUT" : "POST",
         body(id ? { id_interview: id } : {}),
       );
@@ -53,36 +62,60 @@ async function saveAdditionalAction(
       form.append("code_cv", String(state.row.code_cv));
       form.append("cv_status", String(data.cv_status));
       form.append("why_change", String(data.why_change ?? ""));
-      return recruitmentWrite(`/change_status_cv/${id}`, "PUT", form);
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.changeCandidateStatus(id),
+        "PUT",
+        form,
+      );
     }
     case "delete-interview":
-      return recruitmentWrite(`/regis-interview/${id}`, "DELETE");
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.interviewDetail(id),
+        "DELETE",
+      );
     case "delete-candidate":
-      return recruitmentWrite("/del-data-cv/", "POST", { id_cv: id });
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.deleteCandidate,
+        "POST",
+        { id_cv: id },
+      );
     case "delete-file": {
       const form = new FormData();
       form.append("id_cv", String(id));
       form.append("name_file_cv", String(state.row.name_file_cv));
-      return recruitmentWrite("/del-file-cv/", "POST", form);
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.deleteFile,
+        "POST",
+        form,
+      );
     }
     case "attach": {
       const form = new FormData();
       form.append("ls_id_cv", JSON.stringify(state.ids ?? [id]));
       form.append("id_interview", String(data.id_interview));
-      return recruitmentWrite("/add-cv-interview/", "POST", form);
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.addInterviewCandidates,
+        "POST",
+        form,
+      );
     }
     case "note": {
       if (!String(data.note ?? "").trim() && !files.file_note)
         throw new Error("Vui lòng nhập ghi chú hoặc đính kèm tệp.");
       const form = body();
       form.append("id_cv", String(id));
-      return recruitmentWrite("/note-cv/", "POST", form);
+      return recruitmentWrite(API_ENDPOINTS.recruitment.note, "POST", form);
     }
     case "remove-interview-cv":
-      return recruitmentWrite("/del-cv-interview/", "DELETE", undefined, {
-        ls_id_cv: JSON.stringify(state.ids ?? [id]),
-        code_interview: state.code ?? "",
-      });
+      return recruitmentWrite(
+        API_ENDPOINTS.recruitment.removeInterviewCandidates,
+        "DELETE",
+        undefined,
+        {
+          ls_id_cv: JSON.stringify(state.ids ?? [id]),
+          code_interview: state.code ?? "",
+        },
+      );
     case "candidate-time":
       return saveCandidateInterviewTime(state, data);
     default:
@@ -100,11 +133,15 @@ function saveCandidateInterviewTime(
     state.timeRange?.end,
   );
   if (issue) throw new Error(issue);
-  return recruitmentWrite("/detail-cv-interview/", "POST", {
-    id_cv: state.row.id,
-    id_interview: state.row.id_interview,
-    time_start: data.time_start || null,
-  });
+  return recruitmentWrite(
+    API_ENDPOINTS.recruitment.candidateInterviewTime,
+    "POST",
+    {
+      id_cv: state.row.id,
+      id_interview: state.row.id_interview,
+      time_start: data.time_start || null,
+    },
+  );
 }
 
 function recruitmentPayload(

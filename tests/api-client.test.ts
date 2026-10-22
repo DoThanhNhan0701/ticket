@@ -377,13 +377,13 @@ describe("HTTP client", () => {
     ["/api", "/api"],
     [" /api/ ", "/api"],
     [
-      "https://ticket-api.aiminds.io.vn",
-      "https://ticket-api.aiminds.io.vn/api",
+      "https://ticket.rainscales.com.vn",
+      "https://ticket.rainscales.com.vn/api",
     ],
-    ["http://192.168.30.69:8002", "http://192.168.30.69:8002/api"],
-    ["http://192.168.30.69:8002/", "http://192.168.30.69:8002/api"],
-    ["http://192.168.30.69:8002/api", "http://192.168.30.69:8002/api"],
-    ["http://192.168.30.69:8002/api/", "http://192.168.30.69:8002/api"],
+    ["http://192.168.30.69:8001", "http://192.168.30.69:8001/api"],
+    ["http://192.168.30.69:8001/", "http://192.168.30.69:8001/api"],
+    ["http://192.168.30.69:8001/api", "http://192.168.30.69:8001/api"],
+    ["http://192.168.30.69:8001/api/", "http://192.168.30.69:8001/api"],
   ])("normalizes API base %j to %s", (configuredUrl, expected) => {
     const baseUrl = getApiBaseUrl(configuredUrl);
     expect(baseUrl).toBe(expected);

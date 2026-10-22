@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { parseSpreadsheet } from "@/lib/api/spreadsheet";
 import { getRequest, postRequest } from "@/lib/api/client";
 import { parseApiResponse } from "@/lib/api/response-schema";
@@ -10,16 +11,19 @@ import {
 } from "../schemas/reports-schema";
 
 export async function listReportGroupsRequest(signal?: AbortSignal) {
-  const response = await getRequest<unknown>("/list_handling_group/", {
-    params: {
-      columnSort: "id",
-      typeSort: "ascend",
-      is_active: "true",
-      page_size: "1000",
-      page: "1",
+  const response = await getRequest<unknown>(
+    API_ENDPOINTS.lookups.handlingGroups,
+    {
+      params: {
+        columnSort: "id",
+        typeSort: "ascend",
+        is_active: "true",
+        page_size: "1000",
+        page: "1",
+      },
+      signal,
     },
-    signal,
-  });
+  );
   return parseApiResponse(
     reportGroupsResponseSchema,
     response,
@@ -31,10 +35,13 @@ export async function listReportTypesRequest(
   groupId: string,
   signal?: AbortSignal,
 ) {
-  const response = await getRequest<unknown>("/list_tickettype/", {
-    params: { handling_group: groupId, page_size: "1000", page: "1" },
-    signal,
-  });
+  const response = await getRequest<unknown>(
+    API_ENDPOINTS.lookups.ticketTypes,
+    {
+      params: { handling_group: groupId, page_size: "1000", page: "1" },
+      signal,
+    },
+  );
   return parseApiResponse(
     reportTypesResponseSchema,
     response,
@@ -59,7 +66,7 @@ export async function getReportRequest(
   values: ReportFilters,
   signal?: AbortSignal,
 ) {
-  const response = await postRequest<unknown>("/report", {
+  const response = await postRequest<unknown>(API_ENDPOINTS.reports.summary, {
     body: reportBody(values),
     signal,
   });
@@ -72,7 +79,7 @@ export async function getReportRequest(
 
 export async function exportReportRequest(values: ReportFilters) {
   return parseSpreadsheet(
-    await postRequest<unknown>("/export_excel", {
+    await postRequest<unknown>(API_ENDPOINTS.reports.exportExcel, {
       body: reportBody(values),
       responseType: "blob",
     }),
@@ -96,7 +103,7 @@ export async function exportReportDataRequest(values: ReportFilters) {
   body.append("bophanxuly_id", parsed.handlinggroup);
   body.append("ticket_type_id", parsed.ticket_type_id);
   return parseSpreadsheet(
-    await postRequest<unknown>("/export_ticket_type", {
+    await postRequest<unknown>(API_ENDPOINTS.reports.exportTicketType, {
       body,
       responseType: "blob",
     }),

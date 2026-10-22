@@ -1,9 +1,10 @@
+const ticketTestEnv = require("../env.cjs");
 // Live UI-only recruitment QC. Credentials via stdin; all writes are restricted to this run's TEST records.
 const fs = require("node:fs");
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5195";
+const base = ticketTestEnv.baseUrl;
 const artifact =
   process.env.QC_REPORT || "tests/artifacts/ticket-recruitment-20-records.json";
 const phase = process.env.QC_PHASE || "create";

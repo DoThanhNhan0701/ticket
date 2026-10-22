@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw, Send } from "lucide-react";
@@ -110,7 +111,7 @@ export function RequestCreate() {
           aria-label="Quay lại danh sách"
           title="Quay lại danh sách"
           className="size-11 p-0 sm:w-auto sm:px-4"
-          onClick={() => navigate("/requests")}
+          onClick={() => navigate(APP_ROUTES.requests.list)}
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
           <span className="hidden sm:inline">Quay lại</span>

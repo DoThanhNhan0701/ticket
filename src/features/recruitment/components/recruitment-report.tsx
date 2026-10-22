@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Download } from "lucide-react";
@@ -65,7 +66,7 @@ export function RecruitmentReport() {
   const query = useQuery({
     queryKey: ["recruitment-report", userId, filters],
     queryFn: ({ signal }) =>
-      recruitmentObject("/report_rect/", filters, signal),
+      recruitmentObject(API_ENDPOINTS.recruitment.report, filters, signal),
     placeholderData: (previous, old) =>
       old?.queryKey[1] === userId ? previous : undefined,
     retry: false,
@@ -82,7 +83,7 @@ export function RecruitmentReport() {
   const statuses = useQuery({
     queryKey: ["recruitment-report-statuses", userId],
     queryFn: ({ signal }) =>
-      recruitmentArray("/list_status_cv/", undefined, signal),
+      recruitmentArray(API_ENDPOINTS.recruitment.statuses, undefined, signal),
     retry: false,
   });
   let rows = recruitmentRows(query.data?.[tab]);

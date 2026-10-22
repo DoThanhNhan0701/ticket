@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -14,7 +15,9 @@ export function UserExportButton({
   const mutation = useMutation({
     mutationFn: async () =>
       parseSpreadsheet(
-        await getRequest<unknown>("/export_user", { responseType: "blob" }),
+        await getRequest<unknown>(API_ENDPOINTS.settings.exportUsers, {
+          responseType: "blob",
+        }),
       ),
     retry: false,
     onSuccess: (file) => downloadFile(file, "Nguoi_dung.xlsx"),

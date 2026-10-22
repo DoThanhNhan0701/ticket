@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { addBusinessDays, format } from "date-fns";
 import { useForm, useWatch, type UseFormReturn } from "react-hook-form";
@@ -235,7 +236,7 @@ export function useCreateRequest() {
       draft.clear();
       await client.invalidateQueries({ queryKey: ["requests"] });
       toast.success("Đã tạo yêu cầu.");
-      navigate("/requests");
+      navigate(APP_ROUTES.requests.list);
     },
     onSettled: () => {
       submitting.current = false;
@@ -260,7 +261,7 @@ export function useCreateRequest() {
       // Leave the clone context so a later clone starts from its source,
       // rather than restoring an empty draft marked as already initialized.
       draft.clear();
-      navigate("/requests/new", { replace: true });
+      navigate(APP_ROUTES.requests.create, { replace: true });
       return;
     }
     draft.restart();

@@ -363,6 +363,23 @@ The supplied `Logo-Rainscales-New-Colors_260717.zip` is the source for `public/b
 
 The brand colors are purple `#6468AF`, cyan `#61C9D9` and blue `#263D88`. Related `brand-*` shades in `src/index.css` provide readable focus, hover and text states. The favicon and Apple touch icon use the supplied emblem; Scout illustrations remain available for login and empty states.
 
+## User guide
+
+The header's book icon opens `/help` for any signed-in account. The reader
+supports chapter navigation on desktop/mobile and downloading the original Word
+manual. It does not use an external document viewer.
+
+After editing `docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx`, update
+the generated reader content and the Word download in `public/docs`:
+
+```bash
+python3 scripts/export-user-guide.py
+npx prettier --write src/features/help/user-guide.json
+```
+
+The exporter only needs Python's standard library and publishes the user manual;
+the FE–BE audit report stays outside the public assets.
+
 ## License
 
 Private repository. All rights reserved.

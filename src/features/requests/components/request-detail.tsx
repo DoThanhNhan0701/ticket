@@ -1,3 +1,4 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { useRef, type KeyboardEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -177,7 +178,7 @@ export function RequestDetail() {
   const goBack = () => {
     const index: unknown = window.history.state?.idx;
     if (typeof index === "number" && index > 0) void navigate(-1);
-    else void navigate("/requests", { replace: true });
+    else void navigate(APP_ROUTES.requests.list, { replace: true });
   };
   const valid = validTicketId(ticketID);
   const query = useQuery({

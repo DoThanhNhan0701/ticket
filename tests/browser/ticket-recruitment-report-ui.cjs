@@ -1,8 +1,9 @@
+const ticketTestEnv = require("../env.cjs");
 // Isolated browser review: every API response is a fixture; no backend writes.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
-const base = process.env.BASE_URL || "http://127.0.0.1:5198";
+const base = ticketTestEnv.baseUrl;
 const output =
   process.env.SCREENSHOT_DIR || "/tmp/ticket-recruitment-report-ui";
 const rows = Array.from({ length: 101 }, (_, index) => ({

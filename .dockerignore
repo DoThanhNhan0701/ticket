@@ -6,6 +6,7 @@
 .idea
 .env
 .env.*
+!.env.development
 .npmrc
 node_modules
 dist

@@ -1,6 +1,7 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { useRef } from "react";
-import { Link, Navigate, Outlet } from "react-router-dom";
-import { LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { BookOpen, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -13,6 +14,7 @@ import { AppSidebar, MobileSidebar } from "./app-sidebar";
 import { useSidebarPreferences } from "./use-sidebar-preferences";
 
 export function PrivateLayout() {
+  const navigate = useNavigate();
   const {
     collapsed: sidebarCollapsed,
     groups,
@@ -23,7 +25,7 @@ export function PrivateLayout() {
   const { token, isInitializing, username, avatarUrl, logout, permissions } =
     useAuthContext();
   if (isInitializing) return <LoadingScreen />;
-  if (!token) return <Navigate to="/login" replace />;
+  if (!token) return <Navigate to={APP_ROUTES.login} replace />;
 
   return (
     <div className="app-dashed-background flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">
@@ -61,7 +63,8 @@ export function PrivateLayout() {
               aria-label="Rainscales Ticket home"
               className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              <BrandLogo className="h-7 w-[clamp(5.5rem,calc(100vw-16rem),10rem)]" />
+              <BrandLogo variant="mark" className="size-8 sm:hidden" />
+              <BrandLogo className="hidden h-7 w-[clamp(5.5rem,calc(100vw-16rem),10rem)] sm:inline-block" />
             </Link>
             <div className="flex min-w-0 items-center gap-2 border-l border-border pl-2">
               <UserAvatar name={username} src={avatarUrl} className="h-8 w-8" />
@@ -74,6 +77,17 @@ export function PrivateLayout() {
             aria-label="Main navigation"
             className="flex shrink-0 items-center gap-1 sm:gap-2"
           >
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => void navigate(APP_ROUTES.help)}
+              aria-label="Hướng dẫn sử dụng"
+              title="Hướng dẫn sử dụng"
+              className="size-11 shrink-0 rounded-md border-border bg-card text-foreground hover:bg-accent sm:size-9 sm:pointer-coarse:size-11"
+            >
+              <BookOpen className="size-4" aria-hidden="true" />
+            </Button>
             <ThemeToggle />
             <Button
               type="button"

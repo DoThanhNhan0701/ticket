@@ -1,3 +1,5 @@
+import { PAGE_LINKS } from "@/constants/routes";
+import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { ResponsivePageAction } from "@/components/layout/mobile-page-action";
 import { useState } from "react";
 import {
@@ -63,13 +65,12 @@ export function RecruitmentCalendar() {
     retry: false,
   });
   const cvLink = useMutation({
-    mutationFn: (id: number) => recruitmentObject(`/check-cv-interview/${id}`),
+    mutationFn: (id: number) =>
+      recruitmentObject(API_ENDPOINTS.recruitment.checkInterviewCandidate(id)),
     retry: false,
     onSuccess: (result) => {
       if (typeof result.code_interview === "string")
-        navigate(
-          `/recruitment/interviews/${encodeURIComponent(result.code_interview)}`,
-        );
+        navigate(PAGE_LINKS.interviewDetail(result.code_interview));
     },
   });
   const shift = (amount: number) =>
