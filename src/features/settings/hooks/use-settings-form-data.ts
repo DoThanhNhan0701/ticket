@@ -31,7 +31,7 @@ export function useSettingsFormData(
     queryFn: ({ signal }) => settingsLookupsRequest(resources, signal),
     retry: false,
   });
-  const loading = (needsDetail && detail.isFetching) || lookups.isPending;
+  const loading = (needsDetail && detail.isPending) || lookups.isPending;
   return {
     detail,
     lookups,

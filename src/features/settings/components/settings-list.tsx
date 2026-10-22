@@ -159,6 +159,7 @@ export function SettingsList({
         </div>
       )}
       <DataResults
+        refreshStyle="subtle"
         query={query}
         label={`Danh sách ${config.label}`}
         emptyTitle={`Không tìm thấy ${config.label}`}

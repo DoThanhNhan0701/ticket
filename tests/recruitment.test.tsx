@@ -8,7 +8,13 @@ import {
   within,
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  MemoryRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import * as api from "@/features/recruitment/api/recruitment-api";
 import * as addressApi from "@/features/recruitment/api/vietnam-address-api";
@@ -162,6 +168,17 @@ function mount(component: React.ReactNode, path = "/recruitment/requests") {
     <QueryClientProvider client={client}>
       <MemoryRouter initialEntries={[path]}>{component}</MemoryRouter>
     </QueryClientProvider>,
+  );
+}
+function ReportNavigationProbe() {
+  const { search } = useLocation();
+  const navigate = useNavigate();
+  return (
+    <>
+      <output data-testid="report-query">{search}</output>
+      <button onClick={() => void navigate(-1)}>Lùi lịch sử báo cáo</button>
+      <button onClick={() => void navigate(1)}>Tiến lịch sử báo cáo</button>
+    </>
   );
 }
 async function option(label: string, name: string) {
@@ -629,6 +646,65 @@ it("renders report tables and charts, supports keyboard tabs and blocks excessiv
   await screen.findByText("Phạm vi tra cứu không quá 6 tháng.");
   expect(api.recruitmentObject).toHaveBeenCalledTimes(calls);
 });
+it("restores a recruitment report tab from the URL and gives every tab a decorative icon", async () => {
+  mount(<RecruitmentReport />, "/recruitment/reports?tab=result_cv_status");
+  const active = screen.getByRole("tab", { name: "Trạng thái CV" });
+  expect(active.getAttribute("aria-selected")).toBe("true");
+  const panel = screen.getByRole("tabpanel", { name: "Trạng thái CV" });
+  expect((await within(panel).findAllByText("3")).length).toBeGreaterThan(0);
+  for (const tab of screen.getAllByRole("tab")) {
+    expect(tab.querySelector('svg[aria-hidden="true"]')).toBeTruthy();
+  }
+});
+
+it("keeps other query parameters and restores report tabs through browser history without refetching", async () => {
+  mount(
+    <>
+      <RecruitmentReport />
+      <ReportNavigationProbe />
+    </>,
+    "/recruitment/reports?tab=result_rect&search=keep",
+  );
+  await screen.findByRole("table", { name: "Bảng báo cáo tuyển dụng" });
+  const calls = vi.mocked(api.recruitmentObject).mock.calls.length;
+  fireEvent.click(screen.getByRole("tab", { name: "Trạng thái CV" }));
+  expect(screen.getByTestId("report-query").textContent).toBe(
+    "?tab=result_cv_status&search=keep",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Lùi lịch sử báo cáo" }));
+  await waitFor(() =>
+    expect(
+      screen
+        .getByRole("tab", { name: "Theo yêu cầu tuyển dụng" })
+        .getAttribute("aria-selected"),
+    ).toBe("true"),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Tiến lịch sử báo cáo" }));
+  await waitFor(() =>
+    expect(
+      screen
+        .getByRole("tab", { name: "Trạng thái CV" })
+        .getAttribute("aria-selected"),
+    ).toBe("true"),
+  );
+  fireEvent.keyDown(screen.getByRole("tab", { name: "Trạng thái CV" }), {
+    key: "End",
+  });
+  expect(screen.getByTestId("report-query").textContent).toBe(
+    "?tab=result_department_month&search=keep",
+  );
+  expect(api.recruitmentObject).toHaveBeenCalledTimes(calls);
+});
+
+it("falls back to the first report tab for an unknown URL tab", async () => {
+  mount(<RecruitmentReport />, "/recruitment/reports?tab=unknown");
+  await screen.findByRole("table", { name: "Bảng báo cáo tuyển dụng" });
+  expect(
+    screen
+      .getByRole("tab", { name: "Theo yêu cầu tuyển dụng" })
+      .getAttribute("aria-selected"),
+  ).toBe("true");
+});
 
 it("waits for delayed district options before saving an existing candidate", async () => {
   let resolveDistricts!: (
@@ -1014,6 +1090,23 @@ it("preserves interview scroll and table nodes when a background reload changes 
     scroll,
   );
   expect(scroll.scrollTop).toBe(250);
+});
+
+it("does not reserve space above report charts when a tab has no summary metrics", async () => {
+  vi.mocked(api.recruitmentObject).mockResolvedValue({
+    result_candidate_source: [
+      { candidate_source__name: "Giới thiệu", number_cv: 12 },
+    ],
+  });
+  mount(
+    <RecruitmentReport />,
+    "/recruitment/reports?tab=result_candidate_source",
+  );
+  const chart = await screen.findByRole("figure", {
+    name: "Biểu đồ số lượng CV",
+  });
+  const panel = screen.getByRole("tabpanel", { name: "Theo nguồn ứng viên" });
+  expect(panel.firstElementChild).toBe(chart);
 });
 
 it("keeps report chart nodes mounted when report data is refreshed", async () => {

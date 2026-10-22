@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { readFileSync } from "node:fs";
 import {
   cleanup,
   act,
@@ -10,7 +11,13 @@ import {
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, expect, it, vi } from "vitest";
+import {
+  convertGuideDocument,
+  loadUserGuide,
+  USER_GUIDE_URL,
+  type GuideDocument,
+} from "@/features/help/api/user-guide-api";
 import App from "@/app/app";
 import { requestDetailFixture } from "./fixtures/request-detail";
 import { requestDetailSchema } from "@/features/requests/schemas/request-detail-schema";
@@ -88,10 +95,25 @@ vi.mock("@/features/recruitment/api/recruitment-api", () => ({
   exportRecruitment: vi.fn(),
 }));
 
+vi.mock("@/features/help/api/user-guide-api", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("@/features/help/api/user-guide-api")>();
+  return { ...actual, loadUserGuide: vi.fn() };
+});
+
 let client: QueryClient;
 let auth: AuthContextValue;
+let guideDocument: GuideDocument;
+
+beforeAll(async () => {
+  const buffer = Uint8Array.from(
+    readFileSync(new URL("../public" + USER_GUIDE_URL, import.meta.url)),
+  ).buffer;
+  guideDocument = await convertGuideDocument(buffer);
+});
 
 beforeEach(() => {
+  vi.mocked(loadUserGuide).mockResolvedValue(guideDocument);
   localStorage.clear();
   vi.stubGlobal(
     "ResizeObserver",
@@ -193,6 +215,60 @@ it("opens the guide from the header and lets signed-in users read chapters witho
 it("falls back to the first guide chapter for an invalid chapter link", async () => {
   renderApp("/help?chapter=999");
   await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+});
+
+it("offers Word download and retries when reading the guide fails", async () => {
+  vi.mocked(loadUserGuide).mockRejectedValueOnce(new Error("Network failed"));
+  renderApp("/help");
+  await screen.findByRole("alert");
+  expect(
+    screen
+      .getByRole("link", { name: "Tải tài liệu Word" })
+      .getAttribute("href"),
+  ).toBe(USER_GUIDE_URL);
+  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+});
+
+it("opens a chapter through the table of contents inside the original Word document", async () => {
+  renderApp("/help");
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+  fireEvent.click(screen.getByText("Thông tin tài liệu"));
+  fireEvent.click(
+    screen.getByRole("link", { name: /^4\. Tạo một yêu cầu mới/ }),
+  );
+  await screen.findByRole("heading", { name: "4. Tạo một yêu cầu mới" });
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/help?chapter=4",
+  );
+});
+
+it("moves between guide chapters and disables navigation at the boundaries", async () => {
+  renderApp("/help");
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+  expect(
+    (screen.getByRole("button", { name: "Chương trước" }) as HTMLButtonElement)
+      .disabled,
+  ).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Chương tiếp theo" }));
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/help?chapter=2",
+  );
+  expect(
+    screen
+      .getByRole("button", { name: "Chương trước" })
+      .hasAttribute("disabled"),
+  ).toBe(false);
+  fireEvent.click(screen.getByRole("button", { name: "Chương trước" }));
+  await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
+  fireEvent.click(
+    screen.getByRole("button", { name: "15. Khi gặp vấn đề và cần hỗ trợ" }),
+  );
+  expect(
+    screen
+      .getByRole("button", { name: "Chương tiếp theo" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
 });
 
 it("requires sign-in before opening the user guide", async () => {

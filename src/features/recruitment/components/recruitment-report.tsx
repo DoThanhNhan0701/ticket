@@ -1,7 +1,18 @@
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Download } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Building2,
+  CalendarDays,
+  ChartNoAxesCombined,
+  CircleCheck,
+  Clock3,
+  Download,
+  UserRoundCheck,
+  Users,
+} from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
   DataClientResults,
@@ -14,6 +25,8 @@ import { ErrorAlert } from "@/components/error-alert";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { downloadFile } from "@/lib/download";
+import { cn } from "@/lib/utils";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import {
   recruitmentObject,
   exportRecruitment,
@@ -28,14 +41,14 @@ import type { RecruitmentRow } from "../types";
 import { RecruitmentChart } from "./recruitment-chart";
 import { RecruitmentFilters } from "./recruitment-filters";
 const sections = [
-  ["result_rect", "Theo yêu cầu tuyển dụng"],
-  ["result_department", "Theo bộ phận"],
-  ["result_hr", "Theo người phụ trách"],
-  ["result_time_recruitment", "Thời gian tuyển dụng"],
-  ["result_candidate_source", "Theo nguồn ứng viên"],
-  ["result_cv_conversion_rate", "Tỷ lệ chuyển đổi CV"],
-  ["result_cv_status", "Trạng thái CV"],
-  ["result_department_month", "Bộ phận theo tháng"],
+  ["result_rect", "Theo yêu cầu tuyển dụng", BriefcaseBusiness],
+  ["result_department", "Theo bộ phận", Building2],
+  ["result_hr", "Theo người phụ trách", UserRoundCheck],
+  ["result_time_recruitment", "Thời gian tuyển dụng", Clock3],
+  ["result_candidate_source", "Theo nguồn ứng viên", Users],
+  ["result_cv_conversion_rate", "Tỷ lệ chuyển đổi CV", ChartNoAxesCombined],
+  ["result_cv_status", "Trạng thái CV", CircleCheck],
+  ["result_department_month", "Bộ phận theo tháng", CalendarDays],
 ] as const;
 const labels: Record<string, string> = {
   ticket_code: "Mã yêu cầu",
@@ -59,10 +72,40 @@ const labels: Record<string, string> = {
   number_cv: "Số lượng CV",
 };
 export function RecruitmentReport() {
+  const { ref: tabsRef, isDragging, handlers: dragHandlers } = useDragScroll();
   const { userId } = useAuthContext();
   const [paginationReset, resetPagination] = useState(0);
   const [filters, setFilters] = useState(defaultRecruitmentDates);
-  const [tab, setTab] = useState<string>(sections[0][0]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tab =
+    sections.find(([key]) => key === searchParams.get("tab"))?.[0] ??
+    sections[0][0];
+  const setTab = (key: string) => {
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.set("tab", key);
+        return next;
+      },
+      { preventScrollReset: true },
+    );
+  };
+  useEffect(() => {
+    const container = tabsRef.current;
+    const active = container?.querySelector<HTMLElement>(
+      '[aria-selected="true"]',
+    );
+    if (!container || !active || !container.clientWidth) return;
+    if (active.offsetLeft < container.scrollLeft) {
+      container.scrollLeft = active.offsetLeft;
+    } else if (
+      active.offsetLeft + active.offsetWidth >
+      container.scrollLeft + container.clientWidth
+    ) {
+      container.scrollLeft =
+        active.offsetLeft + active.offsetWidth - container.clientWidth;
+    }
+  }, [tab, tabsRef]);
   const query = useQuery({
     queryKey: ["recruitment-report", userId, filters],
     queryFn: ({ signal }) =>
@@ -104,6 +147,10 @@ export function RecruitmentReport() {
         number_cv: Array.isArray(value) ? value[0] : 0,
       }));
   }
+  const hasRows = Boolean(query.data) && rows.length > 0;
+  const summaryKeys = ["number_cv_all", "quantity", "number_cv_pass"].filter(
+    (key) => rows.some((row) => Number.isFinite(Number(row[key]))),
+  );
   const keys = [...new Set(rows.flatMap((row) => Object.keys(row)))].filter(
     (key) =>
       Object.prototype.hasOwnProperty.call(labels, key) &&
@@ -141,7 +188,12 @@ export function RecruitmentReport() {
     ),
   }));
   return (
-    <div className="flex min-w-0 shrink-0 flex-col gap-3 pb-6">
+    <div
+      className={cn(
+        "flex min-w-0 flex-col gap-3",
+        hasRows ? "shrink-0 pb-6" : "min-h-0 flex-1",
+      )}
+    >
       <RecruitmentFilters
         values={filters}
         lookups={{}}
@@ -184,11 +236,13 @@ export function RecruitmentReport() {
 
       {exporting.isError && <ErrorAlert message={exporting.error.message} />}
       <div
-        className="flex shrink-0 gap-1 overflow-x-auto rounded-xl border bg-card p-2 [scrollbar-gutter:stable]"
+        ref={tabsRef}
+        {...dragHandlers}
+        className={`recruitment-report-tabs relative grid min-w-0 shrink-0 auto-cols-[minmax(14rem,1fr)] grid-flow-col gap-1 overflow-x-auto rounded-xl border bg-card p-2 select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
         role="tablist"
         aria-label="Báo cáo tuyển dụng"
       >
-        {sections.map(([key, label]) => (
+        {sections.map(([key, label, Icon]) => (
           <Button
             key={key}
             id={`recruitment-report-${key}`}
@@ -197,7 +251,7 @@ export function RecruitmentReport() {
             aria-selected={tab === key}
             aria-controls="recruitment-report-panel"
             variant={tab === key ? "default" : "ghost"}
-            className="shrink-0 transition-colors motion-reduce:transition-none"
+            className="min-w-0 w-full cursor-inherit transition-colors motion-reduce:transition-none"
             onKeyDown={(event) => {
               const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
               if (!keys.includes(event.key)) return;
@@ -215,6 +269,7 @@ export function RecruitmentReport() {
             }}
             onClick={() => setTab(key)}
           >
+            <Icon className="size-4" aria-hidden="true" />
             {label}
           </Button>
         ))}
@@ -223,19 +278,19 @@ export function RecruitmentReport() {
         id="recruitment-report-panel"
         role="tabpanel"
         aria-label={sections.find(([key]) => key === tab)?.[1]}
-        className="flex min-w-0 shrink-0 flex-col gap-4 rounded-xl border bg-card p-3 sm:p-4"
+        className={cn(
+          "flex min-w-0 flex-col gap-4 rounded-xl border bg-card p-3 sm:p-4",
+          hasRows ? "shrink-0" : "min-h-0 flex-1",
+        )}
       >
-        {query.data && rows.length > 0 && (
+        {hasRows && (
           <>
-            <div
-              key={`stats-${tab}`}
-              className="recruitment-report-reveal grid grid-cols-1 gap-3 min-[400px]:grid-cols-3"
-            >
-              {["number_cv_all", "quantity", "number_cv_pass"]
-                .filter((key) =>
-                  rows.some((row) => Number.isFinite(Number(row[key]))),
-                )
-                .map((key) => (
+            {summaryKeys.length > 0 && (
+              <div
+                key={`stats-${tab}`}
+                className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-3"
+              >
+                {summaryKeys.map((key) => (
                   <div
                     key={key}
                     className="min-w-0 rounded-xl border border-primary/15 bg-linear-to-br from-primary/5 to-card p-4"
@@ -251,11 +306,17 @@ export function RecruitmentReport() {
                     </p>
                   </div>
                 ))}
-            </div>
+              </div>
+            )}
             <RecruitmentChart key={`chart-${tab}`} rows={rows} section={tab} />
           </>
         )}
-        <div className="flex h-[clamp(22rem,50vh,36rem)] min-h-0 min-w-0 flex-col">
+        <div
+          className={cn(
+            "flex min-h-0 min-w-0 flex-col",
+            hasRows ? "h-[clamp(22rem,50vh,36rem)]" : "flex-1",
+          )}
+        >
           <DataClientResults
             refreshStyle="subtle"
             scopeKey={JSON.stringify([tab, filters, paginationReset])}

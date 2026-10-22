@@ -1,0 +1,98 @@
+.guide-document {
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.guide-document > * + * {
+  margin-top: 1rem;
+}
+
+.guide-document :is(h2, h3, h4) {
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.75;
+}
+
+.guide-document :is(h2, h3, h4)::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 1rem;
+  margin-right: 0.75rem;
+  vertical-align: middle;
+  border-radius: 2px;
+  background: var(--primary);
+}
+
+.guide-document :is(ul, ol) {
+  padding-left: 1.5rem;
+}
+
+.guide-document ul {
+  list-style: disc;
+}
+
+.guide-document ol {
+  list-style: decimal;
+}
+
+.guide-document li + li {
+  margin-top: 0.5rem;
+}
+
+.guide-document li::marker {
+  color: var(--primary);
+}
+
+.guide-document a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guide-document a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.guide-document-table {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+
+.guide-document table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.guide-document :is(td, th) {
+  min-width: 9rem;
+  padding: 0.875rem 1.25rem;
+  vertical-align: top;
+}
+
+.guide-document tbody > tr {
+  border-top: 1px solid var(--border);
+}
+
+.guide-document thead > tr {
+  background: var(--muted);
+  font-weight: 600;
+}
+
+.guide-document tbody > tr:nth-child(even) {
+  background: color-mix(in srgb, var(--muted) 25%, transparent);
+}
+
+.guide-document img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}

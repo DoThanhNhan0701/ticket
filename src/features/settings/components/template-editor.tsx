@@ -55,8 +55,16 @@ function TemplateForm({
       saveRequestTemplate(record.id, userId!, forms, exists),
     retry: false,
     onMutate: () => onBusyChange(true),
-    onSuccess: async () => {
-      await client.invalidateQueries({ queryKey: ["settings-template"] });
+    onSuccess: async (saved) => {
+      client.setQueryData(["settings-template", userId, record.id], saved);
+      await Promise.all(
+        ["settings-template", "request-create-template"].map((key) =>
+          client.invalidateQueries({
+            queryKey: [key, userId, record.id],
+            refetchType: "none",
+          }),
+        ),
+      );
       toast.success("Đã lưu biểu mẫu.");
       onClose();
     },

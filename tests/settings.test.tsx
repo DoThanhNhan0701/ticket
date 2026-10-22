@@ -385,6 +385,88 @@ it("refreshes current account permissions and ticket caches after changing a han
   for (const key of keys)
     expect(client.getQueryState(key)?.isInvalidated).toBe(true);
 });
+it.each(settingsKinds)(
+  "keeps %s visible during a slow save refresh without reloading the editor",
+  async (kind) => {
+    renderPage(kind);
+    await editorReady(kind, true);
+    const table = screen.getByRole("table", {
+      name: "Bảng cấu hình",
+      hidden: true,
+    });
+    const before = fetchMock.mock.calls.length;
+    const originalFetch = fetchMock.getMockImplementation()!;
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const listPath = `/api${settingsConfig[kind].listEndpoint}`;
+    fetchMock.mockImplementation(async (input, options) => {
+      if (
+        options?.method === "GET" &&
+        new URL(String(input)).pathname === listPath
+      )
+        await pending;
+      return originalFetch(input, options);
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    await screen.findByText("Đang cập nhật danh sách...");
+    expect(screen.getByRole("table", { name: "Bảng cấu hình" })).toBe(table);
+    expect(screen.queryByText("Đang tải thông tin...")).toBeNull();
+    const refreshRequests = fetchMock.mock.calls
+      .slice(before)
+      .filter(([, options]) => options?.method === "GET");
+    expect(
+      refreshRequests.map(([input]) => new URL(String(input)).pathname),
+    ).toEqual([listPath]);
+    await act(async () => release());
+    await waitFor(() =>
+      expect(screen.queryByText("Đang cập nhật danh sách...")).toBeNull(),
+    );
+  },
+);
+
+it("preserves unsaved fields while detail data refreshes in the background", async () => {
+  renderPage("request-types");
+  await editorReady("request-types", true);
+  const input = screen.getByLabelText(/^Tên loại yêu cầu/) as HTMLInputElement;
+  fireEvent.change(input, { target: { value: "Tên đang soạn" } });
+  const originalFetch = fetchMock.getMockImplementation()!;
+  let release!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  fetchMock.mockImplementation(async (url, options) => {
+    if (
+      options?.method === "GET" &&
+      new URL(String(url)).pathname === "/api/tickettypemmanager/186"
+    ) {
+      await pending;
+      return Response.json({
+        ...settingsFixtures["request-types"],
+        name: "Tên trên máy chủ",
+      });
+    }
+    return originalFetch(url, options);
+  });
+  let refresh!: Promise<void>;
+  act(() => {
+    refresh = client.invalidateQueries({
+      queryKey: ["settings", "request-types", 42, "detail"],
+    });
+  });
+  expect(screen.queryByText("Đang tải thông tin...")).toBeNull();
+  expect(input.disabled).toBe(false);
+  await act(async () => {
+    release();
+    await refresh;
+  });
+  expect(input.value).toBe("Tên đang soạn");
+  expect(
+    screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
+  ).toBe(false);
+});
 it("enforces the real API's 30-character requesting department name limit before writing", async () => {
   renderPage("requesting-departments");
   await editorReady("requesting-departments");
@@ -893,6 +975,8 @@ it.each(templateCombinations)(
       handling: flags.handling,
       status: flags.status,
     });
+    // One initial read and one verification read; no third read before closing.
+    expect(requests("/api/template_form/186")).toHaveLength(2);
     await openTemplate();
     for (const key of ["required", "handling", "status"] as const)
       expect(

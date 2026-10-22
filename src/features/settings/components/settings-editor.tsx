@@ -41,7 +41,7 @@ function SettingsForm({
   onClose: () => void;
   onBusyChange: (busy: boolean) => void;
 }>) {
-  const { refreshUserPermission } = useAuthContext();
+  const { userId, refreshUserPermission } = useAuthContext();
   const client = useQueryClient();
   const config = settingsConfig[kind];
   const { detail, lookups, needsDetail, currentRecord, loading, ready } =
@@ -56,6 +56,7 @@ function SettingsForm({
       ),
     ),
     values: getSettingsDefaults(currentRecord),
+    resetOptions: { keepDirtyValues: true },
   });
   const [attachment, setAttachment] = useState<File>();
   const [attachmentError, setAttachmentError] = useState("");
@@ -68,7 +69,6 @@ function SettingsForm({
     onSuccess: async () => {
       await Promise.all(
         [
-          "settings",
           "settings-lookups",
           "report-groups",
           "report-types",
@@ -83,16 +83,32 @@ function SettingsForm({
                 "request-detail",
               ]
             : []),
-        ].map((key) => client.invalidateQueries({ queryKey: [key] })),
+        ].map((key) =>
+          client.invalidateQueries({ queryKey: [key], refetchType: "none" }),
+        ),
       );
+      // Invalidate details for the next visit, without reloading the open form.
+      await client.invalidateQueries({
+        queryKey: ["settings", kind, userId],
+        refetchType: "none",
+      });
+      toast.success(record ? "Đã cập nhật dữ liệu." : "Đã thêm dữ liệu.");
+      onClose();
+      const refreshList = client.refetchQueries({
+        type: "active",
+        predicate: ({ queryKey }) =>
+          queryKey[0] === "settings" &&
+          queryKey[1] === kind &&
+          queryKey[2] === userId &&
+          queryKey[3] !== "detail",
+      });
       if (
         kind === "positions" ||
         kind === "users" ||
         kind === "handling-departments"
       )
         await refreshUserPermission();
-      toast.success(record ? "Đã cập nhật dữ liệu." : "Đã thêm dữ liệu.");
-      onClose();
+      await refreshList;
     },
     onSettled: () => {
       submitting.current = false;
