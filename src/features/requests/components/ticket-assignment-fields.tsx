@@ -48,6 +48,7 @@ export function TicketAssignmentFields({
         id="ticket-assignment-mode"
         label="Loại phân công"
         options={modes}
+        searchable
         placeholder="Chọn loại phân công"
         disabled={disabled}
         required
