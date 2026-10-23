@@ -1,0 +1,505 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "account": "nhandt02 (credentials supplied securely; no password stored)",
+  "environment": {
+    "frontend": "http://127.0.0.1:5187",
+    "build": "TEST",
+    "artifacts": "/tmp/ticket-frontend-e2e"
+  },
+  "scope": "Ticket detail actions and the four recruitment pages; independent targeted runs are reported separately, without adding overlapping coverage counts.",
+  "runs": [
+    {
+      "name": "extended-full-rights-02",
+      "counts": {
+        "PASS": 75,
+        "FAIL": 4,
+        "BLOCKED": 4,
+        "NOT RUN": 20
+      },
+      "plannedScenarioRows": 103,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/extended-full-rights-02/html/index.html"
+    },
+    {
+      "name": "ticket-actions-full-rights-03",
+      "counts": {
+        "PASS": 56,
+        "FAIL": 2,
+        "BLOCKED": 0,
+        "NOT RUN": 25
+      },
+      "plannedScenarioRows": 83,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/ticket-actions-full-rights-03/html/index.html"
+    },
+    {
+      "name": "detail-and-cancel-regression-04",
+      "counts": {
+        "PASS": 45,
+        "FAIL": 1,
+        "BLOCKED": 0,
+        "NOT RUN": 25
+      },
+      "plannedScenarioRows": 71,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/detail-and-cancel-regression-04/html/index.html"
+    },
+    {
+      "name": "interview-update-regression-05",
+      "counts": {
+        "PASS": 7,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 34
+      },
+      "plannedScenarioRows": 41,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/interview-update-regression-05/html/index.html"
+    },
+    {
+      "name": "hr-seed-cleanup-06c",
+      "counts": {
+        "PASS": 7,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 34
+      },
+      "plannedScenarioRows": 41,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/hr-seed-cleanup-06c/html/index.html"
+    },
+    {
+      "name": "recruitment-ui-full-rights-08",
+      "counts": {
+        "PASS": 27,
+        "FAIL": 1,
+        "BLOCKED": 0,
+        "NOT RUN": 33
+      },
+      "plannedScenarioRows": 61,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/recruitment-ui-full-rights-08/html/index.html"
+    }
+  ],
+  "verifiedExpandedCoverage": [
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C38",
+      "scenario": "Approve own request; inspect/cancel confirmation before real save",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C39",
+      "scenario": "Receive own approved request",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C43",
+      "scenario": "Assignment add: required selection, then persist own disposable handler",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C44",
+      "scenario": "Assignment delete: reason validation and remove only own disposable handler",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C45",
+      "scenario": "Assignment change: replace primary actor with own handler and required reason",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C47",
+      "scenario": "Complete-dialog forward: validate recipient and forward to own disposable handler",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C49",
+      "scenario": "Disposable handler completes forwarded own request",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C51",
+      "scenario": "Primary actor finishes its remaining processing work before final lifecycle actions",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C52",
+      "scenario": "Reprocess completed request: empty reason validation and persisted confirmation",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C53",
+      "scenario": "Manager declines reprocess with required reason",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C54",
+      "scenario": "Reprocess second cycle, receive and complete through UI",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "ticket-actions-full-rights-03",
+      "case": "C55",
+      "scenario": "Creator closes own completed request; status/edit actions disappear",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "detail-and-cancel-regression-04",
+      "case": "C41",
+      "scenario": "Edit processing detail section: cancel unsaved changes then save and reopen",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "detail-and-cancel-regression-04",
+      "case": "C43",
+      "scenario": "Cancel fresh own HR ticket before approval: required reason and attachment",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C64",
+      "scenario": "Create real recruitment data via Create Request → HR → Yêu cầu tuyển dụng",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C67",
+      "scenario": "Create own candidate: required/phone validation, dependent address, Unicode and CV upload",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C69",
+      "scenario": "Own candidate notes: empty validation, attached note persistence and duplicate lookup",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C70",
+      "scenario": "Change own candidate status with validation and visible refreshed badge",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C72",
+      "scenario": "Bulk selection attaches only own candidate to own interview",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C73",
+      "scenario": "Calendar → interview detail; own candidate time validation, profile, note and removal",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C74",
+      "scenario": "Export Yêu cầu tuyển dụng through visible UI",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C75",
+      "scenario": "Export Quản lý ứng viên through visible UI",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C76",
+      "scenario": "Export Báo cáo tuyển dụng through visible UI",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C77",
+      "scenario": "Delete only own CV file; keep candidate record",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "extended-full-rights-02",
+      "case": "C79",
+      "scenario": "Delete only own disposable interview and verify calendar card removal",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "interview-update-regression-05",
+      "case": "C10",
+      "scenario": "Create and update own interview: required fields, invalid time range, saved date/time",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C23",
+      "scenario": "Draft search, no results and reset recruitment filters",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C24",
+      "scenario": "Advanced drawer opens, retains applied filters and cancels on Escape",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C25",
+      "scenario": "Open row action chooser and available readonly/edit forms, cancel without modifying existing records",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C29",
+      "scenario": "Advanced drawer opens, retains applied filters and cancels on Escape",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C30",
+      "scenario": "Open row action chooser and available readonly/edit forms, cancel without modifying existing records",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C31",
+      "scenario": "Candidate selection and bulk interview dialog validation/cancel",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C33",
+      "scenario": "Calendar month/week/day, previous/next/today and create modal validation",
+      "status": "PASS",
+      "evidence": []
+    },
+    {
+      "run": "recruitment-ui-full-rights-08",
+      "case": "C34",
+      "scenario": "Recruitment report tabs, keyboard arrows, scroll and export",
+      "status": "PASS",
+      "evidence": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "UI-01",
+      "priority": "P1",
+      "classification": "Confirmed frontend stale editor initialization",
+      "title": "Reopened recruitment request/candidate editor shows old values after saving",
+      "checks": [
+        {
+          "run": "extended-full-rights-02",
+          "case": "C66",
+          "scenario": "Read/update own recruitment request; preserve readonly ticket fields and reopen saved values",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C66-failure.png",
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C66-trace.zip"
+          ]
+        },
+        {
+          "run": "extended-full-rights-02",
+          "case": "C68",
+          "scenario": "Edit own candidate; cancel preserves saved values and history tabs preserve draft",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C68-failure.png",
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C68-trace.zip"
+          ]
+        }
+      ],
+      "observed": "Own request quantity: PUT succeeds and subsequent GET returns 2, reopened UI stays at 1. Own candidate major: subsequent GET contains the saved TESTFE_* CNTT value, reopened UI stays empty.",
+      "rootCause": "RecruitmentEditor renders the form from stale cached detail while a new fetch is in flight. The keyed form uses useForm defaultValues and does not adopt the fresh row after initialization.",
+      "recommendation": "Initialize each newly opened form from fresh detail, or reset once when that opening receives its detail; preserve dirty inputs during later background refetches.",
+      "source": [
+        "src/features/recruitment/components/recruitment-editor.tsx",
+        "src/features/recruitment/components/recruitment-editor-form.tsx"
+      ]
+    },
+    {
+      "id": "UI-02",
+      "priority": "P2",
+      "classification": "Confirmed automated accessibility violations",
+      "title": "Interview calendar grid cells lack required row parent semantics",
+      "checks": [],
+      "case": {
+        "run": "extended-full-rights-02",
+        "case": "C60"
+      },
+      "rules": ["aria-required-children", "aria-required-parent"],
+      "evidence": "/tmp/ticket-frontend-e2e/extended-full-rights-02/C60-axe.json",
+      "recommendation": "Use the required grid → row → gridcell hierarchy for week/day calendar layouts and re-run axe on every calendar view.",
+      "followUp": "The initial axe scan in readonly run 08 passed, while run 02 captured the listed rule failures. View/data state affects reproduction; retain the failing-state evidence and check each calendar view separately."
+    },
+    {
+      "id": "UI-03",
+      "priority": "P2",
+      "classification": "Reproducible frontend pointer interaction failure; precise CSS cause requires review",
+      "title": "Due-date edit button cannot be clicked at its normal target",
+      "checks": [
+        {
+          "run": "ticket-actions-full-rights-03",
+          "case": "C40",
+          "scenario": "Due date: reject non-extension, cancel draft and save/reopen a valid extension",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/ticket-actions-full-rights-03/C40-failure.png",
+            "/tmp/ticket-frontend-e2e/ticket-actions-full-rights-03/C40-trace.zip"
+          ]
+        },
+        {
+          "run": "detail-and-cancel-regression-04",
+          "case": "C40",
+          "scenario": "Due date: reject non-extension, cancel draft and save/reopen a valid extension",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/detail-and-cancel-regression-04/C40-failure.png",
+            "/tmp/ticket-frontend-e2e/detail-and-cancel-regression-04/C40-trace.zip"
+          ]
+        }
+      ],
+      "observed": "Ordinary Playwright pointer clicks are repeatedly intercepted by the enclosing relative/min-w-0/space-y-1.5/pr-14 container. No force click or DOM event injection was used.",
+      "recommendation": "Inspect hit testing/stacking and the absolute button positioning inside TicketDueDate; verify mouse and touch interaction after correction."
+    },
+    {
+      "id": "API-01",
+      "priority": "P1",
+      "classification": "Observed backend/network-dependent failure, not assigned to frontend business logic",
+      "title": "After deleting owned candidate, empty candidate search returns HTTP 500",
+      "checks": [
+        {
+          "run": "extended-full-rights-02",
+          "case": "C78",
+          "scenario": "Delete only own disposable candidate and verify no results",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C78-failure.png",
+            "/tmp/ticket-frontend-e2e/extended-full-rights-02/C78-trace.zip"
+          ]
+        },
+        {
+          "run": "recruitment-ui-full-rights-08",
+          "case": "C28",
+          "scenario": "Draft search, no results and reset recruitment filters",
+          "status": "FAIL",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/recruitment-ui-full-rights-08/C28-failure.png",
+            "/tmp/ticket-frontend-e2e/recruitment-ui-full-rights-08/C28-trace.zip"
+          ]
+        }
+      ],
+      "observed": "The delete UI completes, then /api/list_cv/ for the owned candidate returns 500. The table retains the old row; absence/deletion cannot be verified via the failing search. The same 500 also reproduces with an ordinary unmatched search; the test resets filters through UI in finally and subsequent readonly actions pass.",
+      "recommendation": "Review empty-result response handling on the service. Return a normal empty list; then re-run the UI deletion/no-results assertion. Do not infer deletion from toast alone."
+    }
+  ],
+  "cleanup": "All settings fixtures locked through UI. Lifecycle request closed; other disposable requests cancelled, including both approved HR seeds via permitted Change Status UI. Own schedules deleted. Candidate deletion requests completed, but empty-search 500 prevents verifying absence.",
+  "automationCorrections": "Initial selector/prerequisite failures remain in historical raw reports. Multi-select validation text, handler task-list navigation, bulk button caption, replacement eligibility and scoped edit cancellation were corrected and re-executed. Do not count them as current product defects.",
+  "limitations": [
+    "Coverage does not imply all role/status/file-type combinations or 100% frontend coverage.",
+    "Direct URL ingress, expiry, drag/drop and upload outage injection were not expanded in these targeted phases.",
+    "No application or backend source was changed in this task.",
+    "Administrative Change Status reason was not visible in General Information during cleanup attempt 06b; whether it should be displayed there or only in history is unverified. Final cleanup assertion verifies the displayed Hủy status only; raw failed observations remain in the 06b report."
+  ],
+  "checks": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS"
+  },
+  "ownedFixtureCleanup": [
+    {
+      "run": "extended-full-rights-01",
+      "prefix": "TESTFE_KKUJ3L",
+      "approvedHrTicket": {
+        "title": "TESTFE_KKUJ3L HR Tuyển dụng",
+        "code": "HR_261023_003",
+        "href": "/requests/14504"
+      },
+      "candidate": "TESTFE_KKUJ3L Ứng viên",
+      "candidateDeletion": "UI delete submitted; empty-search 500 prevents verifying absence. Raw fixture candidateDeleted flag is not sufficient evidence.",
+      "interviewDeletion": "Verified calendar card removed through UI.",
+      "detailCancelUnavailableReason": "Creator has no cancel action after HR approval; shared HR permissions were not changed.",
+      "approvedHrTicketFinalStatus": "Hủy",
+      "cleanupVerification": {
+        "run": "hr-seed-cleanup-06c",
+        "case": "C10",
+        "status": "PASS"
+      }
+    },
+    {
+      "run": "extended-full-rights-02",
+      "prefix": "TESTFE_KL3A2Y",
+      "approvedHrTicket": {
+        "title": "TESTFE_KL3A2Y HR Tuyển dụng",
+        "code": "HR_261023_004",
+        "href": "/requests/14506"
+      },
+      "candidate": "TESTFE_KL3A2Y Ứng viên",
+      "candidateDeletion": "UI delete submitted; empty-search 500 prevents verifying absence. Raw fixture candidateDeleted flag is not sufficient evidence.",
+      "interviewDeletion": "Verified calendar card removed through UI.",
+      "detailCancelUnavailableReason": "Creator has no cancel action after HR approval; shared HR permissions were not changed.",
+      "approvedHrTicketFinalStatus": "Hủy",
+      "cleanupVerification": {
+        "run": "hr-seed-cleanup-06c",
+        "case": "C11",
+        "status": "PASS"
+      }
+    }
+  ],
+  "additionalObservedFailures": [
+    {
+      "run": "hr-seed-cleanup-06b",
+      "cases": ["C10", "C11"],
+      "observation": "The supplied Change Status reason was not displayed in General Information after a successful status change. History persistence/expected display location was not verified.",
+      "classification": "Needs contract review; excluded from confirmed frontend defect count",
+      "html": "/tmp/ticket-frontend-e2e/hr-seed-cleanup-06b/html/index.html"
+    }
+  ]
+}

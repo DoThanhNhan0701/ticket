@@ -163,8 +163,12 @@ it("loads remote PDFs without credentials and forces PDF MIME before opening the
       { credentials: "omit", signal: expect.any(AbortSignal) },
     );
     expect(createUrl.mock.calls[0][0].type).toBe("application/pdf");
+    await waitFor(() =>
+      expect(
+        screen.getByRole("dialog").querySelector("iframe")?.getAttribute("src"),
+      ).toBe("blob:preview-1"),
+    );
     const iframe = screen.getByRole("dialog").querySelector("iframe");
-    expect(iframe?.getAttribute("src")).toBe("blob:preview-1");
     expect(iframe?.hasAttribute("sandbox")).toBe(false);
     unmount();
     expect(revokeUrl).toHaveBeenCalledWith("blob:preview-1");

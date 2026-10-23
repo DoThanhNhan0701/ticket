@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import {
   act,
@@ -337,7 +338,7 @@ it("blocks submission until status loading finishes and allows retrying failed s
   );
   expect(posts()).toHaveLength(0);
   await act(async () => finish(Response.json({ results: null })));
-  expect(await screen.findByText(/Không tải được trạng thái/)).toBeTruthy();
+  await expectErrorToast(/Không tải được trạng thái/);
   expect(
     screen.getByRole("button", { name: "Cập nhật" }).hasAttribute("disabled"),
   ).toBe(true);

@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { downloadFile } from "@/lib/download";
 import { EmptyState } from "@/components/empty-state";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -91,7 +90,7 @@ export function ReportsPage({
   if (groupsQuery.isError)
     return (
       <div className="space-y-3">
-        <ErrorAlert
+        <ErrorToast
           message={`Không tải được bộ phận xử lý: ${groupsQuery.error.message}`}
         />
         <Button variant="outline" onClick={() => void groupsQuery.refetch()}>

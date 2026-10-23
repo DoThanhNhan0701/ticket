@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
-import { ErrorAlert } from "@/components/error-alert";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
 import { TextareaField } from "@/components/form/textarea-field";
@@ -109,7 +108,7 @@ export function RequestChangeStatus() {
         />
         {statuses.isError && (
           <div className="space-y-2">
-            <ErrorAlert
+            <ErrorToast
               message={`Không tải được trạng thái: ${statuses.error.message}`}
             />
             <Button

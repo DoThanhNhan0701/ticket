@@ -71,7 +71,7 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
       )}
       {model.lookups.isError && (
         <div className="space-y-2">
-          <ErrorAlert
+          <ErrorToast
             message={`Không tải được danh mục: ${model.lookups.error.message}`}
           />
           <Button
@@ -85,7 +85,7 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
       )}
       {model.template.isError && model.template.data && (
         <div className="space-y-2">
-          <ErrorAlert
+          <ErrorToast
             message={`Không tải được biểu mẫu: ${model.template.error.message}`}
           />
           <Button
@@ -134,7 +134,7 @@ export function RequestAssignmentPanel({
         types={model.types.data ?? []}
         typesLoading={model.types.isFetching}
       />
-      {groupError?.type === "custom" && (
+      {(groupError?.type === "custom" || groupError?.type === "group-name") && (
         <Button
           type="button"
           variant="outline"
@@ -147,7 +147,7 @@ export function RequestAssignmentPanel({
       )}
       {model.types.isError && (
         <div className="space-y-2">
-          <ErrorAlert message={model.types.error.message} />
+          <ErrorToast message={model.types.error.message} />
           <Button
             type="button"
             variant="outline"
@@ -218,7 +218,7 @@ export function RequestTemplateSection({
       )}
       {model.selectedType && model.template.isError && (
         <div className="space-y-2">
-          <ErrorAlert
+          <ErrorToast
             message={`Không tải được biểu mẫu: ${model.template.error.message}`}
           />
           <Button

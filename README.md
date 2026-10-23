@@ -371,13 +371,89 @@ for artifact sanitization. `BROWSER_EXECUTABLE` overrides the installed Edge
 Chromium executable; `HEADLESS=true` is available for CI. `SLOW_MO` controls
 visible action speed in milliseconds.
 
-Fixtures use a unique `TESTFE_*` prefix. Settings records are created/updated and
-then locked in dependency order; the UI exposes no delete operation. The suite
-creates its own request and attempts to cancel it afterwards. A failed cleanup
-retains the fixture names in `execution.json` for inspection. Existing business
-records are inspected without saving destructive changes. The disposable role
-receives recruitment access only if that permission is available in the UI;
-restricted modules and missing prerequisites are recorded as BLOCKED.
+The Word manual is cross-referenced against all 87 subsections in
+[the guide coverage audit](docs/frontend-e2e-guide-coverage.md), with machine-readable
+mapping and execution results in
+[`user-guide-coverage-20261023.json`](tests/artifacts/user-guide-coverage-20261023.json).
+A heading mapped to a module is not an assertion that every step passes. The audit
+lists remaining branches and known failures explicitly.
+
+```bash
+BASE_URL=http://127.0.0.1:5187 E2E_GUIDE_ONLY=true npm run test:e2e:frontend
+```
+
+This focused mode uses the same visible browser and UI authentication. It creates
+owned settings/source-ticket fixtures, uploads a request-type PDF, exports the
+filtered user, selects an `@` mention with the keyboard, checks title/note/date
+boundaries, downloads the actual Excel template and fills two rows locally with
+Python's standard library. It uploads that workbook through UI and submits a real
+clone, verifies a different code and persisted content, then cancels its tickets
+and locks its catalog fixtures. Recruitment report date limits and all 15 Word
+chapters (including previous/next boundary buttons) are checked too. These cases
+also run in the default workflow. Workbooks, screenshots, traces and HTML stay
+outside source in `E2E_ARTIFACT_DIR`. The original DOCX is unchanged.
+
+Server/query failures use the shared `ErrorToast` across recruitment, request,
+approval/task lists, settings, reports and help. Retry controls remain available;
+field validation and partial-upload recovery keep their local context. A failed
+search is not displayed as an empty successful result. Backend HTTP 500 responses
+remain backend defects; UI notification/recovery checks are reported separately.
+Execution evidence for the 20 sidebar pages and recovery checks is in
+[`toast-pages-20261023.json`](tests/artifacts/toast-pages-20261023.json).
+To scan the sidebar pages and exercise the live candidate error/retry/reset path:
+
+```bash
+BASE_URL=http://127.0.0.1:5187 E2E_NOTIFICATIONS_ONLY=true npm run test:e2e:frontend
+```
+
+Handling department names are limited to 19 characters so the generated request
+code (`<name>_YYMMDD_001`) stays within 30 characters. Existing longer names are
+flagged immediately when selected on Create Request; submission is disabled
+until a valid group is selected. Other request draft fields are preserved.
+
+The default workflow includes ticket actions and recruitment. Use a TEST account
+with full ticket/recruitment permissions in `E2E_USERNAME` / `E2E_PASSWORD`, and
+supply `E2E_TEST_PASSWORD` (or stdin `testPassword`) for the disposable handler.
+Account credentials are never committed. To run only these expanded workflows:
+
+```bash
+BASE_URL=http://127.0.0.1:5187 E2E_EXTENDED_ONLY=true npm run test:e2e:frontend
+```
+
+Fixtures use a unique `TESTFE_*` prefix. The suite creates its own seven settings
+records, adds the primary actor to its own handling group, and configures a
+processing section. `tests/e2e/modules/ticket-actions.ts` covers approval,
+receipt, processing-section edit/cancel/save, multiple detail attachments,
+assignment add/remove/replace, forwarding, completion, closing and reprocessing.
+The handler switches accounts using Logout/Login in the same browser/context;
+assigned tickets are opened through **Nhiệm vụ cá nhân** for that actor.
+Cancellation with a reason/file is checked on a separate fresh HR ticket before
+approval; approved HR tickets can lose the cancel action for the creator.
+Actions missing from the real account/state are explicitly BLOCKED.
+
+`tests/e2e/modules/hr.ts` seeds recruitment data through **Tạo yêu cầu → HR →
+Yêu cầu tuyển dụng**, using the real HR template and an owned requesting
+department/team/office. It approves that ticket through UI, then tests the four
+recruitment pages: request read/update, candidate create/edit/notes/status/
+duplicate lookup, dependent addresses, oversize CV rejection, bulk interview
+attachment, interview create/update/time/profile/removal, file/record deletion,
+and Excel exports. Recruitment page smoke checks include the three viewports
+and automated accessibility. A retained old form value after saving is a FAIL,
+even if the network returned 200; backend/network failures are recorded apart
+from confirmed frontend defects.
+
+Cleanup attempts to delete only its own candidate and schedule, closes the
+completed lifecycle ticket, cancels disposable requests when the action is
+available, and locks settings in dependency order. For approved HR seeds without
+a detail cancel action, cleanup uses the permitted **Chuyển trạng thái yêu cầu**
+UI and verifies the rendered status. If that page is unavailable, the records
+remain explicitly recorded; shared HR permissions are never changed to bypass
+record-level restrictions. No delete operation exists for
+settings. A failed cleanup retains evidence and fixture names in `execution.json`,
+`action-fixtures.json` and `hr-fixtures.json` outside source; inspect these before
+retrying an interrupted run. The suite never deletes pre-existing candidates or
+schedules and never changes the shared HR group/template. Restricted modules
+and missing prerequisites remain BLOCKED rather than receiving an inferred PASS.
 
 `E2E_ARTIFACT_DIR` defaults to the system temporary directory, outside source.
 The output contains Playwright HTML, scenario CSV/JSON, source-control inventory,
@@ -389,10 +465,30 @@ sanitized before the runner exits; do not publish live output mid-run.
 npm run test:e2e:report -- /tmp/ticket-frontend-e2e/<run>/html
 ```
 
+Set `E2E_LONG_NAME_ONLY=true` to run login/navigation and the legacy long-name
+selection/recovery regression without creating more fixtures.
+
 For a focused clone/reset regression on an existing owned fixture, set
 `E2E_REGRESSION_REQUEST` to its full `TESTFE_*` title. This mode temporarily
 reactivates the matching handling group/type via UI and restores their original
 activation states in cleanup. It does not create another request.
+
+Use `E2E_TICKET_ACTIONS_ONLY=true` together with `E2E_EXTENDED_ONLY=true` to
+focus on ticket actions. `E2E_DETAIL_ONLY=true` narrows that run to processing
+section/date controls plus a fresh HR cancellation fixture. `E2E_CANCEL_ONLY=true`
+runs just HR creation/cancellation; provide `E2E_PRIMARY_APPROVER_NAME` matching
+the authenticated account's visible full name when no owned actor setup is run.
+`E2E_HR_UI_ONLY=true` runs recruitment filters/drawers, calendar views and report
+tabs on existing rows without saving mutations.
+
+`E2E_INTERVIEW_ONLY=true` runs interview create/update/reopen and cleanup without
+creating settings or candidate fixtures.
+`E2E_HR_CLEANUP_FIXTURES` accepts a JSON array of the suite's own `hr-fixtures.json`
+paths for UI cleanup/verification of retained HR seeds. The helper validates the
+TESTFE title/code, checks the visible record before mutation, and skips another
+write if the rendered status is already Hủy. General-information reason
+persistence for the administrative Change Status flow is not asserted by this
+cleanup helper; it verifies status only.
 
 The matrix accounts for canonical routes, legacy ingress and source-discovered
 interactive control occurrences. PASS requires assertions from actual execution;
@@ -402,6 +498,17 @@ claim of full feature coverage. Expiry is not simulated by replacing tokens.
 Direct URL loads occur only in explicitly named ingress/permission scenarios;
 internal navigation is checked against document identity and navigation events.
 No application fixes are applied automatically by this suite.
+
+The expanded TEST execution on 2026-10-23 is summarized in
+[`ticket-actions-recruitment-20261023.json`](tests/artifacts/ticket-actions-recruitment-20261023.json).
+It links the actual Playwright runs, verified actions, owned fixture cleanup
+and four open findings: stale recruitment/candidate editor values after saves,
+interview calendar ARIA hierarchy, pointer interception on the due-date button,
+and the service's 500 response for an empty candidate search after deletion.
+Interview note update/reopen passed the latest focused regression; the older
+2026-10-21 note-persistence observation above is historical. The expanded suite
+currently reports these observed failures; successful requests/toasts alone do
+not turn them into PASS.
 
 ## SonarQube
 

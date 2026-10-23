@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import {
   act,
   cleanup,
@@ -464,10 +465,8 @@ it.each(pages)(
       Response.json({ detail: "Type unavailable" }, { status: 500 });
     renderPage(path);
     await ready(label);
-    expect(
-      await screen.findByText(/Không tải được Team: Dữ liệu Team không hợp lệ/),
-    ).toBeTruthy();
-    expect(screen.getByText(/Không tải được loại yêu cầu/)).toBeTruthy();
+    await expectErrorToast(/Không tải được Team: Dữ liệu Team không hợp lệ/);
+    await expectErrorToast(/Không tải được loại yêu cầu/);
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("task-access");
     responses["/api/list_team/"] = () => Response.json(teams);
     responses["/api/list_handling_tickettype/"] = () => Response.json(types);
@@ -486,9 +485,7 @@ it.each(pages)(
     responses[endpoint] = () =>
       Response.json({ detail: "Task unavailable" }, { status: 403 });
     renderPage(path);
-    expect(
-      await screen.findByText(/Không tải được yêu cầu: Task unavailable/),
-    ).toBeTruthy();
+    await expectErrorToast(/Không tải được yêu cầu: Task unavailable/);
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("task-access");
     responses[endpoint] = () =>
       Response.json({
@@ -498,9 +495,7 @@ it.each(pages)(
         results: [{ ...ticket, created: null }],
       });
     fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
-    expect(
-      await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
-    ).toBeTruthy();
+    await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
     responses[endpoint] = () =>
       Response.json({ count: 0, next: null, previous: null, results: [] });
     fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
@@ -544,3 +539,5 @@ it("isolates personal and all-task caches with explicit task permission during n
   expect(screen.getByRole("link", { name: "TASK-ALL-42" })).toBeTruthy();
   expect(screen.queryByRole("link", { name: "PERSONAL-42" })).toBeNull();
 });
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

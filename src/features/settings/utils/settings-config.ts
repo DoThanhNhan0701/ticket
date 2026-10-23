@@ -1,3 +1,4 @@
+import { MAX_REQUEST_GROUP_NAME_LENGTH } from "@/features/requests/utils/request-code";
 import { APP_ROUTES } from "@/constants/routes";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { SettingsConfig, SettingsKind } from "../types";
@@ -66,7 +67,7 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
     writeEndpoint: API_ENDPOINTS.settings.handlingGroup,
     paginated: true,
     fields: [
-      nameField("Tên bộ phận"),
+      { ...nameField("Tên bộ phận"), maxLength: MAX_REQUEST_GROUP_NAME_LENGTH },
       { name: "group_email", label: "Email bộ phận", type: "email" },
       {
         name: "is_manager",

@@ -12,6 +12,7 @@ export function useRequestCreateSteps(
   const values = useWatch({ control: model.form.control });
   const rows = useWatch({ control: model.form.control, name: "rows" });
   const general = Boolean(
+    !model.groupNameError &&
     model.lookups.data &&
     model.types.data &&
     model.selectedType &&

@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { templateCombinations } from "./fixtures/template-combinations";
 import { Blob as NodeBlob } from "node:buffer";
@@ -483,6 +484,30 @@ it("enforces the real API's 30-character requesting department name limit before
   const body = requests("/api/bophanmmanager/", "POST")[0][1]?.body;
   expect((body as FormData).get("name")).toBe("A".repeat(30));
 });
+it.each([false, true])(
+  "blocks handling department names over 19 characters before saving (editing=%s)",
+  async (editing) => {
+    renderPage("handling-departments");
+    await editorReady("handling-departments", editing);
+    await fill("handling-departments");
+    const input = screen.getByLabelText(/^Tên bộ phận/);
+    expect(input.getAttribute("maxlength")).toBe("19");
+    fireEvent.change(input, { target: { value: "A".repeat(20) } });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+    await screen.findByText("Tối đa 19 ký tự.");
+    expect(
+      fetchMock.mock.calls.filter(
+        ([url, options]) =>
+          new URL(String(url)).pathname.startsWith(
+            "/api/handlinggroupmmanager/",
+          ) && ["POST", "PUT"].includes(options?.method ?? ""),
+      ),
+    ).toHaveLength(0);
+    fireEvent.change(input, { target: { value: "A".repeat(19) } });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  },
+);
 it("paginates array responses, searches accents and clamps an out-of-range page", async () => {
   rows.users = Array.from({ length: 201 }, (_, i) => ({
     ...settingsFixtures.users,
@@ -678,7 +703,7 @@ it("prevents duplicate writes and dismissal while saving", async () => {
 it("retries a list failure without clearing the session", async () => {
   listFailure = "positions";
   renderPage("positions");
-  await screen.findByText(/List offline/);
+  await expectErrorToast(/List offline/);
   listFailure = "";
   fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
   await ready();
@@ -726,7 +751,7 @@ it("retries failed permission explanations without leaving the help dialog", asy
   await ready();
   fireEvent.click(screen.getByRole("button", { name: "Thông tin quyền hạn" }));
   const dialog = screen.getByRole("dialog", { name: "Thông tin quyền hạn" });
-  await within(dialog).findByText(/Lookup offline/);
+  await expectErrorToast(/Lookup offline/);
   lookupFailure = false;
   fireEvent.click(
     within(dialog).getByRole("button", { name: "Thử lại quyền hạn" }),
@@ -854,7 +879,7 @@ it("blocks saving while a lookup fails and retries independently", async () => {
   fireEvent.click(screen.getByRole("button", { name: "Thêm mới" }));
   await screen.findByRole("form", { name: "Thêm chức vụ" });
   const dialog = screen.getByRole("dialog");
-  await within(dialog).findByText(/Lookup offline/);
+  await expectErrorToast(/Lookup offline/);
   expect(
     within(dialog)
       .getByRole("button", { name: "Lưu" })
@@ -945,7 +970,7 @@ it("keeps the form disabled after failed details and enables it after retry", as
   renderPage("users");
   await ready();
   fireEvent.click(screen.getByRole("button", { name: "Chỉnh sửa test-user" }));
-  await screen.findByText("Detail offline");
+  await expectErrorToast("Detail offline");
   expect(
     screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
   ).toBe(true);
@@ -1177,7 +1202,7 @@ it("retries a failed template lookup and cancels without a write", async () => {
   fireEvent.click(
     screen.getByRole("button", { name: "Biểu mẫu Đăng ký từ xa" }),
   );
-  await screen.findByText("Template offline");
+  await expectErrorToast("Template offline");
   templateFailure = false;
   fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
   await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });

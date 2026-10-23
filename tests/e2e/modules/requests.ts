@@ -16,7 +16,7 @@ const imageFile = (h: Harness) => ({
 export async function openTicket(h: Harness) {
   if (!h.ticket)
     throw new Blocked("No disposable request was created through UI");
-  await h.nav("Danh sách yêu cầu");
+  await h.nav(h.secondaryActor ? "Nhiệm vụ cá nhân" : "Danh sách yêu cầu");
   await h.search(h.ticket.title);
   await h.page.getByRole("link", { name: h.ticket.code, exact: true }).click();
   await expect(
@@ -26,6 +26,7 @@ export async function openTicket(h: Harness) {
 }
 export async function requestJourney(h: Harness) {
   const p = h.page;
+  await longNameGuard(h);
   await h.run(
     "requests",
     "/requests/new",
@@ -53,7 +54,10 @@ export async function requestJourney(h: Harness) {
         requireOwn(h, "handling-departments").name,
       );
       await h.choose("Loại yêu cầu", requireOwn(h, "request-types").name);
-      await h.choose("Người phê duyệt", requireOwn(h, "users").name);
+      await h.choose(
+        "Người phê duyệt",
+        h.primaryName || requireOwn(h, "users").name,
+      );
       const company = p.getByRole("combobox", { name: "Công ty", exact: true });
       await company.click();
       await p.getByRole("option").first().click();
@@ -272,6 +276,26 @@ export async function requestJourney(h: Harness) {
   );
 }
 export async function cleanupRequest(h: Harness) {
+  if (h.closedTicket) {
+    await h.run(
+      "requests",
+      "/requests/:ticketID",
+      "Verify own lifecycle request remains closed during cleanup",
+      async () => {
+        await openTicket(h);
+        await expect(
+          h.page.getByRole("group", { name: "Thao tác yêu cầu", exact: true }),
+        ).toHaveCount(0);
+        await expect(
+          h.page.getByRole("button", {
+            name: "Đổi ngày mong muốn",
+            exact: true,
+          }),
+        ).toHaveCount(0);
+      },
+    );
+    return;
+  }
   await h.run(
     "requests",
     "/requests/:ticketID",
@@ -329,6 +353,69 @@ export async function cloneReset(h: Harness) {
       // Request details are conditional on a selected group/type, so reset hides the title field.
       await expect(p.locator("#create-title")).toHaveCount(0);
       await h.nav("Danh sách yêu cầu");
+    },
+  );
+}
+
+export async function longNameGuard(h: Harness) {
+  const p = h.page;
+  await h.run(
+    "requests",
+    "/requests/new",
+    "Reject legacy long handling group immediately, prevent submit and recover via valid selection",
+    async () => {
+      await h.nav("Danh sách yêu cầu");
+      await p.getByRole("link", { name: "Tạo yêu cầu", exact: true }).click();
+      const countBefore = h.requests.filter(
+        (r) => r.method === "POST" && r.url === "/api/ticket_manager",
+      ).length;
+      await p
+        .getByRole("combobox", { name: "Bộ phận xử lý", exact: true })
+        .click();
+      const names = await p.getByRole("option").allTextContents();
+      const longName = names.find(
+        (name) => Array.from(name.trim()).length > 19,
+      );
+      if (!longName) {
+        await p.keyboard.press("Escape");
+        throw new Blocked(
+          "No active legacy handling group with a name longer than 19 characters exists; UI now prevents creating one. Immediate rejection is covered by the component regression test.",
+        );
+      }
+      await p
+        .getByRole("option", { name: longName.trim(), exact: true })
+        .click();
+      await expect(
+        p.getByText(/Tên bộ phận xử lý quá dài.*19 ký tự/),
+      ).toBeVisible();
+      await expect(
+        p.getByRole("button", { name: "Tạo yêu cầu", exact: true }),
+      ).toBeDisabled();
+      await expect(p.locator("#create-title")).toHaveCount(0);
+      await p
+        .getByRole("button", { name: "Tải lại danh mục", exact: true })
+        .click();
+      await expect(
+        p.getByRole("button", { name: "Tải lại danh mục", exact: true }),
+      ).toBeEnabled();
+      await expect(
+        p.getByText(/Tên bộ phận xử lý quá dài.*19 ký tự/),
+      ).toBeVisible();
+      expect(
+        h.requests.filter(
+          (r) => r.method === "POST" && r.url === "/api/ticket_manager",
+        ).length,
+      ).toBe(countBefore);
+      const validGroup =
+        h.own["handling-departments"]?.name ||
+        names.find((name) => Array.from(name.trim()).length <= 19)?.trim();
+      if (!validGroup)
+        throw new Blocked(
+          "No valid handling group is available to verify recovery",
+        );
+      await h.choose("Bộ phận xử lý", validGroup);
+      await expect(p.getByText(/Tên bộ phận xử lý quá dài/)).toHaveCount(0);
+      await p.getByRole("button", { name: "Làm lại", exact: true }).click();
     },
   );
 }

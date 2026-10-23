@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { ErrorAlert } from "@/components/error-alert";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { downloadFile } from "@/lib/download";
 import type {
@@ -371,7 +370,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
 
       {lookups.isError && (
         <div className="flex flex-wrap items-center gap-2">
-          <ErrorAlert message={lookups.error.message} />
+          <ErrorToast message={lookups.error.message} />
           <Button variant="outline" onClick={() => void lookups.refetch()}>
             Thử lại danh mục
           </Button>

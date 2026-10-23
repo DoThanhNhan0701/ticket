@@ -159,7 +159,7 @@ function requestSubmitDisabled(
     excelBusy ||
     model.draft.loading ||
     model.draft.missing.length > 0 ||
-    (!model.created && waitingForData)
+    (!model.created && (waitingForData || Boolean(model.groupNameError)))
   );
 }
 

@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +10,6 @@ import {
   parseListPagination,
   updateListSearchParams,
 } from "@/components/data-management";
-import { ErrorAlert } from "@/components/error-alert";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
@@ -156,7 +156,7 @@ export function SettingsList({
       />
       {lookups.isError && (
         <div className="space-y-2">
-          <ErrorAlert
+          <ErrorToast
             message={`Không tải được danh mục: ${lookups.error.message}`}
           />
           <Button variant="outline" onClick={() => void lookups.refetch()}>

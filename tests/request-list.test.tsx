@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import {
   act,
   cleanup,
@@ -680,12 +681,10 @@ it.each([500, 403])(
         { status },
       );
     renderList();
-    expect(await screen.findByRole("alert")).toBeTruthy();
-    expect(
-      screen.getByText(
-        /Không tải được yêu cầu: Danh sách tạm thời không khả dụng/,
-      ),
-    ).toBeTruthy();
+    expect(screen.queryByRole("alert")).toBeNull();
+    await expectErrorToast(
+      /Không tải được yêu cầu: Danh sách tạm thời không khả dụng/,
+    );
     expect(screen.queryByText("Không tìm thấy yêu cầu")).toBeNull();
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
     listResponse = () =>
@@ -701,7 +700,7 @@ it("keeps tickets visible when the status endpoint fails and retries it independ
     Response.json({ detail: "Status unavailable" }, { status: 500 });
   renderList();
   await ready();
-  expect(await screen.findByText(/Không tải được trạng thái/)).toBeTruthy();
+  await expectErrorToast(/Không tải được trạng thái/);
   statusResponse = () =>
     Response.json({ ...pagination, count: statuses.length, results: statuses });
   fireEvent.click(screen.getByRole("button", { name: "Thử lại trạng thái" }));
@@ -740,9 +739,7 @@ it("distinguishes loading, empty results and malformed API data", async () => {
     { target: { value: "laptop" } },
   );
   fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
-  expect(
-    await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
-  ).toBeTruthy();
+  await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
 });
 
 it("does not request ticket data when the account cannot access this page", () => {
@@ -767,9 +764,7 @@ it.each([
         results: [{ ...ticket, ...invalid }],
       });
     renderList();
-    expect(
-      await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
-    ).toBeTruthy();
+    await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
     expect(screen.queryByRole("table")).toBeNull();
   },
 );
@@ -1022,9 +1017,7 @@ it("keeps all-request records available when request-type options fail and retri
     Response.json([{ ...requestTypeFixtures[0], id: "17" }]);
   renderList("/requests/all?ticket_type_id=17");
   await allReady();
-  expect(
-    await screen.findByText(/Dữ liệu loại yêu cầu không hợp lệ/),
-  ).toBeTruthy();
+  await expectErrorToast(/Dữ liệu loại yêu cầu không hợp lệ/);
   expect(screen.getByText("ALL-0084")).toBeTruthy();
   typesResponse = () => Response.json(requestTypeFixtures);
   fireEvent.click(screen.getByRole("button", { name: "Thử lại loại yêu cầu" }));
@@ -1121,9 +1114,7 @@ it("rejects malformed all-request handler data and hides pagination for empty re
       results: [{ ...ticket, list_user_received: [] }],
     });
   renderList("/requests/all");
-  expect(
-    await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
-  ).toBeTruthy();
+  await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
   allResponse = () => Response.json({ ...pagination, count: 0, results: [] });
   fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
   expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
@@ -1328,11 +1319,7 @@ it.each(approvalPages)(
     listResponse = () =>
       Response.json({ detail: "Không thể tải phê duyệt" }, { status: 403 });
     renderList(path);
-    expect(
-      await screen.findByText(
-        /Không tải được yêu cầu: Không thể tải phê duyệt/,
-      ),
-    ).toBeTruthy();
+    await expectErrorToast(/Không tải được yêu cầu: Không thể tải phê duyệt/);
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
     listResponse = () =>
       Response.json({
@@ -1341,9 +1328,7 @@ it.each(approvalPages)(
         results: [{ ...ticket, username_create: [] }],
       });
     fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
-    expect(
-      await screen.findByText(/Dữ liệu danh sách yêu cầu không hợp lệ/),
-    ).toBeTruthy();
+    await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
     listResponse = () =>
       Response.json({ ...pagination, count: 0, results: [] });
     fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
@@ -1470,3 +1455,5 @@ it.each([
     ).toBe("Hoàn thành");
   },
 );
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

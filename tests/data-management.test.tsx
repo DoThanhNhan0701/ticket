@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import {
   cleanup,
   fireEvent,
@@ -505,7 +506,7 @@ it("keeps previous rows mounted under a loading overlay and hides pagination for
   expect(screen.queryByTestId("rows")).toBeNull();
 });
 
-it("keeps rows mounted without a full overlay during subtle refreshes and background failures", () => {
+it("keeps rows mounted without a full overlay during subtle refreshes and background failures", async () => {
   const props = {
     label: "Kết quả nhân viên",
     pagination,
@@ -532,14 +533,12 @@ it("keeps rows mounted without a full overlay during subtle refreshes and backgr
   );
   expect(screen.getByTestId("rows")).toBe(rows);
   expect(rows.scrollTop).toBe(150);
-  expect(
-    screen.getByText("Không tải được danh sách: TEST offline"),
-  ).toBeTruthy();
+  await expectErrorToast("Không tải được danh sách: TEST offline");
   view.rerender(<DataResults {...props} query={readyQuery} />);
   expect(screen.getByTestId("rows")).toBe(rows);
 });
 
-it("provides shared error recovery without depending on a query library or feature DTO", () => {
+it("provides shared error recovery without depending on a query library or feature DTO", async () => {
   render(
     <DataResults
       label="Kết quả nhân viên"
@@ -553,7 +552,7 @@ it("provides shared error recovery without depending on a query library or featu
       }}
     />,
   );
-  expect(screen.getByText("Không tải được danh sách: Offline")).toBeTruthy();
+  await expectErrorToast("Không tải được danh sách: Offline");
   fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
   expect(readyQuery.refetch).toHaveBeenCalledOnce();
   fireEvent.click(screen.getByRole("button", { name: "Về trang đầu" }));
@@ -717,3 +716,5 @@ it("resets client pagination when page size changes and on a new result scope", 
   expect(screen.getByText("Dòng 200")).toBeTruthy();
   expect(screen.queryByText("Dòng 201")).toBeNull();
 });
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

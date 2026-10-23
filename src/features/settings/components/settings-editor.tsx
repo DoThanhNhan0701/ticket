@@ -7,7 +7,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { CheckboxField } from "@/components/form/checkbox-field";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { FormFieldShell } from "@/components/form/form-field-shell";
 import { Input } from "@/components/ui/input";
@@ -131,7 +130,7 @@ function SettingsForm({
       >
         {needsDetail && detail.isError && (
           <div className="space-y-3">
-            <ErrorAlert message={detail.error.message} />
+            <ErrorToast message={detail.error.message} />
             <Button
               type="button"
               variant="outline"
@@ -143,7 +142,7 @@ function SettingsForm({
         )}
         {lookups.isError && (
           <div className="space-y-2">
-            <ErrorAlert
+            <ErrorToast
               message={`Không tải được danh mục: ${lookups.error.message}`}
             />
             <Button

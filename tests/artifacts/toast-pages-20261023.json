@@ -1,0 +1,193 @@
+{
+  "date": "2026-10-23",
+  "environment": "TEST build at http://127.0.0.1:5187",
+  "scope": "Frontend error notification and UI page regression. No backend changes or direct API mutations.",
+  "changes": [
+    "Server/query failures use shared Sonner ErrorToast across lists, recruitment, settings, request detail/lookups, reports and help.",
+    "Retry/reset controls and existing mutation guards preserved. Field validation/partial-upload recovery retain local error context.",
+    "Updated existing tests to assert toast delivery and keep retry/session/data checks."
+  ],
+  "runs": [
+    {
+      "name": "toast-pages-11",
+      "counts": {
+        "PASS": 115,
+        "FAIL": 2,
+        "BLOCKED": 0,
+        "NOT RUN": 27
+      },
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/toast-pages-11/html/index.html",
+      "sidebarPages": [
+        {
+          "route": "/requests",
+          "feature": "Sidebar navigation: Danh sách yêu cầu",
+          "status": "PASS"
+        },
+        {
+          "route": "/requests/all",
+          "feature": "Sidebar navigation: Tất cả yêu cầu",
+          "status": "PASS"
+        },
+        {
+          "route": "/requests/change-status",
+          "feature": "Sidebar navigation: Chuyển trạng thái yêu cầu",
+          "status": "PASS"
+        },
+        {
+          "route": "/approvals/pending",
+          "feature": "Sidebar navigation: Chờ phê duyệt",
+          "status": "PASS"
+        },
+        {
+          "route": "/approvals/approved",
+          "feature": "Sidebar navigation: Đã phê duyệt",
+          "status": "PASS"
+        },
+        {
+          "route": "/tasks/mine",
+          "feature": "Sidebar navigation: Nhiệm vụ cá nhân",
+          "status": "PASS"
+        },
+        {
+          "route": "/tasks",
+          "feature": "Sidebar navigation: Tất cả nhiệm vụ",
+          "status": "PASS"
+        },
+        {
+          "route": "/reports",
+          "feature": "Sidebar navigation: Báo cáo",
+          "status": "PASS"
+        },
+        {
+          "route": "/reports/export",
+          "feature": "Sidebar navigation: Truy xuất dữ liệu",
+          "status": "PASS"
+        },
+        {
+          "route": "/recruitment/requests",
+          "feature": "Sidebar navigation: Yêu cầu tuyển dụng",
+          "status": "PASS"
+        },
+        {
+          "route": "/recruitment/candidates",
+          "feature": "Sidebar navigation: Quản lý ứng viên",
+          "status": "PASS"
+        },
+        {
+          "route": "/recruitment/interviews",
+          "feature": "Sidebar navigation: Lịch phỏng vấn",
+          "status": "PASS"
+        },
+        {
+          "route": "/recruitment/reports",
+          "feature": "Sidebar navigation: Báo cáo tuyển dụng",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/users",
+          "feature": "Sidebar navigation: Người dùng",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/requesting-departments",
+          "feature": "Sidebar navigation: Bộ phận sử dụng",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/handling-departments",
+          "feature": "Sidebar navigation: Bộ phận xử lý",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/request-types",
+          "feature": "Sidebar navigation: Loại yêu cầu",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/teams",
+          "feature": "Sidebar navigation: Team",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/positions",
+          "feature": "Sidebar navigation: Chức vụ",
+          "status": "PASS"
+        },
+        {
+          "route": "/settings/offices",
+          "feature": "Sidebar navigation: Văn phòng",
+          "status": "PASS"
+        }
+      ],
+      "recoveryEvidence": [
+        {
+          "id": "C131",
+          "status": "FAIL",
+          "actual": "\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-sonner-toast][data-type=\"error\"]').filter({ hasText: 'Không tải được danh sách' })\nExpected: visible\nError: strict mode violation: locator('[data-sonner-toast][data-type=\"error\"]').filter({ hasText: 'Không tải được danh sách' }) resolved to 2 elements:\n    1) <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-type=\"error\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-y-position=\"top\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\">…</li> aka getByRole('listitem').filter({ hasText: 'Không tải được danh sách:' }).first()\n    2) <li tabindex=\"0\" data-index=\"1\" class=\"cn-toast\" data-type=\"error\" data-styled=\"true\" data-front=\"false\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-y-position=\"top\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\">…</li> aka getByRole('listitem').filter({ hasText: 'Không tải được danh sách:' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('[data-sonner-toast][data-type=\"error\"]').filter({ hasText: 'Không tải được danh sách' }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-sonner-toast][data-type=\"error\"]').filter({ hasText: 'Không tải được danh sách' })\u001b[22m\n"
+        }
+      ]
+    },
+    {
+      "name": "toast-recovery-12",
+      "counts": {
+        "PASS": 6,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 34
+      },
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/toast-recovery-12/html/index.html",
+      "sidebarPages": [],
+      "recoveryEvidence": [
+        {
+          "id": "C10",
+          "status": "PASS",
+          "actual": "{\"backendStatus\":[500,500],\"scope\":\"Frontend notification/recovery only; backend HTTP 500 remains for BE to fix\"}"
+        }
+      ]
+    }
+  ],
+  "adjudication": [
+    {
+      "run": "toast-pages-11",
+      "case": "C78",
+      "owner": "FE",
+      "status": "OPEN / previously known",
+      "finding": "Interview calendar ARIA grid cells lack required row ancestry; aria-required-children and aria-required-parent."
+    },
+    {
+      "run": "toast-pages-11",
+      "case": "C131",
+      "owner": "test harness",
+      "status": "RESOLVED and rerun PASS in toast-recovery-12 C10",
+      "finding": "An explicit retry displays a new toast while the previous one is still visible. Locator was adjusted to the newest toast; both raw results retained."
+    },
+    {
+      "owner": "BE",
+      "status": "OPEN",
+      "finding": "GET /api/list_cv/ with a no-match search still returns HTTP 500, including after explicit retry. UI toast/reset/session checks PASS; this does not resolve the backend defect.",
+      "evidence": "toast-recovery-12 C10: observed [500,500]; table restored through reset UI."
+    }
+  ],
+  "checks": {
+    "unit": "1160 PASS across 44 files (npm run test -- --maxWorkers=2)",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build:test": "PASS; existing chunk-size warning remains",
+    "format": "PASS",
+    "git diff --check": "PASS"
+  },
+  "unitExecutionNote": "An earlier run under concurrent browser/unit load had two wait timeouts. The complete suite was rerun with two workers and all 1160 passed, without loosening assertions/timeouts.",
+  "limitations": [
+    "Focused recovery run leaves 34 routes/features NOT RUN; full sidebar scan leaves 27 route/feature accounting rows NOT RUN. Do not sum overlapping runs or claim full coverage.",
+    "Calendar ARIA and earlier ticket/recruitment data defects are still open; no unrelated application fix was made."
+  ],
+  "artifacts": "Screenshots, traces, workbooks and HTML stay outside source under /tmp/ticket-frontend-e2e.",
+  "artifactSecurityReview": {
+    "scannedObjects": 277,
+    "credentialOrJwtMatches": 0
+  }
+}

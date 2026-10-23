@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,6 @@ import {
   DialogCloseButton,
 } from "@/components/ui/dialog";
 import { LoadingState } from "@/components/loading-state";
-import { ErrorAlert } from "@/components/error-alert";
 import type { SettingsRecord } from "../types";
 import { getPositionPermissionInfo } from "../utils/position-permissions";
 
@@ -30,7 +30,7 @@ function PermissionInfoContent({
   if (error)
     return (
       <div className="space-y-3">
-        <ErrorAlert message={error.message} />
+        <ErrorToast message={error.message} />
         <Button variant="outline" onClick={onRetry}>
           Thử lại quyền hạn
         </Button>

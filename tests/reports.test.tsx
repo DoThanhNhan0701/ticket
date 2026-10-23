@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
 import {
@@ -352,9 +353,7 @@ it.each([403, 500])(
       Response.json({ detail: "Report unavailable" }, { status });
     renderPage();
     await lookupReport();
-    expect(
-      await screen.findByText(/Không tải được báo cáo: Report unavailable/),
-    ).toBeTruthy();
+    await expectErrorToast(/Không tải được báo cáo: Report unavailable/);
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("report-access");
     reportResponse = () => Response.json(reportFixture);
     fireEvent.click(screen.getByRole("button", { name: "Thử lại báo cáo" }));
@@ -370,7 +369,7 @@ it("rejects malformed chart tuples and then renders an empty report after retry"
     });
   renderPage();
   await lookupReport();
-  expect(await screen.findByText(/Dữ liệu báo cáo không hợp lệ/)).toBeTruthy();
+  await expectErrorToast(/Dữ liệu báo cáo không hợp lệ/);
   reportResponse = () => Response.json(emptyReportFixture);
   fireEvent.click(screen.getByRole("button", { name: "Thử lại báo cáo" }));
   expect(
@@ -388,9 +387,7 @@ it("retries invalid group data before fetching any reports", async () => {
       results: [{ ...groups[0], is_manager: "bad" }],
     });
   renderPage();
-  expect(
-    await screen.findByText(/Dữ liệu bộ phận xử lý không hợp lệ/),
-  ).toBeTruthy();
+  await expectErrorToast(/Dữ liệu bộ phận xử lý không hợp lệ/);
   expect(calls("/api/report")).toHaveLength(0);
   groupResponse = () =>
     Response.json({ ...pagination, count: groups.length, results: groups });
@@ -539,9 +536,7 @@ it("blocks export while type lookup fails and retries it independently", async (
     Response.json({ detail: "Type unavailable" }, { status: 500 });
   renderPage("/reports/export");
   await chooseGroup();
-  expect(
-    await screen.findByText(/Không tải được loại yêu cầu: Type unavailable/),
-  ).toBeTruthy();
+  await expectErrorToast(/Không tải được loại yêu cầu: Type unavailable/);
   expect(
     screen.getByRole("button", { name: "Xuất Excel" }).hasAttribute("disabled"),
   ).toBe(true);

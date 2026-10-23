@@ -5,7 +5,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { History, MessageSquareText, Paperclip, UserRound } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { Button } from "@/components/ui/button";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { FilePreviewDialog } from "@/components/file-preview-dialog";
 import { FileAttachmentTile } from "@/features/requests/components/file-attachment-tile";
@@ -58,7 +57,7 @@ export function RecruitmentNoteHistory({
       )}
       {query.isError && (
         <div className="space-y-2">
-          <ErrorAlert message={query.error.message} />
+          <ErrorToast message={query.error.message} />
           <Button
             type="button"
             variant="outline"

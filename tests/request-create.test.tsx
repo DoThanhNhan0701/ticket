@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
 import { addDays, format, startOfToday } from "date-fns";
@@ -794,7 +795,7 @@ it("still rejects ambiguous duplicate labels in creation fields", async () => {
   template = { forms: groups };
   renderPage();
   await fillBase();
-  await screen.findByText(/Tên trường phải có nội dung và không trùng nhau/);
+  await expectErrorToast(/Tên trường phải có nội dung và không trùng nhau/);
   expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
@@ -1114,36 +1115,65 @@ it("retains the draft after create failure and allows retry", async () => {
   await screen.findByRole("heading", { name: "Đã về danh sách" });
 });
 
-it("blocks a handling group whose generated code exceeds 30 characters without changing the draft or making a POST", async () => {
-  handlingGroupName = "TEST_20261020_G3CCBK Group OK";
+it("blocks a long handling group immediately on selection and recovers when a valid group is selected", async () => {
+  handlingGroupName = "A".repeat(20);
+  renderPage();
+  await select("Bộ phận xử lý", handlingGroupName);
+  await screen.findByText(/Tên bộ phận xử lý quá dài.*19 ký tự/);
+  expect(
+    screen
+      .getByRole("combobox", { name: "Bộ phận xử lý" })
+      .getAttribute("aria-invalid"),
+  ).toBe("true");
+  expect(
+    screen
+      .getByRole("button", { name: "Tạo yêu cầu" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
+  expect(document.getElementById("create-title")).toBeNull();
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  await select("Bộ phận xử lý", "IT");
+  await waitFor(() =>
+    expect(screen.queryByText(/Tên bộ phận xử lý quá dài/)).toBeNull(),
+  );
+  expect(
+    screen
+      .getByRole("combobox", { name: "Bộ phận xử lý" })
+      .getAttribute("aria-invalid"),
+  ).toBe("false");
+});
+
+it("blocks a refreshed long group without losing the existing request draft", async () => {
   renderPage();
   await fillBase();
   await fillDetails();
-  const group = screen.getByRole("combobox", { name: "Bộ phận xử lý" });
-  fireEvent.focus(group);
-  fireEvent.blur(group);
-  expect(screen.queryByText(/Tên bộ phận xử lý quá dài/)).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
+  handlingGroupName = "A".repeat(20);
+  await act(async () => {
+    await client.invalidateQueries({ queryKey: ["request-create-lookups"] });
+  });
   await screen.findByText(/Tên bộ phận xử lý quá dài.*19 ký tự/);
-  expect(document.activeElement).toBe(group);
-  expect(calls("/ticket_manager")).toHaveLength(0);
   expect(
-    (document.getElementById("create-title") as HTMLInputElement).value,
+    screen
+      .getByRole("button", { name: "Tạo yêu cầu" })
+      .hasAttribute("disabled"),
+  ).toBe(true);
+  expect(calls("/ticket_manager")).toHaveLength(0);
+  handlingGroupName = "ISMS";
+  fireEvent.click(screen.getByRole("button", { name: "Tải lại danh mục" }));
+  await waitFor(() =>
+    expect(screen.queryByText(/Tên bộ phận xử lý quá dài/)).toBeNull(),
+  );
+  expect(
+    ((await screen.findByLabelText(/^Tiêu đề yêu cầu/)) as HTMLInputElement)
+      .value,
   ).toBe("Yêu cầu TEST");
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Nội dung mẫu");
-  handlingGroupName = "ISMS";
-  fireEvent.click(screen.getByRole("button", { name: "Tải lại danh mục" }));
-  await waitFor(() => expect(group.textContent).toContain("ISMS"));
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByRole("heading", { name: "Đã về danh sách" });
   expect(calls("/ticket_manager")).toHaveLength(1);
-  expect(
-    JSON.parse(String(calls("/ticket_manager")[0][1]?.body)),
-  ).toMatchObject({ handling_group: 5, title: "Yêu cầu TEST" });
 });
-
 it("allows a 19-character handling group name without shortening or changing the selected group", async () => {
   handlingGroupName = "A".repeat(19);
   renderPage();
@@ -1318,13 +1348,13 @@ it("does not replace existing detail rows for an invalid imported workbook", asy
 it("retries lookup and template failures independently", async () => {
   lookupFailure = true;
   renderPage();
-  await screen.findByText(/Lookup offline/);
+  await expectErrorToast(/Lookup offline/);
   lookupFailure = false;
   fireEvent.click(screen.getByRole("button", { name: "Thử lại danh mục" }));
   await ready();
   templateFailure = true;
   await fillBase();
-  await screen.findByText(/Template offline/);
+  await expectErrorToast(/Template offline/);
   templateFailure = false;
   fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
   await screen.findByRole("group", { name: "Dòng 1" });
@@ -1511,7 +1541,7 @@ it.each([
     typeFailure = kind === "types";
     templateFailure = kind === "template";
     renderPage("/requests/new?clone=42");
-    await screen.findByText(new RegExp(error));
+    await expectErrorToast(new RegExp(error));
     lookupFailure = typeFailure = templateFailure = false;
     fireEvent.click(screen.getByRole("button", { name: retry }));
     await waitFor(() => {
@@ -1680,7 +1710,7 @@ it("keeps entered rows, notes and attachments when template and lookup APIs relo
   await act(async () => {
     await client.refetchQueries({ queryKey: ["request-create-template", 42] });
   });
-  await screen.findByText(/Template offline/);
+  await expectErrorToast(/Template offline/);
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Nội dung mẫu");
@@ -1693,7 +1723,7 @@ it("keeps entered rows, notes and attachments when template and lookup APIs relo
   await act(async () => {
     await client.refetchQueries({ queryKey: ["request-create-lookups", 42] });
   });
-  await screen.findByText(/Lookup offline/);
+  await expectErrorToast(/Lookup offline/);
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Nội dung mẫu");

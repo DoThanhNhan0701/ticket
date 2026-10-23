@@ -1,10 +1,27 @@
+import { notificationJourney } from "./modules/notifications";
+import { guideSettings, guideRequest, guideReports } from "./modules/guide";
+import {
+  prepareActionActors,
+  ticketActionJourney,
+} from "./modules/ticket-actions";
+import {
+  hrJourney,
+  hrCancelJourney,
+  interviewRegression,
+  retainedHrCleanup,
+} from "./modules/hr";
+import { extendedJourney } from "./modules/extended";
 import { cloneRegression } from "./modules/regression";
 import { test, expect, Harness } from "./harness";
 import { menu, routes } from "./discovery";
 import { initialAuth } from "./modules/auth";
 import { listPage, shell } from "./modules/navigation";
 import { settingsCrud, cleanupSettings } from "./modules/settings";
-import { requestJourney, cleanupRequest } from "./modules/requests";
+import {
+  requestJourney,
+  cleanupRequest,
+  longNameGuard,
+} from "./modules/requests";
 import { reports, recruitment, help } from "./modules/secondary";
 import {
   continuousStability,
@@ -27,17 +44,75 @@ test("continuous frontend workflow: one browser, one context, UI-only navigation
   await h.install();
   try {
     await initialAuth(h);
+    if (process.env.E2E_NOTIFICATIONS_ONLY === "true") {
+      await notificationJourney(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_HR_UI_ONLY === "true") {
+      for (const item of menu.filter((item) => item.module === "recruitment"))
+        await listPage(h, item);
+      await recruitment(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_HR_CLEANUP_FIXTURES) {
+      await retainedHrCleanup(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_INTERVIEW_ONLY === "true") {
+      await interviewRegression(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_CANCEL_ONLY === "true") {
+      h.primaryName = process.env.E2E_PRIMARY_APPROVER_NAME;
+      await hrCancelJourney(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_EXTENDED_ONLY === "true") {
+      await extendedJourney(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_LONG_NAME_ONLY === "true") {
+      await shell(h);
+      await longNameGuard(h);
+      await finalLogout(h);
+      return;
+    }
     if (process.env.E2E_REGRESSION_REQUEST) {
       await cloneRegression(h, process.env.E2E_REGRESSION_REQUEST);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_GUIDE_ONLY === "true") {
+      await settingsCrud(h);
+      await prepareActionActors(h);
+      await guideSettings(h);
+      await requestJourney(h);
+      await guideRequest(h);
+      await guideReports(h);
+      await help(h);
+      await cleanupRequest(h);
+      await cleanupSettings(h);
       await finalLogout(h);
       return;
     }
     await shell(h);
     for (const item of menu) await listPage(h, item);
     await settingsCrud(h);
+    await prepareActionActors(h);
+    await guideSettings(h);
     await requestJourney(h);
+    await guideRequest(h);
+    await ticketActionJourney(h);
+    await hrJourney(h);
     await reports(h);
     await recruitment(h);
+    await guideReports(h);
     await help(h);
     await continuousStability(h);
     await switchAccount(h);

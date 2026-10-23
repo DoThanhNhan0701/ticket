@@ -141,18 +141,23 @@ export async function recruitment(h: Harness) {
       async () => {
         const input = p.locator("#recruitment-filter-search");
         const url = p.url();
-        await input.fill(`NO_MATCH_${h.prefix}`);
-        expect(p.url()).toBe(url);
-        await p.getByRole("button", { name: "Tìm kiếm", exact: true }).click();
-        await h.settle();
-        await expect(
-          p.getByText(/Không tìm thấy|Chưa có/).first(),
-        ).toBeVisible();
-        await p
-          .getByRole("button", { name: "Xóa lọc tuyển dụng", exact: true })
-          .click();
-        await h.settle();
-        await expect(input).toHaveValue("");
+        try {
+          await input.fill(`NO_MATCH_${h.prefix}`);
+          expect(p.url()).toBe(url);
+          await p
+            .getByRole("button", { name: "Tìm kiếm", exact: true })
+            .click();
+          await h.settle();
+          await expect(
+            p.getByText(/Không tìm thấy|Chưa có/).first(),
+          ).toBeVisible();
+        } finally {
+          await p
+            .getByRole("button", { name: "Xóa lọc tuyển dụng", exact: true })
+            .click();
+          await h.settle();
+          await expect(input).toHaveValue("");
+        }
       },
     );
     await h.run(
@@ -220,9 +225,9 @@ export async function recruitment(h: Harness) {
     h.note(
       "recruitment",
       route,
-      "Save/delete existing recruitment rows",
-      "Existing business rows are inspected/cancelled only. No disposable candidate/recruitment request was created in this phase, so save/delete/status side effects are not exercised on those rows.",
-      "BLOCKED",
+      "Do not mutate pre-existing recruitment rows",
+      "This readonly smoke phase inspects existing rows without saving. Save/delete/status mutations on owned fixtures are covered separately by hrJourney.",
+      "NOT RUN",
     );
   }
   await h.run(
@@ -301,16 +306,35 @@ export async function help(h: Harness) {
         .getByRole("navigation", { name: "Mục lục hướng dẫn", exact: true })
         .getByRole("button");
       await expect(chapters.first()).toBeVisible();
-      if ((await chapters.count()) > 1) {
-        await chapters.nth(1).click();
+      const previous = p.getByRole("button", {
+        name: "Chương trước",
+        exact: true,
+      });
+      const next = p.getByRole("button", {
+        name: "Chương tiếp theo",
+        exact: true,
+      });
+      await chapters.first().click();
+      await expect(previous).toBeDisabled();
+      // Read every chapter from the real Word document through the rendered UI.
+      const count = await chapters.count();
+      expect(count).toBe(15);
+      for (let index = 0; index < count; index++) {
+        if (index) await next.click();
         await expect(p).toHaveURL(
-          (url) => url.searchParams.get("chapter") === "2",
+          (url) => url.searchParams.get("chapter") === String(index + 1),
         );
-        await chapters.first().click();
-        await expect(p).toHaveURL(
-          (url) => url.searchParams.get("chapter") === "1",
+        await expect(p.locator("#user-guide-title")).toHaveText(
+          new RegExp(`^${index + 1}\\.`),
         );
+        await expect(p.locator(".guide-document").last()).not.toBeEmpty();
       }
+      await expect(next).toBeDisabled();
+      await previous.click();
+      await expect(p).toHaveURL(
+        (url) => url.searchParams.get("chapter") === "14",
+      );
+      await chapters.first().click();
       h.visits.add("/help");
     },
   );

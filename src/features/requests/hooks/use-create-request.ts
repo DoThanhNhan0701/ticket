@@ -1,3 +1,4 @@
+import { getRequestGroupNameError } from "../utils/request-code";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { addBusinessDays, format } from "date-fns";
@@ -49,6 +50,27 @@ function defaults(company = ""): CreateRequestValues {
     rows: [{ values: {} }],
   };
 }
+function useGroupNameError(
+  form: UseFormReturn<CreateRequestValues>,
+  group: string,
+  handlingGroups?: readonly { id: number; name?: string }[],
+) {
+  const groupNameError = getRequestGroupNameError(
+    handlingGroups?.find((row) => String(row.id) === group)?.name ?? "",
+  );
+  useEffect(() => {
+    if (groupNameError)
+      form.setError("handling_group", {
+        type: "group-name",
+        message: groupNameError,
+      });
+    else if (form.getFieldState("handling_group").error?.type === "group-name")
+      form.clearErrors("handling_group");
+  }, [form, group, groupNameError]);
+
+  return groupNameError;
+}
+
 export function useCreateRequest() {
   const { userId } = useAuthContext();
   const draftKey = useRequestCreateDraftKey(userId);
@@ -93,6 +115,8 @@ export function useCreateRequest() {
   const group = useWatch({ control: form.control, name: "handling_group" }),
     type = useWatch({ control: form.control, name: "ticket_type" });
   const teams = useWatch({ control: form.control, name: "other1" });
+  const groupNameError = useGroupNameError(form, group, lookups.data?.groups);
+
   const types = useQuery({
     queryKey: ["request-create-types", userId, group],
     queryFn: ({ signal }) => getCreateRequestTypes(group, signal),
@@ -197,18 +221,19 @@ export function useCreateRequest() {
     createdRef,
     pendingFiles,
   });
-  const ready = Boolean(
-    !draft.loading &&
-    !clone.error &&
-    !clone.loading &&
-    userId &&
-    lookups.isSuccess &&
-    types.isSuccess &&
-    !types.isFetching &&
-    selectedType &&
-    template.isSuccess &&
+  const ready = [
+    !draft.loading,
+    !groupNameError,
+    !clone.error,
+    !clone.loading,
+    userId,
+    lookups.isSuccess,
+    types.isSuccess,
+    !types.isFetching,
+    selectedType,
+    template.isSuccess,
     !template.isFetching,
-  );
+  ].every(Boolean);
   const oversizedFile = files.find((file) => file.size > 50 * 1024 * 1024);
   const attachmentError = oversizedFile
     ? `Tệp “${oversizedFile.name}” vượt quá 50 MB. Vui lòng bỏ tệp hoặc chọn tệp nhỏ hơn.`
@@ -295,6 +320,7 @@ export function useCreateRequest() {
     template,
     groups,
     selectedType,
+    groupNameError,
     ready,
     mutation,
     files,

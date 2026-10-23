@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +11,6 @@ import {
   DialogCloseButton,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { DataTable, DataText } from "@/components/data-management";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
@@ -142,7 +142,7 @@ export function RecruitmentEditor({
           )}
           {active?.isError && (
             <div className="space-y-3">
-              <ErrorAlert message={active.error.message} />
+              <ErrorToast message={active.error.message} />
               <Button onClick={() => void active.refetch()}>
                 Thử lại thông tin
               </Button>

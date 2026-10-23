@@ -25,7 +25,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import type { RecruitmentEditorState } from "../types";
@@ -186,7 +185,7 @@ export function RecruitmentCalendar() {
       </div>
       {lookups.isError && (
         <div className="space-y-2">
-          <ErrorAlert message={lookups.error.message} />
+          <ErrorToast message={lookups.error.message} />
           <Button onClick={() => void lookups.refetch()}>
             Thử lại danh mục
           </Button>
@@ -195,7 +194,7 @@ export function RecruitmentCalendar() {
       {query.isPending && <LoadingState message="Đang tải lịch phỏng vấn..." />}
       {query.isError && (
         <div className="space-y-3">
-          <ErrorAlert message={query.error.message} />
+          <ErrorToast message={query.error.message} />
           <Button onClick={() => void query.refetch()}>Thử lại lịch</Button>
         </div>
       )}

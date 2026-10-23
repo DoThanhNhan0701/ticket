@@ -151,6 +151,20 @@ For every discovered frontend module, test all relevant UI interactions.
 - Verify modal/drawer state and table/detail updates without unnecessary full reload.
 - Use disposable records; do not destructively modify real production data.
 
+Ticket-detail lifecycle coverage:
+- Use disposable requests to exercise approval, receipt, assignment add/remove/change, forwarding, completion, closing, reprocessing and cancellation.
+- Validate required reasons/recipients, cancel dialogs, processing-section save/cancel and detail attachments.
+- Switch creator/handler accounts using Logout/Login UI only; handlers find assigned tickets through their task list.
+- Missing actions for the real account/status are BLOCKED, not PASS.
+
+Recruitment coverage and data prerequisites:
+- Use a permitted TEST account with full recruitment permissions supplied through secure environment/stdin; never store credentials in source.
+- Create recruitment seed data from the UI: Tạo yêu cầu → Bộ phận xử lý HR → Loại yêu cầu Yêu cầu tuyển dụng.
+- Fill the real HR template, approve the owned request when required, and verify it appears in Yêu cầu tuyển dụng.
+- Cover owned recruitment request updates, candidate CRUD, notes/files, status, duplicate lookup, address dependencies, interview CRUD, bulk attachment, contextual interview actions and all recruitment exports.
+- Reopen saved forms to verify displayed values match newly saved data. Observe responses to diagnose stale UI, without replacing UI actions with API calls.
+- Delete only owned candidates/interviews and retain evidence if cleanup fails. Do not modify the shared HR configuration/template or existing business records.
+
 5.4 Data Tables:
 - Search; filters; combined filters; sort ascending/descending.
 - Pagination; page size; row selection; select all; bulk actions.
@@ -330,3 +344,39 @@ Complete only when:
 - Complete evidence-based test report is generated.
 
 Final goal: Deliver a stable, comprehensive, real-user-oriented Frontend E2E testing suite that validates the entire website without unnecessary page reloads or session resets.
+
+## 13. User-guide traceability (Word v1.2, reviewed 2026-10-23)
+
+Use `docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx` as an additional
+workflow source. Cross-reference every numbered subsection, including its Word
+paragraph location, in `docs/frontend-e2e-guide-coverage.md` and
+`tests/artifacts/user-guide-coverage-20261023.json`. Mapping does not mean PASS;
+retain PARTIAL / NOT RUN / MANUAL and known failures with concrete missing branches.
+
+Include the guide scenarios in the continuous default suite; `E2E_GUIDE_ONLY=true`
+runs the focused comparison with owned settings/request fixtures:
+- Reject non-PDF request-type manuals; upload/reopen PDF and check its create-form link.
+- Export the filtered disposable user through UI.
+- Select an owned colleague from @ suggestions using keyboard; Enter selects before sending.
+- Check title 300/301, notes 1000/1001 and a past due date without submitting invalid data.
+- Download the actual Excel template, preserve its headers/STT, fill two rows locally,
+  reject a wrong extension without losing rows, import the workbook with numeric zero.
+- Submit a real cloned ticket, check distinct code and persisted imported rows;
+  verify the source remains unchanged, then cancel both owned tickets.
+- Check required/reversed/over-six-month recruitment report dates and recovery.
+- Navigate all 15 rendered Word chapters, previous/next boundary states, mobile
+  chapter selector and original Word download.
+
+Do not generate screenshots/workbooks inside the repository. Do not bypass known
+UI failures using API writes, reloads, forced clicks or injected auth state. Do not
+claim real-device touch, live network recovery, expiry, all template date/private
+field combinations, or byte-level export correctness without corresponding evidence.
+
+Server error presentation (updated 2026-10-23):
+- Query/load failures use the shared Sonner ErrorToast, not a red inline API-error banner.
+- Retain retry/reset actions and keep mutations blocked when prerequisite data fails.
+- Field validation and actionable partial-upload recovery remain local to the form.
+- HTTP 500 is a backend finding. Test the frontend toast/session/retry/filter recovery
+  separately; do not label a failed API search as a successful empty result.
+- E2E_NOTIFICATIONS_ONLY=true scans sidebar pages and checks the real candidate
+  failure/retry/reset path with one UI session and no direct API writes.

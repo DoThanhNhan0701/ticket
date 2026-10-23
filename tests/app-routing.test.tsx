@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { readFileSync } from "node:fs";
 import {
   cleanup,
@@ -293,7 +294,8 @@ it("falls back to the first guide chapter for an invalid chapter link", async ()
 it("offers Word download and retries when reading the guide fails", async () => {
   vi.mocked(loadUserGuide).mockRejectedValueOnce(new Error("Network failed"));
   renderApp("/help");
-  await screen.findByRole("alert");
+  await expectErrorToast("Không đọc được tài liệu hướng dẫn.");
+  expect(screen.queryByRole("alert")).toBeNull();
   expect(
     screen
       .getByRole("link", { name: "Tải tài liệu Word" })
@@ -1000,3 +1002,8 @@ it("removes sidebar links and blocks the current page immediately after its perm
   expect(screen.queryByRole("link", { name: "Danh sách yêu cầu" })).toBeNull();
   expect(screen.queryByRole("table")).toBeNull();
 });
+
+vi.mock("sonner", () => ({
+  Toaster: () => null,
+  toast: { success: vi.fn(), error: vi.fn() },
+}));

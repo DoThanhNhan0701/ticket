@@ -1,5 +1,5 @@
+import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
 import type { ReportResponse } from "../schemas/reports-schema";
@@ -13,7 +13,7 @@ export function ReportResults({
     <>
       {report.isError && (
         <div className="space-y-2">
-          <ErrorAlert
+          <ErrorToast
             message={`Không tải được báo cáo: ${report.error.message}`}
           />
           <Button variant="outline" onClick={() => void report.refetch()}>

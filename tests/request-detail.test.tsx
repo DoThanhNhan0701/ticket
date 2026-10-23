@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { templateCombinations } from "./fixtures/template-combinations";
 import {
@@ -676,7 +677,7 @@ it.each([
 ])("handles HTTP %s", async (status, message) => {
   failure = Number(status);
   open();
-  expect(await screen.findByText(message)).toBeTruthy();
+  await expectErrorToast(message);
   expect(screen.queryByRole("tab")).toBeNull();
 });
 it("rejects invalid identifiers without calling the API", async () => {
@@ -692,7 +693,7 @@ it("hides cached ticket controls when access is revoked and can retry loading", 
   await ready();
   failure = 403;
   fireEvent.click(screen.getByRole("button", { name: "Tải lại yêu cầu" }));
-  await screen.findByText("Bạn không có quyền xem yêu cầu này.");
+  await expectErrorToast("Bạn không có quyền xem yêu cầu này.");
   expect(screen.queryByRole("tab")).toBeNull();
   failure = 0;
   fireEvent.click(screen.getByRole("button", { name: "Tải lại yêu cầu" }));
@@ -787,7 +788,7 @@ it("keeps remaining uploads after partial success when refreshing detail fails",
     },
   );
   fireEvent.click(screen.getByRole("button", { name: "Tải lên đính kèm" }));
-  await screen.findByText("Server unavailable");
+  await expectErrorToast("Server unavailable");
   expect(screen.getByRole("tab", { name: "Thông tin chung" })).toBeTruthy();
   expect(screen.getByText("two.txt")).toBeTruthy();
   failure = 0;

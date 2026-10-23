@@ -8,6 +8,7 @@ export async function initialAuth(h: Harness) {
     "Login form and required fields",
     async () => {
       await p.goto("/login");
+      await expect(p.locator("html")).toHaveAttribute("lang", "vi");
       await expect(
         p.getByRole("button", { name: "Sign In to Ticket", exact: true }),
       ).toBeVisible();

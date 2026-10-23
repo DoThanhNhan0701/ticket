@@ -59,7 +59,7 @@ const details = {
     "Repeated GETs are diagnostic candidates, not confirmed frontend bugs: cancellation, retries, and separate observers may explain them.",
     "API requests and browser console/pageerror events are recorded; a complete non-API failed-resource inventory was not collected.",
     "Long-task observations are diagnostic only; memory growth, visual flicker and layout remount counts were not instrumented.",
-    "File drag-and-drop, oversize rejection, upload outage recovery, every permission-dependent status transition, PDF configuration and recruitment save/delete mutations are not comprehensively executed in this continuous suite. Unmatched source controls remain NOT RUN.",
+    "Check the scenario matrix for owned ticket/recruitment mutation results. File drag-and-drop, upload outage recovery, every actor/status combination and PDF configuration are not comprehensively executed. Unmatched source controls remain NOT RUN.",
     "Real token expiration was not awaited; token/storage substitution is intentionally absent.",
   ],
 };

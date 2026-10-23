@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -8,7 +9,6 @@ import {
   countActiveFilters,
   updateListSearchParams,
 } from "@/components/data-management";
-import { ErrorAlert } from "@/components/error-alert";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
@@ -204,7 +204,7 @@ export function RequestList({
         </div>
         {statuses.isError && (
           <div className="space-y-2">
-            <ErrorAlert
+            <ErrorToast
               message={`Không tải được trạng thái: ${statuses.error.message}`}
             />
             <Button
@@ -218,7 +218,7 @@ export function RequestList({
         )}
         {config.typeSource && types.isError && (
           <div className="space-y-2">
-            <ErrorAlert
+            <ErrorToast
               message={`Không tải được loại yêu cầu: ${types.error.message}`}
             />
             <Button
@@ -232,7 +232,7 @@ export function RequestList({
         )}
         {config.teams && teams.isError && (
           <div className="space-y-2">
-            <ErrorAlert
+            <ErrorToast
               message={`Không tải được Team: ${teams.error.message}`}
             />
             <Button

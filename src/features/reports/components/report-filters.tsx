@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +8,6 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 import { Download, Search } from "lucide-react";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { SelectField } from "@/components/form/select-field";
-import { ErrorAlert } from "@/components/error-alert";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -28,7 +28,7 @@ function TypeFeedback({
   if (error)
     return (
       <div className="space-y-2">
-        <ErrorAlert message={`Không tải được loại yêu cầu: ${error.message}`} />
+        <ErrorToast message={`Không tải được loại yêu cầu: ${error.message}`} />
         <Button type="button" variant="outline" onClick={retry}>
           Thử lại loại yêu cầu
         </Button>

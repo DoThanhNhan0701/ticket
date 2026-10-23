@@ -71,6 +71,9 @@ export class Harness {
   tracing = false;
   authenticated = false;
   secondaryHr = false;
+  secondaryActor = false;
+  closedTicket = false;
+  primaryName?: string;
   ticket?: { title: string; href: string; code: string };
   private sequence = 0;
   constructor(
@@ -493,6 +496,9 @@ export class Harness {
       JSON.stringify(
         {
           prefix: this.prefix,
+          ownedFixtures: this.own,
+          ownedTicket: this.ticket,
+          primaryName: this.primaryName,
           cases: this.cases,
           documents: this.documents,
           errors: this.errors,

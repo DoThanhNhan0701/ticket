@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -277,7 +278,7 @@ export function RequestDetail() {
         <LoadingState message="Đang tải chi tiết yêu cầu..." />
       )}
       {query.isError && (
-        <ErrorAlert message={message ?? "Không tải được yêu cầu."} />
+        <ErrorToast message={message ?? "Không tải được yêu cầu."} />
       )}
       {query.data && canShowTicket && (
         <DetailTabs key={ticketID} ticket={query.data} onSaved={refresh} />

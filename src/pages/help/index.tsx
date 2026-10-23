@@ -1,8 +1,8 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, Download } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { LoadingState } from "@/components/loading-state";
-import { ErrorAlert } from "@/components/error-alert";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
 import {
@@ -52,7 +52,7 @@ export function UserGuidePage() {
       )}
       {document.isError && (
         <div className="flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5">
-          <ErrorAlert message="Không đọc được tài liệu hướng dẫn. Vui lòng thử lại hoặc tải bản Word." />
+          <ErrorToast message="Không đọc được tài liệu hướng dẫn. Vui lòng thử lại hoặc tải bản Word." />
           <Button variant="outline" onClick={() => void document.refetch()}>
             Thử lại
           </Button>

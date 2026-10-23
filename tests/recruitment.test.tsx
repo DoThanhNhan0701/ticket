@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import {
   cleanup,
@@ -361,7 +362,8 @@ it("shows a retryable list failure without leaking previous rows", async () => {
     new Error("TEST API unavailable"),
   );
   mount(<RecruitmentList kind="requests" />);
-  await screen.findByRole("alert");
+  await expectErrorToast("TEST API unavailable");
+  expect(screen.queryByRole("alert")).toBeNull();
   expect(screen.queryByText("TEST-REC")).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
   await screen.findByRole("table", { name: "Bảng yêu cầu tuyển dụng" });
@@ -1315,7 +1317,7 @@ it("retries failed history requests and shows an empty history without submittin
       onClose={vi.fn()}
     />,
   );
-  await screen.findByText("TEST history unavailable");
+  await expectErrorToast("TEST history unavailable");
   fireEvent.click(screen.getByRole("button", { name: "Thử lại lịch sử" }));
   await screen.findByText("Chưa có lịch sử ghi chú phỏng vấn.");
   expect(

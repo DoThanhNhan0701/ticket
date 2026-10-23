@@ -1,0 +1,919 @@
+{
+  "date": "2026-10-23",
+  "source": "docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx",
+  "version": "1.2",
+  "updatedAt": "22/10/2026",
+  "sha256": "1156ab8107ef445ae5db6b14c48f864d891074e1aa6566926390ce1f830046b5",
+  "publishedCopyIdentical": true,
+  "meaning": "Coverage categories describe mapped scenarios, not execution PASS. Detailed execution results are recorded separately.",
+  "sections": [
+    {
+      "section": "1.1",
+      "title": "1.1. Bạn cần làm việc gì?",
+      "paragraph": 36,
+      "coverage": "EXISTING",
+      "modules": "navigation.ts, ticket-actions.ts, hr.ts",
+      "notes": "Menu và quy trình theo vai trò; không thay thế hướng dẫn nghiệp vụ."
+    },
+    {
+      "section": "1.2",
+      "title": "1.2. Ai làm gì trong một yêu cầu?",
+      "paragraph": 77,
+      "coverage": "PARTIAL",
+      "modules": "navigation.ts, ticket-actions.ts, hr.ts",
+      "notes": "Chưa chứng minh ma trận mọi tổ hợp vai trò/quan hệ bản ghi."
+    },
+    {
+      "section": "1.3",
+      "title": "1.3. Hiểu dấu hiệu và tên gọi trên màn hình",
+      "paragraph": 100,
+      "coverage": "PARTIAL",
+      "modules": "navigation.ts, ticket-actions.ts, hr.ts",
+      "notes": "Kiểm tra nhãn/lỗi/badge; tooltip tên dài trên mọi bảng chưa đủ."
+    },
+    {
+      "section": "1.4",
+      "title": "1.4. Cách kiểm tra sau mỗi lần lưu",
+      "paragraph": 120,
+      "coverage": "EXISTING",
+      "modules": "navigation.ts, ticket-actions.ts, hr.ts",
+      "notes": "Có save/reopen; stale recruitment editor là lỗi đã ghi nhận."
+    },
+    {
+      "section": "2.1",
+      "title": "2.1. Chuẩn bị",
+      "paragraph": 129,
+      "coverage": "MANUAL",
+      "modules": "auth.ts, navigation.ts, session.ts",
+      "notes": "Điều kiện mạng nội bộ và quy trình cấp tài khoản ngoài UI."
+    },
+    {
+      "section": "2.2",
+      "title": "2.2. Đăng nhập từng bước",
+      "paragraph": 133,
+      "coverage": "EXISTING",
+      "modules": "auth.ts, navigation.ts, session.ts",
+      "notes": "Required, sai mật khẩu, show/hide, submit kép, đăng nhập thành công."
+    },
+    {
+      "section": "2.3",
+      "title": "2.3. Các khu vực và biểu tượng",
+      "paragraph": 140,
+      "coverage": "EXISTING",
+      "modules": "auth.ts, navigation.ts, session.ts",
+      "notes": "Logo, sidebar, theme, tên tài khoản, help, logout."
+    },
+    {
+      "section": "2.4",
+      "title": "2.4. Mở trang và kiểm tra quyền",
+      "paragraph": 158,
+      "coverage": "PARTIAL",
+      "modules": "auth.ts, navigation.ts, session.ts",
+      "notes": "Menu/full quyền + tài khoản thử hạn chế; chưa mọi tập quyền."
+    },
+    {
+      "section": "2.5",
+      "title": "2.5. Đăng xuất trên máy dùng chung",
+      "paragraph": 163,
+      "coverage": "EXISTING",
+      "modules": "auth.ts, navigation.ts, session.ts",
+      "notes": "Logout và Back không khôi phục truy cập bảo vệ."
+    },
+    {
+      "section": "3.1",
+      "title": "3.1. Chọn đúng danh sách trước khi tìm",
+      "paragraph": 170,
+      "coverage": "EXISTING",
+      "modules": "navigation.ts",
+      "notes": "Sidebar sáu danh sách; nhiệm vụ của user phụ qua UI."
+    },
+    {
+      "section": "3.2",
+      "title": "3.2. Tìm nhanh",
+      "paragraph": 186,
+      "coverage": "EXISTING",
+      "modules": "navigation.ts",
+      "notes": "Search draft, Enter, reset, mở đúng mã."
+    },
+    {
+      "section": "3.3",
+      "title": "3.3. Lọc nâng cao",
+      "paragraph": 194,
+      "coverage": "PARTIAL",
+      "modules": "navigation.ts",
+      "notes": "Drawer cancel/Escape đã có; chưa áp dụng mọi tổ hợp đa lựa chọn/ngày."
+    },
+    {
+      "section": "3.4",
+      "title": "3.4. Đọc bảng và chuyển trang",
+      "paragraph": 201,
+      "coverage": "PARTIAL",
+      "modules": "navigation.ts",
+      "notes": "Page size/boundary và next/previous khi đủ dòng; chưa tạo 201 ticket để ép phân trang."
+    },
+    {
+      "section": "3.5",
+      "title": "3.5. Nếu tìm không thấy",
+      "paragraph": 206,
+      "coverage": "EXISTING",
+      "modules": "navigation.ts",
+      "notes": "Không kết quả/reset; không suy luận xóa bản ghi từ kết quả rỗng."
+    },
+    {
+      "section": "4.1",
+      "title": "4.1. Mở form và chuẩn bị",
+      "paragraph": 214,
+      "coverage": "EXISTING",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Required và mở tuần tự các phần."
+    },
+    {
+      "section": "4.2",
+      "title": "4.2. Phần 1 – Loại yêu cầu: chọn nơi nhận",
+      "paragraph": 218,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Danh mục phụ thuộc và chặn tên bộ phận dài; lỗi tải mạng chưa kích hoạt có kiểm soát."
+    },
+    {
+      "section": "4.3",
+      "title": "4.3. Phần 2 – Thông tin yêu cầu",
+      "paragraph": 240,
+      "coverage": "ADDED",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Biên tiêu đề 300/301 và ngày quá khứ; Team nhiều lựa chọn chưa kiểm tra đủ."
+    },
+    {
+      "section": "4.4",
+      "title": "4.4. Phần 3 – Điền các dòng chi tiết",
+      "paragraph": 255,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Text/number zero, clone/delete dòng; date/range/conditions chưa có live fixture."
+    },
+    {
+      "section": "4.5",
+      "title": "4.5. Nhập chi tiết bằng Excel",
+      "paragraph": 262,
+      "coverage": "ADDED",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Tải mẫu thật, sửa workbook cục bộ, sai extension giữ dữ liệu, nhập hai dòng 0/2."
+    },
+    {
+      "section": "4.6",
+      "title": "4.6. Phần 4 – Thông tin bổ sung: ghi chú và tệp",
+      "paragraph": 269,
+      "coverage": "ADDED",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Bỏ file chọn nhầm và biên ghi chú 1000/1001; kéo thả/50 MB chưa live đủ."
+    },
+    {
+      "section": "4.7",
+      "title": "4.7. Gửi và kiểm tra kết quả",
+      "paragraph": 275,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Tạo thật và đọc lại; retry upload sau lưu một phần chưa kích hoạt trong continuous suite."
+    },
+    {
+      "section": "4.8",
+      "title": "4.8. Nháp, mất mạng và phải đăng nhập lại",
+      "paragraph": 282,
+      "coverage": "NOT RUN",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Chưa cắt mạng thật/đợi hết phiên và kiểm chứng nháp sau UI đăng nhập lại; không thay token."
+    },
+    {
+      "section": "4.9",
+      "title": "4.9. Quay lại và Làm lại",
+      "paragraph": 288,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Làm lại/clone reset đã có; Quay lại và khôi phục nháp mới còn thiếu."
+    },
+    {
+      "section": "4.10",
+      "title": "4.10. Ví dụ một lần gửi hoàn chỉnh",
+      "paragraph": 299,
+      "coverage": "EXISTING",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Tạo yêu cầu own fixtures, file Unicode/PNG, tìm mã và mở lại."
+    },
+    {
+      "section": "5.1",
+      "title": "5.1. Sao chép tạo ra điều gì?",
+      "paragraph": 304,
+      "coverage": "ADDED",
+      "modules": "requests.ts (cloneReset), guide.ts",
+      "notes": "Sau tạo bản sao kiểm tra ticket nguồn giữ nội dung."
+    },
+    {
+      "section": "5.2",
+      "title": "5.2. Thực hiện từng bước",
+      "paragraph": 306,
+      "coverage": "ADDED",
+      "modules": "requests.ts (cloneReset), guide.ts",
+      "notes": "Gửi bản sao thật có hai dòng Excel, mã khác nguồn, đọc lại và hủy bản thử."
+    },
+    {
+      "section": "5.3",
+      "title": "5.3. Nếu không sao chép được hoặc muốn làm lại",
+      "paragraph": 315,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts (cloneReset), guide.ts",
+      "notes": "Clone reset + regression danh mục khóa; chưa loại nguồn bị thay đổi cấu trúc."
+    },
+    {
+      "section": "6.1",
+      "title": "6.1. Mở chi tiết và đọc đúng tab",
+      "paragraph": 322,
+      "coverage": "EXISTING",
+      "modules": "requests.ts, ticket-actions.ts",
+      "notes": "Bốn tab và attachment preview."
+    },
+    {
+      "section": "6.2",
+      "title": "6.2. Phê duyệt từng bước",
+      "paragraph": 336,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, ticket-actions.ts",
+      "notes": "Approve/cancel confirmation đã chạy; chưa xác nhận own mã chuyển hai danh sách duyệt."
+    },
+    {
+      "section": "6.3",
+      "title": "6.3. Khi chưa đồng ý nội dung",
+      "paragraph": 343,
+      "coverage": "EXISTING",
+      "modules": "requests.ts, ticket-actions.ts",
+      "notes": "Trao đổi và Hủy đúng own ticket; không có hành động từ chối riêng."
+    },
+    {
+      "section": "6.4",
+      "title": "6.4. Xem lại sau duyệt",
+      "paragraph": 348,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, ticket-actions.ts",
+      "notes": "Có trạng thái/history tabs; chưa assert own mã trong Đã phê duyệt."
+    },
+    {
+      "section": "6.5",
+      "title": "6.5. Không còn nút Phê duyệt",
+      "paragraph": 352,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, ticket-actions.ts",
+      "notes": "Nút thay đổi theo trạng thái đã có; Tải lại yêu cầu sau đồng thời đổi trạng thái chưa chạy."
+    },
+    {
+      "section": "7.1",
+      "title": "7.1. Hiểu trạng thái và nút hành động",
+      "paragraph": 357,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Lifecycle approve/receive/complete/reprocess/close/cancel, không giả định thứ tự mọi ticket."
+    },
+    {
+      "section": "7.2",
+      "title": "7.2. Tiếp nhận",
+      "paragraph": 378,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Nhận việc primary và own secondary."
+    },
+    {
+      "section": "7.3",
+      "title": "7.3. Phân công – Thêm người xử lý",
+      "paragraph": 384,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Thêm own handler, required, đọc danh sách."
+    },
+    {
+      "section": "7.4",
+      "title": "7.4. Phân công – Thay đổi người xử lý",
+      "paragraph": 390,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Thay handler giữa primary và own user, lý do."
+    },
+    {
+      "section": "7.5",
+      "title": "7.5. Phân công – Xóa người xử lý",
+      "paragraph": 395,
+      "coverage": "PARTIAL",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Xóa own handler/lý do; nhánh gỡ hết/thay thế và retry nhiều bước chưa đủ."
+    },
+    {
+      "section": "7.6",
+      "title": "7.6. Cập nhật kết quả vào biểu mẫu",
+      "paragraph": 401,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Processing section edit/cancel/save/reopen đã PASS ở regression04."
+    },
+    {
+      "section": "7.7",
+      "title": "7.7. Hoàn thành và chuyển tiếp",
+      "paragraph": 407,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Chuyển tiếp và hoàn thành từng handler; từ chối xử lý lại có lý do."
+    },
+    {
+      "section": "7.8",
+      "title": "7.8. Đóng, xử lý lại và hủy",
+      "paragraph": 413,
+      "coverage": "EXISTING",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Xử lý lại trước Đóng, closed terminal; Hủy có lý do + PDF riêng."
+    },
+    {
+      "section": "7.9",
+      "title": "7.9. Đổi ngày mong muốn",
+      "paragraph": 428,
+      "coverage": "KNOWN FAIL",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Click thường bị overlay chặn; giữ lỗi, không force click."
+    },
+    {
+      "section": "7.10",
+      "title": "7.10. Chuyển trạng thái ticket theo mã",
+      "paragraph": 433,
+      "coverage": "PARTIAL",
+      "modules": "ticket-actions.ts, hr.ts",
+      "notes": "Đổi trạng thái own HR sang Hủy và đọc lại; vị trí hiển thị lý do chưa xác nhận."
+    },
+    {
+      "section": "8.1",
+      "title": "8.1. Gửi phản hồi mới",
+      "paragraph": 443,
+      "coverage": "ADDED",
+      "modules": "requests.ts, guide.ts",
+      "notes": "@ own username qua Arrow/Enter không gửi sớm, gửi và mở lại."
+    },
+    {
+      "section": "8.2",
+      "title": "8.2. Trả lời và chỉnh sửa",
+      "paragraph": 450,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Reply/edit/save đã có; edit giữ/bỏ file cũ và cancel edit chưa đủ."
+    },
+    {
+      "section": "8.3",
+      "title": "8.3. Xem và tải tệp",
+      "paragraph": 455,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Ảnh đã load thật; chưa đối chiếu byte mọi định dạng download/file ghi chú HR."
+    },
+    {
+      "section": "8.4",
+      "title": "8.4. Đọc lịch sử",
+      "paragraph": 461,
+      "coverage": "PARTIAL",
+      "modules": "requests.ts, guide.ts",
+      "notes": "Tab Lịch sử đã mở; chưa assert actor/thời gian từng hành động."
+    },
+    {
+      "section": "9.1",
+      "title": "9.1. Phân biệt hai trang",
+      "paragraph": 469,
+      "coverage": "EXISTING",
+      "modules": "secondary.ts (reports)",
+      "notes": "Tách report dashboard/export đúng route."
+    },
+    {
+      "section": "9.2",
+      "title": "9.2. Xem báo cáo",
+      "paragraph": 480,
+      "coverage": "EXISTING",
+      "modules": "secondary.ts (reports)",
+      "notes": "Range invalid/valid, group, render kết quả."
+    },
+    {
+      "section": "9.3",
+      "title": "9.3. Truy xuất và xuất Excel",
+      "paragraph": 486,
+      "coverage": "PARTIAL",
+      "modules": "secondary.ts (reports)",
+      "notes": "Download ZIP magic đúng; chưa parse các giá trị từng ô/export so bộ lọc."
+    },
+    {
+      "section": "9.4",
+      "title": "9.4. Nếu chưa xuất được",
+      "paragraph": 493,
+      "coverage": "NOT RUN",
+      "modules": "secondary.ts (reports)",
+      "notes": "Chưa tạo lỗi download thật để kiểm tra retry; không giả lập backend response."
+    },
+    {
+      "section": "10.1",
+      "title": "10.1. Xem và cập nhật yêu cầu tuyển dụng",
+      "paragraph": 501,
+      "coverage": "KNOWN FAIL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Số lượng/note lưu rồi reopen stale UI so với phản hồi quan sát."
+    },
+    {
+      "section": "10.2",
+      "title": "10.2. Thêm ứng viên vào đúng yêu cầu",
+      "paragraph": 509,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Tạo own candidate/địa chỉ/CV/phone; các biên email, birthday, 150/151 còn thiếu."
+    },
+    {
+      "section": "10.3",
+      "title": "10.3. Tìm ứng viên và mở thao tác",
+      "paragraph": 536,
+      "coverage": "KNOWN FAIL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Candidate empty search HTTP500; reset finally để không cascade."
+    },
+    {
+      "section": "10.4",
+      "title": "10.4. Sửa hồ sơ và chuyển trạng thái",
+      "paragraph": 541,
+      "coverage": "KNOWN FAIL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Candidate reopen stale; chưa chứng minh giữ status/owner sau edit."
+    },
+    {
+      "section": "10.5",
+      "title": "10.5. Ghi chú phỏng vấn và lịch sử",
+      "paragraph": 559,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Ghi chú + PDF/history đã chạy; file-only, giới hạn50MB và download chưa đủ."
+    },
+    {
+      "section": "10.6",
+      "title": "10.6. Kiểm tra hồ sơ trùng",
+      "paragraph": 566,
+      "coverage": "EXISTING",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Mở duplicate lookup, chỉ đọc không xóa hồ sơ thật."
+    },
+    {
+      "section": "10.7",
+      "title": "10.7. Phân biệt xóa tệp, xóa hồ sơ và bỏ khỏi lịch",
+      "paragraph": 570,
+      "coverage": "KNOWN FAIL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "Xóa CV, bỏ lịch PASS; xóa hồ sơ chưa xác minh vắng mặt vì empty-search500."
+    },
+    {
+      "section": "10.8",
+      "title": "10.8. Xuất danh sách",
+      "paragraph": 584,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts (recruitment)",
+      "notes": "UI download; chưa đối chiếu từng ô với filter."
+    },
+    {
+      "section": "11.1",
+      "title": "11.1. Xem lịch và chuyển thời gian",
+      "paragraph": 591,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Month/week/day/today/prev/next đã có; lọc nhiều interviewer chưa đủ."
+    },
+    {
+      "section": "11.2",
+      "title": "11.2. Tạo lịch phỏng vấn",
+      "paragraph": 597,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Required/time invalid + tạo; chưa đủ title5/50, note255, quá khứ, nhiều interviewer."
+    },
+    {
+      "section": "11.3",
+      "title": "11.3. Sửa và xóa lịch",
+      "paragraph": 605,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Create/edit/reopen/delete PASS; chuyển ngày và tìm ở ngày cũ/mới chưa đủ."
+    },
+    {
+      "section": "11.4",
+      "title": "11.4. Gắn ứng viên vào lịch có sẵn",
+      "paragraph": 610,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Bulk attach own candidate PASS; nhánh row-attach/đổi ngày reset lịch chưa đủ."
+    },
+    {
+      "section": "11.5",
+      "title": "11.5. Đặt giờ riêng và bỏ ứng viên khỏi lịch",
+      "paragraph": 617,
+      "coverage": "PARTIAL",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Đặt giờ invalid/valid, profile, remove PASS; candidate status/note ngay trên detail chưa đủ."
+    },
+    {
+      "section": "11.6",
+      "title": "11.6. Báo cáo tuyển dụng",
+      "paragraph": 623,
+      "coverage": "ADDED",
+      "modules": "hr.ts, secondary.ts, guide.ts",
+      "notes": "Required hai ngày, đảo ngày, hơn6tháng, recover; tabs/export đã có."
+    },
+    {
+      "section": "12.1",
+      "title": "12.1. Nguyên tắc cập nhật",
+      "paragraph": 632,
+      "coverage": "EXISTING",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Chỉ own TESTFE fixtures, khóa theo phụ thuộc; không sửa shared HR."
+    },
+    {
+      "section": "12.2",
+      "title": "12.2. Thêm/sửa bản ghi từng bước",
+      "paragraph": 637,
+      "coverage": "EXISTING",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Create/update/reopen/cancel/lock7 danh mục."
+    },
+    {
+      "section": "12.3",
+      "title": "12.3. Người dùng và ý nghĩa trường nhập",
+      "paragraph": 643,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Own user/immutable MSNV + login; thu hồi additional group quyền chưa chứng minh."
+    },
+    {
+      "section": "12.4",
+      "title": "12.4. Bộ phận sử dụng và Team",
+      "paragraph": 666,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Dept max30/team relation/create selection; đổi dept reset team chưa đủ."
+    },
+    {
+      "section": "12.5",
+      "title": "12.5. Bộ phận xử lý và bàn giao",
+      "paragraph": 671,
+      "coverage": "EXISTING",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Own manager/member + ticket reassignment; không giả định tự bàn giao."
+    },
+    {
+      "section": "12.6",
+      "title": "12.6. Loại yêu cầu và tài liệu của loại",
+      "paragraph": 677,
+      "coverage": "ADDED",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Sai file/PDF upload/reopen và manual link trong create."
+    },
+    {
+      "section": "12.7",
+      "title": "12.7. Chức vụ và quyền hạn",
+      "paragraph": 682,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Own position permissions + popup responsive; mọi quyền/ngừng cấp mới chưa đủ."
+    },
+    {
+      "section": "12.8",
+      "title": "12.8. Văn phòng và xuất người dùng",
+      "paragraph": 705,
+      "coverage": "ADDED",
+      "modules": "settings.ts, session.ts, guide.ts",
+      "notes": "Own office CRUD + export own user; không sửa ngày hệ thống."
+    },
+    {
+      "section": "13.1",
+      "title": "13.1. Mở đúng biểu mẫu",
+      "paragraph": 710,
+      "coverage": "EXISTING",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Mở own template và lưu."
+    },
+    {
+      "section": "13.2",
+      "title": "13.2. Chia phần thông tin theo công việc",
+      "paragraph": 715,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Thêm phần/trường, processing hidden; chưa rename trùng/reorder/delete đủ."
+    },
+    {
+      "section": "13.3",
+      "title": "13.3. Tên trường và kiểu dữ liệu",
+      "paragraph": 722,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Text/numberzero; live date/range/options/width chưa đủ."
+    },
+    {
+      "section": "13.4",
+      "title": "13.4. Phân biệt lựa chọn về nhập và hiển thị",
+      "paragraph": 740,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Required/create visibility/handling PASS; confidentiality theo hai vai trò chưa đủ."
+    },
+    {
+      "section": "13.5",
+      "title": "13.5. Danh sách lựa chọn và điều kiện ngày",
+      "paragraph": 758,
+      "coverage": "NOT RUN",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Live options/date comparisons/self-reference/cycle trên own template chưa có."
+    },
+    {
+      "section": "13.6",
+      "title": "13.6. Kiểm tra trước khi áp dụng",
+      "paragraph": 763,
+      "coverage": "PARTIAL",
+      "modules": "settings.ts, ticket-actions.ts, requests.ts",
+      "notes": "Template→create→Excel→processing đã có; private-field role visibility chưa đủ."
+    },
+    {
+      "section": "14.1",
+      "title": "14.1. Mở menu và nhận diện icon",
+      "paragraph": 773,
+      "coverage": "EXISTING",
+      "modules": "harness.ts (responsive), navigation.ts, secondary.ts",
+      "notes": "Mobile navigation + responsive ba kích thước."
+    },
+    {
+      "section": "14.2",
+      "title": "14.2. Áp dụng và hủy lọc",
+      "paragraph": 777,
+      "coverage": "PARTIAL",
+      "modules": "harness.ts (responsive), navigation.ts, secondary.ts",
+      "notes": "Mobile drawer/cancel/calendar; applied multi-filter chưa đủ."
+    },
+    {
+      "section": "14.3",
+      "title": "14.3. Form và bảng nhiều cột",
+      "paragraph": 782,
+      "coverage": "PARTIAL",
+      "modules": "harness.ts (responsive), navigation.ts, secondary.ts",
+      "notes": "Overflow/form responsiveness; chưa touch drag/upload picker trên thiết bị thật."
+    },
+    {
+      "section": "14.4",
+      "title": "14.4. Đọc hướng dẫn trên điện thoại",
+      "paragraph": 788,
+      "coverage": "ADDED",
+      "modules": "harness.ts (responsive), navigation.ts, secondary.ts",
+      "notes": "Đủ15chương, next/previous và disabled boundaries, mobile selector, Word download."
+    },
+    {
+      "section": "15.1",
+      "title": "15.1. Xử lý theo dấu hiệu đang thấy",
+      "paragraph": 796,
+      "coverage": "PARTIAL",
+      "modules": "auth.ts, requests.ts, hr.ts, guide.ts",
+      "notes": "Required/permission/noresults thực tế; không phải mọi lỗi mạng/đồng thời."
+    },
+    {
+      "section": "15.2",
+      "title": "15.2. Giới hạn thường gặp",
+      "paragraph": 834,
+      "coverage": "PARTIAL",
+      "modules": "auth.ts, requests.ts, hr.ts, guide.ts",
+      "notes": "Thêm title/notes/dates/report ranges; 50MB/file và mọi candidate/interview boundary chưa đủ."
+    },
+    {
+      "section": "15.3",
+      "title": "15.3. Xác nhận đã lưu hay chưa trước khi gửi lại",
+      "paragraph": 857,
+      "coverage": "NOT RUN",
+      "modules": "auth.ts, requests.ts, hr.ts, guide.ts",
+      "notes": "Upload partial-failure/retry có đúng một ticket chưa tái hiện continuous live session."
+    },
+    {
+      "section": "15.4",
+      "title": "15.4. Checklist trước khi gửi yêu cầu",
+      "paragraph": 862,
+      "coverage": "EXISTING",
+      "modules": "auth.ts, requests.ts, hr.ts, guide.ts",
+      "notes": "Controlled request + clone đọc lại mã/rows/files."
+    },
+    {
+      "section": "15.5",
+      "title": "15.5. Gửi gì cho người hỗ trợ?",
+      "paragraph": 869,
+      "coverage": "MANUAL",
+      "modules": "auth.ts, requests.ts, hr.ts, guide.ts",
+      "notes": "Quy trình báo hỗ trợ của người dùng; evidence E2E có route/case/thời gian, không gửi tin tự động."
+    }
+  ],
+  "runs": [
+    {
+      "name": "guide-crosscheck-09",
+      "counts": {
+        "PASS": 49,
+        "FAIL": 3,
+        "BLOCKED": 1,
+        "NOT RUN": 23
+      },
+      "html": "/tmp/ticket-frontend-e2e/guide-crosscheck-09/html/index.html",
+      "fixturePrefix": "TESTFE_KM8PM9",
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "cleanup": [
+        {
+          "id": "C51",
+          "status": "PASS",
+          "feature": "Cancel own disposable request with required reason and visible final status"
+        },
+        {
+          "id": "C52",
+          "status": "PASS",
+          "feature": "Lock own disposable request-types and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C53",
+          "status": "PASS",
+          "feature": "Lock own disposable handling-departments and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C54",
+          "status": "PASS",
+          "feature": "Lock own disposable users and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C55",
+          "status": "PASS",
+          "feature": "Lock own disposable teams and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C56",
+          "status": "PASS",
+          "feature": "Lock own disposable positions and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C57",
+          "status": "PASS",
+          "feature": "Lock own disposable offices and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C58",
+          "status": "PASS",
+          "feature": "Lock own disposable requesting-departments and verify Khóa badge through list/filter UI"
+        }
+      ],
+      "review": "Initial harness corrections only: maxlength truncates input instead of raising an error; actual template column is Stt and must be populated; required date errors are displayed one field at a time. Excel submission was BLOCKED; no clone was created. Not application defects."
+    },
+    {
+      "name": "guide-crosscheck-10",
+      "counts": {
+        "PASS": 54,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 23
+      },
+      "html": "/tmp/ticket-frontend-e2e/guide-crosscheck-10/html/index.html",
+      "fixturePrefix": "TESTFE_KME5IP",
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "cleanup": [
+        {
+          "id": "C46",
+          "status": "PASS",
+          "feature": "Cancel own disposable request with required reason and visible final status"
+        },
+        {
+          "id": "C52",
+          "status": "PASS",
+          "feature": "Cancel own disposable request with required reason and visible final status"
+        },
+        {
+          "id": "C53",
+          "status": "PASS",
+          "feature": "Lock own disposable request-types and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C54",
+          "status": "PASS",
+          "feature": "Lock own disposable handling-departments and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C55",
+          "status": "PASS",
+          "feature": "Lock own disposable users and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C56",
+          "status": "PASS",
+          "feature": "Lock own disposable teams and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C57",
+          "status": "PASS",
+          "feature": "Lock own disposable positions and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C58",
+          "status": "PASS",
+          "feature": "Lock own disposable offices and verify Khóa badge through list/filter UI"
+        },
+        {
+          "id": "C59",
+          "status": "PASS",
+          "feature": "Lock own disposable requesting-departments and verify Khóa badge through list/filter UI"
+        }
+      ],
+      "newScenarioEvidence": [
+        {
+          "id": "C30",
+          "feature": "Guide 12.6: reject non-PDF, upload/reopen own type manual",
+          "status": "PASS"
+        },
+        {
+          "id": "C31",
+          "feature": "Guide 12.8: export filtered own user through UI",
+          "status": "PASS"
+        },
+        {
+          "id": "C40",
+          "feature": "Guide 8.1: keyboard @ mention selects without prematurely sending; persisted comment",
+          "status": "PASS"
+        },
+        {
+          "id": "C41",
+          "feature": "Guide 5.2 / 12.6: clone owned source, new date/files and type manual available",
+          "status": "PASS"
+        },
+        {
+          "id": "C42",
+          "feature": "Guide 4.3 / 15.2: title 300/301, notes 1000/1001 and past due-date validation before submit",
+          "status": "PASS"
+        },
+        {
+          "id": "C43",
+          "feature": "Guide 4.5: download matching Excel, reject wrong extension preserving rows, import two real rows with numeric zero",
+          "status": "PASS"
+        },
+        {
+          "id": "C44",
+          "feature": "Guide 4.6: remove mistakenly selected attachment before actual cloned submit",
+          "status": "PASS"
+        },
+        {
+          "id": "C45",
+          "feature": "Guide 5.2 / 4.7: submit cloned Excel request, different code, persisted rows, source unchanged",
+          "status": "PASS"
+        },
+        {
+          "id": "C47",
+          "feature": "Guide 5.1: source request stays unchanged after clone submit",
+          "status": "PASS"
+        },
+        {
+          "id": "C48",
+          "feature": "Guide 11.6 / 15.2: require two dates, reject reversed and over-six-month report ranges, recover valid range",
+          "status": "PASS"
+        },
+        {
+          "id": "C49",
+          "feature": "Header help navigation, chapter next/previous and table-of-contents SPA",
+          "status": "PASS"
+        },
+        {
+          "id": "C50",
+          "feature": "Download original Word document through UI",
+          "status": "PASS"
+        },
+        {
+          "id": "C51",
+          "feature": "Responsive document reader and mobile chapter selector",
+          "status": "PASS"
+        }
+      ],
+      "networkReview": {
+        "expectedInvalidLogin401": 1,
+        "abortedReads": 6,
+        "http5xx": 0,
+        "note": "Aborted reads occurred during UI/filter transitions; no runtime failure or state assertion failed. No claim about backend correctness."
+      }
+    }
+  ],
+  "mappingCounts": {
+    "EXISTING": 28,
+    "PARTIAL": 38,
+    "MANUAL": 2,
+    "ADDED": 10,
+    "NOT RUN": 4,
+    "KNOWN FAIL": 5
+  },
+  "result": "Focused latest run: 54 PASS, 0 FAIL, 0 BLOCKED, 23 NOT RUN. The 23 rows concern features outside the focused workflow and do not imply full-site coverage. All ten newly added Guide scenarios and three help scenarios PASS. Existing ticket/recruitment defects from earlier reports were not retested or resolved by this run.",
+  "validation": [
+    "npm run lint: PASS",
+    "npm run typecheck: PASS",
+    "npm run test -- tests/user-guide-document.test.ts: 7 PASS",
+    "Targeted Prettier and git diff --check: PASS"
+  ],
+  "previousFindingsReport": "tests/artifacts/ticket-actions-recruitment-20261023.json",
+  "artifactSecurityReview": {
+    "scannedTextOrArchiveObjects": 1187,
+    "credentialOrJwtMatches": 0,
+    "scope": "Both local guide runs, including archive contents and embedded report archives"
+  }
+}

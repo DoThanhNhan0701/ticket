@@ -1,7 +1,7 @@
+import { ErrorToast } from "@/components/error-toast";
 import type { ReactNode } from "react";
 import { Inbox } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
-import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
 import { DataPagination } from "./data-pagination";
@@ -45,7 +45,7 @@ export function DataResults<T>({
               : "space-y-3 p-4"
           }
         >
-          <ErrorAlert
+          <ErrorToast
             message={`${errorPrefix}: ${query.error?.message ?? "Lỗi không xác định"}`}
           />
           <div className="flex gap-2">

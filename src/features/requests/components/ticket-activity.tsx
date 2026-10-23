@@ -1,8 +1,8 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LoadingState } from "@/components/loading-state";
-import { ErrorAlert } from "@/components/error-alert";
 import { formatDataDateTime } from "@/components/data-management";
 import { getTicketHistory } from "../api/request-detail-api";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
@@ -26,7 +26,7 @@ export function TicketHistory({
       )}
       {history.isError && (
         <>
-          <ErrorAlert message={history.error.message} />
+          <ErrorToast message={history.error.message} />
           <Button variant="outline" onClick={() => void history.refetch()}>
             Thử lại
           </Button>

@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +11,6 @@ import {
   formatDataDate,
   type DataColumn,
 } from "@/components/data-management";
-import { ErrorAlert } from "@/components/error-alert";
 import type { RecruitmentRow, RecruitmentEditorState } from "../types";
 import { interviewDetail, recruitmentArray } from "../api/recruitment-api";
 import {
@@ -199,9 +199,9 @@ export function InterviewCandidates() {
         )}
       />
       {!canManage && statuses.isError && (
-        <ErrorAlert message={statuses.error.message} />
+        <ErrorToast message={statuses.error.message} />
       )}
-      {lookups.isError && <ErrorAlert message={lookups.error.message} />}
+      {lookups.isError && <ErrorToast message={lookups.error.message} />}
       <RecruitmentActionChooser
         mode="interview"
         row={actionRow}

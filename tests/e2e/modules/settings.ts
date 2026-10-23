@@ -83,6 +83,14 @@ export async function settingsCrud(h: Harness) {
           "aria-invalid",
           "true",
         );
+        if (entity.kind === "handling-departments") {
+          const nameInput = d.locator("#settings-name");
+          await expect(nameInput).toHaveAttribute("maxlength", "19");
+          await nameInput.fill("Bộ phận có tên rất dài vượt giới hạn");
+          expect(
+            Array.from(await nameInput.inputValue()).length,
+          ).toBeLessThanOrEqual(19);
+        }
         const name = `${h.prefix}_${entity.suffix}`;
         if (entity.kind !== "users")
           await d.locator("#settings-name").fill(name);

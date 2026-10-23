@@ -1,5 +1,5 @@
+import { ErrorToast } from "@/components/error-toast";
 import { Button } from "@/components/ui/button";
-import { ErrorAlert } from "@/components/error-alert";
 import type { useRecruitmentAddress } from "../hooks/use-recruitment-address";
 
 export function RecruitmentAddressStatus({
@@ -31,7 +31,7 @@ export function RecruitmentAddressStatus({
       )}
       {address.queries.some((query) => query.isError) && (
         <div className="space-y-2">
-          <ErrorAlert message="Không tải được danh mục địa chỉ. Vui lòng thử lại." />
+          <ErrorToast message="Không tải được danh mục địa chỉ. Vui lòng thử lại." />
           <Button
             type="button"
             variant="outline"

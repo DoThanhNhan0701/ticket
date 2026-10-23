@@ -1,6 +1,6 @@
+import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { ErrorAlert } from "@/components/error-alert";
 import type { RecruitmentListData } from "../types";
 
 export function RecruitmentAttachStatus({
@@ -30,7 +30,7 @@ export function RecruitmentAttachStatus({
         )}
       {schedules.isError && (
         <>
-          <ErrorAlert message={schedules.error.message} />
+          <ErrorToast message={schedules.error.message} />
           <Button
             type="button"
             variant="outline"
