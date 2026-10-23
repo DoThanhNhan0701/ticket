@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "environment": "TEST",
+  "baseUrl": "https://ticket-new.aiminds.io.vn",
+  "account": "nhandt01",
+  "method": "Headless Microsoft Edge via Playwright; real UI actions and real TEST API. Selected 503 responses injected by browser routing for recovery scenarios; remaining requests passed to TEST API. Read-only DOM inspection and authenticated API readback used for verification.",
+  "result": "UX-01 fixed in local source and verified with real Edge UI against TEST backend; deployment to hosted TEST frontend not performed.",
+  "findings": [
+    {
+      "id": "UX-01",
+      "severity": "minor",
+      "component": "src/features/requests/components/comment-composer.tsx:90",
+      "title": "Comment required error remains after correcting empty input",
+      "steps": [
+        "Open ticket 14499 > Trao đổi",
+        "Submit empty or whitespace-only comment",
+        "Type valid text"
+      ],
+      "expected": "Clear required error and aria-invalid after valid content is entered",
+      "actual": "Red border, aria-invalid=true and Vui lòng nhập phản hồi remain until successful submission",
+      "impact": "Misleading validation feedback; sending valid content still succeeds",
+      "evidence": "comment-validation-error.png",
+      "rootCause": "onChange={setContent} changes content without resetting empty state.",
+      "status": "fixed-locally-verified",
+      "fix": "Required error depends on both a previously rejected blank submission and current trimmed content. Valid content clears the error immediately; clearing content after rejection shows it again.",
+      "verification": "fix-verification.json",
+      "fixedEvidence": "comment-validation-fixed.png"
+    }
+  ],
+  "coverage": {
+    "create": [
+      "required selects and fields",
+      "whitespace and trimmed payloads",
+      "zero numeric value",
+      "dependent group/type change",
+      "past due date, incomplete date and date range corrections",
+      "calendar boundary and clearing date",
+      "add/copy/remove rows",
+      "title 300 character limit",
+      "notes 1000 character boundary",
+      "reset clears draft/errors/files",
+      "successful create/list/detail/reload/readback",
+      "create API 503 preserves form and files",
+      "double-click creates one successful ticket"
+    ],
+    "attachments": [
+      "TXT and PNG uploaded during creation",
+      "local PNG preview and persisted image rendering",
+      "saved TXT content verified via HTTP 200",
+      "duplicate local selection deduplicated",
+      "remove selected files",
+      "oversized >50 MiB rejected for creation and comments",
+      "partial upload failure retains only unsent file",
+      "reload restores created ID and pending file",
+      "retry uploads pending file without recreating ticket"
+    ],
+    "discussion": [
+      "comment and reply with attachments",
+      "edit comment and reply; remove old attachment; persistence after reload",
+      "empty/whitespace blocked without POST",
+      "Enter sends; Shift+Enter adds newline",
+      "mention user search and Enter selection",
+      "503 preserves comment text/file; retry succeeds",
+      "double physical click yields one comment POST"
+    ],
+    "ui": [
+      "repeated four-tab switching retains draft and files",
+      "sidebar navigation warning; Stay preserves draft; Leave proceeds",
+      "native reload warning cancellation retains draft/file after normal keyboard interaction",
+      "long Vietnamese text and long filename fit 320,390,768,1440px",
+      "no document/main horizontal overflow on four detail tabs",
+      "zero JavaScript page errors"
+    ]
+  },
+  "performance": {
+    "tabClickMs": {
+      "min": 61,
+      "max": 135,
+      "median": 80.5
+    },
+    "commentSendToVisibleMs": 850,
+    "longTasksAfterDetailLoad": [
+      {
+        "durationMs": 68
+      }
+    ],
+    "limits": "Single local headless-browser sample. Not a load test, statistical benchmark, or real mobile device test."
+  },
+  "regression": {
+    "command": "npm test -- tests/request-create.test.tsx tests/request-attachments.test.tsx tests/ticket-discussion.test.tsx tests/pending-attachments.test.tsx --maxWorkers=2",
+    "filesPassed": 4,
+    "testsPassed": 119,
+    "durationSeconds": 33.08
+  },
+  "testData": [
+    {
+      "id": 14498,
+      "code": "HR_261023_002",
+      "state": "Hủy",
+      "purpose": "validation/create/readback"
+    },
+    {
+      "id": 14499,
+      "code": "TEST_DVGMOTY6_261023_001",
+      "state": "Mới tạo",
+      "purpose": "discussion/UI evidence retained",
+      "url": "https://ticket-new.aiminds.io.vn/requests/14499?tab=discussion"
+    },
+    {
+      "id": 14500,
+      "code": "TEST_DVGMOTY6_261023_002",
+      "state": "Hủy",
+      "purpose": "create/upload recovery"
+    }
+  ],
+  "limits": [
+    "Only nhandt01 used. Multi-account permission matrix and approval lifecycle not exercised.",
+    "General attachment upload at processed statuses 2/3/6 not exercised; upload coverage here is creation and comment/reply attachments.",
+    "Real uploads covered TXT and PNG. PDF/DOCX/XLSX, Excel import/export and exact 50 MiB successful upload not exercised.",
+    "Network/server failures were controlled 503 simulations, not actual server incidents.",
+    "Responsive viewport checks used desktop headless Edge; real device IME/keyboard, light theme and sustained load were not tested."
+  ],
+  "applicationSourceModified": true,
+  "evidence": [
+    "validation.json",
+    "discussion.json",
+    "upload-recovery.json",
+    "extended.json",
+    "navigation-double-send.json",
+    "comment-validation-error.png",
+    "mobile-390.png",
+    "desktop-1440.png",
+    "partial-upload.png",
+    "fix-verification.json",
+    "comment-validation-fixed.png"
+  ],
+  "originalTestResult": "One confirmed UX finding; tested creation, attachments, discussion, recovery, duplicate submission and responsive scenarios otherwise passed.",
+  "fixVerification": {
+    "frontend": "http://127.0.0.1:5186",
+    "backend": "https://ticket-api.aiminds.io.vn",
+    "deployed": false,
+    "browserModesPassed": [
+      "comment",
+      "reply",
+      "edit-comment",
+      "edit-reply"
+    ],
+    "ticketWrites": 0,
+    "pageErrors": 0,
+    "regressionTestsPassed": 123,
+    "regressionFilesPassed": 4,
+    "regressionDurationSeconds": 50.73,
+    "newRegressionTests": 4,
+    "beforeFix": "All four new regression cases failed with stale aria-invalid=true after valid input.",
+    "checksPassed": [
+      "targeted regression suite",
+      "lint",
+      "typecheck",
+      "format check for modified source/tests",
+      "TEST build",
+      "git diff --check"
+    ],
+    "buildWarning": "Existing chunk size warning: some output chunks exceed 500 kB."
+  }
+}

@@ -89,7 +89,7 @@ export function CommentComposer({
         value={content}
         onChange={setContent}
         disabled={mutation.isPending}
-        invalid={empty}
+        invalid={empty && !content.trim()}
       >
         <div className="min-w-0 space-y-3 px-2 pb-1">
           {Object.keys(existingFiles).length > 0 && (

@@ -144,6 +144,46 @@ it("validates empty comments when Enter is pressed", async () => {
   expect(writes()).toHaveLength(0);
 });
 
+it.each(["comment", "reply", "edit-comment", "edit-reply"])(
+  "revalidates required content while correcting a %s without losing attachments",
+  async (mode) => {
+    open(mode === "edit-reply" ? "ticket-user" : "handler");
+    let form = rootForm();
+    if (mode === "reply") {
+      fireEvent.click(screen.getByRole("button", { name: "Trả lời" }));
+      form = screen.getByRole("form", { name: "Trả lời handler mới" });
+    } else if (mode.startsWith("edit-")) {
+      const username = mode === "edit-reply" ? "ticket-user" : "handler";
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: `Chỉnh sửa phản hồi của ${username}`,
+        }),
+      );
+      form = within(await screen.findByRole("dialog")).getByRole("form");
+    }
+    const input = within(form).getByRole("textbox");
+    const error = "Vui lòng nhập phản hồi.";
+    fireEvent.change(input, { target: { value: "   " } });
+    expect(within(form).queryByText(error)).toBeNull();
+    attach(form, [files()[0]]);
+    fireEvent.submit(form);
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    expect(within(form).getByText(error)).toBeTruthy();
+    for (const value of ["Nội dung hợp lệ", "", " \n ", "Đã sửa nội dung"]) {
+      fireEvent.change(input, { target: { value } });
+      const invalid = !value.trim();
+      expect(input.getAttribute("aria-invalid")).toBe(String(invalid));
+      expect(Boolean(within(form).queryByText(error))).toBe(invalid);
+      const descriptionId = input.getAttribute("aria-describedby")!;
+      expect(document.getElementById(descriptionId)).toBeTruthy();
+    }
+    expect(
+      within(form).getByRole("button", { name: "Bỏ tệp first.txt" }),
+    ).toBeTruthy();
+    expect(writes()).toHaveLength(0);
+  },
+);
+
 const files = () => [
   new File(["first"], "first.txt", { type: "text/plain" }),
   new File(["second"], "second.pdf", { type: "application/pdf" }),

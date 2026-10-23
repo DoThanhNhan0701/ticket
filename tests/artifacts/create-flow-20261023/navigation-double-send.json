@@ -1,0 +1,60 @@
+{
+  "base": "https://ticket-new.aiminds.io.vn",
+  "account": "nhandt01",
+  "ticket": 14499,
+  "checks": [
+    {
+      "name": "Native reload warning cancel retains selected file",
+      "status": "passed"
+    },
+    {
+      "name": "Leave confirmation navigates; returning has no abandoned file",
+      "status": "passed"
+    },
+    {
+      "name": "Two physical clicks while sending produce one comment POST",
+      "status": "passed",
+      "posts": 1
+    }
+  ],
+  "errors": [],
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_comment",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    }
+  ],
+  "metrics": {},
+  "status": "passed"
+}

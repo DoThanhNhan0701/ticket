@@ -1,0 +1,69 @@
+{
+  "prefix": "TEST_CREATE_RECOVERY_20261023_MVKDIQRW",
+  "method": "UI only: login forms, navigation, keyboard, clicks and visible results; no direct API calls or injected app state",
+  "tickets": [
+    {
+      "scenario": "main",
+      "title": "TEST_CREATE_RECOVERY_20261023_MVKDIQRW Người dùng tạo mới",
+      "code": "TEST_DVGMOTY6_261023_002",
+      "href": "/requests/14500"
+    }
+  ],
+  "checks": [
+    {
+      "name": "login-ui-nhandt01",
+      "screenshot": "/tmp/ticket-ui-qa/create-recovery-20261023/login-nhandt01-create.png"
+    },
+    {
+      "name": "create-required-fields-visible-error"
+    },
+    {
+      "name": "create-copy-remove-row-and-preview-files",
+      "screenshot": "/tmp/ticket-ui-qa/create-recovery-20261023/create-filled.png"
+    },
+    {
+      "name": "create-503-keeps-form-and-files",
+      "simulatedFailure": true
+    },
+    {
+      "name": "double-click-creates-once-partial-upload-only-retains-failed-file",
+      "createPosts": 2,
+      "uploadPosts": 2,
+      "elapsedMs": 1529,
+      "screenshot": "/tmp/ticket-ui-qa/create-recovery-20261023/partial-upload-failed.png"
+    },
+    {
+      "name": "reload-restores-created-ticket-and-file-retry-without-duplicate-create",
+      "createPosts": 2,
+      "uploadPosts": 3
+    },
+    {
+      "name": "create-submit-list-open-reload",
+      "scenario": "main",
+      "title": "TEST_CREATE_RECOVERY_20261023_MVKDIQRW Người dùng tạo mới",
+      "code": "TEST_DVGMOTY6_261023_002",
+      "href": "/requests/14500",
+      "screenshot": "/tmp/ticket-ui-qa/create-recovery-20261023/ticket-created.png"
+    },
+    {
+      "name": "phase-create-passed"
+    },
+    {
+      "name": "recovery-ticket-canceled"
+    }
+  ],
+  "runtimeErrors": [],
+  "failedResponses": [
+    {
+      "username": "nhandt01",
+      "path": "/api/ticket_manager",
+      "status": 503
+    },
+    {
+      "username": "nhandt01",
+      "path": "/api/attachmentticketfile",
+      "status": 503
+    }
+  ],
+  "videos": []
+}

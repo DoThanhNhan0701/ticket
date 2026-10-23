@@ -1,0 +1,39 @@
+{
+  "prefix": "TEST_UI_20261020_MVKDEL70",
+  "method": "UI only: login forms, navigation, keyboard, clicks and visible results; no direct API calls or injected app state",
+  "tickets": [
+    {
+      "scenario": "main",
+      "title": "TEST_UI_20261020_MVKDEL70 Người dùng tạo mới",
+      "code": "TEST_DVGMOTY6_261023_001",
+      "href": "/requests/14499"
+    }
+  ],
+  "checks": [
+    {
+      "name": "login-ui-nhandt01",
+      "screenshot": "/tmp/ticket-ui-qa/create-journey-20261023/login-nhandt01-create.png"
+    },
+    {
+      "name": "create-required-fields-visible-error"
+    },
+    {
+      "name": "create-copy-remove-row-and-preview-files",
+      "screenshot": "/tmp/ticket-ui-qa/create-journey-20261023/create-filled.png"
+    },
+    {
+      "name": "login-ui-nhandt01",
+      "screenshot": "/tmp/ticket-ui-qa/create-journey-20261023/login-nhandt01-discussion.png"
+    },
+    {
+      "name": "discussion-edit-reply-and-comment",
+      "screenshot": "/tmp/ticket-ui-qa/create-journey-20261023/discussion-saved.png"
+    },
+    {
+      "name": "phase-discussion-passed"
+    }
+  ],
+  "runtimeErrors": [],
+  "failedResponses": [],
+  "videos": []
+}

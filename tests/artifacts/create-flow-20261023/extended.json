@@ -1,0 +1,171 @@
+{
+  "base": "https://ticket-new.aiminds.io.vn",
+  "account": "nhandt01",
+  "ticket": 14499,
+  "checks": [
+    {
+      "name": "Created title and both attachments survive reload",
+      "status": "passed"
+    },
+    {
+      "name": "Saved image opens and renders",
+      "status": "passed"
+    },
+    {
+      "name": "Saved text attachment returns actual file content",
+      "status": "passed",
+      "http": 200
+    },
+    {
+      "name": "Empty and whitespace comments blocked without POST",
+      "status": "passed"
+    },
+    {
+      "name": "Required error clears while correcting comment",
+      "status": "failed",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'true'\n- 'false'"
+    },
+    {
+      "name": "Shift+Enter inserts newline without submitting",
+      "status": "passed"
+    },
+    {
+      "name": "Mention search and keyboard selection",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate selected file deduplicated; remove file works",
+      "status": "passed"
+    },
+    {
+      "name": "Oversized comment attachment shows error before upload",
+      "status": "passed"
+    },
+    {
+      "name": "Repeated tab switching preserves draft and pending file",
+      "status": "passed",
+      "tabClickMs": [
+        88,
+        87,
+        89,
+        83,
+        77,
+        70,
+        87,
+        71,
+        135,
+        77,
+        78,
+        61
+      ]
+    },
+    {
+      "name": "Leaving with file warns; Stay preserves draft",
+      "status": "passed"
+    },
+    {
+      "name": "Failed comment POST preserves text and file; retry succeeds once",
+      "status": "passed",
+      "simulatedFailure": true,
+      "blocked": 1,
+      "sendToVisibleMs": 850
+    },
+    {
+      "name": "Long comment and filenames fit 320/390/768/1440 viewports",
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    }
+  ],
+  "errors": [],
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_permission/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_user_v2/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_comment",
+      "status": 503
+    },
+    {
+      "method": "POST",
+      "path": "/api/ticket_comment",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/ticket_manager/14499",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/list_ticket_history/",
+      "status": 200
+    }
+  ],
+  "metrics": {
+    "longTasks": [
+      {
+        "start": 1793.0999999940395,
+        "duration": 68
+      }
+    ]
+  },
+  "status": "findings"
+}

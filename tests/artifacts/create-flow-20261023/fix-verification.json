@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-23",
+  "frontend": "http://127.0.0.1:5186",
+  "backend": "https://ticket-api.aiminds.io.vn",
+  "account": "nhandt01",
+  "ticket": 14499,
+  "method": "Real Edge UI on changed local frontend using TEST backend; no ticket writes permitted",
+  "checks": [
+    {
+      "mode": "comment",
+      "status": "passed",
+      "checks": [
+        "No premature error",
+        "Blank submission shows error",
+        "Valid input clears error immediately",
+        "Clearing or whitespace re-shows error",
+        "Second correction clears error",
+        "aria-describedby target exists",
+        "Selected file remains",
+        "No submit after correcting"
+      ]
+    },
+    {
+      "mode": "reply",
+      "status": "passed",
+      "checks": [
+        "No premature error",
+        "Blank submission shows error",
+        "Valid input clears error immediately",
+        "Clearing or whitespace re-shows error",
+        "Second correction clears error",
+        "aria-describedby target exists",
+        "Selected file remains",
+        "No submit after correcting"
+      ]
+    },
+    {
+      "mode": "edit-comment",
+      "status": "passed",
+      "checks": [
+        "No premature error",
+        "Blank submission shows error",
+        "Valid input clears error immediately",
+        "Clearing or whitespace re-shows error",
+        "Second correction clears error",
+        "aria-describedby target exists",
+        "Selected file remains",
+        "No submit after correcting"
+      ]
+    },
+    {
+      "mode": "edit-reply",
+      "status": "passed",
+      "checks": [
+        "No premature error",
+        "Blank submission shows error",
+        "Valid input clears error immediately",
+        "Clearing or whitespace re-shows error",
+        "Second correction clears error",
+        "aria-describedby target exists",
+        "Selected file remains",
+        "No submit after correcting"
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": [],
+  "status": "passed"
+}
