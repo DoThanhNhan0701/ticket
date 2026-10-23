@@ -344,6 +344,65 @@ Unit tests cover HTTP error/status handling, Ticket sign-in and session restorat
 
 The live workflow creates its own `TESTCFG_*` department, office, position, team, user, handling department and request type, then updates them, uploads/replaces a PDF, creates/updates a template, locks/reactivates records and exports users. It verifies saved records with authenticated GET requests and reloads the UI. Only this run's records may be updated; successful runs finish by locking them in dependency order. The UI has no delete operation. `SETTINGS_CRUD_REPORT` selects the JSON report and resumable fixture IDs; reuse the same report to continue an interrupted run without recreating completed steps. Progress is saved under the system temporary directory, outside Vite's watched tree, and copied to the report after the run. A failed run retains its fixtures for inspection. `HEADLESS=true` disables the visible browser; `KEEP_BROWSER_OPEN=true` leaves it open after completion.
 
+## Continuous frontend E2E
+
+`npm run test:e2e:frontend` implements `frontend_e2e_testing_prompt.txt` using
+Playwright Chromium. It opens a visible browser, keeps one context/page throughout
+the workflow, and switches users through Logout/Login. Navigation, CRUD, files,
+comments, filters and downloads use the UI; network traffic is observed only.
+The separate legacy `test:settings:live` runner above uses API readbacks/reloads
+and does not implement these stricter continuous-session rules.
+
+Run against an authorized TEST build. Use a stable build preview to distinguish
+application navigation from development server reloads:
+
+```bash
+npm run build:test
+npm run preview -- --host 127.0.0.1 --port 5187
+# In another terminal, with credentials supplied by your secret manager:
+BASE_URL=http://127.0.0.1:5187 npm run test:e2e:frontend
+```
+
+Supply `E2E_USERNAME` / `E2E_PASSWORD` securely through the environment, or pipe
+JSON `{ "username": "...", "password": "...", "testPassword": "..." }`
+to the runner. Optional `E2E_TEST_PASSWORD` / `testPassword` permits logging into
+the disposable user; no password is hardcoded in the suite. Python 3 is required
+for artifact sanitization. `BROWSER_EXECUTABLE` overrides the installed Edge
+Chromium executable; `HEADLESS=true` is available for CI. `SLOW_MO` controls
+visible action speed in milliseconds.
+
+Fixtures use a unique `TESTFE_*` prefix. Settings records are created/updated and
+then locked in dependency order; the UI exposes no delete operation. The suite
+creates its own request and attempts to cancel it afterwards. A failed cleanup
+retains the fixture names in `execution.json` for inspection. Existing business
+records are inspected without saving destructive changes. The disposable role
+receives recruitment access only if that permission is available in the UI;
+restricted modules and missing prerequisites are recorded as BLOCKED.
+
+`E2E_ARTIFACT_DIR` defaults to the system temporary directory, outside source.
+The output contains Playwright HTML, scenario CSV/JSON, source-control inventory,
+prioritized bug candidates, console/network observations, failure screenshots
+and sanitized failure traces. Authentication tracing is disabled. Artifacts are
+sanitized before the runner exits; do not publish live output mid-run.
+
+```bash
+npm run test:e2e:report -- /tmp/ticket-frontend-e2e/<run>/html
+```
+
+For a focused clone/reset regression on an existing owned fixture, set
+`E2E_REGRESSION_REQUEST` to its full `TESTFE_*` title. This mode temporarily
+reactivates the matching handling group/type via UI and restores their original
+activation states in cleanup. It does not create another request.
+
+The matrix accounts for canonical routes, legacy ingress and source-discovered
+interactive control occurrences. PASS requires assertions from actual execution;
+unmatched conditional/shared controls remain NOT RUN. The reported percentage
+uses all scenario rows including BLOCKED/NOT RUN as its denominator and is not a
+claim of full feature coverage. Expiry is not simulated by replacing tokens.
+Direct URL loads occur only in explicitly named ingress/permission scenarios;
+internal navigation is checked against document identity and navigation events.
+No application fixes are applied automatically by this suite.
+
 ## SonarQube
 
 `sonar-project.properties` scans all application source in `src`, identifies tests in `tests`, and imports `coverage/lcov.info`. It does not exclude application UI from analysis or coverage.
