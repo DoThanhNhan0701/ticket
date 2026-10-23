@@ -96,6 +96,8 @@ export function RequestCreate() {
           <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
             <RequestNotesField form={model.form} disabled={disabled} />
             <RequestAttachments
+              layout="tiles"
+              previewAllFiles
               files={model.files}
               onChange={model.setFiles}
               disabled={busy || model.draft.loading}
@@ -103,43 +105,45 @@ export function RequestCreate() {
           </div>
         </RequestFormSection>
       )}
-      <div className="sticky bottom-0 z-20 flex min-w-0 items-center justify-between gap-2 rounded-xl border border-border bg-card/95 p-3 shadow-sm backdrop-blur-sm">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={busy}
-          aria-label="Quay lại danh sách"
-          title="Quay lại danh sách"
-          className="size-11 p-0 sm:w-auto sm:px-4"
-          onClick={() => navigate(APP_ROUTES.requests.list)}
-        >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Quay lại</span>
-        </Button>
-        <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:flex-none">
+      <div className="sticky bottom-0 z-20 pt-4">
+        <div className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-border bg-card/95 p-3 shadow-sm backdrop-blur-sm">
           <Button
             type="button"
-            variant="ghost"
-            disabled={requestResetDisabled(model, busy)}
-            aria-label="Làm lại"
-            title="Làm lại"
+            variant="outline"
+            disabled={busy}
+            aria-label="Quay lại danh sách"
+            title="Quay lại danh sách"
             className="size-11 p-0 sm:w-auto sm:px-4"
-            onClick={model.reset}
+            onClick={() => navigate(APP_ROUTES.requests.list)}
           >
-            <RotateCcw className="size-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Làm lại</span>
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            <span className="hidden sm:inline">Quay lại</span>
           </Button>
-          <AsyncButton
-            type={model.created ? "button" : "submit"}
-            loading={model.mutation.isPending}
-            loadingText="Đang gửi..."
-            disabled={submitDisabled}
-            onClick={model.created ? model.retryAttachments : undefined}
-            className="min-w-0 flex-1 sm:flex-none"
-            icon={<Send className="size-4" aria-hidden="true" />}
-          >
-            {model.created ? "Tải lại đính kèm" : "Tạo yêu cầu"}
-          </AsyncButton>
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:flex-none">
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={requestResetDisabled(model, busy)}
+              aria-label="Làm lại"
+              title="Làm lại"
+              className="size-11 p-0 sm:w-auto sm:px-4"
+              onClick={model.reset}
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              <span className="hidden sm:inline">Làm lại</span>
+            </Button>
+            <AsyncButton
+              type={model.created ? "button" : "submit"}
+              loading={model.mutation.isPending}
+              loadingText="Đang gửi..."
+              disabled={submitDisabled}
+              onClick={model.created ? model.retryAttachments : undefined}
+              className="min-w-0 flex-1 sm:flex-none"
+              icon={<Send className="size-4" aria-hidden="true" />}
+            >
+              {model.created ? "Tải lại đính kèm" : "Tạo yêu cầu"}
+            </AsyncButton>
+          </div>
         </div>
       </div>
     </form>

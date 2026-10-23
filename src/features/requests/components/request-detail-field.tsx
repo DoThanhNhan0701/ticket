@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
@@ -9,7 +10,7 @@ import {
 } from "../utils/request-detail-data";
 import type { CreateRequestValues } from "../schemas/create-request-schema";
 
-export function RequestDetailField({
+export const RequestDetailField = memo(function RequestDetailField({
   form,
   field,
   fields,
@@ -24,8 +25,14 @@ export function RequestDetailField({
   disabled: boolean;
   hideLabel?: boolean;
 }>) {
+  const options = fieldOptions(field).map((value) => ({ value, label: value }));
+  // Only date controls compare their value against other inputs in the row.
   const values =
-    useWatch({ control: form.control, name: `rows.${row}.values` }) ?? {};
+    useWatch({
+      control: form.control,
+      name: `rows.${row}.values`,
+      disabled: !field.type.includes("date") || options.length > 0,
+    }) ?? {};
   const dateDisabled = (date: Date, part: "start" | "end" = "start") =>
     isDetailDateDisabled(date, field, { values }, fields, part);
   const name = `rows.${row}.values.${field.fieldKey}` as const;
@@ -39,7 +46,6 @@ export function RequestDetailField({
     disabled,
     className: hideLabel ? "[&>[data-slot=field-label]]:sr-only" : undefined,
   };
-  const options = fieldOptions(field).map((value) => ({ value, label: value }));
   if (options.length)
     return (
       <SelectField
@@ -85,4 +91,4 @@ export function RequestDetailField({
       placeholder={`Nhập ${field.title.toLowerCase()}`}
     />
   );
-}
+});

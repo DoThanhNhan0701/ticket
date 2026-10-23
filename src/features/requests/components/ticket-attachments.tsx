@@ -8,6 +8,7 @@ import { uploadRequestAttachment } from "../api/create-request-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import { RequestAttachments } from "./request-attachments";
 import { TicketFiles } from "./ticket-files";
+import { usePendingAttachments } from "../hooks/use-pending-attachments";
 
 export function TicketAttachments({
   ticket,
@@ -17,6 +18,7 @@ export function TicketAttachments({
   onSaved: () => Promise<unknown>;
 }>) {
   const [files, setFiles] = useState<File[]>([]);
+  usePendingAttachments(files.length);
   const pending = useRef<File[]>([]);
   const submitting = useRef(false);
   const uploadedCount = useRef(0);

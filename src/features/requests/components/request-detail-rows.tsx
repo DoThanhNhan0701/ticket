@@ -1,6 +1,10 @@
 import { ErrorToast } from "@/components/error-toast";
-import { useEffect, useRef } from "react";
-import { useFieldArray, type UseFormReturn } from "react-hook-form";
+import { memo, useEffect, useMemo, useRef } from "react";
+import {
+  useFieldArray,
+  useFormState,
+  type UseFormReturn,
+} from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Copy, Download, Plus, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -23,6 +27,7 @@ import {
   fieldOptions,
 } from "../utils/request-detail-data";
 import { RequestDetailField } from "./request-detail-field";
+import { RequestDetailProgress } from "./request-detail-progress";
 import { RequestFormSection } from "./request-form-section";
 
 function detailColumnWidth(field: ReturnType<typeof detailFields>[number]) {
@@ -32,7 +37,7 @@ function detailColumnWidth(field: ReturnType<typeof detailFields>[number]) {
   return Number.isFinite(configured) ? Math.max(minimum, configured) : minimum;
 }
 
-export function RequestDetailRows({
+export const RequestDetailRows = memo(function RequestDetailRows({
   form,
   groups,
   type,
@@ -46,6 +51,8 @@ export function RequestDetailRows({
   onBusyChange: (value: boolean) => void;
 }>) {
   const rows = useFieldArray({ control: form.control, name: "rows" });
+  const { errors } = useFormState({ control: form.control, name: "rows" });
+  const scrollContainer = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null),
     live = useRef(true);
   useEffect(() => {
@@ -74,7 +81,7 @@ export function RequestDetailRows({
     },
     retry: false,
   });
-  const fields = detailFields(groups),
+  const fields = useMemo(() => detailFields(groups), [groups]),
     busy = disabled || upload.isPending;
   const widths = fields.map(detailColumnWidth);
   const minimumWidth =
@@ -141,23 +148,30 @@ export function RequestDetailRows({
       >
         {download.isError && <ErrorToast message={download.error.message} />}
         {upload.isError && <ErrorToast message={upload.error.message} />}
-        {form.formState.errors.rows?.root?.message && (
-          <ErrorAlert message={form.formState.errors.rows.root.message} />
+        {errors.rows?.root?.message && (
+          <ErrorAlert message={errors.rows.root.message} />
         )}
+        <RequestDetailProgress
+          form={form}
+          fields={fields}
+          disabled={busy}
+          scrollContainer={scrollContainer}
+        />
         {/* Keep absolutely positioned field labels inside the scroll container. */}
         <div
+          ref={scrollContainer}
           role="region"
           aria-label="Các dòng chi tiết yêu cầu"
           className="relative min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
         >
           <div
-            className="min-w-full space-y-1.5"
-            style={{ minWidth: minimumWidth }}
+            className="min-w-full space-y-1.5 pr-3"
+            style={{ minWidth: `calc(${minimumWidth}px + 0.75rem)` }}
           >
             <div
               role="group"
               aria-label="Tiêu đề các cột chi tiết"
-              className="grid items-end gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/40 px-3 py-2"
+              className="grid items-start gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/40 px-3 py-2"
               style={{ gridTemplateColumns: columns }}
             >
               {groups.length > 1 &&
@@ -190,14 +204,13 @@ export function RequestDetailRows({
                         *
                       </span>
                     )}
+                    {field.type === "range-date-text" &&
+                      !fieldOptions(field).length && (
+                        <span className="shrink-0 whitespace-nowrap text-xs font-normal text-muted-foreground">
+                          (Từ ngày – Đến ngày)
+                        </span>
+                      )}
                   </div>
-                  {field.type === "range-date-text" &&
-                    !fieldOptions(field).length && (
-                      <div className="mt-1 grid grid-cols-2 gap-3 text-xs font-normal text-muted-foreground">
-                        <span>Từ ngày</span>
-                        <span>Đến ngày</span>
-                      </div>
-                    )}
                 </div>
               ))}
             </div>
@@ -285,4 +298,4 @@ export function RequestDetailRows({
       </RequestFormSection>
     </section>
   );
-}
+});

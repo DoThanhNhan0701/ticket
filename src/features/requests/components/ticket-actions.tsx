@@ -42,6 +42,7 @@ import {
 } from "../utils/ticket-actions";
 import { TicketAssignmentFields } from "./ticket-assignment-fields";
 import { RequestAttachments } from "./request-attachments";
+import { usePendingAttachments } from "../hooks/use-pending-attachments";
 
 const icons: Record<TicketAction, LucideIcon> = {
   "Phê duyệt": Check,
@@ -176,6 +177,7 @@ function TicketActionDialog({
 }>) {
   const [forward, setForward] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  usePendingAttachments(files.length);
   const [error, setError] = useState("");
   const [completed, setCompleted] = useState(0);
   const plan = useRef<TicketActionStep[] | null>(null);

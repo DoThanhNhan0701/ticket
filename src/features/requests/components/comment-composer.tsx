@@ -13,6 +13,7 @@ import {
 import { RequestAttachments } from "./request-attachments";
 import { TicketFiles } from "./ticket-files";
 import { CommentMentions } from "./comment-mentions";
+import { usePendingAttachments } from "../hooks/use-pending-attachments";
 
 interface CommentComposerProps {
   label?: string;
@@ -40,6 +41,7 @@ export function CommentComposer({
   const submitting = useRef(false);
   const [content, setContent] = useState(initialContent);
   const [files, setFiles] = useState<File[]>([]);
+  usePendingAttachments(files.length);
   const [removedFiles, setRemovedFiles] = useState<string[]>([]);
   const [empty, setEmpty] = useState(false);
   const [fileError, setFileError] = useState("");

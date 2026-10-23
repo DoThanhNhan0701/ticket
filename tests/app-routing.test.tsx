@@ -10,7 +10,11 @@ import {
   within,
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter, useLocation } from "react-router-dom";
+import {
+  createMemoryRouter,
+  RouterProvider,
+  useLocation,
+} from "react-router-dom";
 import { afterEach, beforeAll, beforeEach, expect, it, vi } from "vitest";
 import {
   convertGuideDocument,
@@ -19,6 +23,8 @@ import {
   type GuideDocument,
 } from "@/features/help/api/user-guide-api";
 import App from "@/app/app";
+import { PendingAttachmentsProvider } from "@/features/requests/providers/pending-attachments-provider";
+let router: ReturnType<typeof createMemoryRouter> | undefined;
 import { requestDetailFixture } from "./fixtures/request-detail";
 import { requestDetailSchema } from "@/features/requests/schemas/request-detail-schema";
 import { getRequestDetail } from "@/features/requests/api/request-detail-api";
@@ -154,6 +160,8 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  router?.dispose();
+  router = undefined;
   client.clear();
 });
 
@@ -169,13 +177,24 @@ function CurrentPath() {
 }
 
 function appElement(path = "/") {
+  router ??= createMemoryRouter(
+    [
+      {
+        path: "*",
+        element: (
+          <PendingAttachmentsProvider>
+            <App />
+            <CurrentPath />
+          </PendingAttachmentsProvider>
+        ),
+      },
+    ],
+    { initialEntries: [path] },
+  );
   return (
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
-        <MemoryRouter initialEntries={[path]}>
-          <App />
-          <CurrentPath />
-        </MemoryRouter>
+        <RouterProvider router={router} />
       </AuthContext.Provider>
     </QueryClientProvider>
   );
@@ -185,9 +204,63 @@ function renderApp(path = "/") {
   return render(appElement(path));
 }
 
+it("preserves unsent files and reply text across all detail tabs, warning only when leaving the ticket", async () => {
+  renderApp("/requests/42?tab=general");
+  await screen.findByRole("tab", { name: "Thông tin chung" });
+  const general = screen.getByRole("tabpanel", { name: "Thông tin chung" });
+  fireEvent.change(within(general).getByLabelText("Tệp đính kèm"), {
+    target: { files: [new File(["draft"], "general-draft.txt")] },
+  });
+  fireEvent.click(screen.getByRole("tab", { name: /Trao đổi/ }));
+  const discussion = await screen.findByRole("tabpanel", { name: /Trao đổi/ });
+  const reply = within(discussion).getByRole("form", { name: "Phản hồi mới" });
+  fireEvent.change(within(reply).getByLabelText("Phản hồi"), {
+    target: { value: "Phản hồi chưa gửi" },
+  });
+  fireEvent.change(within(reply).getByLabelText("Tệp đính kèm"), {
+    target: { files: [new File(["reply"], "reply-draft.txt")] },
+  });
+
+  for (const name of [
+    "Chi tiết yêu cầu",
+    "Lịch sử",
+    "Thông tin chung",
+    "Trao đổi",
+    "Thông tin chung",
+  ]) {
+    fireEvent.click(screen.getByRole("tab", { name: new RegExp(`^${name}`) }));
+    await screen.findByRole("tabpanel", { name: new RegExp(`^${name}`) });
+    expect(screen.queryByRole("dialog")).toBeNull();
+  }
+  expect(
+    within(general).getByRole("button", { name: "Bỏ tệp general-draft.txt" }),
+  ).toBeTruthy();
+  fireEvent.click(screen.getByRole("tab", { name: /Trao đổi/ }));
+  expect(
+    (within(reply).getByLabelText("Phản hồi") as HTMLTextAreaElement).value,
+  ).toBe("Phản hồi chưa gửi");
+  expect(
+    within(reply).getByRole("button", { name: "Bỏ tệp reply-draft.txt" }),
+  ).toBeTruthy();
+
+  fireEvent.click(screen.getByRole("link", { name: "Danh sách yêu cầu" }));
+  await screen.findByRole("dialog", { name: "Tệp đính kèm chưa được gửi" });
+  expect(screen.getByText(/Bạn còn 2 tệp đính kèm/)).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Ở lại" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(screen.getByTestId("current-path").textContent).toBe(
+    "/requests/42?tab=discussion",
+  );
+
+  fireEvent.click(screen.getByRole("link", { name: "Danh sách yêu cầu" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Rời trang" }));
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  expect(screen.queryByRole("dialog")).toBeNull();
+});
+
 it("opens the guide from the header and lets signed-in users read chapters without feature permissions", async () => {
   auth.permissions = {};
-  renderApp("/requests");
+  renderApp("/help?chapter=2");
   const help = await screen.findByRole("button", {
     name: "Hướng dẫn sử dụng",
   });

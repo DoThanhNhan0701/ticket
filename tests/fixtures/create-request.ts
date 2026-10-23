@@ -58,3 +58,31 @@ export const createMultiSectionTemplate: TemplateGroup[] = [
     children: [{ title: "Kết quả nghiệm thu", type: "text", required: true }],
   },
 ];
+
+// HR · Đề nghị chấm dứt Hợp đồng lao động (TEST catalog, type 69).
+export const hrTerminationTemplate: TemplateGroup[] = [
+  {
+    title: "Phần dành cho Bộ phận yêu cầu",
+    editable: true,
+    children: [
+      { title: "Mã số Nhân viên", type: "text", required: true },
+      { title: "Họ và tên", type: "text", required: true },
+      { title: "Bộ phận", type: "text", required: true },
+      { title: "Team", type: "text", required: true },
+      { title: "Chức vụ", type: "text", required: true },
+      { title: "Lý do chấm dứt HĐLĐ", type: "text", required: true },
+      { title: "Ngày làm việc cuối cùng", type: "date-text", required: true },
+      {
+        title: "Thời gian Bàn giao công việc",
+        type: "range-date-text",
+        required: true,
+      },
+      {
+        title: "Người tiếp nhận bàn giao công việc",
+        type: "text",
+        required: true,
+      },
+      { title: "Ghi chú", type: "text" },
+    ],
+  },
+];
