@@ -190,21 +190,9 @@ export function RecruitmentCalendar() {
           <ResponsivePageAction>{createInterviewButton}</ResponsivePageAction>
         </div>
       </div>
-      {lookups.isError && (
-        <div className="space-y-2">
-          <ErrorToast message={lookups.error.message} />
-          <Button onClick={() => void lookups.refetch()}>
-            Thử lại danh mục
-          </Button>
-        </div>
-      )}
+      {lookups.isError && <ErrorToast message={lookups.error.message} />}
       {query.isPending && <LoadingState message="Đang tải lịch phỏng vấn..." />}
-      {query.isError && (
-        <div className="space-y-3">
-          <ErrorToast message={query.error.message} />
-          <Button onClick={() => void query.refetch()}>Thử lại lịch</Button>
-        </div>
-      )}
+      {query.isError && <ErrorToast message={query.error.message} />}
       {query.data && (
         <InterviewCalendarGrid
           days={days}

@@ -1,6 +1,5 @@
 import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import type { RecruitmentListData } from "../types";
 
 export function RecruitmentAttachStatus({
@@ -28,18 +27,7 @@ export function RecruitmentAttachStatus({
             Không có lịch phỏng vấn trong ngày đã chọn. Vui lòng chọn ngày khác.
           </p>
         )}
-      {schedules.isError && (
-        <>
-          <ErrorToast message={schedules.error.message} />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void schedules.refetch()}
-          >
-            Thử lại lịch phỏng vấn
-          </Button>
-        </>
-      )}
+      {schedules.isError && <ErrorToast message={schedules.error.message} />}
     </div>
   );
 }

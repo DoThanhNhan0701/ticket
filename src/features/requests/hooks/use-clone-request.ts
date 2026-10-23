@@ -137,7 +137,5 @@ export function useCloneRequest({
     ready: !id || initialized,
     error,
     loading: Boolean(id && !initialized && !error),
-    canRetry: source.isError,
-    retry: () => void source.refetch(),
   };
 }

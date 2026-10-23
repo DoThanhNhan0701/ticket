@@ -240,6 +240,7 @@ export async function recruitment(h: Harness) {
         const button = p.getByRole("button", { name: view, exact: true });
         await button.click();
         await expect(button).toHaveAttribute("aria-pressed", "true");
+        await h.axe();
       }
       await p.getByRole("button", { name: "Khoảng sau", exact: true }).click();
       await p

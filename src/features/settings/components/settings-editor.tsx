@@ -129,30 +129,12 @@ function SettingsForm({
         })}
       >
         {needsDetail && detail.isError && (
-          <div className="space-y-3">
-            <ErrorToast message={detail.error.message} />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void detail.refetch()}
-            >
-              Thử lại thông tin
-            </Button>
-          </div>
+          <ErrorToast message={detail.error.message} />
         )}
         {lookups.isError && (
-          <div className="space-y-2">
-            <ErrorToast
-              message={`Không tải được danh mục: ${lookups.error.message}`}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void lookups.refetch()}
-            >
-              Thử lại danh mục
-            </Button>
-          </div>
+          <ErrorToast
+            message={`Không tải được danh mục: ${lookups.error.message}`}
+          />
         )}
         {mutation.isError && <ErrorToast message={mutation.error.message} />}
         <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">

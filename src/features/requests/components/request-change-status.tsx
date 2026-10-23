@@ -9,7 +9,6 @@ import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
 import { TextareaField } from "@/components/form/textarea-field";
 import { AsyncButton } from "@/components/ui/async-button";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { changeRequestStatusRequest } from "../api/change-request-status-api";
 import { listRequestStatusesRequest } from "../api/requests-api";
@@ -107,18 +106,9 @@ export function RequestChangeStatus() {
           disabled={mutation.isPending}
         />
         {statuses.isError && (
-          <div className="space-y-2">
-            <ErrorToast
-              message={`Không tải được trạng thái: ${statuses.error.message}`}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void statuses.refetch()}
-            >
-              Thử lại trạng thái
-            </Button>
-          </div>
+          <ErrorToast
+            message={`Không tải được trạng thái: ${statuses.error.message}`}
+          />
         )}
         {statuses.isSuccess && statusOptions.length === 0 && (
           <p role="status" className="text-sm text-muted-foreground">

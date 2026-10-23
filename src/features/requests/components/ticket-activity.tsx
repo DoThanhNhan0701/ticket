@@ -1,6 +1,5 @@
 import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LoadingState } from "@/components/loading-state";
 import { formatDataDateTime } from "@/components/data-management";
@@ -24,14 +23,7 @@ export function TicketHistory({
       {history.isPending && active && (
         <LoadingState message="Đang tải lịch sử..." />
       )}
-      {history.isError && (
-        <>
-          <ErrorToast message={history.error.message} />
-          <Button variant="outline" onClick={() => void history.refetch()}>
-            Thử lại
-          </Button>
-        </>
-      )}
+      {history.isError && <ErrorToast message={history.error.message} />}
       {history.data?.length === 0 && (
         <p className="text-sm text-muted-foreground">
           Chưa có lịch sử thay đổi.

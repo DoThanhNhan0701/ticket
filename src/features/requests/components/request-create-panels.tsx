@@ -62,40 +62,17 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
       {model.clone.error && (
         <div className="space-y-2">
           <ErrorAlert message={model.clone.error} />
-          {model.clone.canRetry && (
-            <Button type="button" variant="outline" onClick={model.clone.retry}>
-              Thử lại yêu cầu sao chép
-            </Button>
-          )}
         </div>
       )}
       {model.lookups.isError && (
-        <div className="space-y-2">
-          <ErrorToast
-            message={`Không tải được danh mục: ${model.lookups.error.message}`}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void model.lookups.refetch()}
-          >
-            Thử lại danh mục
-          </Button>
-        </div>
+        <ErrorToast
+          message={`Không tải được danh mục: ${model.lookups.error.message}`}
+        />
       )}
       {model.template.isError && model.template.data && (
-        <div className="space-y-2">
-          <ErrorToast
-            message={`Không tải được biểu mẫu: ${model.template.error.message}`}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void model.template.refetch()}
-          >
-            Thử lại biểu mẫu
-          </Button>
-        </div>
+        <ErrorToast
+          message={`Không tải được biểu mẫu: ${model.template.error.message}`}
+        />
       )}
       {model.mutation.isError && (
         <ErrorToast message={model.mutation.error.message} />
@@ -146,16 +123,7 @@ export function RequestAssignmentPanel({
         </Button>
       )}
       {model.types.isError && (
-        <div className="space-y-2">
-          <ErrorToast message={model.types.error.message} />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void model.types.refetch()}
-          >
-            Thử lại loại yêu cầu
-          </Button>
-        </div>
+        <ErrorToast message={model.types.error.message} />
       )}
       {model.types.isSuccess && model.types.data.length === 0 && (
         <p role="status" className="text-sm text-muted-foreground">
@@ -217,18 +185,9 @@ export function RequestTemplateSection({
         <LoadingState message="Đang tải biểu mẫu chi tiết..." />
       )}
       {model.selectedType && model.template.isError && (
-        <div className="space-y-2">
-          <ErrorToast
-            message={`Không tải được biểu mẫu: ${model.template.error.message}`}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void model.template.refetch()}
-          >
-            Thử lại biểu mẫu
-          </Button>
-        </div>
+        <ErrorToast
+          message={`Không tải được biểu mẫu: ${model.template.error.message}`}
+        />
       )}
       {model.selectedType &&
         model.template.isSuccess &&

@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import {
   cleanup,
+  act,
   fireEvent,
   render,
   screen,
@@ -357,16 +359,17 @@ it("loads real-contract requests, only applies draft filters on Search and expor
     expect.objectContaining({ title: "TEST new filter" }),
   );
 });
-it("shows a retryable list failure without leaking previous rows", async () => {
+it("shows candidate list errors as a toast without a retry button and recovers through search", async () => {
   vi.mocked(api.listRecruitment).mockRejectedValueOnce(
     new Error("TEST API unavailable"),
   );
-  mount(<RecruitmentList kind="requests" />);
+  mount(<RecruitmentList kind="candidates" />);
   await expectErrorToast("TEST API unavailable");
   expect(screen.queryByRole("alert")).toBeNull();
-  expect(screen.queryByText("TEST-REC")).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
-  await screen.findByRole("table", { name: "Bảng yêu cầu tuyển dụng" });
+  expect(screen.queryByText("TEST Candidate")).toBeNull();
+  expect(screen.queryByRole("button", { name: /^Thử lại$/ })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  await screen.findByRole("table", { name: "Bảng ứng viên" });
 });
 it("requires candidate fields before writing and clears errors after corrections", async () => {
   mount(<RecruitmentList kind="requests" />);
@@ -1318,7 +1321,8 @@ it("retries failed history requests and shows an empty history without submittin
     />,
   );
   await expectErrorToast("TEST history unavailable");
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại lịch sử" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await screen.findByText("Chưa có lịch sử ghi chú phỏng vấn.");
   expect(
     screen.getByRole("textbox", { name: "Ghi chú phỏng vấn" }),
@@ -1958,9 +1962,7 @@ it("retries schedule options after a failure and saves only a schedule from the 
       onClose={vi.fn()}
     />,
   );
-  const retry = await screen.findByRole("button", {
-    name: "Thử lại lịch phỏng vấn",
-  });
+  await expectErrorToast("TEST schedules unavailable");
   expect(screen.queryByText("TEST cached private note")).toBeNull();
   expect(screen.queryByText("TEST unrelated CV.pdf")).toBeNull();
   expect(
@@ -1970,7 +1972,8 @@ it("retries schedule options after a failure and saves only a schedule from the 
     screen.getByRole("form", { name: "Thêm ứng viên vào lịch phỏng vấn" }),
   );
   expect(api.recruitmentWrite).not.toHaveBeenCalled();
-  fireEvent.click(retry);
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(
       screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
@@ -2203,6 +2206,67 @@ it("paginates report tables while totals and charts use the complete dataset", a
   expect(screen.queryByRole("button", { name: "Trang sau" })).toBeNull();
 });
 
+it.each([
+  {
+    action: "request",
+    kind: "requests",
+    row: request,
+    field: "quantity",
+    value: "3",
+  },
+  {
+    action: "candidate",
+    kind: "candidates",
+    row: candidate,
+    field: "education_major",
+    value: "TEST chuyên ngành đã lưu",
+  },
+] as const)(
+  "opens $action with fresh profile values and preserves drafts during background refresh",
+  async ({ action, kind, row, field, value }) => {
+    const key = ["recruitment-detail", 42, kind, row.id];
+    client.setQueryData(key, { row, reasons: [] });
+    await client.invalidateQueries({ queryKey: key, refetchType: "none" });
+    let complete!: (
+      data: Awaited<ReturnType<typeof api.recruitmentDetail>>,
+    ) => void;
+    vi.mocked(api.recruitmentDetail).mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          complete = resolve;
+        }),
+    );
+    mount(
+      <RecruitmentEditor
+        state={{ action, row }}
+        lookups={lookups}
+        onClose={vi.fn()}
+      />,
+    );
+    await waitFor(() => expect(complete).toBeTypeOf("function"));
+    expect(document.querySelector(`#recruitment-${field}`)).toBeNull();
+    await act(async () =>
+      complete({ row: { ...row, [field]: value }, reasons: [] }),
+    );
+    await waitFor(() =>
+      expect(
+        document.querySelector<HTMLInputElement>(`#recruitment-${field}`)
+          ?.value,
+      ).toBe(value),
+    );
+    const input = document.querySelector<HTMLInputElement>(
+      `#recruitment-${field}`,
+    )!;
+    const draft = field === "quantity" ? "4" : "TEST bản nháp";
+    fireEvent.change(input, { target: { value: draft } });
+    await act(async () => {
+      await client.refetchQueries({ queryKey: key });
+    });
+    expect(document.querySelector(`#recruitment-${field}`)).toBe(input);
+    expect(input.value).toBe(draft);
+  },
+);
+
 it("shows V2 recruitment metadata and Vietnam-style due dates without allowing ticket fields to be overwritten", async () => {
   vi.mocked(api.recruitmentDetail).mockResolvedValue({
     row: {
@@ -2404,11 +2468,12 @@ it("blocks candidate saving while public address options are unavailable and sup
       onClose={vi.fn()}
     />,
   );
-  await screen.findByRole("button", { name: "Thử lại địa chỉ" });
+  await expectErrorToast(/Không tải được danh mục địa chỉ/);
   expect(
     screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
   ).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại địa chỉ" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(
       screen.queryByRole("button", { name: "Thử lại địa chỉ" }),

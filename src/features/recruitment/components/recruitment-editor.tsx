@@ -10,7 +10,6 @@ import {
   DialogHeading,
   DialogCloseButton,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/loading-state";
 import {
   DataTable,
@@ -74,6 +73,15 @@ export function RecruitmentEditor({
   let active: typeof detail | typeof duplicate | null = null;
   if (needsDetail) active = detail;
   if (state.action === "duplicate") active = duplicate;
+  // A cached profile can be stale after a save. Mount the form only after
+  // this opening's fetch finishes; subsequent refetches must preserve drafts.
+  const [freshAtOpen] = useState(() => detail.isSuccess && !detail.isStale);
+  const loading = editorLoading(
+    active,
+    needsDetail,
+    freshAtOpen,
+    detail.isFetchedAfterMount,
+  );
   let row = state.row;
   if (detail.data) row = detail.data.row;
   if (state.action === "create-candidate")
@@ -143,18 +151,9 @@ export function RecruitmentEditor({
               </span>
             </p>
           )}
-          {active?.isPending && (
-            <LoadingState message="Đang tải thông tin..." />
-          )}
-          {active?.isError && (
-            <div className="space-y-3">
-              <ErrorToast message={active.error.message} />
-              <Button onClick={() => void active.refetch()}>
-                Thử lại thông tin
-              </Button>
-            </div>
-          )}
-          {editorReady(active) &&
+          {loading && <LoadingState message="Đang tải thông tin..." />}
+          {active?.isError && <ErrorToast message={active.error.message} />}
+          {editorReady(active, loading) &&
             (state.action === "duplicate" ? (
               <DuplicateResults
                 rows={recruitmentRows(duplicate.data && duplicate.data.results)}
@@ -273,6 +272,20 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
   );
 }
 
-function editorReady(query: { isPending: boolean; isError: boolean } | null) {
-  return query ? !query.isPending && !query.isError : true;
+function editorLoading(
+  query: { isPending: boolean; isError: boolean } | null,
+  needsDetail: boolean,
+  freshAtOpen: boolean,
+  fetchedAfterMount: boolean,
+) {
+  return Boolean(
+    (query?.isPending || (needsDetail && !freshAtOpen && !fetchedAfterMount)) &&
+    !query?.isError,
+  );
+}
+function editorReady(
+  query: { isPending: boolean; isError: boolean } | null,
+  loading: boolean,
+) {
+  return !loading && (query ? !query.isPending && !query.isError : true);
 }

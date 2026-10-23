@@ -6,7 +6,6 @@ import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { downloadFile } from "@/lib/download";
 import { EmptyState } from "@/components/empty-state";
 import { LoadingState } from "@/components/loading-state";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   listReportGroupsRequest,
@@ -89,14 +88,9 @@ export function ReportsPage({
     return <LoadingState message="Đang tải bộ phận xử lý..." />;
   if (groupsQuery.isError)
     return (
-      <div className="space-y-3">
-        <ErrorToast
-          message={`Không tải được bộ phận xử lý: ${groupsQuery.error.message}`}
-        />
-        <Button variant="outline" onClick={() => void groupsQuery.refetch()}>
-          Thử lại bộ phận xử lý
-        </Button>
-      </div>
+      <ErrorToast
+        message={`Không tải được bộ phận xử lý: ${groupsQuery.error.message}`}
+      />
     );
   if (groups.length === 0)
     return (

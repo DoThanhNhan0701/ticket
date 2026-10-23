@@ -9,7 +9,6 @@ import { Download, Search } from "lucide-react";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { SelectField } from "@/components/form/select-field";
 import { AsyncButton } from "@/components/ui/async-button";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { listReportTypesRequest } from "../api/reports-api";
@@ -23,16 +22,10 @@ import type { ReportMode } from "../utils/report-options";
 function TypeFeedback({
   error,
   empty,
-  retry,
-}: Readonly<{ error: Error | null; empty: boolean; retry: () => void }>) {
+}: Readonly<{ error: Error | null; empty: boolean }>) {
   if (error)
     return (
-      <div className="space-y-2">
-        <ErrorToast message={`Không tải được loại yêu cầu: ${error.message}`} />
-        <Button type="button" variant="outline" onClick={retry}>
-          Thử lại loại yêu cầu
-        </Button>
-      </div>
+      <ErrorToast message={`Không tải được loại yêu cầu: ${error.message}`} />
     );
   if (empty)
     return (
@@ -189,7 +182,6 @@ export function ReportFiltersForm({
             <TypeFeedback
               error={types.error}
               empty={types.isSuccess && activeTypes.length === 0}
-              retry={() => void types.refetch()}
             />
           )}
           <div className="grid auto-cols-fr grid-flow-col gap-2 sm:flex sm:flex-wrap">

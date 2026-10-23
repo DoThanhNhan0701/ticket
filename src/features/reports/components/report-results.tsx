@@ -1,7 +1,6 @@
 import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { LoadingState } from "@/components/loading-state";
-import { Button } from "@/components/ui/button";
 import type { ReportResponse } from "../schemas/reports-schema";
 import { ReportCharts } from "./report-charts";
 import { ReportSummaryCards } from "./report-summary";
@@ -12,14 +11,9 @@ export function ReportResults({
   return (
     <>
       {report.isError && (
-        <div className="space-y-2">
-          <ErrorToast
-            message={`Không tải được báo cáo: ${report.error.message}`}
-          />
-          <Button variant="outline" onClick={() => void report.refetch()}>
-            Thử lại báo cáo
-          </Button>
-        </div>
+        <ErrorToast
+          message={`Không tải được báo cáo: ${report.error.message}`}
+        />
       )}
       <section
         aria-label="Kết quả báo cáo"

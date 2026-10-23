@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import {
@@ -349,7 +350,8 @@ it("blocks submission until status loading finishes and allows retrying failed s
       previous: null,
       results: requestStatusFixtures,
     });
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại trạng thái" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await ready();
   expect(screen.queryByText(/Không tải được trạng thái/)).toBeNull();
   expect(posts()).toHaveLength(0);

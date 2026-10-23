@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
@@ -356,7 +357,8 @@ it.each([403, 500])(
     await expectErrorToast(/Không tải được báo cáo: Report unavailable/);
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("report-access");
     reportResponse = () => Response.json(reportFixture);
-    fireEvent.click(screen.getByRole("button", { name: "Thử lại báo cáo" }));
+    expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+    await refreshFailedQueries(client);
     await ready();
   },
 );
@@ -371,7 +373,8 @@ it("rejects malformed chart tuples and then renders an empty report after retry"
   await lookupReport();
   await expectErrorToast(/Dữ liệu báo cáo không hợp lệ/);
   reportResponse = () => Response.json(emptyReportFixture);
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại báo cáo" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   expect(
     await screen.findByRole("button", { name: "Tổng yêu cầu: 0 yêu cầu" }),
   ).toBeTruthy();
@@ -391,9 +394,8 @@ it("retries invalid group data before fetching any reports", async () => {
   expect(calls("/api/report")).toHaveLength(0);
   groupResponse = () =>
     Response.json({ ...pagination, count: groups.length, results: groups });
-  fireEvent.click(
-    screen.getByRole("button", { name: "Thử lại bộ phận xử lý" }),
-  );
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await lookupReport();
   await ready();
 });
@@ -546,7 +548,8 @@ it("blocks export while type lookup fails and retries it independently", async (
       count: 1,
       results: types.filter((type) => String(type.handling_group) === group),
     });
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại loại yêu cầu" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await exportReady();
   expect(calls("/api/export_ticket_type")).toHaveLength(0);
 });

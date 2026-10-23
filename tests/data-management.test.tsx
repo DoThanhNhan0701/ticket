@@ -553,8 +553,8 @@ it("provides shared error recovery without depending on a query library or featu
     />,
   );
   await expectErrorToast("Không tải được danh sách: Offline");
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
-  expect(readyQuery.refetch).toHaveBeenCalledOnce();
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  expect(readyQuery.refetch).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Về trang đầu" }));
   expect(pagination.onPage).toHaveBeenCalledWith(1);
 });

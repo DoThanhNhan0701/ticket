@@ -30,19 +30,7 @@ export function RecruitmentAddressStatus({
         </div>
       )}
       {address.queries.some((query) => query.isError) && (
-        <div className="space-y-2">
-          <ErrorToast message="Không tải được danh mục địa chỉ. Vui lòng thử lại." />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => {
-              for (const query of address.queries)
-                if (query.isError) void query.refetch();
-            }}
-          >
-            Thử lại địa chỉ
-          </Button>
-        </div>
+        <ErrorToast message="Không tải được danh mục địa chỉ. Vui lòng thử lại." />
       )}
     </>
   );

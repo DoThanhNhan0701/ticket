@@ -192,43 +192,47 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
   if (props.view === "month")
     return (
       <div className="min-h-0 flex-1 overflow-auto rounded-xl border bg-card">
-        <div
-          role="grid"
-          aria-label="Lịch phỏng vấn"
-          className="grid min-w-[980px] grid-cols-7"
-        >
-          {props.days.map((day) => {
-            const date = format(day, "yyyy-MM-dd");
-            return (
-              <div
-                role="gridcell"
-                key={date}
-                className="min-h-32 space-y-2 border-r border-b p-2"
-              >
-                <Button
-                  variant={date === today ? "default" : "ghost"}
-                  className="h-8 px-2 text-xs"
-                  disabled={props.disabled || date < today}
-                  aria-label={`Tạo lịch ngày ${format(day, "dd/MM/yyyy")}`}
-                  onClick={() => props.onCreate(date)}
-                >
-                  {format(day, "EEE dd/MM", { locale: vi })}
-                </Button>
-                {props.rows
-                  .filter((row) => row.start_date === date)
-                  .sort((a, b) =>
-                    text(a.time_start).localeCompare(text(b.time_start)),
-                  )
-                  .map((row) => (
-                    <InterviewCard
-                      key={String(row.id_interview ?? row.id)}
-                      row={row}
-                      props={props}
-                    />
-                  ))}
+        <div role="grid" aria-label="Lịch phỏng vấn" className="min-w-[980px]">
+          {Array.from(
+            { length: Math.ceil(props.days.length / 7) },
+            (_, week) => (
+              <div role="row" key={week} className="grid grid-cols-7">
+                {props.days.slice(week * 7, week * 7 + 7).map((day) => {
+                  const date = format(day, "yyyy-MM-dd");
+                  return (
+                    <div
+                      role="gridcell"
+                      aria-label={format(day, "dd/MM/yyyy")}
+                      key={date}
+                      className="min-h-32 space-y-2 border-r border-b p-2"
+                    >
+                      <Button
+                        variant={date === today ? "default" : "ghost"}
+                        className="h-8 px-2 text-xs"
+                        disabled={props.disabled || date < today}
+                        aria-label={`Tạo lịch ngày ${format(day, "dd/MM/yyyy")}`}
+                        onClick={() => props.onCreate(date)}
+                      >
+                        {format(day, "EEE dd/MM", { locale: vi })}
+                      </Button>
+                      {props.rows
+                        .filter((row) => row.start_date === date)
+                        .sort((a, b) =>
+                          text(a.time_start).localeCompare(text(b.time_start)),
+                        )
+                        .map((row) => (
+                          <InterviewCard
+                            key={String(row.id_interview ?? row.id)}
+                            row={row}
+                            props={props}
+                          />
+                        ))}
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            ),
+          )}
         </div>
       </div>
     );
@@ -244,12 +248,19 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
         className={props.view === "week" ? "min-w-[980px]" : "min-w-0"}
       >
         <div
+          role="row"
           className="sticky top-0 z-20 grid border-b bg-card"
           style={{ gridTemplateColumns: columns }}
         >
-          <div className="border-r p-2 text-xs text-muted-foreground">Giờ</div>
+          <div
+            role="columnheader"
+            className="border-r p-2 text-xs text-muted-foreground"
+          >
+            Giờ
+          </div>
           {props.days.map((day) => (
             <div
+              role="columnheader"
               key={String(day)}
               className={`border-r p-2 text-center text-xs font-semibold ${format(day, "yyyy-MM-dd") === today ? "text-primary" : ""}`}
             >
@@ -257,8 +268,16 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
             </div>
           ))}
         </div>
-        <div className="grid" style={{ gridTemplateColumns: columns }}>
-          <div className="border-r">
+        <div
+          role="row"
+          className="grid"
+          style={{ gridTemplateColumns: columns }}
+        >
+          <div
+            role="rowheader"
+            aria-label="Giờ trong ngày"
+            className="border-r"
+          >
             {Array.from({ length: 24 }, (_, hour) => (
               <div
                 key={hour}
@@ -272,7 +291,12 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
           {props.days.map((day) => {
             const date = format(day, "yyyy-MM-dd");
             return (
-              <div role="gridcell" key={date} className="relative border-r">
+              <div
+                role="gridcell"
+                aria-label={format(day, "dd/MM/yyyy")}
+                key={date}
+                className="relative border-r"
+              >
                 {Array.from({ length: 48 }, (_, slot) => {
                   const time = `${String(Math.floor(slot / 2)).padStart(2, "0")}:${slot % 2 ? "30" : "00"}`;
                   return (

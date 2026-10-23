@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { templateCombinations } from "./fixtures/template-combinations";
@@ -705,7 +706,8 @@ it("retries a list failure without clearing the session", async () => {
   renderPage("positions");
   await expectErrorToast(/List offline/);
   listFailure = "";
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await ready();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBe("settings-access");
 });
@@ -753,9 +755,8 @@ it("retries failed permission explanations without leaving the help dialog", asy
   const dialog = screen.getByRole("dialog", { name: "Thông tin quyền hạn" });
   await expectErrorToast(/Lookup offline/);
   lookupFailure = false;
-  fireEvent.click(
-    within(dialog).getByRole("button", { name: "Thử lại quyền hạn" }),
-  );
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   expect(await within(dialog).findByText("Tạo yêu cầu")).toBeTruthy();
 });
 
@@ -886,9 +887,8 @@ it("blocks saving while a lookup fails and retries independently", async () => {
       .hasAttribute("disabled"),
   ).toBe(true);
   lookupFailure = false;
-  fireEvent.click(
-    within(dialog).getByRole("button", { name: "Thử lại danh mục" }),
-  );
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(
       within(dialog)
@@ -975,7 +975,8 @@ it("keeps the form disabled after failed details and enables it after retry", as
     screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
   ).toBe(true);
   detailFailure = false;
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại thông tin" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(
       screen.getByRole("button", { name: "Lưu" }).hasAttribute("disabled"),
@@ -1204,7 +1205,8 @@ it("retries a failed template lookup and cancels without a write", async () => {
   );
   await expectErrorToast("Template offline");
   templateFailure = false;
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await screen.findByRole("form", { name: "Cấu hình biểu mẫu" });
   fireEvent.click(screen.getByRole("button", { name: "Hủy" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

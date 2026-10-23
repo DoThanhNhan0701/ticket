@@ -203,46 +203,17 @@ export function RequestList({
           )}
         </div>
         {statuses.isError && (
-          <div className="space-y-2">
-            <ErrorToast
-              message={`Không tải được trạng thái: ${statuses.error.message}`}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void statuses.refetch()}
-            >
-              Thử lại trạng thái
-            </Button>
-          </div>
+          <ErrorToast
+            message={`Không tải được trạng thái: ${statuses.error.message}`}
+          />
         )}
         {config.typeSource && types.isError && (
-          <div className="space-y-2">
-            <ErrorToast
-              message={`Không tải được loại yêu cầu: ${types.error.message}`}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void types.refetch()}
-            >
-              Thử lại loại yêu cầu
-            </Button>
-          </div>
+          <ErrorToast
+            message={`Không tải được loại yêu cầu: ${types.error.message}`}
+          />
         )}
         {config.teams && teams.isError && (
-          <div className="space-y-2">
-            <ErrorToast
-              message={`Không tải được Team: ${teams.error.message}`}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void teams.refetch()}
-            >
-              Thử lại Team
-            </Button>
-          </div>
+          <ErrorToast message={`Không tải được Team: ${teams.error.message}`} />
         )}
       </div>
 

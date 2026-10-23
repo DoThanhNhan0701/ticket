@@ -368,14 +368,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         }
       />
 
-      {lookups.isError && (
-        <div className="flex flex-wrap items-center gap-2">
-          <ErrorToast message={lookups.error.message} />
-          <Button variant="outline" onClick={() => void lookups.refetch()}>
-            Thử lại danh mục
-          </Button>
-        </div>
-      )}
+      {lookups.isError && <ErrorToast message={lookups.error.message} />}
       {exportFile.isError && <ErrorToast message={exportFile.error.message} />}
       <DataResults
         refreshStyle="subtle"

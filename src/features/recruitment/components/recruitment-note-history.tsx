@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { History, MessageSquareText, Paperclip, UserRound } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
-import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/loading-state";
 import { FilePreviewDialog } from "@/components/file-preview-dialog";
 import { FileAttachmentTile } from "@/features/requests/components/file-attachment-tile";
@@ -55,18 +54,7 @@ export function RecruitmentNoteHistory({
       {query.isPending && (
         <LoadingState message="Đang tải lịch sử ghi chú..." />
       )}
-      {query.isError && (
-        <div className="space-y-2">
-          <ErrorToast message={query.error.message} />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void query.refetch()}
-          >
-            Thử lại lịch sử
-          </Button>
-        </div>
-      )}
+      {query.isError && <ErrorToast message={query.error.message} />}
       {query.isSuccess && notes.length === 0 && (
         <p
           role="status"

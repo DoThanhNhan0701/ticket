@@ -155,14 +155,9 @@ export function SettingsList({
         }
       />
       {lookups.isError && (
-        <div className="space-y-2">
-          <ErrorToast
-            message={`Không tải được danh mục: ${lookups.error.message}`}
-          />
-          <Button variant="outline" onClick={() => void lookups.refetch()}>
-            Thử lại danh mục
-          </Button>
-        </div>
+        <ErrorToast
+          message={`Không tải được danh mục: ${lookups.error.message}`}
+        />
       )}
       <DataResults
         refreshStyle="subtle"
@@ -195,7 +190,6 @@ export function SettingsList({
           permissions={lookups.data?.["position-permissions"] ?? []}
           loading={lookups.isPending}
           error={lookups.error}
-          onRetry={() => void lookups.refetch()}
         />
       )}
       {editor && (

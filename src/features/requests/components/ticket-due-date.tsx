@@ -88,36 +88,38 @@ export function TicketDueDate({
       </form>
     );
   return (
-    <div className={`relative min-w-0 space-y-1.5 ${editable ? "pr-14" : ""}`}>
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <CalendarDays className="size-3.5 shrink-0" aria-hidden="true" />
-        Ngày mong muốn
-      </p>
-      <div className="flex min-h-5 min-w-0 items-center text-sm font-medium">
-        <span
-          aria-label="Ngày mong muốn"
-          className="min-w-0 flex-1 wrap-anywhere"
-        >
-          {formatDataDate(ticket.duedate)}
-        </span>
-        {editable && (
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label="Đổi ngày mong muốn"
-            title="Đổi ngày mong muốn"
-            className="absolute top-1/2 right-0 size-9 -translate-y-1/2 text-muted-foreground pointer-coarse:size-11"
-            onClick={() => {
-              form.reset({ duedate: ticket.duedate });
-              mutation.reset();
-              setEditing(true);
-            }}
+    <div className="flex min-w-0 items-center gap-3">
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <CalendarDays className="size-3.5 shrink-0" aria-hidden="true" />
+          Ngày mong muốn
+        </p>
+        <div className="flex min-h-5 min-w-0 items-center text-sm font-medium">
+          <span
+            aria-label="Ngày mong muốn"
+            className="min-w-0 flex-1 wrap-anywhere"
           >
-            <Pencil className="size-4" aria-hidden="true" />
-          </Button>
-        )}
+            {formatDataDate(ticket.duedate)}
+          </span>
+        </div>
       </div>
+      {editable && (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          aria-label="Đổi ngày mong muốn"
+          title="Đổi ngày mong muốn"
+          className="size-9 text-muted-foreground pointer-coarse:size-11"
+          onClick={() => {
+            form.reset({ duedate: ticket.duedate });
+            mutation.reset();
+            setEditing(true);
+          }}
+        >
+          <Pencil className="size-4" aria-hidden="true" />
+        </Button>
+      )}
     </div>
   );
 }

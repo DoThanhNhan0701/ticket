@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { readFileSync } from "node:fs";
 import {
@@ -301,7 +302,8 @@ it("offers Word download and retries when reading the guide fails", async () => 
       .getByRole("link", { name: "Tải tài liệu Word" })
       .getAttribute("href"),
   ).toBe(USER_GUIDE_URL);
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
 });
 

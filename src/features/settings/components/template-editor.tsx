@@ -237,14 +237,7 @@ export function RequestTemplateEditor({
           <DialogCloseButton disabled={busy} />
         </DialogHeader>
         {query.isPending && <LoadingState message="Đang tải biểu mẫu..." />}
-        {query.isError && (
-          <div className="space-y-2 p-4">
-            <ErrorToast message={query.error.message} />
-            <Button variant="outline" onClick={() => void query.refetch()}>
-              Thử lại biểu mẫu
-            </Button>
-          </div>
-        )}
+        {query.isError && <ErrorToast message={query.error.message} />}
         {query.data && (
           <TemplateForm
             record={record}

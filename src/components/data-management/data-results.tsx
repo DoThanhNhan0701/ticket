@@ -38,37 +38,11 @@ export function DataResults<T>({
     >
       {query.isPending && <LoadingState message={loadingMessage} />}
       {query.isError && (
-        <div
-          className={
-            retainData
-              ? "absolute inset-x-2 top-2 z-20 space-y-2 rounded-lg border bg-card p-3 shadow-sm"
-              : "space-y-3 p-4"
-          }
-        >
-          <ErrorToast
-            message={`${errorPrefix}: ${query.error?.message ?? "Lỗi không xác định"}`}
-          />
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                query.refetch();
-              }}
-            >
-              Thử lại
-            </Button>
-            {pagination.page > 1 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => pagination.onPage(1)}
-              >
-                Về trang đầu
-              </Button>
-            )}
-          </div>
-        </div>
+        <ResultsError
+          message={`${errorPrefix}: ${query.error?.message ?? "Lỗi không xác định"}`}
+          retainData={retainData}
+          pagination={pagination}
+        />
       )}
       {data && (
         <>
@@ -126,5 +100,42 @@ function DataRefreshIndicator({
       message="Đang cập nhật danh sách..."
       className="absolute inset-0 z-20 bg-card/80"
     />
+  );
+}
+
+function ResultsError({
+  message,
+  retainData,
+  pagination,
+}: Readonly<{
+  message: string;
+  retainData: boolean;
+  pagination: Pick<DataPaginationProps, "page" | "onPage">;
+}>) {
+  return (
+    <>
+      <ErrorToast message={message} />
+      {pagination.page > 1 && (
+        <div
+          className={
+            retainData
+              ? "absolute inset-x-2 top-2 z-20 space-y-2 rounded-lg border bg-card p-3 shadow-sm"
+              : "space-y-3 p-4"
+          }
+        >
+          <div className="flex gap-2">
+            {pagination.page > 1 && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => pagination.onPage(1)}
+              >
+                Về trang đầu
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

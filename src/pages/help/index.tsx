@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { BookOpen, Download } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { LoadingState } from "@/components/loading-state";
-import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
 import {
   loadUserGuide,
@@ -51,12 +50,7 @@ export function UserGuidePage() {
         <LoadingState message="Đang tải tài liệu hướng dẫn…" />
       )}
       {document.isError && (
-        <div className="flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-5">
-          <ErrorToast message="Không đọc được tài liệu hướng dẫn. Vui lòng thử lại hoặc tải bản Word." />
-          <Button variant="outline" onClick={() => void document.refetch()}>
-            Thử lại
-          </Button>
-        </div>
+        <ErrorToast message="Không đọc được tài liệu hướng dẫn. Vui lòng thử lại hoặc tải bản Word." />
       )}
       {document.data && <GuideReader guide={document.data} />}
     </div>

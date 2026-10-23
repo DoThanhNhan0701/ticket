@@ -1,0 +1,158 @@
+{
+  "date": "2026-10-23",
+  "environment": {
+    "frontend": "http://127.0.0.1:5187",
+    "mode": "TEST",
+    "account": "nhandt02"
+  },
+  "baseline": "tests/artifacts/full-workflow-review-20261023.json",
+  "changes": [
+    {
+      "files": ["src/features/recruitment/components/recruitment-editor.tsx"],
+      "behavior": "Khi mở form với cache stale/invalidated, chờ lần tải chi tiết hoàn tất trước khi khởi tạo form. Cache còn mới tiếp tục dùng lại. Tải nền không khởi tạo lại hoặc xóa bản nháp."
+    },
+    {
+      "files": ["src/features/requests/components/ticket-due-date.tsx"],
+      "behavior": "Đặt nút sửa ngày trong flex layout, bỏ absolute positioning gây chặn click."
+    },
+    {
+      "files": [
+        "src/features/recruitment/components/interview-calendar-grid.tsx"
+      ],
+      "behavior": "Bổ sung role=row, columnheader, rowheader và nhãn ngày cho cấu trúc grid hợp lệ ở tháng/tuần/ngày."
+    }
+  ],
+  "verification": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "formatChangedFiles": "PASS",
+    "build:test": "PASS; existing bundle-size advisory remains",
+    "unit": {
+      "files": [
+        "tests/recruitment.test.tsx",
+        "tests/recruitment-refresh.test.ts",
+        "tests/request-detail.test.tsx"
+      ],
+      "passed": 163,
+      "failed": 0,
+      "addedRegressionCases": 2
+    },
+    "e2e": {
+      "mode": "Full default workflow, headed browser, real TEST writes through UI",
+      "durationApproxMinutes": 7.3,
+      "counts": {
+        "PASS": 268,
+        "FAIL": 2,
+        "BLOCKED": 5,
+        "NOT RUN": 23
+      },
+      "exitCode": 1,
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "fixturePrefix": "TESTFE_KPL3A6",
+      "artifacts": "/tmp/ticket-frontend-e2e/fe-fixes-regression-20261023-23",
+      "html": "http://127.0.0.1:9338/fe-fixes-regression-20261023-23/html/index.html",
+      "fixedFeCases": [
+        {
+          "finding": "FE-01",
+          "case": "C190",
+          "status": "PASS",
+          "result": "Số lượng tuyển mới hiển thị đúng khi lưu/mở lại."
+        },
+        {
+          "finding": "FE-02",
+          "case": "C192",
+          "status": "PASS",
+          "result": "Chuyên ngành lưu/mở lại đúng; hủy giữ dữ liệu đã lưu và đổi tab giữ nháp."
+        },
+        {
+          "finding": "FE-03",
+          "case": "C171",
+          "status": "PASS",
+          "result": "Nút đổi ngày nhận click; validation, hủy và lưu/mở lại ngày mới thành công."
+        },
+        {
+          "finding": "FE-04",
+          "case": "C78",
+          "status": "PASS",
+          "result": "Accessibility WCAG tại lịch phỏng vấn pass."
+        },
+        {
+          "finding": "FE-04",
+          "case": "C223",
+          "status": "PASS",
+          "result": "Axe trong vòng lặp tháng/tuần/ngày và các thao tác lịch đều pass."
+        }
+      ],
+      "remainingFailures": [
+        {
+          "case": "C202",
+          "finding": "BE-01",
+          "status": "FAIL",
+          "scenario": "Delete only own disposable candidate and verify no results",
+          "reason": "GET /api/list_cv/ with no-match search returns HTTP 500; not modified in this FE fix.",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/fe-fixes-regression-20261023-23/C202-failure.png",
+            "/tmp/ticket-frontend-e2e/fe-fixes-regression-20261023-23/C202-trace.zip"
+          ]
+        },
+        {
+          "case": "C218",
+          "finding": "BE-01",
+          "status": "FAIL",
+          "scenario": "Draft search, no results and reset recruitment filters",
+          "reason": "GET /api/list_cv/ with no-match search returns HTTP 500; not modified in this FE fix.",
+          "evidence": [
+            "/tmp/ticket-frontend-e2e/fe-fixes-regression-20261023-23/C218-failure.png",
+            "/tmp/ticket-frontend-e2e/fe-fixes-regression-20261023-23/C218-trace.zip"
+          ]
+        }
+      ],
+      "blocked": [
+        {
+          "case": "C204",
+          "scenario": "Cancel own HR request: reason validation and cancellation attachment",
+          "reason": "Action 'Hủy' is unavailable in the actual account/state; available: "
+        },
+        {
+          "case": "C208",
+          "scenario": "Required report filters and invalid date-range validation",
+          "reason": "No reporting group is available for this account"
+        },
+        {
+          "case": "C291",
+          "scenario": "Direct ingress /recruitment/interviews/:codeInterview",
+          "reason": "A concrete owned request/interview URL is unavailable; no guessed ID was used"
+        },
+        {
+          "case": "C292",
+          "scenario": "Direct ingress /detail-interview/:codeInterview",
+          "reason": "A concrete owned request/interview URL is unavailable; no guessed ID was used"
+        },
+        {
+          "case": "C296",
+          "scenario": "Email-request functionality",
+          "reason": "The current source renders a preparation placeholder for this contextual route; no implemented email-request form to exercise"
+        }
+      ]
+    }
+  },
+  "cleanup": {
+    "ownSettings": "All seven configuration entities locked and verified, C236–C242.",
+    "ownTickets": "Lifecycle ticket closed C186/C235, clone canceled C167, approved HR seed canceled C205, fresh HR ticket canceled C207.",
+    "ownInterview": "Deleted and card removal verified C203.",
+    "ownCandidate": "Own CV file deleted C201; candidate delete API returned 200 but absence cannot be verified because filtered list returns 500. No claim of confirmed deletion."
+  },
+  "limitations": [
+    "Automated axe and keyboard checks are not a complete manual accessibility audit.",
+    "Source occurrence inventory includes conditional/shared controls that may not be reachable for this account; unmatched controls remain NOT RUN.",
+    "No backend code/schema/business-rule tests or direct API substitutions were used.",
+    "Authentication traces are omitted to avoid credentials in artifacts.",
+    "Repeated GETs are diagnostic candidates, not confirmed frontend bugs: cancellation, retries, and separate observers may explain them.",
+    "API requests and browser console/pageerror events are recorded; a complete non-API failed-resource inventory was not collected.",
+    "Long-task observations are diagnostic only; memory growth, visual flicker and layout remount counts were not instrumented.",
+    "Check the scenario matrix for owned ticket/recruitment mutation results. File drag-and-drop, upload outage recovery, every actor/status combination and PDF configuration are not comprehensively executed. Unmatched source controls remain NOT RUN.",
+    "Real token expiration was not awaited; token/storage substitution is intentionally absent."
+  ],
+  "artifactsPolicy": "Screenshots and traces remain in /tmp outside repository; authentication credentials omitted and artifacts sanitized by runner."
+}

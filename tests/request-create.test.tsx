@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
@@ -1350,13 +1351,15 @@ it("retries lookup and template failures independently", async () => {
   renderPage();
   await expectErrorToast(/Lookup offline/);
   lookupFailure = false;
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại danh mục" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await ready();
   templateFailure = true;
   await fillBase();
   await expectErrorToast(/Template offline/);
   templateFailure = false;
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await screen.findByRole("group", { name: "Dòng 1" });
 });
 it("does not fetch any data without the create permission", async () => {
@@ -1520,12 +1523,12 @@ it("reveals the clone form only after source, catalogs, types and template have 
 });
 
 it.each([
-  ["catalogs", "Lookup offline", "Thử lại danh mục"],
-  ["types", "Types offline", "Thử lại loại yêu cầu"],
-  ["template", "Template offline", "Thử lại biểu mẫu"],
+  ["catalogs", "Lookup offline"],
+  ["types", "Types offline"],
+  ["template", "Template offline"],
 ])(
   "allows retrying failed %s while initially loading a clone",
-  async (kind, error, retry) => {
+  async (kind, error) => {
     cloneSource = {
       ...requestDetailFixture,
       handling_group: 5,
@@ -1543,7 +1546,8 @@ it.each([
     renderPage("/requests/new?clone=42");
     await expectErrorToast(new RegExp(error));
     lookupFailure = typeFailure = templateFailure = false;
-    fireEvent.click(screen.getByRole("button", { name: retry }));
+    expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+    await refreshFailedQueries(client);
     await waitFor(() => {
       expect(screen.queryByText("Đang tải yêu cầu cần sao chép...")).toBeNull();
       expect(
@@ -1715,7 +1719,8 @@ it("keeps entered rows, notes and attachments when template and lookup APIs relo
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Nội dung mẫu");
   templateFailure = false;
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại biểu mẫu" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(screen.queryByText(/Template offline/)).toBeNull(),
   );

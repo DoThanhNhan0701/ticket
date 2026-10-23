@@ -1,0 +1,202 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "account": "nhandt02",
+  "environment": {
+    "frontend": "http://127.0.0.1:5187",
+    "api": "https://ticket-api.aiminds.io.vn",
+    "build": "TEST",
+    "commit": "830aa5b39480c015f50409b57e02861b89872e26"
+  },
+  "run": {
+    "command": "npm run test:e2e:frontend",
+    "mode": "full default workflow, headed Edge, SLOW_MO=65, one browser/context, real TEST writes through UI",
+    "durationApproxMinutes": 10,
+    "exitCode": 1,
+    "counts": {
+      "PASS": 264,
+      "FAIL": 6,
+      "BLOCKED": 5,
+      "NOT RUN": 23
+    },
+    "totalScenarioRows": 298,
+    "fixturePrefix": "TESTFE_KOWWU4",
+    "artifacts": "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22",
+    "html": "http://127.0.0.1:9338/full-workflow-review-20261023-22/html/index.html",
+    "unexpectedDocumentNavigations": 0,
+    "unhandledRuntimeErrors": 0
+  },
+  "confirmedFindings": [
+    {
+      "id": "FE-01",
+      "priority": "P1",
+      "owner": "FE",
+      "title": "Mở lại form yêu cầu tuyển dụng hiển thị số lượng cũ",
+      "cases": ["C190"],
+      "steps": [
+        "Tạo yêu cầu HR → Yêu cầu tuyển dụng, duyệt yêu cầu của chính lượt test.",
+        "Vào Yêu cầu tuyển dụng, sửa số lượng từ 1 thành 2 và lưu.",
+        "Mở lại form sửa ngay trong cùng phiên."
+      ],
+      "expected": "Form hiển thị số lượng đã lưu là 2.",
+      "actual": "Form vẫn hiển thị 1 sau 10 giây. PUT /api/detail_recruitment/117 trả 200; GET chi tiết sau lưu trả quantity=2 và note=TESTFE_KOWWU4 HR updated. Lỗi đồng bộ form FE, không phải mất dữ liệu ở BE.",
+      "source": [
+        "src/features/recruitment/components/recruitment-editor.tsx:56",
+        "src/features/recruitment/components/recruitment-editor-form.tsx:56"
+      ],
+      "evidence": [
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C190-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C190-trace.zip"
+      ]
+    },
+    {
+      "id": "FE-02",
+      "priority": "P1",
+      "owner": "FE",
+      "title": "Mở lại form ứng viên hiển thị chuyên ngành cũ/trống",
+      "cases": ["C192"],
+      "steps": [
+        "Tạo ứng viên riêng TESTFE_KOWWU4 Ứng viên.",
+        "Sửa chuyên ngành thành TESTFE_KOWWU4 CNTT, lưu và mở lại form sửa."
+      ],
+      "expected": "Chuyên ngành giữ giá trị vừa lưu.",
+      "actual": "Form hiển thị rỗng sau 10 giây. PUT /api/detail_cv/472 trả 200; GET sau lưu trả education_major=TESTFE_KOWWU4 CNTT. Có khả năng cùng nguyên nhân dữ liệu form/cache với FE-01; chưa sửa để xác nhận nguyên nhân chính xác.",
+      "source": [
+        "src/features/recruitment/components/recruitment-editor.tsx:56",
+        "src/features/recruitment/components/recruitment-editor-form.tsx:56"
+      ],
+      "evidence": [
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C192-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C192-trace.zip"
+      ]
+    },
+    {
+      "id": "FE-03",
+      "priority": "P2",
+      "owner": "FE",
+      "title": "Nút Đổi ngày mong muốn bị chặn click",
+      "cases": ["C171"],
+      "steps": [
+        "Mở chi tiết ticket đang xử lý của lượt test ở viewport 1440×900.",
+        "Trong Thông tin chung, click nút bút chì Đổi ngày mong muốn."
+      ],
+      "expected": "Mở form sửa ngày bằng click thông thường.",
+      "actual": "Nút visible/enabled/stable nhưng click liên tục bị div.relative.min-w-0.space-y-1.5.pr-14 intercepts pointer events; timeout 12 giây. Không dùng force click; các bước validation/lưu ngày phía sau chưa được chạy.",
+      "source": [
+        "src/features/requests/components/ticket-due-date.tsx:90",
+        "src/features/requests/components/ticket-due-date.tsx:110"
+      ],
+      "evidence": [
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C171-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C171-trace.zip"
+      ]
+    },
+    {
+      "id": "FE-04",
+      "priority": "P2",
+      "owner": "FE",
+      "title": "Cấu trúc ARIA lịch phỏng vấn không hợp lệ",
+      "cases": ["C78"],
+      "steps": [
+        "Vào Lịch phỏng vấn ở chế độ tuần.",
+        "Chạy axe WCAG A/AA trên lịch đang hiển thị."
+      ],
+      "expected": "Các gridcell có parent row và grid có cấu trúc con hợp lệ.",
+      "actual": "Axe báo aria-required-children và aria-required-parent (impact critical của axe): grid chứa trực tiếp gridcell, thiếu role=row. Ảnh hưởng công cụ đọc màn hình.",
+      "source": [
+        "src/features/recruitment/components/interview-calendar-grid.tsx:242",
+        "src/features/recruitment/components/interview-calendar-grid.tsx:275"
+      ],
+      "evidence": [
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C78-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C78-trace.zip"
+      ]
+    },
+    {
+      "id": "BE-01",
+      "priority": "P2",
+      "owner": "BE",
+      "title": "Tìm kiếm ứng viên không có kết quả trả HTTP 500",
+      "cases": ["C202", "C218"],
+      "steps": [
+        "Vào Quản lý ứng viên, tìm NO_MATCH_TESTFE_KOWWU4.",
+        "Hoặc xóa ứng viên riêng rồi tìm lại tên TESTFE_KOWWU4 Ứng viên."
+      ],
+      "expected": "API danh sách trả 200 với danh sách rỗng; UI hiển thị không có kết quả.",
+      "actual": "GET /api/list_cv/?...&search=NO_MATCH_TESTFE_KOWWU4&page=1&page_size=100 trả 500. Tìm lại tên ứng viên sau thao tác xóa cũng trả 500 hai lần. POST /api/del-data-cv/ trả 200 nhưng chưa xác nhận ứng viên đã vắng mặt vì API tra cứu lỗi. Reset về danh sách không lọc trả 200.",
+      "source": ["src/features/recruitment/api/recruitment-api.ts"],
+      "evidence": [
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C202-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C202-trace.zip",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C218-failure.png",
+        "/tmp/ticket-frontend-e2e/full-workflow-review-20261023-22/C218-trace.zip"
+      ]
+    }
+  ],
+  "classificationNotes": [
+    "6 FAIL scenario rows correspond to 5 findings above. C202 and C218 are the same BE defect. FE-01/FE-02 may share one form/cache cause.",
+    "No application or test implementation was changed during this review.",
+    "Prior focused regression results are not added to the counts of this full run.",
+    "Axe impact and suggested business priority are different scales. P1/P2 here are suggested triage priorities."
+  ],
+  "blocked": [
+    {
+      "id": "C204",
+      "route": "/requests/:ticketID",
+      "feature": "Cancel own HR request: reason validation and cancellation attachment",
+      "actual": "Action 'Hủy' is unavailable in the actual account/state; available: "
+    },
+    {
+      "id": "C208",
+      "route": "/reports",
+      "feature": "Required report filters and invalid date-range validation",
+      "actual": "No reporting group is available for this account"
+    },
+    {
+      "id": "C291",
+      "route": "/recruitment/interviews/:codeInterview",
+      "feature": "Direct ingress /recruitment/interviews/:codeInterview",
+      "actual": "A concrete owned request/interview URL is unavailable; no guessed ID was used"
+    },
+    {
+      "id": "C292",
+      "route": "/recruitment/interviews/:codeInterview",
+      "feature": "Direct ingress /detail-interview/:codeInterview",
+      "actual": "A concrete owned request/interview URL is unavailable; no guessed ID was used"
+    },
+    {
+      "id": "C296",
+      "route": "/tickets/from-email/:ticketID",
+      "feature": "Email-request functionality",
+      "actual": "The current source renders a preparation placeholder for this contextual route; no implemented email-request form to exercise"
+    }
+  ],
+  "cleanup": {
+    "settings": "All seven own configuration entities locked and verified through UI, C236–C242.",
+    "mainTicket": "Own lifecycle ticket closed and verified C186/C235; clone canceled C167.",
+    "hrRequests": "Approved own seed HR_261023_008 canceled through Change Status UI and verified C205. Fresh second HR request canceled with reason/attachment C207.",
+    "interview": "Own PV_261023_071 deleted and card removal verified C203.",
+    "candidate": "Own CV file deleted C201. Candidate delete submitted and returned 200; absence cannot be confirmed because filtered list returns 500 (C202). No further candidate delete attempted."
+  },
+  "additionalNetworkObservation": {
+    "case": "C197",
+    "request": "GET /api/regis-interview/PV_261023_071?search=&gender=&cv_status=",
+    "status": 400,
+    "body": {
+      "message": "Không tìm thấy ứng viên."
+    },
+    "context": "After removal of the last candidate from own schedule.",
+    "classification": "Recorded for BE contract review; not counted as a separately confirmed UI defect. The test only asserted candidate row removal, not a clean empty state."
+  },
+  "limitations": [
+    "Automated axe and keyboard checks are not a complete manual accessibility audit.",
+    "Source occurrence inventory includes conditional/shared controls that may not be reachable for this account; unmatched controls remain NOT RUN.",
+    "No backend code/schema/business-rule tests or direct API substitutions were used.",
+    "Authentication traces are omitted to avoid credentials in artifacts.",
+    "Repeated GETs are diagnostic candidates, not confirmed frontend bugs: cancellation, retries, and separate observers may explain them.",
+    "API requests and browser console/pageerror events are recorded; a complete non-API failed-resource inventory was not collected.",
+    "Long-task observations are diagnostic only; memory growth, visual flicker and layout remount counts were not instrumented.",
+    "Check the scenario matrix for owned ticket/recruitment mutation results. File drag-and-drop, upload outage recovery, every actor/status combination and PDF configuration are not comprehensively executed. Unmatched source controls remain NOT RUN.",
+    "Real token expiration was not awaited; token/storage substitution is intentionally absent."
+  ]
+}

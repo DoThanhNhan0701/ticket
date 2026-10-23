@@ -11,7 +11,7 @@ export async function notificationJourney(h: Harness) {
   await h.run(
     "recruitment",
     "/recruitment/candidates",
-    "Backend failure is shown as a toast; retry/filter recovery keeps the session and SPA document",
+    "Backend failure is shown as a toast without a retry button; filter recovery keeps the session and SPA document",
     async () => {
       const p = h.page;
       await h.nav("Quản lý ứng viên");
@@ -25,17 +25,16 @@ export async function notificationJourney(h: Harness) {
       await p.getByRole("button", { name: "Tìm kiếm", exact: true }).click();
       await h.settle();
       const retry = p.getByRole("button", { name: "Thử lại", exact: true });
-      if (await retry.isVisible()) {
+      const empty = p.getByText("Không tìm thấy ứng viên", { exact: true });
+      await expect(toast.or(empty)).toBeVisible();
+      await expect(retry).toHaveCount(0);
+      if (await toast.isVisible()) {
         await expect(toast).toBeVisible();
         await expect(p.getByRole("alert")).toHaveCount(0);
         const observed = h.requests
           .slice(start)
           .filter((r) => r.url.startsWith("/api/list_cv/"));
         expect(observed.some((r) => r.status === 500)).toBe(true);
-        await retry.click();
-        await h.settle();
-        await expect(toast).toBeVisible();
-        await expect(retry).toBeEnabled();
       } else {
         await expect(
           p.getByText("Không tìm thấy ứng viên", { exact: true }),

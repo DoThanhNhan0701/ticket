@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
 import {
   act,
@@ -689,7 +690,8 @@ it.each([500, 403])(
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("request-access");
     listResponse = () =>
       Response.json({ ...pagination, count: 1, results: [ticket] });
-    fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+    await refreshFailedQueries(client);
     await ready();
     expect(screen.queryByRole("alert")).toBeNull();
   },
@@ -703,7 +705,8 @@ it("keeps tickets visible when the status endpoint fails and retries it independ
   await expectErrorToast(/Không tải được trạng thái/);
   statusResponse = () =>
     Response.json({ ...pagination, count: statuses.length, results: statuses });
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại trạng thái" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() =>
     expect(screen.queryByText(/Không tải được trạng thái/)).toBeNull(),
   );
@@ -1020,7 +1023,8 @@ it("keeps all-request records available when request-type options fail and retri
   await expectErrorToast(/Dữ liệu loại yêu cầu không hợp lệ/);
   expect(screen.getByText("ALL-0084")).toBeTruthy();
   typesResponse = () => Response.json(requestTypeFixtures);
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại loại yêu cầu" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
   expect(allListParams().ticket_type_id).toBe("17");
   fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
@@ -1116,7 +1120,8 @@ it("rejects malformed all-request handler data and hides pagination for empty re
   renderList("/requests/all");
   await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
   allResponse = () => Response.json({ ...pagination, count: 0, results: [] });
-  fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+  expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+  await refreshFailedQueries(client);
   expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
   expect(
     screen.queryByRole("navigation", { name: "Phân trang yêu cầu" }),
@@ -1327,11 +1332,13 @@ it.each(approvalPages)(
         count: 1,
         results: [{ ...ticket, username_create: [] }],
       });
-    fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+    await refreshFailedQueries(client);
     await expectErrorToast(/Dữ liệu danh sách yêu cầu không hợp lệ/);
     listResponse = () =>
       Response.json({ ...pagination, count: 0, results: [] });
-    fireEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(screen.queryByRole("button", { name: /^Thử lại/ })).toBeNull();
+    await refreshFailedQueries(client);
     expect(await screen.findByText("Không tìm thấy yêu cầu")).toBeTruthy();
     expect(
       screen.queryByRole("navigation", { name: "Phân trang yêu cầu" }),

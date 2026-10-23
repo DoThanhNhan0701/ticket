@@ -1,6 +1,5 @@
 import { ErrorToast } from "@/components/error-toast";
 import { ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -17,25 +16,15 @@ interface PermissionInfoProps {
   permissions: readonly SettingsRecord[];
   loading: boolean;
   error: Error | null;
-  onRetry: () => void;
 }
 
 function PermissionInfoContent({
   permissions,
   loading,
   error,
-  onRetry,
 }: Readonly<PermissionInfoProps>) {
   if (loading) return <LoadingState message="Đang tải quyền hạn..." />;
-  if (error)
-    return (
-      <div className="space-y-3">
-        <ErrorToast message={error.message} />
-        <Button variant="outline" onClick={onRetry}>
-          Thử lại quyền hạn
-        </Button>
-      </div>
-    );
+  if (error) return <ErrorToast message={error.message} />;
   if (permissions.length === 0)
     return <p className="text-sm text-muted-foreground">Chưa có quyền hạn.</p>;
   return (
