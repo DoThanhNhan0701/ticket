@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-23",
+  "scope": "Interview candidate detail UI from user screenshot, inspected with nhandt02 on TEST. Existing interview/candidate records were read only.",
+  "preview": "http://127.0.0.1:5187/recruitment/interviews/PV_261021_064",
+  "finding": "A fixed-layout table had no widths on six data columns. At narrow viewports these shared the remaining width after index/actions, truncating headers and splitting badge text vertically.",
+  "changes": [
+    "Set widths for name, birth date, phone, email, time and status; minimum table width 1140px inside its existing scroll region.",
+    "Keep status on one line and retain sticky actions, paginator and mobile filter controls.",
+    "Add mobile swipe hint and wrap long interview title/interviewer text."
+  ],
+  "runs": [
+    {
+      "name": "interview-ui-14",
+      "counts": {
+        "PASS": 11,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 34
+      },
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/interview-ui-14/html/index.html",
+      "uiScenarios": [
+        {
+          "id": "C10",
+          "status": "PASS",
+          "feature": "Open existing DATA interview through calendar, read only"
+        },
+        {
+          "id": "C11",
+          "status": "PASS",
+          "feature": "Interview CV 320px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C12",
+          "status": "PASS",
+          "feature": "Interview CV 390px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C13",
+          "status": "PASS",
+          "feature": "Interview CV 768px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C14",
+          "status": "PASS",
+          "feature": "Interview CV 1440px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C15",
+          "status": "PASS",
+          "feature": "Mobile filter drawer opens and cancels without changing candidate data"
+        }
+      ],
+      "dataWrites": []
+    },
+    {
+      "name": "interview-ui-15",
+      "counts": {
+        "PASS": 12,
+        "FAIL": 0,
+        "BLOCKED": 0,
+        "NOT RUN": 34
+      },
+      "unexpectedDocumentNavigations": 0,
+      "unhandledRuntimeErrors": 0,
+      "html": "/tmp/ticket-frontend-e2e/interview-ui-15/html/index.html",
+      "uiScenarios": [
+        {
+          "id": "C10",
+          "status": "PASS",
+          "feature": "Open existing DATA interview through calendar, read only"
+        },
+        {
+          "id": "C11",
+          "status": "PASS",
+          "feature": "Interview CV 320px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C12",
+          "status": "PASS",
+          "feature": "Interview CV 390px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C13",
+          "status": "PASS",
+          "feature": "Interview CV 768px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C14",
+          "status": "PASS",
+          "feature": "Interview CV 1440px: readable columns, contained horizontal scroll, sticky row actions and pagination"
+        },
+        {
+          "id": "C15",
+          "status": "PASS",
+          "feature": "Mobile filter drawer opens and cancels without changing candidate data"
+        },
+        {
+          "id": "C16",
+          "status": "PASS",
+          "feature": "Light theme mobile interview CV: readable status, no document overflow and accessibility"
+        }
+      ],
+      "dataWrites": []
+    }
+  ],
+  "initialAttempt": {
+    "name": "interview-ui-13",
+    "review": "Required-login case encountered nonempty inputs; calendar target was checked before its async button appeared. Harness now explicitly clears required-test inputs and waits for the target; successful runs above follow those corrections. Initial evidence is retained outside source and is not counted as an application defect."
+  },
+  "checks": {
+    "targetedUnit": "100 PASS in recruitment.test.tsx and data-management.test.tsx",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build:test": "PASS; existing >500kB chunk warning",
+    "format": "PASS",
+    "git diff --check": "PASS"
+  },
+  "limitations": [
+    "34 route/feature rows NOT RUN in the focused mode; results do not imply whole-site coverage.",
+    "Viewport tests use a visible desktop Chromium browser, not a physical touch device.",
+    "Candidate data and backend behavior are unchanged. Earlier calendar ARIA issue is a separate screen/finding."
+  ],
+  "artifacts": "Review screenshots and HTML under /tmp/ticket-frontend-e2e/interview-ui-15; no screenshots added to source."
+}

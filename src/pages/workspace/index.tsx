@@ -1,6 +1,7 @@
+import { interviewCalendarBackLink } from "@/features/recruitment/utils/interview-navigation";
 import { APP_ROUTES } from "@/constants/routes";
 import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams, useNavigate } from "react-router-dom";
 import { LegacyPageRedirect } from "@/app/legacy-page-redirect";
 import {
   canAccessPage,
@@ -41,6 +42,11 @@ export function WorkspacePage({
 }: Readonly<{ page: WorkspacePageDefinition }>) {
   const { permissions, userId } = useAuthContext();
   const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const backActionsByPath: Partial<Record<string, () => void>> = {
+    [APP_ROUTES.recruitment.interviewDetail]: () =>
+      navigate(interviewCalendarBackLink(params)),
+  };
   const allowed = canAccessPage(page, permissions);
   if (!allowed) return <Navigate to={APP_ROUTES.forbidden} replace />;
   if (page.path === APP_ROUTES.requests.detail && allowed)
@@ -103,6 +109,8 @@ export function WorkspacePage({
           title={page.label}
           description={page.description}
           icon={Icon}
+          onBack={backActionsByPath[page.path]}
+          backLabel="Quay lại lịch phỏng vấn"
           actions={
             page.path === HOME_PATH &&
             canAccessPage(createTicketPage, permissions) ? (

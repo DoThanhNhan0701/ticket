@@ -1,3 +1,4 @@
+import { useInterviewCalendarState } from "../hooks/use-interview-calendar-state";
 import { ErrorToast } from "@/components/error-toast";
 import { PAGE_LINKS } from "@/constants/routes";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
@@ -5,8 +6,6 @@ import { ResponsivePageAction } from "@/components/layout/mobile-page-action";
 import { useState } from "react";
 import {
   addDays,
-  addMonths,
-  addWeeks,
   endOfMonth,
   endOfWeek,
   format,
@@ -37,11 +36,11 @@ import { RecruitmentFilters } from "./recruitment-filters";
 export function RecruitmentCalendar() {
   const { userId, permissions } = useAuthContext();
   const navigate = useNavigate();
-  const [day, setDay] = useState(new Date());
-  const [view, setView] = useState<"month" | "week" | "day">("week");
+  const { day, view, user, updateCalendar, shift } =
+    useInterviewCalendarState();
   const [editor, setEditor] = useState<RecruitmentEditorState | null>(null);
-  const [user, setUser] = useState("");
   const lookups = useRecruitmentLookups();
+  const options = lookups.data ?? {};
   let start = day,
     end = day;
   if (view === "month") {
@@ -70,15 +69,17 @@ export function RecruitmentCalendar() {
     retry: false,
     onSuccess: (result) => {
       if (typeof result.code_interview === "string")
-        navigate(PAGE_LINKS.interviewDetail(result.code_interview));
+        navigate(
+          `${PAGE_LINKS.interviewDetail(result.code_interview)}?${new URLSearchParams(
+            {
+              calendar_date: format(day, "yyyy-MM-dd"),
+              calendar_view: view,
+              calendar_user: user,
+            },
+          )}`,
+        );
     },
   });
-  const shift = (amount: number) =>
-    setDay((current) => {
-      if (view === "month") return addMonths(current, amount);
-      if (view === "week") return addWeeks(current, amount);
-      return addDays(current, amount);
-    });
   const days = Array.from(
     {
       length:
@@ -115,16 +116,20 @@ export function RecruitmentCalendar() {
           from_date: format(day, "yyyy-MM-dd"),
           calendar_view: view,
         }}
-        lookups={lookups.data ?? {}}
+        lookups={options}
         busy={query.isFetching}
         onApply={(values) => {
-          setView(interviewCalendarView(values.calendar_view));
-          setUser(values.user_interview);
-          setDay(new Date(`${values.from_date}T12:00:00`));
+          updateCalendar({
+            calendar_view: interviewCalendarView(values.calendar_view),
+            user_interview: values.user_interview,
+            from_date: values.from_date,
+          });
         }}
         onReset={() => {
-          setUser("");
-          setDay(new Date());
+          updateCalendar({
+            user_interview: "",
+            from_date: format(new Date(), "yyyy-MM-dd"),
+          });
         }}
       />
       <div className="hidden flex-wrap items-center justify-between gap-2 sm:flex">
@@ -141,7 +146,9 @@ export function RecruitmentCalendar() {
             mobileIconOnly
             title="Hôm nay"
             variant="outline"
-            onClick={() => setDay(new Date())}
+            onClick={() =>
+              updateCalendar({ from_date: format(new Date(), "yyyy-MM-dd") })
+            }
           >
             <CalendarCheck className="size-4 sm:hidden" aria-hidden="true" />
             Hôm nay
@@ -173,7 +180,7 @@ export function RecruitmentCalendar() {
               mobileIconOnly
               title={label}
               variant={view === value ? "default" : "outline"}
-              onClick={() => setView(value)}
+              onClick={() => updateCalendar({ calendar_view: value })}
               aria-pressed={view === value}
             >
               <ViewIcon className="size-4 sm:hidden" aria-hidden="true" />
@@ -205,6 +212,7 @@ export function RecruitmentCalendar() {
           view={view}
           disabled={!lookups.data || query.isFetching || query.isError}
           canViewCV={permissions?.can_cv_interview === true}
+          interviewers={options.users}
           onCreate={(date, time) => {
             const row: Record<string, unknown> = { start_date: date };
             if (time) {

@@ -380,3 +380,16 @@ Server error presentation (updated 2026-10-23):
   separately; do not label a failed API search as a successful empty result.
 - E2E_NOTIFICATIONS_ONLY=true scans sidebar pages and checks the real candidate
   failure/retry/reset path with one UI session and no direct API writes.
+
+Interview URL state regression (2026-10-23):
+- Persist applied calendar date/interviewer/month-week-day view and CV detail
+  search/gender/status/page/page size in search parameters.
+- Open CV detail from a calendar carrying reload-safe return context; use its
+  Quay lại lịch phỏng vấn button to restore the exact applied calendar filters.
+- Verify direct detail links without context return safely to the calendar.
+- Verify browser Back/Forward and same-URL reload restore the selected controls.
+- Do not clamp a restored page using an empty pending/placeholder dataset;
+  changing page/page size must not refetch a full client-paginated CV dataset.
+- E2E_INTERVIEW_STATE_ONLY=true uses existing TEST records read-only. Two explicit
+  page reloads are allowed in this regression because reload persistence is the
+  requested feature; keep all other navigation as SPA and record document events.

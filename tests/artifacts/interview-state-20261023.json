@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-23",
+  "environment": "TEST http://127.0.0.1:5187",
+  "changes": {
+    "calendarSearchParams": [
+      "from_date (selected date)",
+      "calendar_view (month/week/day)",
+      "user_interview"
+    ],
+    "candidateSearchParams": [
+      "search",
+      "gender",
+      "cv_status",
+      "page",
+      "page_size"
+    ],
+    "returnContext": ["calendar_date", "calendar_view", "calendar_user"],
+    "backButton": "Quay lại lịch phỏng vấn: restores calendar filters after reload; direct links without context return to default calendar. Return destination is restricted to the calendar route."
+  },
+  "behavior": [
+    "Only applied filters update the URL. Browser Back/Forward and reloading restore applied controls.",
+    "Changing filters resets pagination. Changing CV page/page size uses the already loaded dataset without refetching it.",
+    "Out-of-range pages are normalized only after a successful fresh dataset loads, preserving pending/restored URLs."
+  ],
+  "latestRun": {
+    "name": "interview-state-19",
+    "counts": {
+      "PASS": 11,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT RUN": 33
+    },
+    "unexpectedDocumentNavigations": 0,
+    "unhandledRuntimeErrors": 0,
+    "expectedMainDocumentNavigations": [
+      {
+        "url": "http://127.0.0.1:5187/login",
+        "caseId": "C1",
+        "expected": true
+      },
+      {
+        "url": "http://127.0.0.1:5187/recruitment/interviews",
+        "caseId": "C11",
+        "expected": true
+      },
+      {
+        "url": "http://127.0.0.1:5187/recruitment/interviews/PV_261021_064",
+        "caseId": "C14",
+        "expected": true
+      }
+    ],
+    "html": "/tmp/ticket-frontend-e2e/interview-state-19/html/index.html",
+    "cases": [
+      {
+        "id": "C10",
+        "status": "PASS",
+        "feature": "Calendar date/interviewer/view stored in search params"
+      },
+      {
+        "id": "C11",
+        "status": "PASS",
+        "feature": "Explicit reload restores selected calendar date, interviewer and view"
+      },
+      {
+        "id": "C12",
+        "status": "PASS",
+        "feature": "Open existing DATA CVs carrying calendar return context"
+      },
+      {
+        "id": "C13",
+        "status": "PASS",
+        "feature": "Detail search, gender, status and page size stored in URL"
+      },
+      {
+        "id": "C14",
+        "status": "PASS",
+        "feature": "Explicit reload restores CV filters, page size and back destination"
+      },
+      {
+        "id": "C15",
+        "status": "PASS",
+        "feature": "Back button returns to exact calendar context after reload; browser Back restores filtered CV detail"
+      }
+    ],
+    "businessWrites": []
+  },
+  "initialRun": "interview-state-18 confirmed both reloads but failed exact return URL because the generic list helper inserted page=1 on the non-paginated calendar. Calendar URL state now uses its own updater; latest run passes the same exact-URL assertion.",
+  "checks": {
+    "targetedUnit": "218 PASS across recruitment.test.tsx and app-routing.test.tsx; includes URL initial mount, browser history, 201-row pagination and pending-dataset clamp, plus direct-link back fallback",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build:test": "PASS with existing chunk-size warning",
+    "prettier": "PASS",
+    "git diff --check": "PASS"
+  },
+  "limitations": [
+    "33 route/feature accounting rows NOT RUN in the focused mode; no whole-site coverage claim.",
+    "Live interview contains one candidate, so page > 1 restoration/refetch behavior is verified with the 201-row unit fixture.",
+    "Two explicit reloads are intentional persistence checks; all other internal navigation is SPA. No backend changes."
+  ],
+  "artifacts": "Screenshots, sanitized trace and HTML stay outside source under /tmp/ticket-frontend-e2e."
+}

@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-23",
+  "reference": "../ticketV2/src/containers/pages/candidateManagement/CheckCV/index.js",
+  "component": "src/features/recruitment/components/recruitment-editor.tsx: DuplicateResults",
+  "columns": [
+    "STT",
+    "Mã CV",
+    "Mã yêu cầu",
+    "Số điện thoại",
+    "Email",
+    "Họ và tên",
+    "Ngày sinh",
+    "Trạng thái CV",
+    "Ngày tạo"
+  ],
+  "parityNote": "Legacy ticketV2 labels code_cv as Tiêu Đề YCTD; the current label remains Mã CV to describe the actual data. Full name combines last_name/first_name; dates use shared Vietnamese formatters, creation time includes seconds.",
+  "layout": "Shared DataTable; explicit column widths, 1630px minimum table width inside a 320px-tall scroll container. No added swipe banner.",
+  "latestRun": {
+    "name": "duplicate-ui-17",
+    "counts": {
+      "PASS": 10,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT RUN": 34
+    },
+    "unexpectedDocumentNavigations": 0,
+    "unhandledRuntimeErrors": 0,
+    "html": "/tmp/ticket-frontend-e2e/duplicate-ui-17/html/index.html",
+    "cases": [
+      {
+        "id": "C10",
+        "feature": "Open real duplicate lookup through candidate row actions, read only",
+        "status": "PASS"
+      },
+      {
+        "id": "C11",
+        "feature": "Duplicate lookup 320px: nine ticketV2 data columns, readable headers and contained table scroll",
+        "status": "PASS"
+      },
+      {
+        "id": "C12",
+        "feature": "Duplicate lookup 390px: nine ticketV2 data columns, readable headers and contained table scroll",
+        "status": "PASS"
+      },
+      {
+        "id": "C13",
+        "feature": "Duplicate lookup 768px: nine ticketV2 data columns, readable headers and contained table scroll",
+        "status": "PASS"
+      },
+      {
+        "id": "C14",
+        "feature": "Duplicate lookup 1440px: nine ticketV2 data columns, readable headers and contained table scroll",
+        "status": "PASS"
+      }
+    ],
+    "dataWrites": []
+  },
+  "initialRun": "duplicate-ui-16 had no populated duplicates for its selected first candidate; case BLOCKED. Latest run prioritizes the known CV from the screenshot and checks existing records through UI, without creating fixtures.",
+  "checks": {
+    "unit": "65 PASS in recruitment.test.tsx, including all nine mapped values, surname combination and missing-value fallbacks",
+    "build:test": "PASS; existing chunk-size warning",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "format": "PASS",
+    "git diff --check": "PASS"
+  },
+  "limitations": [
+    "Focused mode leaves 34 route/feature rows NOT RUN; no full-site coverage claim.",
+    "Responsive checks use desktop Chromium viewports, not a physical touch device."
+  ],
+  "artifacts": "HTML and any traces/screenshots stay outside source under /tmp/ticket-frontend-e2e."
+}

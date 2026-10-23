@@ -3,9 +3,21 @@ import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { Clock3, Pencil, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import type { RecruitmentAction, RecruitmentRow } from "../types";
-import { recruitmentText as text } from "../utils/recruitment-format";
+import type {
+  RecruitmentAction,
+  RecruitmentRow,
+  RecruitmentOption,
+} from "../types";
+import {
+  recruitmentText as text,
+  recruitmentRows,
+} from "../utils/recruitment-format";
 import { layoutInterviews } from "../utils/interview-layout";
 const slotHeight = 64;
 
@@ -15,9 +27,39 @@ interface GridProps {
   view: "month" | "week" | "day";
   disabled: boolean;
   canViewCV: boolean;
+  interviewers?: readonly RecruitmentOption[];
   onCreate: (date: string, time?: string) => void;
   onAction: (action: RecruitmentAction, row: RecruitmentRow) => void;
   onViewCV: (id: number) => void;
+}
+function interviewerNames(
+  row: RecruitmentRow,
+  options: readonly RecruitmentOption[] = [],
+) {
+  const detailed = recruitmentRows(row.data_user_interview)
+    .map(
+      (user) =>
+        text(user.full_name).trim() ||
+        text(user.name).trim() ||
+        [text(user.last_name).trim(), text(user.first_name).trim()]
+          .filter(Boolean)
+          .join(" ") ||
+        text(user.username).trim(),
+    )
+    .filter(Boolean);
+  if (detailed.length) return detailed;
+  const legacy = text(row.user_interview_name).trim();
+  if (legacy)
+    return legacy
+      .split(",")
+      .map((name) => name.trim())
+      .filter(Boolean);
+  const assigned = Array.isArray(row.user_interview)
+    ? row.user_interview.map(text)
+    : text(row.user_interview).split(",");
+  const labels = new Map(options.map((option) => [option.value, option.label]));
+  const ids = [...new Set(assigned.map((id) => id.trim()).filter(Boolean))];
+  return ids.map((id) => labels.get(id)?.trim() ?? "").filter(Boolean);
 }
 function InterviewCard({
   row,
@@ -27,6 +69,7 @@ function InterviewCard({
   const id = Number(row.id_interview ?? row.id);
   const record = { ...row, id };
   const title = text(row.title);
+  const interviewers = interviewerNames(row, props.interviewers);
   return (
     <article
       aria-label={title}
@@ -45,15 +88,54 @@ function InterviewCard({
       >
         {title}
       </p>
-      <p
+      <div
         className={cn(
-          "flex shrink-0 items-center gap-1 whitespace-nowrap leading-4 text-brand-700 tabular-nums dark:text-brand-200",
-          compact && "leading-3",
+          "min-w-0",
+          compact ? "flex items-center gap-1" : "space-y-1",
         )}
       >
-        {!compact && <Clock3 aria-hidden="true" className="size-3 shrink-0" />}
-        {text(row.time_start).slice(0, 5)} – {text(row.time_end).slice(0, 5)}
-      </p>
+        <p
+          className={cn(
+            "flex shrink-0 items-center gap-1 whitespace-nowrap leading-4 text-brand-700 tabular-nums dark:text-brand-200",
+            compact && "leading-3",
+          )}
+        >
+          {!compact && (
+            <Clock3 aria-hidden="true" className="size-3 shrink-0" />
+          )}
+          {text(row.time_start).slice(0, 5)} – {text(row.time_end).slice(0, 5)}
+        </p>
+        {interviewers.length > 0 && (
+          <Tooltip>
+            <TooltipTrigger
+              type="button"
+              aria-label={`Người phỏng vấn: ${interviewers.join(", ")}`}
+              className={cn(
+                "flex min-w-0 max-w-full items-center gap-1 rounded-sm text-left text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                compact ? "leading-3" : "leading-4",
+              )}
+            >
+              <span className="truncate">{interviewers[0]}</span>
+              {interviewers.length > 1 && (
+                <span className="shrink-0 font-medium">
+                  +{interviewers.length - 1}
+                </span>
+              )}
+            </TooltipTrigger>
+            <TooltipContent
+              role="tooltip"
+              className="block whitespace-normal wrap-anywhere"
+            >
+              <p className="mb-1 font-medium">Người phỏng vấn</p>
+              <ul>
+                {interviewers.map((name, index) => (
+                  <li key={`${index}:${name}`}>{name}</li>
+                ))}
+              </ul>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
       <div
         className={cn(
           "mt-auto flex shrink-0 flex-wrap items-center gap-0.5 border-t border-brand-200/70 pt-1 dark:border-brand-800",

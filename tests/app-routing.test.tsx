@@ -1007,3 +1007,24 @@ vi.mock("sonner", () => ({
   Toaster: () => null,
   toast: { success: vi.fn(), error: vi.fn() },
 }));
+
+it.each([
+  [
+    "?calendar_date=2030-12-10&calendar_view=month&calendar_user=test-user&search=TEST&page_size=200",
+    "?from_date=2030-12-10&calendar_view=month&user_interview=test-user",
+  ],
+  ["", ""],
+])(
+  "returns from interview CV detail to the calendar using reload-safe URL context %s",
+  async (search, expected) => {
+    auth.permissions = { can_hr_rec: true, can_cv_interview: true };
+    renderApp(`/recruitment/interviews/TEST-CODE${search}`);
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Quay lại lịch phỏng vấn" }),
+    );
+    await screen.findByRole("heading", { name: "Lịch phỏng vấn" });
+    expect(screen.getByTestId("current-path").textContent).toBe(
+      `/recruitment/interviews${expected}`,
+    );
+  },
+);

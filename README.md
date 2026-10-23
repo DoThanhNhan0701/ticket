@@ -406,6 +406,38 @@ To scan the sidebar pages and exercise the live candidate error/retry/reset path
 BASE_URL=http://127.0.0.1:5187 E2E_NOTIFICATIONS_ONLY=true npm run test:e2e:frontend
 ```
 
+Interview calendar state is URL-backed: `from_date` is the selected date,
+`calendar_view` is `month`/`week`/`day`, and `user_interview` is the applied interviewer.
+CV detail filters use `search`, `gender`, `cv_status`, `page` and `page_size`.
+Applying filters resets the page; changing pagination slices the loaded CV dataset
+without requesting it again. A page outside the available range is corrected only
+after the real dataset loads, preserving restored pages during loading.
+
+The calendar-to-CV link carries `calendar_date`, `calendar_view` and `calendar_user`.
+The **Quay lại lịch phỏng vấn** header button restores that calendar context after
+reload; direct detail links without context return to the default calendar.
+Browser Back/Forward restores the URL-backed filters too. Only applied filters are
+persisted; drafts in unopened/unsubmitted forms are not saved to the URL.
+`E2E_INTERVIEW_STATE_ONLY=true` checks these transitions on TEST with existing records.
+Its explicit reloads validate persistence; they are not workarounds for broken state.
+
+For the interview CV detail layout regression shown in the mobile review, run
+`E2E_INTERVIEW_UI_ONLY=true` with the same TEST account/base URL. It opens the
+existing **Phỏng vấn DATA** interview through the calendar, checks 320/390/768/1440px,
+contained table scrolling, readable column widths, sticky actions, pagination,
+filter/action dialogs and light/dark accessibility without changing candidates.
+The interview must be present in the current calendar range; absence is BLOCKED.
+Review screenshots stay under `E2E_ARTIFACT_DIR`, outside source.
+
+`E2E_DUPLICATE_UI_ONLY=true` checks the candidate duplicate-lookup dialog against
+ticketV2's nine data columns: sequence, CV code, request code, phone, email, full
+name, birthday, CV status and creation timestamp. It opens existing candidate
+records through UI only, checks 320/390/768/1440px, scroll containment and accessibility.
+`E2E_DUPLICATE_SEARCH` overrides the default test phone search; the runner checks a
+bounded selection of existing records and reports BLOCKED if none has duplicates.
+No candidates are created or modified. Evidence is recorded in
+[`duplicate-columns-20261023.json`](tests/artifacts/duplicate-columns-20261023.json).
+
 Handling department names are limited to 19 characters so the generated request
 code (`<name>_YYMMDD_001`) stays within 30 characters. Existing longer names are
 flagged immediately when selected on Create Request; submission is disabled

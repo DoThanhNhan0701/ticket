@@ -1,11 +1,13 @@
+import { interviewCandidateFilters } from "../utils/interview-navigation";
+import { useInterviewCandidatePagination } from "../hooks/use-interview-candidate-pagination";
 import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import {
-  DataClientResults,
+  DataResults,
   DataTable,
   DataText,
   formatDataDate,
@@ -31,12 +33,8 @@ export function InterviewCandidates() {
   const { codeInterview = "" } = useParams();
   const { userId, permissions } = useAuthContext();
   const canManage = permissions?.can_hr_rec === true;
-  const [paginationReset, resetPagination] = useState(0);
-  const [applied, setApplied] = useState({
-    search: "",
-    gender: "",
-    cv_status: "",
-  });
+  const [params] = useSearchParams();
+  const applied = interviewCandidateFilters(params);
   const statuses = useQuery({
     queryKey: ["recruitment-interview-statuses", userId],
     queryFn: ({ signal }) =>
@@ -62,6 +60,10 @@ export function InterviewCandidates() {
   });
   const lookups = useRecruitmentLookups(canManage);
   const { interview, rows } = interviewData(query.data);
+  const { page, pageSize, offset, update } = useInterviewCandidatePagination(
+    rows,
+    query,
+  );
   const openAction = (
     action: RecruitmentEditorState["action"],
     selected: RecruitmentRow,
@@ -83,31 +85,38 @@ export function InterviewCandidates() {
     {
       id: "name",
       label: "Họ và tên",
+      width: "180px",
       render: (row) => <DataText text={text(row.first_name)} />,
     },
     {
       id: "birthday",
       label: "Ngày sinh",
+      width: "140px",
       render: (row) => <DataText text={formatDataDate(text(row.birthday))} />,
     },
     {
       id: "phone",
       label: "Số điện thoại",
+      width: "150px",
       render: (row) => <DataText text={text(row.numberphone)} />,
     },
     {
       id: "email",
       label: "Email",
+      width: "220px",
       render: (row) => <DataText text={text(row.email)} />,
     },
     {
       id: "time",
       label: "Giờ phỏng vấn",
+      width: "150px",
       render: (row) => <DataText text={interviewTime(row)} />,
     },
     {
       id: "status",
       label: "Trạng thái CV",
+      width: "160px",
+      className: "whitespace-nowrap",
       render: (row) => (
         <RecruitmentStatusBadge
           status={row.cv_status__name || row.cv_status_name}
@@ -147,40 +156,57 @@ export function InterviewCandidates() {
         }
         busy={query.isFetching}
         onApply={(next) => {
-          resetPagination((current) => current + 1);
           if (JSON.stringify(applied) === JSON.stringify(next))
             void query.refetch();
-          else setApplied(next);
+          update({ ...next, page: 1 });
         }}
       />
       {!query.isPending && !query.isError && interview && (
         <div className="grid gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-2">
-          <p className="font-semibold">{text(interview.title)}</p>
+          <p className="min-w-0 font-semibold wrap-anywhere">
+            {text(interview.title)}
+          </p>
           <p>
             {formatDataDate(text(interview.start_date))} ·{" "}
             {text(interview.time_start).slice(0, 5)} –{" "}
             {text(interview.time_end).slice(0, 5)}
           </p>
-          <p>Người phỏng vấn: {names(interview.data_user_interview)}</p>
+          {names(interview.data_user_interview) && (
+            <p className="min-w-0 wrap-anywhere">
+              Người phỏng vấn: {names(interview.data_user_interview)}
+            </p>
+          )}
           <p className="whitespace-pre-wrap wrap-anywhere">
             {text(interview.note)}
           </p>
         </div>
       )}
-      <DataClientResults
+      <DataResults
         refreshStyle="subtle"
-        scopeKey={JSON.stringify([codeInterview, applied, paginationReset])}
         query={{
           ...query,
-          data: query.data ? { results: rows, count: rows.length } : undefined,
+          data: query.data
+            ? {
+                results: rows.slice(offset, offset + pageSize),
+                count: rows.length,
+              }
+            : undefined,
         }}
         label="Danh sách CV phỏng vấn"
-        itemLabel="ứng viên"
+        pagination={{
+          page,
+          pageSize,
+          pageSizes: [100, 200],
+          itemLabel: "ứng viên",
+          onPage: (page) => update({ page }),
+          onPageSize: (pageSize) => update({ page_size: pageSize, page: 1 }),
+        }}
         loadingMessage="Đang tải CV phỏng vấn..."
         errorPrefix="Không tải được CV phỏng vấn"
         emptyTitle="Không có ứng viên trong lịch phỏng vấn."
-        renderRows={(visibleRows, offset) => (
+        renderRows={(visibleRows) => (
           <DataTable
+            className="min-w-[1140px]"
             scrollLabel="Cuộn bảng tuyển dụng"
             rows={visibleRows}
             columns={[

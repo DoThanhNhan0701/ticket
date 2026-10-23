@@ -1,3 +1,6 @@
+import { interviewState } from "./modules/interview-state";
+import { duplicateUi } from "./modules/duplicate-ui";
+import { interviewUi, interviewerNamesUi } from "./modules/interview-ui";
 import { notificationJourney } from "./modules/notifications";
 import { guideSettings, guideRequest, guideReports } from "./modules/guide";
 import {
@@ -44,6 +47,26 @@ test("continuous frontend workflow: one browser, one context, UI-only navigation
   await h.install();
   try {
     await initialAuth(h);
+    if (process.env.E2E_INTERVIEWER_NAMES_ONLY === "true") {
+      await interviewerNamesUi(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_INTERVIEW_STATE_ONLY === "true") {
+      await interviewState(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_DUPLICATE_UI_ONLY === "true") {
+      await duplicateUi(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_INTERVIEW_UI_ONLY === "true") {
+      await interviewUi(h);
+      await finalLogout(h);
+      return;
+    }
     if (process.env.E2E_NOTIFICATIONS_ONLY === "true") {
       await notificationJourney(h);
       await finalLogout(h);

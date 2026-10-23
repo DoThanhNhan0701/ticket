@@ -12,6 +12,8 @@ export async function initialAuth(h: Harness) {
       await expect(
         p.getByRole("button", { name: "Sign In to Ticket", exact: true }),
       ).toBeVisible();
+      await p.locator("#login-username").fill("");
+      await p.locator("#login-password").fill("");
       await p
         .getByRole("button", { name: "Sign In to Ticket", exact: true })
         .click();

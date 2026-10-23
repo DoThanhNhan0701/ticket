@@ -12,7 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/loading-state";
-import { DataTable, DataText } from "@/components/data-management";
+import {
+  DataTable,
+  DataText,
+  formatDataDate,
+  formatDataDateTime,
+} from "@/components/data-management";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import type {
   RecruitmentEditorState,
@@ -26,6 +31,7 @@ import { RecruitmentEditorForm } from "./recruitment-editor-form";
 import { RecruitmentEditorTabs } from "./recruitment-editor-tabs";
 import { RecruitmentNoteHistory } from "./recruitment-note-history";
 import { RecruitmentCandidateProfile } from "./recruitment-candidate-profile";
+import { RecruitmentStatusBadge } from "./recruitment-status-badge";
 export function RecruitmentEditor({
   state,
   lookups,
@@ -168,8 +174,9 @@ export function RecruitmentEditor({
 }
 function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
   return rows.length ? (
-    <div className="h-80">
+    <div className="flex h-80 min-w-0 flex-col">
       <DataTable
+        className="min-w-[1630px]"
         scrollLabel="Cuộn bảng tuyển dụng"
         rows={rows}
         getRowKey={(row) =>
@@ -178,22 +185,82 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
         label="Hồ sơ trùng"
         columns={[
           {
+            id: "index",
+            label: "STT",
+            width: "60px",
+            align: "center",
+            render: (_row, index) => index + 1,
+          },
+          {
             id: "code_cv",
             label: "Mã CV",
+            width: "150px",
             render: (row) => <DataText text={recruitmentText(row.code_cv)} />,
           },
           {
-            id: "first_name",
-            label: "Họ và tên",
+            id: "ticket_code",
+            label: "Mã yêu cầu",
+            width: "160px",
             render: (row) => (
-              <DataText text={recruitmentText(row.first_name)} />
+              <DataText text={recruitmentText(row.ticket_code)} />
             ),
           },
           {
             id: "numberphone",
             label: "Số điện thoại",
+            width: "150px",
             render: (row) => (
               <DataText text={recruitmentText(row.numberphone)} />
+            ),
+          },
+          {
+            id: "email",
+            label: "Email",
+            width: "220px",
+            render: (row) => <DataText text={recruitmentText(row.email)} />,
+          },
+          {
+            id: "name",
+            label: "Họ và tên",
+            width: "200px",
+            render: (row) => (
+              <DataText
+                text={[
+                  recruitmentText(row.last_name).trim(),
+                  recruitmentText(row.first_name).trim(),
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              />
+            ),
+          },
+          {
+            id: "birthday",
+            label: "Ngày sinh",
+            width: "140px",
+            render: (row) => (
+              <DataText text={formatDataDate(recruitmentText(row.birthday))} />
+            ),
+          },
+          {
+            id: "status",
+            label: "Trạng thái CV",
+            width: "160px",
+            className: "whitespace-nowrap",
+            render: (row) => (
+              <RecruitmentStatusBadge
+                status={row.cv_status_name || row.cv_status__name}
+              />
+            ),
+          },
+          {
+            id: "created",
+            label: "Ngày tạo",
+            width: "190px",
+            render: (row) => (
+              <DataText
+                text={formatDataDateTime(recruitmentText(row.created))}
+              />
             ),
           },
         ]}

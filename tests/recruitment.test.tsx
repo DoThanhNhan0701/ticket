@@ -2422,3 +2422,221 @@ it("blocks candidate saving while public address options are unavailable and sup
 });
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+
+it("shows all ticketV2 duplicate columns, full names and dates without writing candidate records", async () => {
+  vi.mocked(api.recruitmentObject).mockResolvedValue({
+    results: [
+      {
+        id: 901,
+        code_cv: "CV_TEST_901",
+        ticket_code: "HR_TEST_901",
+        numberphone: "0900000901",
+        email: "duplicate@example.invalid",
+        last_name: "Nguyễn",
+        first_name: "Văn An",
+        birthday: "1995-04-20",
+        cv_status_name: "Đã nhận việc",
+        created: "2026-10-23T02:30:00Z",
+      },
+      {
+        id: 902,
+        code_cv: "CV_TEST_902",
+        first_name: "Lê Hoàn",
+        last_name: null,
+        birthday: null,
+        created: null,
+      },
+    ],
+  });
+  mount(<RecruitmentList kind="candidates" />);
+  await openActions();
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Kiểm tra trùng TEST-CV" }),
+  );
+  const table = await screen.findByRole("table", { name: "Hồ sơ trùng" });
+  expect(
+    within(table)
+      .getAllByRole("columnheader")
+      .map((cell) => cell.textContent),
+  ).toEqual([
+    "STT",
+    "Mã CV",
+    "Mã yêu cầu",
+    "Số điện thoại",
+    "Email",
+    "Họ và tên",
+    "Ngày sinh",
+    "Trạng thái CV",
+    "Ngày tạo",
+  ]);
+  const rows = within(table).getAllByRole("row");
+  expect(
+    within(rows[1])
+      .getAllByRole("cell")
+      .map((cell) => cell.textContent),
+  ).toEqual([
+    "1",
+    "CV_TEST_901",
+    "HR_TEST_901",
+    "0900000901",
+    "duplicate@example.invalid",
+    "Nguyễn Văn An",
+    "20/04/1995",
+    "Đã nhận việc",
+    "23/10/2026 09:30:00",
+  ]);
+  const missing = within(rows[2]).getAllByRole("cell");
+  expect(missing[0].textContent).toBe("2");
+  expect(missing[5].textContent).toBe("Lê Hoàn");
+  expect(missing[6].textContent).toBe("");
+  expect(missing[7].textContent).toBe("—");
+  expect(missing[8].textContent).toBe("");
+  expect(api.recruitmentWrite).not.toHaveBeenCalled();
+});
+
+it("restores calendar date, interviewer and view from URL and follows browser history", async () => {
+  mount(
+    <>
+      <RecruitmentCalendar />
+      <ReportNavigationProbe />
+    </>,
+    "/recruitment/interviews?from_date=2030-12-10&calendar_view=day&user_interview=test-user",
+  );
+  await screen.findByRole("grid", { name: "Lịch phỏng vấn" });
+  expect(
+    (screen.getByLabelText(/^Ngày xem lịch/) as HTMLInputElement).value,
+  ).toBe("10/12/2030");
+  expect(
+    (screen.getByLabelText("Người phỏng vấn") as HTMLInputElement).value,
+  ).toBe("test-user");
+  expect(
+    screen.getByRole("button", { name: "Ngày" }).getAttribute("aria-pressed"),
+  ).toBe("true");
+  await waitFor(() =>
+    expect(api.listRecruitment).toHaveBeenLastCalledWith(
+      "interviews",
+      {
+        from_date: "2030-12-10",
+        to_date: "2030-12-10",
+        user_interview: "test-user",
+      },
+      expect.anything(),
+    ),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Khoảng sau" }));
+  await waitFor(() =>
+    expect(screen.getByTestId("report-query").textContent).toContain(
+      "from_date=2030-12-11",
+    ),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Lùi lịch sử báo cáo" }));
+  await waitFor(() =>
+    expect(
+      (screen.getByLabelText(/^Ngày xem lịch/) as HTMLInputElement).value,
+    ).toBe("10/12/2030"),
+  );
+  expect(
+    (screen.getByLabelText("Người phỏng vấn") as HTMLInputElement).value,
+  ).toBe("test-user");
+});
+
+it("restores CV filters and pagination from URL; size/reset keep the calendar return context", async () => {
+  const rows = Array.from({ length: 201 }, (_, index) => ({
+    ...candidate,
+    id: index + 3000,
+    first_name: `RESTORE-${index + 1}`,
+  }));
+  vi.mocked(api.interviewDetail).mockResolvedValue([
+    { id: 58, title: "TEST interview", ls_cv_interview: rows },
+  ]);
+  mount(
+    <>
+      <InterviewCandidates />
+      <ReportNavigationProbe />
+    </>,
+    "/recruitment/interviews/TEST?search=TEST&gender=Nam&cv_status=1&page=2&page_size=100&calendar_date=2030-12-10&calendar_view=month&calendar_user=test-user",
+  );
+  const table = await screen.findByRole("table", { name: "CV phỏng vấn" });
+  expect(within(table).getByText("RESTORE-101")).toBeTruthy();
+  expect(within(table).queryByText("RESTORE-1")).toBeNull();
+  expect(
+    (screen.getByLabelText("Tìm ứng viên phỏng vấn") as HTMLInputElement).value,
+  ).toBe("TEST");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Trạng thái ứng viên" }).textContent,
+    ).toContain("Mới"),
+  );
+  expect(api.interviewDetail).toHaveBeenLastCalledWith(
+    "",
+    { search: "TEST", gender: "Nam", cv_status: "1" },
+    expect.anything(),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+  await waitFor(() =>
+    expect(screen.getByTestId("report-query").textContent).toContain("page=3"),
+  );
+  expect(within(table).getByText("RESTORE-201")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Lùi lịch sử báo cáo" }));
+  await waitFor(() =>
+    expect(within(table).getByText("RESTORE-101")).toBeTruthy(),
+  );
+  const apiCalls = vi.mocked(api.interviewDetail).mock.calls.length;
+  expect(apiCalls).toBe(1);
+  await option("Số ứng viên mỗi trang", "200 / trang");
+  await waitFor(() =>
+    expect(screen.getByTestId("report-query").textContent).toContain(
+      "page_size=200",
+    ),
+  );
+  expect(within(table).getByText("RESTORE-1")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Xóa lọc tuyển dụng" }));
+  await waitFor(() =>
+    expect(api.interviewDetail).toHaveBeenLastCalledWith(
+      "",
+      { search: "", gender: "", cv_status: "" },
+      expect.anything(),
+    ),
+  );
+  const query = new URLSearchParams(
+    screen.getByTestId("report-query").textContent!,
+  );
+  expect(query.has("search")).toBe(false);
+  expect(query.get("page")).toBe("1");
+  expect(query.get("page_size")).toBe("200");
+  expect(query.get("calendar_date")).toBe("2030-12-10");
+  expect(query.get("calendar_user")).toBe("test-user");
+});
+
+it("does not clamp a restored CV page until the real dataset has loaded", async () => {
+  let finish!: (value: Record<string, unknown>[]) => void;
+  vi.mocked(api.interviewDetail).mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  mount(
+    <>
+      <InterviewCandidates />
+      <ReportNavigationProbe />
+    </>,
+    "/recruitment/interviews/TEST?page=999&page_size=100",
+  );
+  await screen.findByText("Đang tải CV phỏng vấn...");
+  expect(screen.getByTestId("report-query").textContent).toContain("page=999");
+  finish([
+    {
+      id: 58,
+      ls_cv_interview: Array.from({ length: 201 }, (_, index) => ({
+        ...candidate,
+        id: index + 4000,
+        first_name: `CLAMP-${index + 1}`,
+      })),
+    },
+  ]);
+  await screen.findByText("CLAMP-201");
+  await waitFor(() =>
+    expect(screen.getByTestId("report-query").textContent).toContain("page=3"),
+  );
+});
