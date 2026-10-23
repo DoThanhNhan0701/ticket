@@ -1,0 +1,1093 @@
+{
+  "prefix": "TESTCFG_MVKEWIPB",
+  "startedAt": "2026-10-23T03:30:17.903Z",
+  "fixtures": {
+    "requesting-departments": {
+      "id": 33,
+      "created": "2026-10-23T10:30:24.425432+07:00",
+      "updated": "2026-10-23T10:44:35.338630+07:00",
+      "name": "TESTCFG_MVKEWIPB_BP_U",
+      "is_handling": false,
+      "is_active": false
+    },
+    "offices": {
+      "id": 9,
+      "created": "2026-10-23T10:30:27.343444+07:00",
+      "updated": "2026-10-23T10:44:30.361271+07:00",
+      "name": "TESTCFG_MVKEWIPB_VP_U",
+      "slug_name": "testcfg_mvkewipb_vp_u",
+      "is_active": false
+    },
+    "positions": {
+      "id": 40,
+      "created": "2026-10-23T10:30:31.468761+07:00",
+      "updated": "2026-10-23T10:44:24.583692+07:00",
+      "name": "TESTCFG_MVKEWIPB_CV_U",
+      "description": "TESTCFG_MVKEWIPB updated position",
+      "is_active": false,
+      "permission": [
+        1,
+        4
+      ]
+    },
+    "teams": {
+      "id": 91,
+      "created": "2026-10-23T10:30:35.235703+07:00",
+      "updated": "2026-10-23T10:44:19.881519+07:00",
+      "name": "TESTCFG_MVKEWIPB_TEAM_U",
+      "is_handling": false,
+      "is_active": false,
+      "bophan": 33
+    },
+    "users": {
+      "id": 820,
+      "is_superuser": false,
+      "username": "testcfg_mvkewipb_user",
+      "is_staff": false,
+      "is_active": false,
+      "date_joined": "2026-10-23T10:30:41.435304+07:00",
+      "msnv": "QAMVKEWIPB",
+      "email": "testcfg_mvkewipb_user.updated@example.invalid",
+      "avatar": null,
+      "last_name": "TEST",
+      "first_name": "TESTCFG_MVKEWIPB_Updated",
+      "last_login": "2026-10-23T10:44:13.823822+07:00",
+      "date_lock": "2026-10-23T10:44:13.823677+07:00",
+      "updated": "2026-10-23T10:44:13.823832+07:00",
+      "birthday": null,
+      "team": 91,
+      "bophan": 33,
+      "chucvu": 40,
+      "groups": [],
+      "user_permissions": [],
+      "ls_permission": [],
+      "name": "TEST TESTCFG_MVKEWIPB_Updated"
+    },
+    "handling-departments": {
+      "id": 26,
+      "username_manager": "nhandt01",
+      "created": "2026-10-23T10:30:47.449405+07:00",
+      "updated": "2026-10-23T10:44:07.415448+07:00",
+      "name": "TESTCFG_MVKEWIPB_XL_U",
+      "description": "TESTCFG_MVKEWIPB updated handling department",
+      "is_active": false,
+      "group_email": "testcfg_mvkewipb@example.invalid",
+      "is_manager": 794,
+      "ls_member": []
+    },
+    "request-types": {
+      "id": 200,
+      "handling_group_name": "TESTCFG_MVKEWIPB_XL_U",
+      "created": "2026-10-23T10:30:52.014416+07:00",
+      "updated": "2026-10-23T10:44:02.295016+07:00",
+      "name": "TESTCFG_MVKEWIPB_TYPE_U",
+      "slug_name": "testcfg_mvkewipb_type_u",
+      "file_name": "ticket_type_attachment_file/testcfg_mvkewipb_type_u/TESTCFG_MVKEWIPB_guide_v2.pdf",
+      "attachment_file": "/media/ticket_type_attachment_file/testcfg_mvkewipb_type_u/TESTCFG_MVKEWIPB_guide_v2.pdf",
+      "is_active": false,
+      "handling_group": 26
+    }
+  },
+  "checks": [
+    {
+      "name": "create-department",
+      "status": "passed",
+      "elapsedMs": 3343,
+      "id": 33,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_BP",
+        "is_active": true
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-office",
+      "status": "passed",
+      "elapsedMs": 2796,
+      "id": 9,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_VP"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-position",
+      "status": "passed",
+      "elapsedMs": 4310,
+      "id": 40,
+      "expected": {
+        "permission": [
+          4
+        ]
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-team",
+      "status": "passed",
+      "elapsedMs": 3762,
+      "id": 91,
+      "expected": {
+        "bophan": 33
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-user",
+      "status": "passed",
+      "elapsedMs": 6637,
+      "id": 820,
+      "expected": {
+        "username": "testcfg_mvkewipb_user",
+        "team": 91,
+        "bophan": 33,
+        "chucvu": 40,
+        "is_superuser": false
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-handling-department",
+      "status": "passed",
+      "elapsedMs": 5560,
+      "id": 26,
+      "expected": {
+        "is_manager": 794,
+        "ls_member": [
+          820
+        ]
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-request-type-with-pdf",
+      "status": "passed",
+      "elapsedMs": 4536,
+      "id": 200,
+      "expected": {
+        "handling_group": 26
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 3418,
+      "id": 33,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_BP_U"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-offices",
+      "status": "passed",
+      "elapsedMs": 3334,
+      "id": 9,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_VP_U"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-positions",
+      "status": "failed",
+      "error": "page.reload: net::ERR_ABORTED; maybe frame was detached?\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n"
+    },
+    {
+      "name": "update-positions",
+      "status": "failed",
+      "error": "page.goto: net::ERR_ABORTED at http://127.0.0.1:5186/settings/positions?search=TESTCFG_MVKEWIPB_CV_U&is_active=true\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5186/settings/positions?search=TESTCFG_MVKEWIPB_CV_U&is_active=true\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "name": "update-positions",
+      "status": "passed",
+      "elapsedMs": 7955,
+      "id": 40,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_CV_U",
+        "permission": [
+          1,
+          4
+        ]
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-teams",
+      "status": "passed",
+      "elapsedMs": 7248,
+      "id": 91,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_TEAM_U"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-users",
+      "status": "passed",
+      "elapsedMs": 8434,
+      "id": 820,
+      "expected": {
+        "first_name": "TESTCFG_MVKEWIPB_Updated",
+        "email": "testcfg_mvkewipb_user.updated@example.invalid",
+        "msnv": "QAMVKEWIPB"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-handling-departments",
+      "status": "passed",
+      "elapsedMs": 9594,
+      "id": 26,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_XL_U",
+        "ls_member": []
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-request-types",
+      "status": "passed",
+      "elapsedMs": 7141,
+      "id": 200,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_TYPE_U"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "create-template-four-field-types",
+      "status": "failed",
+      "error": "locator.click: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').locator('#template-0-0-required')\u001b[22m\n\u001b[2m    - locator resolved to <input tabindex=\"-1\" type=\"checkbox\" aria-hidden=\"true\" id=\"template-0-0-required\"/>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    48 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - element is outside of the viewport\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "create-template-four-field-types",
+      "status": "passed",
+      "elapsedMs": 7999,
+      "fieldTypes": [
+        "text",
+        "number",
+        "date-text",
+        "range-date-text"
+      ],
+      "readbackVerified": true
+    },
+    {
+      "name": "update-template-reorder-remove-add-and-flags",
+      "status": "passed",
+      "elapsedMs": 9389,
+      "readbackVerified": true,
+      "reopenedVerified": true
+    },
+    {
+      "name": "updated-pdf-download",
+      "status": "passed",
+      "elapsedMs": 505,
+      "bytes": 600,
+      "secondFilePersisted": true
+    },
+    {
+      "name": "lock-unlock-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 14903,
+      "id": 33,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-offices",
+      "status": "failed",
+      "error": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Chỉnh sửa TESTCFG_MVKEWIPB_VP_U', exact: true }) to be visible\u001b[22m\n"
+    },
+    {
+      "name": "lock-unlock-offices",
+      "status": "passed",
+      "elapsedMs": 10008,
+      "id": 9,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-positions",
+      "status": "failed",
+      "error": "page.evaluate: Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "name": "lock-unlock-positions",
+      "status": "passed",
+      "elapsedMs": 12414,
+      "id": 40,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-teams",
+      "status": "passed",
+      "elapsedMs": 11214,
+      "id": 91,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-users",
+      "status": "passed",
+      "elapsedMs": 11508,
+      "id": 820,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-handling-departments",
+      "status": "passed",
+      "elapsedMs": 11510,
+      "id": 26,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-request-types",
+      "status": "passed",
+      "elapsedMs": 10636,
+      "id": 200,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "export-users-with-created-fixture",
+      "status": "passed",
+      "elapsedMs": 3346,
+      "bytes": 54422,
+      "filename": "Nguoi_dung.xlsx",
+      "containsCreatedUser": true
+    },
+    {
+      "name": "cleanup-lock-request-types",
+      "status": "passed",
+      "elapsedMs": 4888,
+      "id": 200,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-handling-departments",
+      "status": "passed",
+      "elapsedMs": 5917,
+      "id": 26,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-users",
+      "status": "passed",
+      "elapsedMs": 6899,
+      "id": 820,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-teams",
+      "status": "passed",
+      "elapsedMs": 4736,
+      "id": 91,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-positions",
+      "status": "passed",
+      "elapsedMs": 5680,
+      "id": 40,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-offices",
+      "status": "passed",
+      "elapsedMs": 4833,
+      "id": 9,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 4995,
+      "id": 33,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "final-seven-fixtures-remain-locked",
+      "status": "passed",
+      "elapsedMs": 928,
+      "records": 7,
+      "allLocked": true
+    }
+  ],
+  "writes": [
+    {
+      "kind": "requesting-departments",
+      "method": "POST",
+      "path": "/api/bophanmmanager/",
+      "status": 200,
+      "id": 33
+    },
+    {
+      "kind": "offices",
+      "method": "POST",
+      "path": "/api/vanphongmanager/",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "positions",
+      "method": "POST",
+      "path": "/api/chucvumanager/",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "teams",
+      "method": "POST",
+      "path": "/api/teammanager/",
+      "status": 200,
+      "id": 91
+    },
+    {
+      "kind": "users",
+      "method": "POST",
+      "path": "/api/usermmanager/",
+      "status": 200,
+      "id": 820
+    },
+    {
+      "kind": "handling-departments",
+      "method": "POST",
+      "path": "/api/handlinggroupmmanager/",
+      "status": 200,
+      "id": 26
+    },
+    {
+      "kind": "request-types",
+      "method": "POST",
+      "path": "/api/tickettypemmanager/",
+      "status": 200,
+      "id": 200
+    },
+    {
+      "kind": "requesting-departments",
+      "method": "PUT",
+      "path": "/api/bophanmmanager/33",
+      "status": 200,
+      "id": 33
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "teams",
+      "method": "PUT",
+      "path": "/api/teammanager/91",
+      "status": 200,
+      "id": 91
+    },
+    {
+      "kind": "users",
+      "method": "PUT",
+      "path": "/api/usermmanager/820",
+      "status": 200,
+      "id": 820
+    },
+    {
+      "kind": "handling-departments",
+      "method": "PUT",
+      "path": "/api/handlinggroupmmanager/26",
+      "status": 200,
+      "id": 26
+    },
+    {
+      "kind": "request-types",
+      "method": "PUT",
+      "path": "/api/tickettypemmanager/200",
+      "status": 200,
+      "id": 200
+    },
+    {
+      "kind": "template",
+      "method": "POST",
+      "id": 200,
+      "status": 200
+    },
+    {
+      "kind": "template",
+      "method": "PUT",
+      "id": 200,
+      "status": 200
+    },
+    {
+      "kind": "requesting-departments",
+      "method": "PUT",
+      "path": "/api/bophanmmanager/33",
+      "status": 200,
+      "id": 33
+    },
+    {
+      "kind": "requesting-departments",
+      "method": "PUT",
+      "path": "/api/bophanmmanager/33",
+      "status": 200,
+      "id": 33
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "teams",
+      "method": "PUT",
+      "path": "/api/teammanager/91",
+      "status": 200,
+      "id": 91
+    },
+    {
+      "kind": "teams",
+      "method": "PUT",
+      "path": "/api/teammanager/91",
+      "status": 200,
+      "id": 91
+    },
+    {
+      "kind": "users",
+      "method": "PUT",
+      "path": "/api/usermmanager/820",
+      "status": 200,
+      "id": 820
+    },
+    {
+      "kind": "users",
+      "method": "PUT",
+      "path": "/api/usermmanager/820",
+      "status": 200,
+      "id": 820
+    },
+    {
+      "kind": "handling-departments",
+      "method": "PUT",
+      "path": "/api/handlinggroupmmanager/26",
+      "status": 200,
+      "id": 26
+    },
+    {
+      "kind": "handling-departments",
+      "method": "PUT",
+      "path": "/api/handlinggroupmmanager/26",
+      "status": 200,
+      "id": 26
+    },
+    {
+      "kind": "request-types",
+      "method": "PUT",
+      "path": "/api/tickettypemmanager/200",
+      "status": 200,
+      "id": 200
+    },
+    {
+      "kind": "request-types",
+      "method": "PUT",
+      "path": "/api/tickettypemmanager/200",
+      "status": 200,
+      "id": 200
+    },
+    {
+      "kind": "request-types",
+      "method": "PUT",
+      "path": "/api/tickettypemmanager/200",
+      "status": 200,
+      "id": 200
+    },
+    {
+      "kind": "handling-departments",
+      "method": "PUT",
+      "path": "/api/handlinggroupmmanager/26",
+      "status": 200,
+      "id": 26
+    },
+    {
+      "kind": "users",
+      "method": "PUT",
+      "path": "/api/usermmanager/820",
+      "status": 200,
+      "id": 820
+    },
+    {
+      "kind": "teams",
+      "method": "PUT",
+      "path": "/api/teammanager/91",
+      "status": 200,
+      "id": 91
+    },
+    {
+      "kind": "positions",
+      "method": "PUT",
+      "path": "/api/chucvumanager/40",
+      "status": 200,
+      "id": 40
+    },
+    {
+      "kind": "offices",
+      "method": "PUT",
+      "path": "/api/vanphongmanager/9",
+      "status": 200,
+      "id": 9
+    },
+    {
+      "kind": "requesting-departments",
+      "method": "PUT",
+      "path": "/api/bophanmmanager/33",
+      "status": 200,
+      "id": 33
+    }
+  ],
+  "errors": [],
+  "blockedWrites": [],
+  "status": "passed",
+  "frontend": "http://127.0.0.1:5186",
+  "backend": "https://ticket-api.aiminds.io.vn/api",
+  "account": "nhandt01",
+  "lastUiFailure": {
+    "url": "http://127.0.0.1:5186/settings/positions?search=TESTCFG_MVKEWIPB_CV_U",
+    "text": "Chức vụ\n\nQuản lý danh mục chức vụ.\n\nTất cả trạng thái\nTìm kiếm\nXóa lọc\nThông tin quyền hạn\nThêm mới\nĐang tải danh sách..."
+  },
+  "completedAt": "2026-10-23T03:46:01.909Z",
+  "method": "Real TEST writes through browser UI; authenticated GET and reload verification; only owned TESTCFG fixtures may be updated.",
+  "screenshotsSaved": false,
+  "summary": {
+    "scenariosPassed": 33,
+    "scenariosFailed": 0,
+    "createdRecords": 7,
+    "finalState": "All seven TEST fixtures locked; no delete action is available in the UI.",
+    "realWriteRequests": 42,
+    "runnerRetryAttempts": 5
+  },
+  "finalOutcomes": [
+    {
+      "name": "create-department",
+      "status": "passed",
+      "elapsedMs": 3343,
+      "id": 33,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_BP",
+        "is_active": true
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-office",
+      "status": "passed",
+      "elapsedMs": 2796,
+      "id": 9,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_VP"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-position",
+      "status": "passed",
+      "elapsedMs": 4310,
+      "id": 40,
+      "expected": {
+        "permission": [
+          4
+        ]
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-team",
+      "status": "passed",
+      "elapsedMs": 3762,
+      "id": 91,
+      "expected": {
+        "bophan": 33
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-user",
+      "status": "passed",
+      "elapsedMs": 6637,
+      "id": 820,
+      "expected": {
+        "username": "testcfg_mvkewipb_user",
+        "team": 91,
+        "bophan": 33,
+        "chucvu": 40,
+        "is_superuser": false
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-handling-department",
+      "status": "passed",
+      "elapsedMs": 5560,
+      "id": 26,
+      "expected": {
+        "is_manager": 794,
+        "ls_member": [
+          820
+        ]
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "create-request-type-with-pdf",
+      "status": "passed",
+      "elapsedMs": 4536,
+      "id": 200,
+      "expected": {
+        "handling_group": 26
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 3418,
+      "id": 33,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_BP_U"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-offices",
+      "status": "passed",
+      "elapsedMs": 3334,
+      "id": 9,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_VP_U"
+      },
+      "readbackVerified": true
+    },
+    {
+      "name": "update-positions",
+      "status": "passed",
+      "elapsedMs": 7955,
+      "id": 40,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_CV_U",
+        "permission": [
+          1,
+          4
+        ]
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-teams",
+      "status": "passed",
+      "elapsedMs": 7248,
+      "id": 91,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_TEAM_U"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-users",
+      "status": "passed",
+      "elapsedMs": 8434,
+      "id": 820,
+      "expected": {
+        "first_name": "TESTCFG_MVKEWIPB_Updated",
+        "email": "testcfg_mvkewipb_user.updated@example.invalid",
+        "msnv": "QAMVKEWIPB"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-handling-departments",
+      "status": "passed",
+      "elapsedMs": 9594,
+      "id": 26,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_XL_U",
+        "ls_member": []
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "update-request-types",
+      "status": "passed",
+      "elapsedMs": 7141,
+      "id": 200,
+      "expected": {
+        "name": "TESTCFG_MVKEWIPB_TYPE_U"
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "create-template-four-field-types",
+      "status": "passed",
+      "elapsedMs": 7999,
+      "fieldTypes": [
+        "text",
+        "number",
+        "date-text",
+        "range-date-text"
+      ],
+      "readbackVerified": true
+    },
+    {
+      "name": "update-template-reorder-remove-add-and-flags",
+      "status": "passed",
+      "elapsedMs": 9389,
+      "readbackVerified": true,
+      "reopenedVerified": true
+    },
+    {
+      "name": "updated-pdf-download",
+      "status": "passed",
+      "elapsedMs": 505,
+      "bytes": 600,
+      "secondFilePersisted": true
+    },
+    {
+      "name": "lock-unlock-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 14903,
+      "id": 33,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-offices",
+      "status": "passed",
+      "elapsedMs": 10008,
+      "id": 9,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-positions",
+      "status": "passed",
+      "elapsedMs": 12414,
+      "id": 40,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-teams",
+      "status": "passed",
+      "elapsedMs": 11214,
+      "id": 91,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-users",
+      "status": "passed",
+      "elapsedMs": 11508,
+      "id": 820,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-handling-departments",
+      "status": "passed",
+      "elapsedMs": 11510,
+      "id": 26,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "lock-unlock-request-types",
+      "status": "passed",
+      "elapsedMs": 10636,
+      "id": 200,
+      "lockedAndReactivated": true
+    },
+    {
+      "name": "export-users-with-created-fixture",
+      "status": "passed",
+      "elapsedMs": 3346,
+      "bytes": 54422,
+      "filename": "Nguoi_dung.xlsx",
+      "containsCreatedUser": true
+    },
+    {
+      "name": "cleanup-lock-request-types",
+      "status": "passed",
+      "elapsedMs": 4888,
+      "id": 200,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-handling-departments",
+      "status": "passed",
+      "elapsedMs": 5917,
+      "id": 26,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-users",
+      "status": "passed",
+      "elapsedMs": 6899,
+      "id": 820,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-teams",
+      "status": "passed",
+      "elapsedMs": 4736,
+      "id": 91,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-positions",
+      "status": "passed",
+      "elapsedMs": 5680,
+      "id": 40,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-offices",
+      "status": "passed",
+      "elapsedMs": 4833,
+      "id": 9,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "cleanup-lock-requesting-departments",
+      "status": "passed",
+      "elapsedMs": 4995,
+      "id": 33,
+      "expected": {
+        "is_active": false
+      },
+      "readbackVerified": true,
+      "visibleAfterReload": true
+    },
+    {
+      "name": "final-seven-fixtures-remain-locked",
+      "status": "passed",
+      "elapsedMs": 928,
+      "records": 7,
+      "allLocked": true
+    }
+  ]
+}

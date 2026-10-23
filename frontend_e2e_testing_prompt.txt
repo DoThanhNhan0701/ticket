@@ -1,0 +1,332 @@
+# PROMPT: FULL FRONTEND END-TO-END TESTING & USER EXPERIENCE VALIDATION
+
+## 1. Objective
+
+Act as a Senior Frontend QA Automation Engineer.
+
+Your task is to analyze, explore, implement, and execute comprehensive automated Frontend testing using Playwright with Chromium.
+
+Test the entire website from a real user's perspective.
+
+Scope: FRONTEND ONLY.
+
+Primary objectives:
+- Test every accessible page, module, component, and interactive feature.
+- Validate UI behavior and frontend functionality.
+- Simulate realistic, continuous user journeys.
+- Maintain a consistent browser session.
+- Prevent unnecessary page reloads during internal navigation.
+- Verify SPA navigation behavior.
+- Test responsive layouts and user experience.
+- Detect JavaScript runtime errors and UI failures.
+- Generate comprehensive test coverage and execution reports.
+
+Do not modify or test backend business logic, database structures, or API implementations.
+Backend responses may be observed only to understand and verify frontend behavior.
+
+## 2. Complete Frontend Discovery
+
+Before implementing tests, analyze the entire frontend codebase.
+
+Inspect:
+- Project structure.
+- Application routes.
+- Layout components.
+- Sidebar navigation.
+- Header navigation.
+- Dashboard.
+- Menus and nested menus.
+- Dropdowns.
+- Modals and drawers.
+- Forms.
+- Data tables.
+- Tabs.
+- Shared UI components.
+- Authentication-related frontend screens.
+- Role-based UI visibility.
+- Responsive layouts.
+- Error pages.
+- Loading and empty states.
+
+Identify all accessible frontend features.
+Create a Frontend Test Coverage Matrix containing:
+Module | Route | Component | UI Feature | Test Scenario | Status
+
+Do not assume a feature is functional simply because it appears in the source code.
+Every discovered interactive feature must have corresponding test coverage or a documented reason it cannot be tested.
+
+## 3. Browser and Session Management
+
+Use Playwright with Chromium.
+Critical requirement: Simulate a continuous real-user browsing session.
+
+Browser behavior:
+- Launch one browser for the testing workflow.
+- Reuse the same browser context for sequential tests belonging to the same user session.
+- Reuse the same authenticated page whenever appropriate.
+- Preserve cookies, localStorage, and sessionStorage during the active session.
+- Do not create a fresh browser context for every test.
+- Do not log in again when navigating between modules.
+- Do not reset browser state unnecessarily.
+- Do not manually overwrite authentication tokens.
+- Avoid unnecessary browser restarts.
+- Use separate isolated contexts only when required for independent tests, such as authentication isolation or parallel execution.
+
+Navigation rules:
+- Navigate using the actual website UI.
+- Click sidebar menu items, header links, tabs, and buttons.
+- Use the application's client-side routing.
+- Avoid page.goto() for internal navigation when UI navigation is available.
+- Never use page.reload() as a workaround for broken application state.
+- Preserve login state when switching modules.
+- Maintain browser history and navigation state.
+- Allow full document reloads only when explicitly required by a feature or test scenario.
+
+Switching accounts:
+1. Finish testing with the current account.
+2. Click the application's Logout button.
+3. Verify that the logged-out UI is displayed.
+4. Verify previously protected screens are no longer accessible through normal UI navigation.
+5. Log in using the next test account.
+6. Verify the new account's interface and permissions.
+7. Ensure the UI does not display stale information from the previous account.
+
+Do not manually replace tokens or browser storage to simulate account switching.
+
+## 4. Frontend Authentication Testing
+
+Test authentication from the UI only:
+- Login form rendering.
+- Required-field validation.
+- Invalid email/username format.
+- Incorrect password error message.
+- Successful login and redirect.
+- Login button loading state.
+- Prevention of duplicate submissions.
+- Show/hide password.
+- Remember-me checkbox if available.
+- Logout button and confirmation if available.
+- Protected route navigation.
+- Unauthorized page rendering.
+- Expired-session UI behavior.
+- Browser Back/Forward after logout.
+- Password change form if available.
+- Forgot-password interface if available.
+
+User creation UI:
+When testing Create User functionality, use the following default password if required by the application workflow:
+Rsvn@12345
+
+Verify:
+- Create User form renders correctly.
+- Required fields are validated.
+- Password-related UI follows application requirements.
+- Success and failure feedback are displayed correctly.
+- Newly created user appears in the frontend list.
+- Login with the new user works when a permitted test environment is available.
+
+Do not hardcode credentials into committed test files. Use environment variables or secure configuration. Do not expose credentials in test reports.
+
+## 5. Complete Frontend Functional Testing
+
+For every discovered frontend module, test all relevant UI interactions.
+
+5.1 Navigation:
+- Sidebar expand/collapse; nested menu navigation; active menu highlighting.
+- Header navigation; breadcrumb links; tab navigation.
+- Back/Forward navigation; direct-route access; unknown routes and 404 UI.
+- Redirect behavior; navigation from buttons and cards; preservation of applicable UI state.
+
+5.2 Forms:
+- Input typing; required-field validation; invalid formats; min/max lengths.
+- Special characters and Unicode input.
+- Select/multi-select; date/time pickers; checkbox/radio.
+- Reset/cancel; submission; loading; success/error notifications.
+- Duplicate submission prevention; preserved inputs on validation failure.
+
+5.3 CRUD UI:
+- Open the relevant Create, Read, Update, or Delete interface.
+- Enter/select test data and submit through the UI.
+- Verify visible success/error feedback and resulting displayed information.
+- Verify modal/drawer state and table/detail updates without unnecessary full reload.
+- Use disposable records; do not destructively modify real production data.
+
+5.4 Data Tables:
+- Search; filters; combined filters; sort ascending/descending.
+- Pagination; page size; row selection; select all; bulk actions.
+- Row action menus; column visibility if available.
+- Empty/loading/no-results states; reset filters; responsiveness.
+
+5.5 Modals and Drawers:
+- Open; close; cancel; confirm; Escape; outside click if supported.
+- Inner scrolling; form validation; nested dialogs if present.
+- Background scroll; focus management; keyboard navigation.
+
+5.6 File UI:
+- File picker; drag-and-drop if available; multiple-file selection.
+- Type/size validation; upload progress; preview; download; removal.
+- File-name display, including Unicode and special characters; error handling.
+
+5.7 Feedback and Notifications:
+- Toasts; alert banners; loading indicators; error/success messages.
+- Confirmations; badges; dropdowns; read/unread UI if available.
+- Test frontend presentation, not backend notification delivery infrastructure.
+
+## 6. Real User Interaction Simulation
+
+Example continuous journey:
+1. Open the website and log in.
+2. Open Dashboard and navigate via Sidebar.
+3. Search and filter records.
+4. Open details and the Edit form.
+5. Modify disposable test data and save.
+6. Verify displayed results and return to listing.
+7. Open another module and continue without resetting the session.
+8. Log out when finished.
+
+Prefer Playwright locators getByRole(), getByLabel(), getByPlaceholder(), getByTestId().
+Use CSS selectors only when semantic locators are unavailable.
+Avoid selectors based on dynamic classes/DOM position.
+Do not use fixed waitForTimeout() unless justified.
+Use auto-waiting and assertions on actual UI state.
+Do not replace UI interactions with direct API requests.
+
+## 7. SPA Navigation and Page Reload Detection
+
+HIGH PRIORITY: The website currently experiences unwanted reloads during navigation.
+
+Check all internal navigation paths: sidebar, header, nested menus, breadcrumbs, detail links, back buttons, tabs, submission redirects, pagination, browser Back/Forward.
+
+Detect:
+- Unexpected full document reloads or hard navigation.
+- Lost frontend/authentication state.
+- Repeated layout initialization or unnecessary remounting.
+- Duplicate frontend requests.
+- Unexpected scroll resets or layout flicker.
+- Broken navigation history.
+
+Track browser navigation events and document identity to distinguish SPA navigation, full document navigation, and expected reloads.
+
+Investigate when applicable:
+- Native anchors used for internal navigation.
+- window.location.href/assign()/replace().
+- Incorrect router usage.
+- Form submission causing browser navigation.
+- Incorrect redirects, remounts, or layout configuration.
+- Next.js next/link and next/navigation.
+- React Router Link, NavLink, and useNavigate.
+
+Do not modify frontend code automatically unless explicitly authorized. Document root causes and propose frontend-specific fixes.
+
+## 8. Frontend Performance and Stability
+
+Test:
+- Continuous module navigation; rapid tab switching.
+- Repeated modal open/close, searches, and filter changes.
+- Pagination; long forms; large tables; long scrolling.
+- Back/Forward; viewport changes; slow UI; rendering/loading/empty states.
+- Unhandled JavaScript exceptions; React/hydration errors; freezes; suspicious memory growth.
+
+Monitor console errors, pageerror events, failed resources, unexpected document navigations, long tasks where measurable, and duplicate UI-triggered requests.
+
+Distinguish frontend defects from backend/network failures or undetermined causes.
+
+## 9. Responsive and Accessibility Testing
+
+Test at minimum:
+- Desktop 1440 x 900.
+- Tablet 768 x 1024.
+- Mobile 390 x 844.
+
+Verify layout, sidebar/mobile menu, responsive tables, modals, input/button visibility, text overflow, horizontal scrolling, dropdown positioning, and touch target usability.
+
+Accessibility checks:
+- Keyboard navigation and focus visibility.
+- Accessible labels, semantic buttons/links, dialog focus.
+- Basic color contrast, image alt text, accessible form errors.
+- Automated checks where supported plus manual browser interactions.
+
+## 10. Test Execution Strategy
+
+Phase 1 - Frontend Discovery:
+Analyze routes, visible/conditional features, menus/modules, interactive components, and build coverage matrix.
+
+Phase 2 - Smoke Testing:
+Login, dashboard, main navigation, critical workflows, logout.
+
+Phase 3 - Full Frontend Functional Testing:
+Forms, data tables, CRUD UI, modals, file UI, notifications, permissions-related UI.
+
+Phase 4 - Continuous User Journey:
+Run long sequential workflows within one context and verify no unexpected login prompts, reloads, resets, stale account data, broken navigation, or accumulated JavaScript errors.
+
+Phase 5 - Responsive and Stability:
+Desktop/tablet/mobile, Back/Forward, repeated interactions, UI performance and stability.
+
+Phase 6 - Regression:
+Re-execute failed frontend scenarios after fixes; capture before/after evidence where possible.
+
+## 11. Test Report
+
+Generate a detailed Frontend Test Report with fields:
+Module | Route | Component | Feature | Test Case | Expected Result | Actual Result | Status (PASS/FAIL/BLOCKED/NOT RUN) | Evidence | Error Details
+
+Required summary:
+- Total discovered routes and interactive features.
+- Total test cases, passed, failed, blocked, not-run.
+- Coverage percentage with clear denominator.
+- Unexpected full-page reloads.
+- UI/UX, JavaScript, responsive, and accessibility issues.
+- Recommended frontend fixes.
+
+Generate Playwright HTML report, screenshots for failures, trace files for failures, videos when useful, and a prioritized bug report.
+Coverage must be based on identified scenarios, not merely successful tests.
+
+## 12. Mandatory Rules
+
+1. Test all discovered frontend routes/features.
+2. Simulate actual user interactions.
+3. Preserve authenticated session across related workflows.
+4. Never reload to bypass UI problems.
+5. Avoid unnecessary new browser contexts.
+6. Prefer UI navigation over direct URLs for internal routes.
+7. Never silently skip failed tests.
+8. Never claim PASS without execution and verification.
+9. Do not modify backend or database schemas.
+10. Do not expose credentials in artifacts.
+11. Keep tests reusable and maintainable.
+12. Distinguish application defects from automation defects.
+13. Generate real execution reports.
+14. Explicitly report untested functionality.
+15. Do not claim 100% coverage without evidence.
+
+## 13. Expected Deliverables
+
+1. Playwright configuration.
+2. Test suites organized by frontend module.
+3. Reusable page objects/component helpers as appropriate.
+4. Shared authentication/session setup.
+5. SPA navigation and reload detection tests.
+6. Complete UI interaction scenarios.
+7. Responsive tests.
+8. Accessibility checks.
+9. Automated HTML report.
+10. Frontend Test Coverage Matrix.
+11. Bug report with reproduction steps.
+
+Do not stop at documentation or test-case writing. Implement and execute against the available frontend application, and report actual results.
+
+## 14. Final Acceptance Criteria
+
+Complete only when:
+- Every discovered frontend route is accounted for.
+- Each interactive feature has an executed test or documented limitation.
+- Continuous user journeys operate without unnecessary browser resets.
+- Internal SPA navigation and session persistence are validated.
+- Account switching uses Logout/Login UI flow.
+- UI feedback and forms are validated.
+- Responsive behavior is tested.
+- Frontend runtime errors are recorded.
+- Complete evidence-based test report is generated.
+
+Final goal: Deliver a stable, comprehensive, real-user-oriented Frontend E2E testing suite that validates the entire website without unnecessary page reloads or session resets.
