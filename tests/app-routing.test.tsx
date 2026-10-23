@@ -445,19 +445,17 @@ it("enforces access rules after redirecting an old settings URL", async () => {
   expect(
     await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" }),
   ).toBeTruthy();
-  expect(screen.getByTestId("current-path").textContent).toBe(
-    "/settings/handling-departments",
-  );
+  expect(screen.getByTestId("current-path").textContent).toBe("/forbidden");
 });
 
 it("redirects the legacy change-status link to the implemented form while preserving query and hash", async () => {
   auth.permissions = { can_return_ticket: true };
   renderApp("/change_status?source=legacy#form");
   expect(
-    await screen.findByRole("heading", { name: "Chuyển trạng thái ticket" }),
+    await screen.findByRole("heading", { name: "Chuyển trạng thái yêu cầu" }),
   ).toBeTruthy();
   expect(
-    await screen.findByRole("form", { name: "Chuyển trạng thái ticket" }),
+    await screen.findByRole("form", { name: "Chuyển trạng thái yêu cầu" }),
   ).toBeTruthy();
   expect(screen.getByTestId("current-path").textContent).toBe(
     "/requests/change-status?source=legacy#form",
@@ -578,7 +576,7 @@ it("hides unavailable groups and denies unauthorized direct URLs", async () => {
   expect(screen.queryByText("Cấu hình hệ thống")).toBeNull();
   expect(screen.queryByText("Tuyển dụng")).toBeNull();
   expect(screen.queryByText("Báo cáo & dữ liệu")).toBeNull();
-  expect(screen.getByRole("link", { name: "Danh sách yêu cầu" })).toBeTruthy();
+  expect(screen.queryByRole("link", { name: "Danh sách yêu cầu" })).toBeNull();
   expect(screen.queryByText("Trang đang được chuẩn bị")).toBeNull();
 });
 
@@ -604,8 +602,8 @@ it.each([false, true])(
       "ticket.sidebar",
       JSON.stringify({ collapsed, groups: {} }),
     );
-    renderApp("/requests");
-    await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+    renderApp("/help");
+    await screen.findByRole("heading", { name: "Hướng dẫn sử dụng" });
     const sidebar = within(
       screen.getByRole("complementary", { name: "Sidebar Ticket" }),
     );
@@ -889,10 +887,8 @@ it.each(
     await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
     expect(client.getQueryCache().getAll()).toHaveLength(0);
     expect(
-      screen
-        .getByRole("complementary", { name: "Sidebar Ticket" })
-        .querySelectorAll("a[href]"),
-    ).toHaveLength(0);
+      screen.queryByRole("complementary", { name: "Sidebar Ticket" }),
+    ).toBeNull();
   },
 );
 

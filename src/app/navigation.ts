@@ -97,7 +97,7 @@ export const navigationGroups: NavigationGroup[] = [
       {
         path: APP_ROUTES.requests.changeStatus,
         legacyPaths: [APP_ROUTES.legacy.changeStatus],
-        label: "Chuyển trạng thái ticket",
+        label: "Chuyển trạng thái yêu cầu",
         description: "Quản lý việc chuyển trạng thái của các yêu cầu.",
         icon: ArrowLeftRight,
         permission: "can_return_ticket",

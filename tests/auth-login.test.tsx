@@ -22,6 +22,7 @@ import {
   COOKIE_TOKEN_KEY,
   STORAGE_USERNAME_KEY,
   STORAGE_USER_PERMISSION_KEY,
+  STORAGE_AUTH_ENVIRONMENT_KEY,
 } from "@/constants/auth";
 
 const fetchMock = vi.fn<typeof fetch>();
@@ -255,7 +256,11 @@ it.each([401, 500])(
     }
     renderApp();
     await submitLogin();
-    expect(await screen.findByText("Account unavailable.")).toBeTruthy();
+    if (status === 401)
+      await screen.findByRole("heading", {
+        name: "Bạn chưa có quyền truy cập",
+      });
+    else expect(await screen.findByText("Account unavailable.")).toBeTruthy();
     expect(
       screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
     ).toBeNull();
@@ -371,9 +376,10 @@ it.each([
     fetchMock.mockRejectedValueOnce(new TypeError("Failed to fetch"));
     renderApp("/requests");
     expect(
-      await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
+      await screen.findByRole("heading", {
+        name: "Bạn chưa có quyền truy cập",
+      }),
     ).toBeTruthy();
-    expect(screen.getByText("Bạn chưa có quyền truy cập")).toBeTruthy();
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
     expect(
       JSON.parse(screen.getByTestId("account").textContent ?? "{}").permissions,
@@ -381,7 +387,119 @@ it.each([
   },
 );
 
-it.each(["network", 500, 403] as const)(
+it("rejects a session created for another environment before making API calls", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  localStorage.setItem(
+    STORAGE_AUTH_ENVIRONMENT_KEY,
+    "production:https://other-api.example/api",
+  );
+  queryClient.setQueryData(["private-data"], "cached");
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(fetchMock).not.toHaveBeenCalled();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(queryClient.getQueryData(["private-data"])).toBeUndefined();
+  expect(
+    JSON.parse(screen.getByTestId("account").textContent ?? "{}").pathname,
+  ).toBe("/forbidden");
+  fireEvent.click(screen.getByRole("button", { name: "Đăng nhập lại" }));
+  await screen.findByRole("button", { name: "Sign In to Ticket" });
+});
+
+it("redirects rejected account permissions to the denied page instead of using cached permissions", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  localStorage.setItem(
+    STORAGE_USER_PERMISSION_KEY,
+    JSON.stringify({
+      username: "Cached User",
+      userId: 42,
+      permission: { can_view: true },
+    }),
+  );
+  fetchMock.mockResolvedValueOnce(
+    new Response("", {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    }),
+  );
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(
+    screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeNull();
+  expect(fetchMock).toHaveBeenCalledOnce();
+  expect(
+    JSON.parse(screen.getByTestId("account").textContent ?? "{}").pathname,
+  ).toBe("/forbidden");
+});
+
+it("renders the denied page without a session or any API calls", async () => {
+  renderApp("/forbidden");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("shows denied access for the empty JSON 401/refresh response from the wrong API environment", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  for (let index = 0; index < 2; index++)
+    fetchMock.mockResolvedValueOnce(
+      new Response("", {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(fetchMock).toHaveBeenCalledTimes(2);
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
+});
+
+it("discards cached permissions if the restored account response does not match this application", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  localStorage.setItem(
+    STORAGE_USER_PERMISSION_KEY,
+    JSON.stringify({
+      username: "Cached User",
+      userId: 42,
+      permission: { can_view: true },
+    }),
+  );
+  fetchMock.mockResolvedValueOnce(Response.json({ other_app_user: 42 }));
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(localStorage.getItem(STORAGE_USER_PERMISSION_KEY)).toBeNull();
+  expect(fetchMock).toHaveBeenCalledOnce();
+});
+
+it("leaves the private workspace and clears its cache when a later API call loses permission", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  fetchMock.mockResolvedValueOnce(Response.json(account));
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  queryClient.setQueryData(["private-data"], "cached");
+  fetchMock.mockResolvedValueOnce(
+    Response.json({ detail: "Forbidden" }, { status: 403 }),
+  );
+  await act(async () => {
+    await expect(getRequest("/protected-resource/")).rejects.toMatchObject({
+      status: 403,
+    });
+  });
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  expect(queryClient.getQueryData(["private-data"])).toBeUndefined();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(
+    screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeNull();
+});
+
+it.each(["network", 500] as const)(
   "keeps the cached session when account restoration fails with %s",
   async (failure) => {
     vi.spyOn(console, "error").mockImplementation(() => {});
@@ -458,7 +576,7 @@ it("restores with only a refresh cookie without showing the login form", async (
   expect(getCookie(COOKIE_REFRESH_KEY)).toBe(tokens.refresh);
 });
 
-it("returns to login when the stored refresh token is rejected", async () => {
+it("shows denied access when the stored refresh token is rejected", async () => {
   vi.spyOn(console, "error").mockImplementation(() => {});
   setCookie(COOKIE_TOKEN_KEY, tokens.access);
   setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
@@ -471,7 +589,7 @@ it("returns to login when the stored refresh token is rejected", async () => {
     );
   renderApp("/");
   expect(
-    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+    await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" }),
   ).toBeTruthy();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();

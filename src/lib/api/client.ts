@@ -4,7 +4,9 @@ import {
   COOKIE_TOKEN_KEY,
   LOGIN_PATH,
   PUBLIC_ENDPOINTS,
+  AUTH_ACCESS_DENIED_EVENT,
 } from "@/constants/auth";
+import { APP_ROUTES } from "@/constants/routes";
 import {
   clearAuthSession,
   getAuthSessionVersion,
@@ -39,8 +41,12 @@ function clearAuthAndRedirect(expectedVersion: number): void {
   if (getAuthSessionVersion() !== expectedVersion) return;
   clearAuthSession();
   queryClient.clear();
-  if (window.location.pathname !== LOGIN_PATH) {
-    window.location.href = LOGIN_PATH;
+  window.dispatchEvent(new Event(AUTH_ACCESS_DENIED_EVENT));
+  if (
+    window.location.pathname !== LOGIN_PATH &&
+    window.location.pathname !== APP_ROUTES.forbidden
+  ) {
+    window.location.href = APP_ROUTES.forbidden;
   }
 }
 
@@ -75,6 +81,27 @@ function isAuthenticationFailure(response: Response, data: unknown): boolean {
   return response.status === 401 || (!response.ok && hasInvalidToken(data));
 }
 
+function assertAccessAllowed(
+  response: Response,
+  data: unknown,
+  version: number,
+): void {
+  if (getAuthSessionVersion() !== version) return;
+  const legacyDenied =
+    typeof data === "object" &&
+    data !== null &&
+    "message" in data &&
+    data.message === "You do not have access";
+  if (response.status !== 403 && !legacyDenied) return;
+  window.dispatchEvent(new Event(AUTH_ACCESS_DENIED_EVENT));
+  throw new ApiError(
+    legacyDenied
+      ? "Bạn không có quyền thực hiện thao tác này."
+      : getErrorMessage(data, "Bạn không có quyền thực hiện thao tác này."),
+    403,
+  );
+}
+
 async function readResponse(
   response: Response,
   responseType: RequestOptions["responseType"] = "json",
@@ -83,8 +110,15 @@ async function readResponse(
   // File endpoints can serve JSON attachments without exposing download headers
   // through CORS. Failed downloads still use the JSON error handling below.
   if (response.ok && responseType === "file") return response.blob();
-  if (response.headers.get("content-type")?.includes("application/json"))
-    return response.json();
+  if (response.headers.get("content-type")?.includes("application/json")) {
+    try {
+      return await response.json();
+    } catch (error) {
+      // Empty/malformed error bodies must still reach HTTP status handling.
+      if (!response.ok) return null;
+      throw error;
+    }
+  }
   return response.ok && responseType === "blob" ? response.blob() : null;
 }
 
@@ -222,6 +256,7 @@ async function request<T>(
     // Do not expose an old account's response after logout or another login.
     throw sessionChangedError();
   }
+  if (!isPublic) assertAccessAllowed(response, data, version);
   assertResponseOk(response, data);
   return data as T;
 }

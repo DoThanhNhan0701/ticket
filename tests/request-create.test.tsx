@@ -19,6 +19,7 @@ import {
   type AuthContextValue,
 } from "@/features/auth/context/auth-context";
 import { WorkspacePage } from "@/pages/workspace";
+import { ForbiddenPage } from "@/pages/forbidden";
 import { setCookie } from "@/lib/cookies";
 import { clearAuthSession } from "@/lib/auth-session";
 import { COOKIE_TOKEN_KEY } from "@/constants/auth";
@@ -184,6 +185,7 @@ function renderPage(url = "/requests/new", cloneAgain = false) {
             <Link to="/requests/new?clone=42">Clone lại ticket nguồn</Link>
           )}
           <Routes>
+            <Route path="/forbidden" element={<ForbiddenPage />} />
             <Route
               path="/requests/new"
               element={<WorkspacePage page={createTicketPage} />}

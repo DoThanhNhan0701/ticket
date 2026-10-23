@@ -12,7 +12,11 @@ import {
   getAuthSessionVersion,
   updateAuthTokens,
 } from "@/lib/auth-session";
-import { COOKIE_TOKEN_KEY, COOKIE_REFRESH_KEY } from "@/constants/auth";
+import {
+  COOKIE_TOKEN_KEY,
+  COOKIE_REFRESH_KEY,
+  AUTH_ACCESS_DENIED_EVENT,
+} from "@/constants/auth";
 import { queryClient } from "@/lib/query-client";
 
 vi.mock("@/lib/cookies", () => ({ getCookie: vi.fn() }));
@@ -35,6 +39,7 @@ beforeEach(() => {
   sessionVersion += 1;
   vi.stubGlobal("fetch", fetchMock);
   vi.stubGlobal("window", {
+    dispatchEvent: vi.fn(),
     location: {
       origin: "https://portal.example",
       pathname: "/",
@@ -56,6 +61,57 @@ beforeEach(() => {
 });
 
 describe("session recovery", () => {
+  it.each(["", "broken-json"])(
+    "handles malformed 401 bodies before rejecting an invalid refresh: %s",
+    async (body) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "wrong-environment-refresh");
+      fetchMock
+        .mockResolvedValueOnce(
+          new Response(body, {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          }),
+        )
+        .mockResolvedValueOnce(
+          new Response(body, {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          }),
+        );
+      await expect(getRequest("/list_permission/")).rejects.toMatchObject({
+        status: 401,
+      });
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(clearAuthSession).toHaveBeenCalledOnce();
+      expect(window.location.href).toBe("/forbidden");
+      expect(window.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ type: AUTH_ACCESS_DENIED_EVENT }),
+      );
+    },
+  );
+
+  it.each([false, true])(
+    "announces denied access without refreshing credentials (legacy response: %s)",
+    async (legacy) => {
+      storedCookies.set(COOKIE_REFRESH_KEY, "test-refresh");
+      fetchMock.mockResolvedValueOnce(
+        legacy
+          ? jsonResponse({ message: "You do not have access" })
+          : new Response("", {
+              status: 403,
+              headers: { "Content-Type": "application/json" },
+            }),
+      );
+      await expect(getRequest("/tickets/")).rejects.toMatchObject({
+        status: 403,
+      });
+      expect(window.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ type: AUTH_ACCESS_DENIED_EVENT }),
+      );
+      expect(fetchMock).toHaveBeenCalledOnce();
+    },
+  );
+
   it.each([undefined, "rotated-refresh"])(
     "refreshes an expired token and retries a POST while preserving its body and signal (%s)",
     async (rotated) => {
@@ -214,7 +270,7 @@ describe("session recovery", () => {
       await expect(getRequest("/tickets/")).rejects.toMatchObject({ status });
       expect(clearAuthSession).toHaveBeenCalledOnce();
       expect(queryClient.clear).toHaveBeenCalledOnce();
-      expect(window.location.href).toBe("/login");
+      expect(window.location.href).toBe("/forbidden");
     },
   );
 
@@ -462,7 +518,7 @@ describe("HTTP client", () => {
     });
     expect(clearAuthSession).toHaveBeenCalledOnce();
     expect(queryClient.clear).toHaveBeenCalledOnce();
-    expect(window.location.href).toBe("/login");
+    expect(window.location.href).toBe("/forbidden");
   });
   it("leaves public login failures available to the login form", async () => {
     vi.mocked(getCookie).mockReturnValue(undefined);

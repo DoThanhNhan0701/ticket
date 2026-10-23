@@ -20,7 +20,7 @@ import {
 } from "@/features/auth/context/auth-context";
 import { clearAuthSession } from "@/lib/auth-session";
 import { getCookie, setCookie } from "@/lib/cookies";
-import { WorkspacePage } from "@/pages/workspace";
+import { WorkspaceRoute } from "./fixtures/workspace-route";
 import { RequestTable } from "@/features/requests/components/request-table";
 import {
   requestTicketFixture as ticket,
@@ -125,7 +125,7 @@ function CurrentPage() {
   const page = workspacePages.find((item) => item.path === location.pathname);
   return (
     <>
-      {page && <WorkspacePage page={page} />}
+      <WorkspaceRoute page={page} />
       <output data-testid="location">
         {location.pathname}
         {location.search}

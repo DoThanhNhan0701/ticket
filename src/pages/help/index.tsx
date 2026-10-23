@@ -26,7 +26,7 @@ export function UserGuidePage() {
     .filter(Boolean)
     .join(" · ");
   return (
-    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-2 sm:gap-3">
       <PageHeader
         title="Hướng dẫn sử dụng"
         description={metadata || "Tra cứu hướng dẫn sử dụng Rainscales Ticket"}

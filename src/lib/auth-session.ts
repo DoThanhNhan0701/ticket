@@ -4,9 +4,11 @@ import {
   COOKIE_TOKEN_KEY,
   STORAGE_USERNAME_KEY,
   STORAGE_USER_PERMISSION_KEY,
+  STORAGE_AUTH_ENVIRONMENT_KEY,
 } from "@/constants/auth";
 import { deleteCookie, setCookie } from "./cookies";
-import { deleteStorageItem } from "./storage";
+import { deleteStorageItem, setStorageItem } from "./storage";
+import { getAuthEnvironment } from "./auth-environment";
 
 let sessionVersion = 0;
 
@@ -25,6 +27,7 @@ export function startAuthSession(tokens: {
   refresh: string;
 }): number {
   sessionVersion += 1;
+  setStorageItem(STORAGE_AUTH_ENVIRONMENT_KEY, getAuthEnvironment());
   writeAuthTokens(tokens);
   return sessionVersion;
 }
@@ -44,5 +47,6 @@ export function clearAuthSession(): void {
   deleteCookie(COOKIE_REFRESH_KEY);
   deleteStorageItem(STORAGE_USERNAME_KEY);
   deleteStorageItem(STORAGE_USER_PERMISSION_KEY);
+  deleteStorageItem(STORAGE_AUTH_ENVIRONMENT_KEY);
   window.dispatchEvent(new Event(AUTH_SESSION_CHANGED_EVENT));
 }

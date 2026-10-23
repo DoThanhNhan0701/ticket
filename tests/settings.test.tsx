@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { workspacePages } from "@/app/navigation";
-import { WorkspacePage } from "@/pages/workspace";
+import { WorkspaceRoute } from "./fixtures/workspace-route";
 import {
   AuthContext,
   type AuthContextValue,
@@ -179,7 +179,7 @@ function renderPage(kind: SettingsKind, suffix = "") {
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[path + suffix]}>
-          <WorkspacePage page={page} />
+          <WorkspaceRoute page={page} />
           <Location />
         </MemoryRouter>
       </AuthContext.Provider>

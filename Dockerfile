@@ -10,14 +10,14 @@ RUN npm ci --include=dev --no-audit --no-fund
 COPY index.html tsconfig.json tsconfig.app.json tsconfig.node.json vite.config.ts vitest.config.ts ./
 COPY src ./src
 COPY public ./public
-COPY .env.development ./
-RUN VITE_API_BASE_URL=/api npm run build -- --mode development
+COPY .env.test ./
+RUN VITE_API_BASE_URL=/api npm run build:test
 
 FROM nginxinc/nginx-unprivileged:1.30-alpine-slim AS runtime
 
 ENV NGINX_ENVSUBST_FILTER=^API_UPSTREAM$
 
-COPY .env.development /etc/ticket/development.env
+COPY .env.test /etc/ticket/runtime.env
 COPY docker/15-ticket-env.envsh /docker-entrypoint.d/15-ticket-env.envsh
 COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist /usr/share/nginx/html

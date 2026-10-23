@@ -14,6 +14,8 @@ import {
   STORAGE_USERNAME_KEY,
   STORAGE_USER_PERMISSION_KEY,
   AUTH_SESSION_CHANGED_EVENT,
+  AUTH_ACCESS_DENIED_EVENT,
+  STORAGE_AUTH_ENVIRONMENT_KEY,
 } from "@/constants";
 import {
   clearAuthSession,
@@ -21,6 +23,7 @@ import {
   startAuthSession,
 } from "@/lib/auth-session";
 import { ApiError } from "@/lib/api/api-error";
+import { getAuthEnvironment } from "@/lib/auth-environment";
 import { AuthContext } from "../context/auth-context";
 import { cachedUserPermissionSchema } from "../schemas/account-schema";
 
@@ -30,6 +33,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [userPermission, setUserPermission] =
     useState<UserPermissionResponse | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [accessDenied, setAccessDenied] = useState(false);
   const isInitializedRef = useRef(false);
 
   const resetAuthState = () => {
@@ -44,6 +48,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     setUsername(permission.username);
     setStorageItem(STORAGE_USER_PERMISSION_KEY, permission);
     setStorageItem(STORAGE_USERNAME_KEY, permission.username);
+    setStorageItem(STORAGE_AUTH_ENVIRONMENT_KEY, getAuthEnvironment());
   };
 
   const fetchUserPermission =
@@ -55,12 +60,30 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         applyUserPermission(permData);
         return permData;
       } catch (err) {
+        if (getAuthSessionVersion() !== version) return null;
+        // A successful but incompatible account response is not proof that
+        // permissions cached for this API/environment are still valid.
+        if (
+          err instanceof Error &&
+          !(err instanceof ApiError) &&
+          !(err instanceof TypeError)
+        )
+          window.dispatchEvent(new Event(AUTH_ACCESS_DENIED_EVENT));
         console.error("Failed to fetch user permissions:", err);
         return null;
       }
     };
 
   useEffect(() => {
+    const denyAccess = () => {
+      setAccessDenied(true);
+      setToken(null);
+      setUsername("");
+      setUserPermission(null);
+      if (getCookie(COOKIE_TOKEN_KEY) || getCookie(COOKIE_REFRESH_KEY))
+        clearAuthSession();
+      queryClient.clear();
+    };
     const syncSession = () => {
       const savedToken = getCookie(COOKIE_TOKEN_KEY);
       // A new sign-in still needs to finish loading its account information.
@@ -71,8 +94,11 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
       }
     };
     window.addEventListener(AUTH_SESSION_CHANGED_EVENT, syncSession);
-    return () =>
+    window.addEventListener(AUTH_ACCESS_DENIED_EVENT, denyAccess);
+    return () => {
       window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, syncSession);
+      window.removeEventListener(AUTH_ACCESS_DENIED_EVENT, denyAccess);
+    };
   }, []);
 
   useEffect(() => {
@@ -88,6 +114,16 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
       );
 
       if (savedToken || savedRefresh) {
+        const environment = getStorageItem<unknown>(
+          STORAGE_AUTH_ENVIRONMENT_KEY,
+        );
+        if (environment && environment !== getAuthEnvironment()) {
+          clearAuthSession();
+          queryClient.clear();
+          setAccessDenied(true);
+          setIsInitializing(false);
+          return;
+        }
         setToken(savedToken ?? null);
         if (typeof savedUsername === "string") setUsername(savedUsername);
         if (savedPermission.success) setUserPermission(savedPermission.data);
@@ -141,6 +177,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
       });
 
       applyUserPermission(permission);
+      setAccessDenied(false);
       setToken(access);
 
       return true;
@@ -150,6 +187,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   };
 
   const logout = () => {
+    setAccessDenied(false);
     resetAuthState();
     loginMutation.reset();
     queryClient.clear();
@@ -169,6 +207,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         permissions: userPermission?.permission ?? null,
         userPermission,
         isInitializing,
+        accessDenied,
         isLoading: loginMutation.isPending,
         error: loginMutation.error?.message ?? null,
         login,

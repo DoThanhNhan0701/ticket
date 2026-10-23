@@ -1,7 +1,6 @@
 import { APP_ROUTES } from "@/constants/routes";
 import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
-import { ShieldCheck } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { LegacyPageRedirect } from "@/app/legacy-page-redirect";
 import {
   canAccessPage,
@@ -43,6 +42,7 @@ export function WorkspacePage({
   const { permissions, userId } = useAuthContext();
   const [params] = useSearchParams();
   const allowed = canAccessPage(page, permissions);
+  if (!allowed) return <Navigate to={APP_ROUTES.forbidden} replace />;
   if (page.path === APP_ROUTES.requests.detail && allowed)
     return <RequestDetail key={userId} />;
   const Icon = page.icon;
@@ -119,16 +119,7 @@ export function WorkspacePage({
             ) : undefined
           }
         />
-        {allowed ? (
-          content
-        ) : (
-          <EmptyState
-            title="Bạn chưa có quyền truy cập"
-            description="Vui lòng liên hệ quản trị viên nếu bạn cần sử dụng chức năng này."
-            icon={<ShieldCheck className="size-6" aria-hidden="true" />}
-            className="my-auto min-h-72"
-          />
-        )}
+        {content}
       </div>
     </MobilePageActionProvider>
   );

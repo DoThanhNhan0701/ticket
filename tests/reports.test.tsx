@@ -23,7 +23,7 @@ import { clearAuthSession } from "@/lib/auth-session";
 import { getCookie, setCookie } from "@/lib/cookies";
 import { downloadFile } from "@/lib/download";
 import { getVisibleReportGroups } from "@/features/reports/utils/report-options";
-import { WorkspacePage } from "@/pages/workspace";
+import { WorkspaceRoute } from "./fixtures/workspace-route";
 import {
   reportFixture,
   emptyReportFixture,
@@ -109,7 +109,7 @@ function renderPage(path = "/reports") {
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[path]}>
-          <WorkspacePage page={page} />
+          <WorkspaceRoute page={page} />
         </MemoryRouter>
       </AuthContext.Provider>
     </QueryClientProvider>,

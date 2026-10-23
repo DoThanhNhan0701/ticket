@@ -1,7 +1,10 @@
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
 
-const mode = process.env.TEST_ENV || "development";
+const requestedMode = process.env.TEST_ENV || "development";
+const mode =
+  { dev: "development", test: "test", prod: "production" }[requestedMode] ||
+  requestedMode;
 for (const filename of [
   `.env.${mode}.local`,
   ".env.local",

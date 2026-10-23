@@ -1,6 +1,7 @@
 export const APP_ROUTES = {
   root: "/",
   login: "/login",
+  forbidden: "/forbidden",
   help: "/help",
   notFound: "*",
   requests: {

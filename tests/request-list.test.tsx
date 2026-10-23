@@ -20,7 +20,7 @@ import {
 } from "@/features/auth/context/auth-context";
 import { clearAuthSession } from "@/lib/auth-session";
 import { getCookie, setCookie } from "@/lib/cookies";
-import { WorkspacePage } from "@/pages/workspace";
+import { WorkspaceRoute } from "./fixtures/workspace-route";
 import {
   requestStatusFixtures,
   requestTicketFixture,
@@ -141,7 +141,7 @@ function renderList(path = "/requests", strict = false) {
 function CurrentListPage() {
   const location = useLocation();
   const page = workspacePages.find((item) => item.path === location.pathname);
-  return page ? <WorkspacePage page={page} /> : null;
+  return <WorkspaceRoute page={page} />;
 }
 
 function listCalls() {

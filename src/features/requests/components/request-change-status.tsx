@@ -69,7 +69,7 @@ export function RequestChangeStatus() {
         Nhập mã yêu cầu và chọn trạng thái cần chuyển. Lý do không bắt buộc.
       </p>
       <form
-        aria-label="Chuyển trạng thái ticket"
+        aria-label="Chuyển trạng thái yêu cầu"
         noValidate
         className="space-y-5"
         onSubmit={form.handleSubmit(submit)}

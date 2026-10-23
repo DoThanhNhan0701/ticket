@@ -9,6 +9,7 @@ export interface AuthContextValue {
   permissions: UserPermissions | null;
   userPermission: UserPermissionResponse | null;
   isInitializing: boolean;
+  accessDenied?: boolean;
   isLoading: boolean;
   error: string | null;
   login: (username: string, password: string) => Promise<boolean>;

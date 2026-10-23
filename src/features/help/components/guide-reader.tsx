@@ -37,10 +37,10 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
     }
   };
   return (
-    <div className="grid min-h-0 min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-2xl border border-border/80 bg-card shadow-sm lg:grid-cols-[18rem_minmax(0,1fr)] lg:grid-rows-1">
+    <div className="grid min-h-0 min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden sm:rounded-2xl sm:border sm:border-border/80 sm:bg-card sm:shadow-sm lg:grid-cols-[18rem_minmax(0,1fr)] lg:grid-rows-1">
       <nav
         aria-label="Mục lục hướng dẫn"
-        className="min-h-0 min-w-0 border-b border-border/70 bg-muted/20 p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
+        className="min-h-0 min-w-0 border-b border-border/70 pb-3 sm:bg-muted/20 sm:p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
       >
         <div className="lg:hidden">
           <SearchableSelect
@@ -93,10 +93,10 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
         <article
           key={selected}
           aria-labelledby="user-guide-title"
-          className="p-5 sm:p-8 xl:px-10 xl:py-9"
+          className="px-3 py-3 sm:px-5 sm:py-4"
         >
-          <div className="mb-7 border-b border-border/60 pb-6">
-            <p className="mb-3 text-xs font-medium tracking-widest text-primary uppercase">
+          <div className="mb-4 border-b border-border/60 pb-3">
+            <p className="mb-1.5 text-xs font-medium tracking-widest text-primary uppercase">
               Chương {String(selected + 1).padStart(2, "0")}
               <span className="mx-2 text-border" aria-hidden="true">
                 /

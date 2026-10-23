@@ -60,7 +60,7 @@ const permissionInfo: Record<string, PositionPermissionInfo> = {
   can_return_ticket: {
     label: "Chuyển trạng thái yêu cầu",
     description:
-      "Truy cập trang Chuyển trạng thái ticket để cập nhật trạng thái theo mã yêu cầu.",
+      "Truy cập trang Chuyển trạng thái yêu cầu để cập nhật trạng thái theo mã yêu cầu.",
   },
 };
 

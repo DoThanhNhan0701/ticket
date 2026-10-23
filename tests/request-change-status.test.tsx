@@ -18,7 +18,7 @@ import {
 } from "@/features/auth/context/auth-context";
 import { clearAuthSession } from "@/lib/auth-session";
 import { getCookie, setCookie } from "@/lib/cookies";
-import { WorkspacePage } from "@/pages/workspace";
+import { WorkspaceRoute } from "./fixtures/workspace-route";
 import { changeRequestStatusRequest } from "@/features/requests/api/change-request-status-api";
 import { requestStatusFixtures } from "./fixtures/requests";
 
@@ -93,7 +93,7 @@ function renderPage() {
     <QueryClientProvider client={client}>
       <AuthContext.Provider value={auth}>
         <MemoryRouter initialEntries={[page.path]}>
-          <WorkspacePage page={page} />
+          <WorkspaceRoute page={page} />
         </MemoryRouter>
       </AuthContext.Provider>
     </QueryClientProvider>,
@@ -130,7 +130,7 @@ it("loads statuses with bearer authentication for can_return_ticket without fetc
   renderPage();
   await ready();
   expect(
-    screen.getByRole("heading", { name: "Chuyển trạng thái ticket" }),
+    screen.getByRole("heading", { name: "Chuyển trạng thái yêu cầu" }),
   ).toBeTruthy();
   expect(screen.queryByText("Trang đang được chuẩn bị")).toBeNull();
   expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -201,7 +201,7 @@ it("accepts an omitted reason and prevents duplicate submissions while the updat
   renderPage();
   await ready();
   await fillForm("");
-  const form = screen.getByRole("form", { name: "Chuyển trạng thái ticket" });
+  const form = screen.getByRole("form", { name: "Chuyển trạng thái yêu cầu" });
   fireEvent.submit(form);
   fireEvent.submit(form);
   await waitFor(() => expect(posts()).toHaveLength(1));
@@ -313,7 +313,7 @@ it("blocks submission until status loading finishes and allows retrying failed s
     screen.getByRole("button", { name: "Cập nhật" }).hasAttribute("disabled"),
   ).toBe(true);
   fireEvent.submit(
-    screen.getByRole("form", { name: "Chuyển trạng thái ticket" }),
+    screen.getByRole("form", { name: "Chuyển trạng thái yêu cầu" }),
   );
   expect(posts()).toHaveLength(0);
   await act(async () => finish(Response.json({ results: null })));

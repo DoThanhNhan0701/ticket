@@ -1,6 +1,7 @@
 import { APP_ROUTES } from "@/constants/routes";
 import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { ForbiddenPage } from "@/pages/forbidden";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { LoadingScreen } from "@/components/loading-screen";
 import { AppErrorBoundary } from "@/components/app-error-boundary";
@@ -23,6 +24,9 @@ const UserGuidePage = lazy(() =>
 
 export default function App() {
   const auth = useAuthContext();
+  const location = useLocation();
+  if (auth.accessDenied && location.pathname !== APP_ROUTES.forbidden)
+    return <Navigate to={APP_ROUTES.forbidden} replace />;
   const homeRedirect = auth.isInitializing ? (
     <LoadingScreen />
   ) : (
@@ -34,6 +38,7 @@ export default function App() {
       <Suspense fallback={<LoadingScreen />}>
         <TooltipProvider>
           <Routes>
+            <Route path={APP_ROUTES.forbidden} element={<ForbiddenPage />} />
             <Route element={<PublicLayout />}>
               <Route
                 path={APP_ROUTES.login}
