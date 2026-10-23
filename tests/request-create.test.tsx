@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
 import { addDays, format, startOfToday } from "date-fns";
 import {
@@ -31,7 +32,7 @@ import {
   createTemplate,
 } from "./fixtures/create-request";
 
-vi.mock("sonner", () => ({ toast: { success: vi.fn() } }));
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock("@/lib/download", () => ({ downloadFile: vi.fn() }));
 const fetchMock = vi.fn<typeof fetch>();
 let client: QueryClient;
@@ -1099,7 +1100,12 @@ it("retains the draft after create failure and allows retry", async () => {
   await fillBase();
   await fillDetails();
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
-  await screen.findByText("Create offline");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Create offline",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(
     (document.getElementById("create-title") as HTMLInputElement).value,
   ).toBe("Yêu cầu TEST");
@@ -1299,7 +1305,12 @@ it("does not replace existing detail rows for an invalid imported workbook", asy
   fireEvent.change(screen.getByLabelText("Nhập chi tiết từ Excel"), {
     target: { files: [new File(["excel"], "template.xlsx")] },
   });
-  await screen.findByText("Tệp Excel không khớp biểu mẫu đã chọn.");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Tệp Excel không khớp biểu mẫu đã chọn.",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Nội dung mẫu");
@@ -1741,7 +1752,12 @@ it("resumes a created ticket after remount without recreating it or reuploading 
     target: { files: [first, second] },
   });
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
-  await screen.findByText("Upload interrupted");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Upload interrupted",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(calls("/ticket_manager")).toHaveLength(1);
   cleanup();
   client.clear();

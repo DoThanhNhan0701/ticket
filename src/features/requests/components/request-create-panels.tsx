@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/loading-state";
@@ -97,7 +98,7 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
         </div>
       )}
       {model.mutation.isError && (
-        <ErrorAlert message={model.mutation.error.message} />
+        <ErrorToast message={model.mutation.error.message} />
       )}
       {model.attachmentError && <ErrorAlert message={model.attachmentError} />}
       {model.created && model.mutation.isError && (

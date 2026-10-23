@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { Settings2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -154,7 +155,7 @@ function SettingsForm({
             </Button>
           </div>
         )}
-        {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+        {mutation.isError && <ErrorToast message={mutation.error.message} />}
         <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
           {config.fields.map((field) => (
             <SettingsFieldControl

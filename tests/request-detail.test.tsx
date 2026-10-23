@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import { templateCombinations } from "./fixtures/template-combinations";
 import {
   cleanup,
@@ -329,7 +330,12 @@ it("validates only on save and retains values after API failure", async () => {
   });
   saveFailure = true;
   fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
-  expect(await screen.findByText("Không lưu được biểu mẫu")).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không lưu được biểu mẫu",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect((screen.getByLabelText(/Nội dung/) as HTMLInputElement).value).toBe(
     "Thử lại",
   );

@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileText, Plus } from "lucide-react";
@@ -130,7 +131,7 @@ function TemplateForm({
         className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-3 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-4"
       >
         {error && <ErrorAlert message={error} />}
-        {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+        {mutation.isError && <ErrorToast message={mutation.error.message} />}
         {!groups.length && (
           <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border px-4 py-10 text-center">
             <FileText

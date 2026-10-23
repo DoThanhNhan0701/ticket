@@ -6,7 +6,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Badge } from "@/components/ui/badge";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorToast } from "@/components/error-toast";
 import {
   Card,
   CardContent,
@@ -120,7 +120,7 @@ export function LoginPage({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-5"
               >
-                {error && <ErrorAlert message={error} />}
+                {error && <ErrorToast message={error} />}
                 <FieldGroup className="gap-5">
                   <InputField
                     control={form.control}

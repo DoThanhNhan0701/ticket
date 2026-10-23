@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -311,7 +312,7 @@ function TicketActionDialog({
             />
           )}
           {error && <ErrorAlert message={error} />}
-          {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+          {mutation.isError && <ErrorToast message={mutation.error.message} />}
           {completed > 0 && mutation.isError && (
             <p role="status" className="text-sm text-muted-foreground">
               Đã lưu {completed} bước. Thử lại để tiếp tục phần còn lại; các

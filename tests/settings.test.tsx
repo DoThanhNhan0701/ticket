@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import { templateCombinations } from "./fixtures/template-combinations";
 import { Blob as NodeBlob } from "node:buffer";
 import {
@@ -639,7 +640,12 @@ it("retains the form after a business error and permits retry", async () => {
   await editorReady("offices");
   await fill("offices");
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
-  await screen.findByText(/Không lưu được dữ liệu/);
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      expect.stringMatching(/Không lưu được dữ liệu/),
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(screen.getByRole("dialog")).toBeTruthy();
   writeResponse = null;
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
@@ -1167,9 +1173,12 @@ it("keeps the template open if the save is not reflected by the server", async (
   change("Tên phần", "Changed section");
   writeResponse = () => Response.json({ message: "Save rejected" });
   fireEvent.click(screen.getByRole("button", { name: "Lưu biểu mẫu" }));
-  expect(
-    await screen.findByText(/Chưa xác nhận được thay đổi biểu mẫu/),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      expect.stringMatching(/Chưa xác nhận được thay đổi biểu mẫu/),
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(screen.getByRole("dialog")).toBeTruthy();
 });
 

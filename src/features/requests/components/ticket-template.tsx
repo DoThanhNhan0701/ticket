@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -6,7 +7,6 @@ import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
-import { ErrorAlert } from "@/components/error-alert";
 import { Card } from "@/components/ui/card";
 import {
   Tooltip,
@@ -204,9 +204,7 @@ export function TicketTemplate({
               )}
             </div>
             {active && mutation.isError && (
-              <div className="p-3">
-                <ErrorAlert message={mutation.error.message} />
-              </div>
+              <ErrorToast message={mutation.error.message} />
             )}
             <div
               role="group"

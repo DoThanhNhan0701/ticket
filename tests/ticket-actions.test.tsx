@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   cleanup,
   fireEvent,
@@ -299,7 +300,12 @@ it("allows correcting a failed reason and retries the updated payload", async ()
     target: { value: "Lý do cũ" },
   });
   confirm("Xử lý lại");
-  await screen.findByText("Không thể lưu");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không thể lưu",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   fireEvent.change(screen.getByRole("textbox"), {
     target: { value: "Lý do mới" },
   });
@@ -324,7 +330,12 @@ it("resumes after an upload without re-uploading when cancel fails", async () =>
     target: { files: [new File(["proof"], "proof.txt")] },
   });
   confirm("Hủy");
-  await screen.findByText("Thử lại sau");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Thử lại sau",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(fetchMock).toHaveBeenCalledTimes(2);
   expect(screen.getByRole("textbox").hasAttribute("disabled")).toBe(true);
   confirm("Thử lại phần còn lại");
@@ -488,7 +499,12 @@ it("surfaces HTTP permission errors without closing the form", async () => {
   );
   open("Tiếp nhận");
   confirm("Tiếp nhận");
-  await screen.findByText("Không có quyền");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không có quyền",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(screen.getByRole("dialog")).toBeTruthy();
   expect(onSaved).not.toHaveBeenCalled();
 });

@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   act,
   cleanup,
@@ -168,9 +169,11 @@ it("posts trimmed values and numeric status ID, shows success, and invalidates b
   await fillForm(" Kiểm tra lại trạng thái\nGhi chú bổ sung ");
   expect(screen.getByLabelText("Lý do")).toBeInstanceOf(HTMLTextAreaElement);
   fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-  expect(
-    await screen.findByText("Cập nhật trạng thái thành công."),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith(
+      "Cập nhật trạng thái thành công.",
+    ),
+  );
   expect(posts()).toHaveLength(1);
   const [, options] = posts()[0];
   expect(options?.method).toBe("POST");
@@ -222,9 +225,11 @@ it("accepts an omitted reason and prevents duplicate submissions while the updat
       Response.json({ error: "", message: "Cập nhật trạng thái thành công." }),
     ),
   );
-  expect(
-    await screen.findByText("Cập nhật trạng thái thành công."),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith(
+      "Cập nhật trạng thái thành công.",
+    ),
+  );
   await ready();
 });
 
@@ -236,9 +241,11 @@ it("treats an HTTP 200 business error as failure, retains the inputs and permits
   await ready();
   await fillForm();
   fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-  expect(await screen.findByRole("alert")).toHaveProperty(
-    "textContent",
-    "Không tồn tại mã yêu cầu",
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không tồn tại mã yêu cầu",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
   );
   expect(client.getQueryState(createdKey)?.isInvalidated).toBe(false);
   expect((screen.getByLabelText(/Mã yêu cầu/) as HTMLInputElement).value).toBe(
@@ -248,9 +255,11 @@ it("treats an HTTP 200 business error as failure, retains the inputs and permits
   changeResponse = () =>
     Response.json({ error: "", message: "Cập nhật trạng thái thành công." });
   fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-  expect(
-    await screen.findByText("Cập nhật trạng thái thành công."),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith(
+      "Cập nhật trạng thái thành công.",
+    ),
+  );
   expect(screen.queryByRole("alert")).toBeNull();
   expect(posts()).toHaveLength(2);
 });
@@ -264,9 +273,12 @@ it.each([403, 500])(
     await ready();
     await fillForm();
     fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-    expect(
-      await screen.findByText("Không thể cập nhật trạng thái."),
-    ).toBeTruthy();
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        "Không thể cập nhật trạng thái.",
+        expect.objectContaining({ id: expect.any(String) }),
+      ),
+    );
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe("change-status-access");
     expect(posts()).toHaveLength(1);
   },
@@ -284,9 +296,12 @@ it.each([
   await ready();
   await fillForm();
   fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-  expect(
-    await screen.findByText("Dữ liệu chuyển trạng thái không hợp lệ."),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Dữ liệu chuyển trạng thái không hợp lệ.",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(screen.queryByText("Cập nhật trạng thái thành công.")).toBeNull();
 });
 
@@ -296,7 +311,12 @@ it("shows network failures without losing form values", async () => {
   await ready();
   await fillForm();
   fireEvent.click(screen.getByRole("button", { name: "Cập nhật" }));
-  expect(await screen.findByText("Network unavailable")).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Network unavailable",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect((screen.getByLabelText("Lý do") as HTMLTextAreaElement).value).toBe(
     " Kiểm tra lại trạng thái ",
   );
@@ -389,3 +409,5 @@ it.each([0, 1, -1, 1.5])(
     expect(posts()).toHaveLength(0);
   },
 );
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

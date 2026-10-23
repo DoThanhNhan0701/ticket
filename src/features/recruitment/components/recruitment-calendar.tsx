@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { PAGE_LINKS } from "@/constants/routes";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { ResponsivePageAction } from "@/components/layout/mobile-page-action";
@@ -221,7 +222,7 @@ export function RecruitmentCalendar() {
           }}
         />
       )}
-      {cvLink.isError && <ErrorAlert message={cvLink.error.message} />}
+      {cvLink.isError && <ErrorToast message={cvLink.error.message} />}
       {editor && lookups.data && (
         <RecruitmentEditor
           state={editor}

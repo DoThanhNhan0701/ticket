@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   cleanup,
   fireEvent,
@@ -1458,7 +1459,12 @@ it("keeps the note modal open, refreshes history and resets only after a success
   const submit = screen.getByRole("button", { name: "Thêm ghi chú" });
   await waitFor(() => expect(submit.hasAttribute("disabled")).toBe(false));
   fireEvent.click(submit);
-  await screen.findByText("TEST save note failed");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "TEST save note failed",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(input.value).toBe("TEST next note");
   expect(within(form).getByText("TEST feedback.pdf")).toBeTruthy();
   expect(notes).toHaveLength(1);
@@ -2102,7 +2108,12 @@ it("attaches all selected candidates and allows retrying a rejected save without
   await option("Lịch phỏng vấn", "TEST Interview (09:00 - 10:00)");
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
-  await screen.findByText("TEST assignment failed");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "TEST assignment failed",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(api.recruitmentWrite).toHaveBeenCalledTimes(1);
   expect(onClose).not.toHaveBeenCalled();
   expect(
@@ -2407,3 +2418,5 @@ it("blocks candidate saving while public address options are unavailable and sup
     ).toBe(false),
   );
 });
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

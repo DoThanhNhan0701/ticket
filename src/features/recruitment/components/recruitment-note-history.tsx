@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -75,7 +76,7 @@ export function RecruitmentNoteHistory({
           Chưa có lịch sử ghi chú phỏng vấn.
         </p>
       )}
-      {download.isError && <ErrorAlert message={download.error.message} />}
+      {download.isError && <ErrorToast message={download.error.message} />}
       {download.isPending && (
         <p role="status" className="text-xs text-muted-foreground">
           Đang mở tệp...

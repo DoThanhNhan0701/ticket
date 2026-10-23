@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -253,7 +254,7 @@ export function RecruitmentEditorForm({
         />
       )}
       {fileError && <ErrorAlert message={fileError} />}
-      {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+      {mutation.isError && <ErrorToast message={mutation.error.message} />}
       <DialogFooter className="mt-0 pt-0">
         <Button
           type="button"

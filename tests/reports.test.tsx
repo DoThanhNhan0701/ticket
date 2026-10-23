@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import { Blob as NodeBlob } from "node:buffer";
 import {
   act,
@@ -329,7 +330,9 @@ it("exports current valid report drafts as multipart and starts a named Excel do
     target: { value: "19/10/2026" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-  await screen.findByText("Đã tạo tệp Excel.");
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith("Đã tạo tệp Excel."),
+  );
   expect(body("/api/export_excel")).toEqual({
     startdate: "2026-10-01",
     enddate: "2026-10-19",
@@ -478,7 +481,9 @@ it.each(["Tất cả loại yêu cầu", "Thiết bị"])(
       target: { value: "19/10/2026" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-    await screen.findByText("Đã tạo tệp Excel.");
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith("Đã tạo tệp Excel."),
+    );
     expect(body("/api/export_ticket_type")).toEqual({
       from_date: "2026-10-01",
       to_date: "2026-10-19",
@@ -509,7 +514,9 @@ it.each([
     expect(await screen.findByText("Vui lòng chọn loại yêu cầu.")).toBeTruthy();
     await select("Loại yêu cầu", "Nhân sự");
     fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-    await screen.findByText("Đã tạo tệp Excel.");
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith("Đã tạo tệp Excel."),
+    );
     expect(body("/api/export_ticket_type")).toMatchObject({
       bophanxuly_id: "4",
       ticket_type_id: "23",
@@ -588,18 +595,21 @@ it("prevents duplicate exports, handles JSON no-data without a download and perm
       .hasAttribute("disabled"),
   ).toBe(true);
   await act(async () => finish(Response.json({ status: 0 })));
-  expect(
-    await screen.findByText(
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
       "Không có dữ liệu để xuất trong khoảng thời gian đã chọn.",
+      expect.objectContaining({ id: expect.any(String) }),
     ),
-  ).toBeTruthy();
+  );
   expect(downloadFile).not.toHaveBeenCalled();
   exportResponse = () =>
     new Response("PK excel", {
       headers: { "Content-Type": "application/vnd.ms-excel" },
     });
   fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-  await screen.findByText("Đã tạo tệp Excel.");
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith("Đã tạo tệp Excel."),
+  );
   expect(calls("/api/export_ticket_type")).toHaveLength(2);
 });
 
@@ -613,9 +623,12 @@ it.each([
   await lookupReport();
   await ready();
   fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-  expect(
-    await screen.findByText("Tệp Excel nhận được không hợp lệ."),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Tệp Excel nhận được không hợp lệ.",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(downloadFile).not.toHaveBeenCalled();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBe("report-access");
 });
@@ -687,7 +700,9 @@ it("marks every available request type under All, preserves marks during search 
   );
   await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
   fireEvent.click(screen.getByRole("button", { name: "Xuất Excel" }));
-  await screen.findByText("Đã tạo tệp Excel.");
+  await waitFor(() =>
+    expect(toast.success).toHaveBeenCalledWith("Đã tạo tệp Excel."),
+  );
   expect(body("/api/export_ticket_type").ticket_type_id).toBe("All");
 });
 it("returns to one check when selecting an individual type and resets All when changing groups", async () => {
@@ -730,3 +745,5 @@ it("returns to one check when selecting an individual type and resets All when c
   for (const option of options)
     expect(option.querySelector(".lucide-check")).toBeNull();
 });
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

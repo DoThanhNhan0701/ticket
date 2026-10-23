@@ -2,8 +2,8 @@ import { PAGE_LINKS } from "@/constants/routes";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
+import { toast } from "sonner";
 import { AsyncButton } from "@/components/ui/async-button";
-import { ErrorAlert } from "@/components/error-alert";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getCreateRequestTypes } from "../api/create-request-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
@@ -24,6 +24,9 @@ export function TicketCloneButton({
     onSuccess: () => {
       void navigate(PAGE_LINKS.cloneRequest(ticket.id));
     },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
   if (!permissions?.can_create) return null;
   return (
@@ -42,7 +45,6 @@ export function TicketCloneButton({
       >
         Sao chép
       </AsyncButton>
-      {mutation.isError && <ErrorAlert message={mutation.error.message} />}
     </div>
   );
 }

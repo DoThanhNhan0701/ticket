@@ -1,14 +1,14 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { ErrorAlert } from "@/components/error-alert";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
 import { TextareaField } from "@/components/form/textarea-field";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -39,7 +39,8 @@ export function RequestChangeStatus() {
     mutationKey: ["request-change-status", userId],
     mutationFn: changeRequestStatusRequest,
     retry: false,
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      toast.success(data.message);
       await queryClient.invalidateQueries({ queryKey: ["requests"] });
     },
     onSettled: () => {
@@ -125,18 +126,7 @@ export function RequestChangeStatus() {
             Không có trạng thái để chuyển.
           </p>
         )}
-        {mutation.isError && <ErrorAlert message={mutation.error.message} />}
-        {mutation.isSuccess && (
-          <Alert
-            role="status"
-            className="border-success-border bg-success-soft text-success"
-          >
-            <CheckCircle2 aria-hidden="true" />
-            <AlertDescription className="text-success">
-              {mutation.data.message}
-            </AlertDescription>
-          </Alert>
-        )}
+        {mutation.isError && <ErrorToast message={mutation.error.message} />}
         <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
           <AsyncButton
             type="submit"

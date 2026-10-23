@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useRef } from "react";
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -138,8 +139,8 @@ export function RequestDetailRows({
           </>
         }
       >
-        {download.isError && <ErrorAlert message={download.error.message} />}
-        {upload.isError && <ErrorAlert message={upload.error.message} />}
+        {download.isError && <ErrorToast message={download.error.message} />}
+        {upload.isError && <ErrorToast message={upload.error.message} />}
         {form.formState.errors.rows?.root?.message && (
           <ErrorAlert message={form.formState.errors.rows.root.message} />
         )}

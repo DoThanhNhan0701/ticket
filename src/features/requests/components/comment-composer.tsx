@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useId, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Save, Send, X } from "lucide-react";
@@ -168,7 +169,7 @@ export function CommentComposer({
         </div>
       </CommentMentions>
       {fileError && <ErrorAlert message={fileError} />}
-      {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+      {mutation.isError && <ErrorToast message={mutation.error.message} />}
     </form>
   );
 }

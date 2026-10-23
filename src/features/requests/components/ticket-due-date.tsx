@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -5,7 +6,6 @@ import { CalendarDays, Pencil, Save, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
-import { ErrorAlert } from "@/components/error-alert";
 import { DatePickerField } from "@/components/form/date-picker-field";
 import { formatDataDate } from "@/components/data-management";
 import { updateTicketDueDate } from "../api/request-detail-api";
@@ -84,7 +84,7 @@ export function TicketDueDate({
             </>
           }
         />
-        {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+        {mutation.isError && <ErrorToast message={mutation.error.message} />}
       </form>
     );
   return (

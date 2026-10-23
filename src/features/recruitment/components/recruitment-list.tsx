@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { PAGE_LINKS } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -376,7 +377,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           </Button>
         </div>
       )}
-      {exportFile.isError && <ErrorAlert message={exportFile.error.message} />}
+      {exportFile.isError && <ErrorToast message={exportFile.error.message} />}
       <DataResults
         refreshStyle="subtle"
         query={query}

@@ -139,6 +139,7 @@ function SidebarLink({
       to={page.path}
       onClick={onNavigate}
       aria-label={page.label}
+      title={page.label}
       aria-current={active ? "page" : undefined}
       className={cn(
         "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
@@ -148,7 +149,7 @@ function SidebarLink({
       )}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className="min-w-0 flex-1">{page.label}</span>
+      <span className="min-w-0 flex-1 truncate">{page.label}</span>
       {active && (
         <span
           className="size-1.5 shrink-0 rounded-full bg-current"
@@ -264,7 +265,9 @@ export function AppSidebar({
                     className="size-4 shrink-0 text-muted-foreground"
                     aria-hidden="true"
                   />
-                  <span className="min-w-0 flex-1">{group.label}</span>
+                  <span className="min-w-0 flex-1 truncate" title={group.label}>
+                    {group.label}
+                  </span>
                   <ChevronDown
                     className="size-3.5 shrink-0 text-muted-foreground transition-transform group-open/sidebar-section:rotate-180"
                     aria-hidden="true"

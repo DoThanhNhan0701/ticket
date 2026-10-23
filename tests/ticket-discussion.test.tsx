@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   cleanup,
   fireEvent,
@@ -278,7 +279,12 @@ it("keeps failed drafts and attachments available to retry", async () => {
   });
   attach(form, files());
   fireEvent.click(within(form).getByRole("button", { name: "Gửi phản hồi" }));
-  expect(await screen.findByText("Không có quyền sửa phản hồi")).toBeTruthy();
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Không có quyền sửa phản hồi",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(
     (within(form).getByLabelText("Phản hồi") as HTMLTextAreaElement).value,
   ).toBe("Giữ bản nháp");

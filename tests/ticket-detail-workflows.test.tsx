@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   cleanup,
   fireEvent,
@@ -110,7 +111,12 @@ it("retries only the remaining uploads after partial success", async () => {
     target: { files: [first, second] },
   });
   fireEvent.click(screen.getByRole("button", { name: "Tải lên đính kèm" }));
-  await screen.findByText("Upload failed");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Upload failed",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(screen.queryByText("one.txt")).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Tải lại tệp còn lại" }));
   await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
@@ -133,7 +139,12 @@ it("does not reload the ticket or retry automatically when the first upload fail
     },
   });
   fireEvent.click(screen.getByRole("button", { name: "Tải lên đính kèm" }));
-  await screen.findByText("Upload failed");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "Upload failed",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(fetchMock).toHaveBeenCalledOnce();
   expect(onSaved).not.toHaveBeenCalled();
   expect(screen.getByText("one.txt")).toBeTruthy();

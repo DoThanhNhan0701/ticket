@@ -1,3 +1,4 @@
+import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -21,7 +22,6 @@ import {
   formatDataDate,
   type DataColumn,
 } from "@/components/data-management";
-import { ErrorAlert } from "@/components/error-alert";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { downloadFile } from "@/lib/download";
@@ -234,7 +234,7 @@ export function RecruitmentReport() {
         }
       />
 
-      {exporting.isError && <ErrorAlert message={exporting.error.message} />}
+      {exporting.isError && <ErrorToast message={exporting.error.message} />}
       <div
         ref={tabsRef}
         {...dragHandlers}

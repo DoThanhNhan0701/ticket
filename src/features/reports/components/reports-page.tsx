@@ -1,12 +1,12 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { downloadFile } from "@/lib/download";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -66,6 +66,7 @@ export function ReportsPage({
         groups.find((group) => String(group.id) === filters.handlinggroup)
           ?.name ?? "Report";
       downloadFile(blob, getReportFilename(mode, name, filters));
+      toast.success("Đã tạo tệp Excel.");
     },
     onSettled: () => {
       exporting.current = false;
@@ -127,18 +128,7 @@ export function ReportsPage({
         onApply={apply}
         onExport={exportFile}
       />
-      {download.isError && <ErrorAlert message={download.error.message} />}
-      {download.isSuccess && (
-        <Alert
-          role="status"
-          className="border-success-border bg-success-soft text-success"
-        >
-          <CheckCircle2 aria-hidden="true" />
-          <AlertDescription className="text-success">
-            Đã tạo tệp Excel.
-          </AlertDescription>
-        </Alert>
-      )}
+      {download.isError && <ErrorToast message={download.error.message} />}
       {showReport && <ReportResults report={report} />}
     </div>
   );

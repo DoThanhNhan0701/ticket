@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { toast } from "sonner";
 import {
   cleanup,
   fireEvent,
@@ -122,7 +123,12 @@ it("shows fetch errors and allows retrying the same image", async () => {
   fireEvent.click(
     await screen.findByRole("button", { name: "Xem ảnh interview.PNG" }),
   );
-  await screen.findByText("TEST file unavailable");
+  await waitFor(() =>
+    expect(toast.error).toHaveBeenCalledWith(
+      "TEST file unavailable",
+      expect.objectContaining({ id: expect.any(String) }),
+    ),
+  );
   expect(createUrl).not.toHaveBeenCalled();
   fireEvent.click(
     screen.getByRole("button", { name: "Xem ảnh interview.PNG" }),
@@ -131,3 +137,5 @@ it("shows fetch errors and allows retrying the same image", async () => {
   expect(downloadRecruitmentNote).toHaveBeenCalledTimes(2);
   expect(downloadFile).not.toHaveBeenCalled();
 });
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

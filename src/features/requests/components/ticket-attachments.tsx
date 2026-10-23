@@ -1,9 +1,9 @@
+import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { AsyncButton } from "@/components/ui/async-button";
-import { ErrorAlert } from "@/components/error-alert";
 import { uploadRequestAttachment } from "../api/create-request-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 import { RequestAttachments } from "./request-attachments";
@@ -104,7 +104,7 @@ export function TicketAttachments({
               )
             }
           />
-          {mutation.isError && <ErrorAlert message={mutation.error.message} />}
+          {mutation.isError && <ErrorToast message={mutation.error.message} />}
         </>
       )}
     </div>
