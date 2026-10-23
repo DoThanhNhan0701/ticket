@@ -1,0 +1,230 @@
+{
+  "base": "https://ticket-new.aiminds.io.vn",
+  "date": "2026-10-23",
+  "checks": [
+    {
+      "name": "List error and retry recover from controlled 503",
+      "status": "passed",
+      "simulated503": true
+    },
+    {
+      "name": "Lookup error disables save until retry succeeds",
+      "status": "passed",
+      "simulated503": true
+    },
+    {
+      "name": "Edit detail error disables save and retries",
+      "status": "passed",
+      "simulated503": true
+    },
+    {
+      "name": "Template error and retry restore editor",
+      "status": "passed",
+      "simulated503": true
+    },
+    {
+      "name": "Save error retains form; double click sends one simulated POST",
+      "status": "passed",
+      "simulated503": true,
+      "posts": 1,
+      "realSettingsWrites": 0
+    },
+    {
+      "name": "Request type rejects non-PDF and clears error for PDF",
+      "status": "passed"
+    },
+    {
+      "name": "Both themes and repeated navigation remain responsive on all seven pages",
+      "status": "passed",
+      "timings": [
+        {
+          "kind": "users",
+          "theme": "light",
+          "readyMs": 923
+        },
+        {
+          "kind": "requesting-departments",
+          "theme": "light",
+          "readyMs": 356
+        },
+        {
+          "kind": "handling-departments",
+          "theme": "light",
+          "readyMs": 368
+        },
+        {
+          "kind": "request-types",
+          "theme": "light",
+          "readyMs": 922
+        },
+        {
+          "kind": "teams",
+          "theme": "light",
+          "readyMs": 654
+        },
+        {
+          "kind": "positions",
+          "theme": "light",
+          "readyMs": 463
+        },
+        {
+          "kind": "offices",
+          "theme": "light",
+          "readyMs": 163
+        },
+        {
+          "kind": "users",
+          "theme": "dark",
+          "readyMs": 391
+        },
+        {
+          "kind": "requesting-departments",
+          "theme": "dark",
+          "readyMs": 209
+        },
+        {
+          "kind": "handling-departments",
+          "theme": "dark",
+          "readyMs": 158
+        },
+        {
+          "kind": "request-types",
+          "theme": "dark",
+          "readyMs": 306
+        },
+        {
+          "kind": "teams",
+          "theme": "dark",
+          "readyMs": 198
+        },
+        {
+          "kind": "positions",
+          "theme": "dark",
+          "readyMs": 185
+        },
+        {
+          "kind": "offices",
+          "theme": "dark",
+          "readyMs": 107
+        }
+      ],
+      "longTasks": [
+        {
+          "start": 3036.5,
+          "duration": 63
+        },
+        {
+          "start": 3636.5999999940395,
+          "duration": 199
+        },
+        {
+          "start": 4417.20000000298,
+          "duration": 50
+        },
+        {
+          "start": 5314.899999991059,
+          "duration": 265
+        },
+        {
+          "start": 6196.79999999702,
+          "duration": 229
+        },
+        {
+          "start": 6831,
+          "duration": 66
+        },
+        {
+          "start": 7591.79999999702,
+          "duration": 71
+        },
+        {
+          "start": 8295.5,
+          "duration": 52
+        }
+      ]
+    },
+    {
+      "name": "Settings overview redirects to users and create-user URL closes correctly",
+      "status": "passed"
+    },
+    {
+      "name": "Touch mobile sidebar navigation and horizontal table scroll",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": [],
+  "timings": [
+    {
+      "kind": "users",
+      "theme": "light",
+      "readyMs": 923
+    },
+    {
+      "kind": "requesting-departments",
+      "theme": "light",
+      "readyMs": 356
+    },
+    {
+      "kind": "handling-departments",
+      "theme": "light",
+      "readyMs": 368
+    },
+    {
+      "kind": "request-types",
+      "theme": "light",
+      "readyMs": 922
+    },
+    {
+      "kind": "teams",
+      "theme": "light",
+      "readyMs": 654
+    },
+    {
+      "kind": "positions",
+      "theme": "light",
+      "readyMs": 463
+    },
+    {
+      "kind": "offices",
+      "theme": "light",
+      "readyMs": 163
+    },
+    {
+      "kind": "users",
+      "theme": "dark",
+      "readyMs": 391
+    },
+    {
+      "kind": "requesting-departments",
+      "theme": "dark",
+      "readyMs": 209
+    },
+    {
+      "kind": "handling-departments",
+      "theme": "dark",
+      "readyMs": 158
+    },
+    {
+      "kind": "request-types",
+      "theme": "dark",
+      "readyMs": 306
+    },
+    {
+      "kind": "teams",
+      "theme": "dark",
+      "readyMs": 198
+    },
+    {
+      "kind": "positions",
+      "theme": "dark",
+      "readyMs": 185
+    },
+    {
+      "kind": "offices",
+      "theme": "dark",
+      "readyMs": 107
+    }
+  ],
+  "status": "passed"
+}

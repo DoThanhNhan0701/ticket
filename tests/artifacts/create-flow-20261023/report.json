@@ -20,12 +20,12 @@
       "expected": "Clear required error and aria-invalid after valid content is entered",
       "actual": "Red border, aria-invalid=true and Vui lòng nhập phản hồi remain until successful submission",
       "impact": "Misleading validation feedback; sending valid content still succeeds",
-      "evidence": "comment-validation-error.png",
+      "evidence": "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/comment-validation-error.png",
       "rootCause": "onChange={setContent} changes content without resetting empty state.",
       "status": "fixed-locally-verified",
       "fix": "Required error depends on both a previously rejected blank submission and current trimmed content. Valid content clears the error immediately; clearing content after rejection shows it again.",
       "verification": "fix-verification.json",
-      "fixedEvidence": "comment-validation-fixed.png"
+      "fixedEvidence": "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/comment-validation-fixed.png"
     }
   ],
   "coverage": {
@@ -128,12 +128,12 @@
     "upload-recovery.json",
     "extended.json",
     "navigation-double-send.json",
-    "comment-validation-error.png",
-    "mobile-390.png",
-    "desktop-1440.png",
-    "partial-upload.png",
+    "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/comment-validation-error.png",
+    "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/mobile-390.png",
+    "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/desktop-1440.png",
+    "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/partial-upload.png",
     "fix-verification.json",
-    "comment-validation-fixed.png"
+    "/tmp/ticket-ui-qa/source-artifacts/create-flow-20261023/comment-validation-fixed.png"
   ],
   "originalTestResult": "One confirmed UX finding; tested creation, attachments, discussion, recovery, duplicate submission and responsive scenarios otherwise passed.",
   "fixVerification": {

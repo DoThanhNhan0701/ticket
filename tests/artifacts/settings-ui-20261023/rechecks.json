@@ -1,0 +1,29 @@
+{
+  "base": "https://ticket-new.aiminds.io.vn",
+  "date": "2026-10-23",
+  "checks": [
+    {
+      "name": "Permission help works at desktop and mobile; closes on crossing breakpoint",
+      "status": "passed",
+      "permissions": 11,
+      "finding": "UX-SETTINGS-01",
+      "desktopToMobileCloses": true,
+      "mobileToDesktopCloses": true,
+      "standaloneDesktopAndMobilePassed": true
+    },
+    {
+      "name": "Template add/move/remove fields and sections, validation, cancel persistence",
+      "status": "passed",
+      "initialSections": 2,
+      "realTemplateWrites": 0
+    },
+    {
+      "name": "Mobile search drawer apply, cancel and clear via empty query",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": [],
+  "timings": [],
+  "status": "passed-with-confirmed-ux-finding"
+}

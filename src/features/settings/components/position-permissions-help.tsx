@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Info, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -65,34 +64,29 @@ function PermissionInfoContent({
   );
 }
 
-export function PositionPermissionsHelp(props: Readonly<PermissionInfoProps>) {
-  const [open, setOpen] = useState(false);
+export function PositionPermissionsHelp({
+  open,
+  onOpenChange,
+  ...props
+}: Readonly<
+  PermissionInfoProps & {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+  }
+>) {
   return (
-    <>
-      <Button
-        type="button"
-        variant="outline"
-        aria-label="Thông tin quyền hạn"
-        title="Thông tin quyền hạn"
-        className="w-11 px-0 lg:w-auto lg:px-4"
-        onClick={() => setOpen(true)}
-      >
-        <Info className="size-4" aria-hidden="true" />
-        <span className="hidden lg:inline">Thông tin quyền hạn</span>
-      </Button>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogHeading
-              icon={<ShieldCheck aria-hidden="true" />}
-              title="Thông tin quyền hạn"
-              description="Các quyền đang dùng và quyền đã ngừng cấp mới."
-            />
-            <DialogCloseButton aria-label="Đóng thông tin quyền hạn" />
-          </DialogHeader>
-          <PermissionInfoContent {...props} />
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogHeading
+            icon={<ShieldCheck aria-hidden="true" />}
+            title="Thông tin quyền hạn"
+            description="Các quyền đang dùng và quyền đã ngừng cấp mới."
+          />
+          <DialogCloseButton aria-label="Đóng thông tin quyền hạn" />
+        </DialogHeader>
+        <PermissionInfoContent {...props} />
+      </DialogContent>
+    </Dialog>
   );
 }

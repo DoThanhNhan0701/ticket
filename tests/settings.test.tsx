@@ -734,6 +734,52 @@ it("retries failed permission explanations without leaving the help dialog", asy
   expect(await within(dialog).findByText("Tạo yêu cầu")).toBeTruthy();
 });
 
+it("keeps the permission help dialog mounted across mobile and desktop layouts", async () => {
+  let mobile = false;
+  const listeners = new Set<() => void>();
+  const previousMatchMedia = window.matchMedia;
+  vi.stubGlobal("matchMedia", (query: string) => ({
+    matches: query === "(max-width: 639px)" && mobile,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: (_: string, listener: () => void) =>
+      listeners.add(listener),
+    removeEventListener: (_: string, listener: () => void) =>
+      listeners.delete(listener),
+    dispatchEvent: vi.fn(),
+  }));
+  try {
+    renderPage("positions");
+    await ready();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Thông tin quyền hạn" }),
+    );
+    const dialog = screen.getByRole("dialog", { name: "Thông tin quyền hạn" });
+    await within(dialog).findByText("Tạo yêu cầu");
+    for (const next of [true, false, true, false]) {
+      act(() => {
+        mobile = next;
+        listeners.forEach((listener) => listener());
+      });
+      expect(screen.getByRole("dialog", { name: "Thông tin quyền hạn" })).toBe(
+        dialog,
+      );
+      expect(within(dialog).getByText("Tạo yêu cầu")).toBeTruthy();
+    }
+    fireEvent.click(
+      within(dialog).getByRole("button", { name: "Đóng thông tin quyền hạn" }),
+    );
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(
+      fetchMock.mock.calls.every(([, options]) => options?.method === "GET"),
+    ).toBe(true);
+  } finally {
+    window.matchMedia = previousMatchMedia;
+  }
+});
+
 it("preserves unknown permission names and supplied descriptions", () => {
   expect(getPositionPermissionInfo("custom_permission", "Mô tả riêng")).toEqual(
     { label: "custom_permission", description: "Mô tả riêng" },

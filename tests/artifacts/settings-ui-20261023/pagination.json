@@ -1,0 +1,15 @@
+{
+  "base": "https://ticket-new.aiminds.io.vn",
+  "date": "2026-10-23",
+  "checks": [
+    {
+      "name": "Request type next/previous pagination and invalid page input",
+      "status": "passed",
+      "totalPages": 2
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": [],
+  "timings": [],
+  "status": "passed"
+}

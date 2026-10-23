@@ -2,7 +2,7 @@ import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Download, FilterX, Plus } from "lucide-react";
+import { Download, FilterX, Info, Plus } from "lucide-react";
 import {
   DataSearch,
   DataResults,
@@ -46,6 +46,7 @@ export function SettingsList({
     createUser ? {} : null,
   );
   const [template, setTemplate] = useState<SettingsRecord | null>(null);
+  const [permissionHelpOpen, setPermissionHelpOpen] = useState(false);
   const query = useQuery({
     queryKey: ["settings", kind, userId, params],
     queryFn: ({ signal }) => listSettingsRequest(kind, params, signal),
@@ -127,12 +128,17 @@ export function SettingsList({
               </Button>
             )}
             {kind === "positions" && (
-              <PositionPermissionsHelp
-                permissions={lookups.data?.["position-permissions"] ?? []}
-                loading={lookups.isPending}
-                error={lookups.error}
-                onRetry={() => void lookups.refetch()}
-              />
+              <Button
+                type="button"
+                variant="outline"
+                aria-label="Thông tin quyền hạn"
+                title="Thông tin quyền hạn"
+                className="w-11 px-0 lg:w-auto lg:px-4"
+                onClick={() => setPermissionHelpOpen(true)}
+              >
+                <Info className="size-4" aria-hidden="true" />
+                <span className="hidden lg:inline">Thông tin quyền hạn</span>
+              </Button>
             )}
             <Button
               type="button"
@@ -182,6 +188,16 @@ export function SettingsList({
           />
         )}
       />
+      {kind === "positions" && (
+        <PositionPermissionsHelp
+          open={permissionHelpOpen}
+          onOpenChange={setPermissionHelpOpen}
+          permissions={lookups.data?.["position-permissions"] ?? []}
+          loading={lookups.isPending}
+          error={lookups.error}
+          onRetry={() => void lookups.refetch()}
+        />
+      )}
       {editor && (
         <SettingsEditor
           kind={kind}

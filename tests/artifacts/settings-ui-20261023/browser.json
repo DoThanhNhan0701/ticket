@@ -1,0 +1,439 @@
+{
+  "date": "2026-10-23",
+  "base": "https://ticket-new.aiminds.io.vn",
+  "account": "nhandt01",
+  "method": "Real Edge browser against deployed TEST; UI actions, read-only DOM inspection; settings writes blocked. Forms validated and cancelled without changing existing configuration.",
+  "checks": [
+    {
+      "kind": "users",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 1073,
+      "rows": 100,
+      "readyMs": 1073
+    },
+    {
+      "kind": "users",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 696
+    },
+    {
+      "kind": "users",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 1242
+    },
+    {
+      "kind": "users",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 6207,
+      "nextTested": true
+    },
+    {
+      "kind": "users",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 2038
+    },
+    {
+      "kind": "users",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 1039
+    },
+    {
+      "kind": "users",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 2829,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 396,
+      "rows": 27,
+      "readyMs": 396
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 378
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 613
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 3729,
+      "nextTested": false
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 625
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 576
+    },
+    {
+      "kind": "requesting-departments",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 1803,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 620,
+      "rows": 19,
+      "readyMs": 620
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 567
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 651
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 3414,
+      "nextTested": false
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 1736
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 790
+    },
+    {
+      "kind": "handling-departments",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 2001,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "request-types",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 652,
+      "rows": 100,
+      "readyMs": 652
+    },
+    {
+      "kind": "request-types",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 687
+    },
+    {
+      "kind": "request-types",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 934
+    },
+    {
+      "kind": "request-types",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 4035,
+      "nextTested": false
+    },
+    {
+      "kind": "request-types",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 1854
+    },
+    {
+      "kind": "request-types",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 1039
+    },
+    {
+      "kind": "request-types",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 2540,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "teams",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 523,
+      "rows": 90,
+      "readyMs": 523
+    },
+    {
+      "kind": "teams",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 446
+    },
+    {
+      "kind": "teams",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 943
+    },
+    {
+      "kind": "teams",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 4126,
+      "nextTested": false
+    },
+    {
+      "kind": "teams",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 1427
+    },
+    {
+      "kind": "teams",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 614
+    },
+    {
+      "kind": "teams",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 2124,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "positions",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 445,
+      "rows": 31,
+      "readyMs": 445
+    },
+    {
+      "kind": "positions",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 588
+    },
+    {
+      "kind": "positions",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 726
+    },
+    {
+      "kind": "positions",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 3997,
+      "nextTested": false
+    },
+    {
+      "kind": "positions",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 700
+    },
+    {
+      "kind": "positions",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 505
+    },
+    {
+      "kind": "positions",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 1800,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "offices",
+      "name": "Sidebar navigation and list loading",
+      "status": "passed",
+      "elapsedMs": 402,
+      "rows": 8,
+      "readyMs": 402
+    },
+    {
+      "kind": "offices",
+      "name": "Search draft, no-result state and clear filter",
+      "status": "passed",
+      "elapsedMs": 428
+    },
+    {
+      "kind": "offices",
+      "name": "Status stays draft then applies correctly",
+      "status": "passed",
+      "elapsedMs": 599
+    },
+    {
+      "kind": "offices",
+      "name": "Pagination, page size and reload preserve URL state",
+      "status": "passed",
+      "elapsedMs": 4152,
+      "nextTested": false
+    },
+    {
+      "kind": "offices",
+      "name": "Create form blank/whitespace validation and correction",
+      "status": "passed",
+      "elapsedMs": 584
+    },
+    {
+      "kind": "offices",
+      "name": "Edit loads record; cancel preserves configuration",
+      "status": "passed",
+      "elapsedMs": 493
+    },
+    {
+      "kind": "offices",
+      "name": "Responsive list and scrollable form at 320/390/768/1440px",
+      "status": "passed",
+      "elapsedMs": 1550,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ]
+    },
+    {
+      "kind": "users",
+      "name": "Excel export downloads valid XLSX",
+      "status": "passed",
+      "elapsedMs": 5531,
+      "filename": "Nguoi_dung.xlsx",
+      "bytes": 54302
+    },
+    {
+      "kind": "positions",
+      "name": "Permission help opens, scrolls and closes",
+      "status": "failed",
+      "error": "locator.scrollIntoViewIfNeeded: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Thông tin quyền hạn', exact: true }).locator('dt').last()\u001b[22m\n"
+    },
+    {
+      "kind": "request-types",
+      "name": "Template add/move/remove sections and fields; cancel discards edits",
+      "status": "failed",
+      "error": "locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('region', { name: 'Nội dung biểu mẫu', exact: true }).locator('section').last().getByLabel('Tên phần', { exact: true })\u001b[22m\n"
+    },
+    {
+      "kind": "overview",
+      "name": "Settings overview and create-user URL",
+      "status": "failed",
+      "error": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'Tổng quan cấu hình', exact: true }) to be visible\u001b[22m\n"
+    }
+  ],
+  "pageErrors": [],
+  "failedResponses": [],
+  "blockedWrites": [],
+  "pages": [
+    {
+      "kind": "users",
+      "title": "Người dùng",
+      "rows": 100,
+      "readyMs": 1006
+    },
+    {
+      "kind": "requesting-departments",
+      "title": "Bộ phận sử dụng",
+      "rows": 27,
+      "readyMs": 334
+    },
+    {
+      "kind": "handling-departments",
+      "title": "Bộ phận xử lý",
+      "rows": 19,
+      "readyMs": 534
+    },
+    {
+      "kind": "request-types",
+      "title": "Loại yêu cầu",
+      "rows": 100,
+      "readyMs": 586
+    },
+    {
+      "kind": "teams",
+      "title": "Team",
+      "rows": 90,
+      "readyMs": 449
+    },
+    {
+      "kind": "positions",
+      "title": "Chức vụ",
+      "rows": 31,
+      "readyMs": 378
+    },
+    {
+      "kind": "offices",
+      "title": "Văn phòng",
+      "rows": 8,
+      "readyMs": 321
+    }
+  ],
+  "status": "findings"
+}

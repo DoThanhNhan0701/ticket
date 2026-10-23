@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-23",
+  "frontend": "http://127.0.0.1:5186",
+  "backend": "https://ticket-api.aiminds.io.vn",
+  "checks": [
+    {
+      "width": 390,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "width": 768,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "width": 320,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "width": 1440,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "width": 390,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "width": 1440,
+      "status": "passed",
+      "dialogRemainedMounted": true,
+      "focusRetainedInsideDialog": true
+    },
+    {
+      "name": "Close, reopen and Escape still work",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "blockedWrites": [],
+  "status": "passed"
+}

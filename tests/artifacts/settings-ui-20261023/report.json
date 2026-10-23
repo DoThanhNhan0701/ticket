@@ -1,0 +1,326 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "environment": "TEST",
+  "baseUrl": "https://ticket-new.aiminds.io.vn",
+  "account": "nhandt01",
+  "result": "UX-SETTINGS-01 fixed locally and verified in real Edge using the TEST backend. Preview running at http://127.0.0.1:5186/settings/positions; hosted TEST deployment not performed.",
+  "method": {
+    "browser": "Headless Microsoft Edge via Playwright",
+    "frontend": "Deployed TEST website",
+    "backend": "Real TEST API",
+    "writes": "All real configuration writes blocked. Save-error test intercepted the request and returned a controlled 503, without reaching the backend.",
+    "responsive": "Viewport widths 320,390,768,1440; separate 390px mobile/touch browser context",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "visualReview": [
+      "users form at 390px",
+      "positions list in light theme",
+      "template editor desktop",
+      "permission dialog before/after responsive transition"
+    ]
+  },
+  "pages": [
+    {
+      "kind": "users",
+      "title": "Người dùng",
+      "rows": 100,
+      "readyMs": 1006,
+      "basicChecksPassed": 7,
+      "path": "/settings/users"
+    },
+    {
+      "kind": "requesting-departments",
+      "title": "Bộ phận sử dụng",
+      "rows": 27,
+      "readyMs": 334,
+      "basicChecksPassed": 7,
+      "path": "/settings/requesting-departments"
+    },
+    {
+      "kind": "handling-departments",
+      "title": "Bộ phận xử lý",
+      "rows": 19,
+      "readyMs": 534,
+      "basicChecksPassed": 7,
+      "path": "/settings/handling-departments"
+    },
+    {
+      "kind": "request-types",
+      "title": "Loại yêu cầu",
+      "rows": 100,
+      "readyMs": 586,
+      "basicChecksPassed": 7,
+      "path": "/settings/request-types"
+    },
+    {
+      "kind": "teams",
+      "title": "Team",
+      "rows": 90,
+      "readyMs": 449,
+      "basicChecksPassed": 7,
+      "path": "/settings/teams"
+    },
+    {
+      "kind": "positions",
+      "title": "Chức vụ",
+      "rows": 31,
+      "readyMs": 378,
+      "basicChecksPassed": 7,
+      "path": "/settings/positions"
+    },
+    {
+      "kind": "offices",
+      "title": "Văn phòng",
+      "rows": 8,
+      "readyMs": 321,
+      "basicChecksPassed": 7,
+      "path": "/settings/offices"
+    }
+  ],
+  "findings": [
+    {
+      "id": "UX-SETTINGS-01",
+      "severity": "minor",
+      "status": "fixed-locally-verified",
+      "page": "Chức vụ",
+      "title": "Thông tin quyền hạn tự đóng khi chuyển qua ngưỡng mobile/desktop",
+      "steps": [
+        "Open /settings/positions at 1440px",
+        "Click Thông tin quyền hạn",
+        "Resize to 390px or rotate across the 640px breakpoint"
+      ],
+      "expected": "Keep permission information open while adapting layout.",
+      "actual": "The dialog closes automatically. Reproduced in both 1440→390 and 390→1440 transitions. Opening and scrolling the dialog directly at either size works.",
+      "impact": "Interrupts reading; user must reopen the information dialog. No settings data changed.",
+      "likelyCause": "DataSearch switches between desktop and MobileDataSearch trees at 640px. PositionPermissionsHelp owns dialog state inside the moved actions subtree, so it remounts and resets open=false.",
+      "sourceReferences": [
+        "src/components/data-management/data-search.tsx:136",
+        "src/features/settings/components/position-permissions-help.tsx:88"
+      ],
+      "evidence": [
+        "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/permission-help-before-resize.png",
+        "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/permission-help-after-resize.png",
+        "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/permission-help-mobile.png"
+      ],
+      "verification": "rechecks.json",
+      "fix": "Move permission-help dialog and open state into SettingsList, outside the responsive DataSearch actions subtree. Only the trigger moves between desktop and mobile layouts.",
+      "fixVerification": "fix-verification.json"
+    }
+  ],
+  "coverage": {
+    "allSevenPages": [
+      "sidebar navigation and data loading",
+      "draft search does not submit automatically",
+      "no-result message and reset filters",
+      "draft/apply locked status filter",
+      "100/200 page size and URL restoration after reload",
+      "required and whitespace validation; error clears on valid correction",
+      "dropdown search with no matching option where available",
+      "edit detail loading; cancel discards edits",
+      "reopen create form clears unsaved input",
+      "list and scrollable modal at 320/390/768/1440px; reachable footer controls"
+    ],
+    "specialFlows": [
+      "user Excel export downloaded XLSX (PK header verified; 54302 bytes)",
+      "permission help opens and scrolls at desktop and mobile",
+      "template sections and fields add/move/remove; number type selection; blank-section validation; cancel preserves server state",
+      "request-type next/previous pages and out-of-range page number clamp",
+      "mobile search drawer apply/cancel/clear",
+      "settings overview redirects to users; create-user URL opens modal and returns to list on cancel",
+      "both themes and repeated sidebar navigation across seven pages",
+      "mobile touch sidebar navigation and table scroll"
+    ],
+    "controlledFailures": [
+      "list 503 and retry",
+      "lookup 503 disables save and retry restores controls",
+      "edit detail 503 disables save and retries",
+      "template 503 and retry",
+      "save 503 retains form and allows retry; double click generates one simulated POST",
+      "non-PDF rejected and PDF clears attachment error"
+    ]
+  },
+  "performance": {
+    "initialPageReadyMs": [
+      {
+        "kind": "users",
+        "ms": 1006
+      },
+      {
+        "kind": "requesting-departments",
+        "ms": 334
+      },
+      {
+        "kind": "handling-departments",
+        "ms": 534
+      },
+      {
+        "kind": "request-types",
+        "ms": 586
+      },
+      {
+        "kind": "teams",
+        "ms": 449
+      },
+      {
+        "kind": "positions",
+        "ms": 378
+      },
+      {
+        "kind": "offices",
+        "ms": 321
+      }
+    ],
+    "repeatedNavigationMs": [
+      {
+        "kind": "users",
+        "theme": "light",
+        "readyMs": 923
+      },
+      {
+        "kind": "requesting-departments",
+        "theme": "light",
+        "readyMs": 356
+      },
+      {
+        "kind": "handling-departments",
+        "theme": "light",
+        "readyMs": 368
+      },
+      {
+        "kind": "request-types",
+        "theme": "light",
+        "readyMs": 922
+      },
+      {
+        "kind": "teams",
+        "theme": "light",
+        "readyMs": 654
+      },
+      {
+        "kind": "positions",
+        "theme": "light",
+        "readyMs": 463
+      },
+      {
+        "kind": "offices",
+        "theme": "light",
+        "readyMs": 163
+      },
+      {
+        "kind": "users",
+        "theme": "dark",
+        "readyMs": 391
+      },
+      {
+        "kind": "requesting-departments",
+        "theme": "dark",
+        "readyMs": 209
+      },
+      {
+        "kind": "handling-departments",
+        "theme": "dark",
+        "readyMs": 158
+      },
+      {
+        "kind": "request-types",
+        "theme": "dark",
+        "readyMs": 306
+      },
+      {
+        "kind": "teams",
+        "theme": "dark",
+        "readyMs": 198
+      },
+      {
+        "kind": "positions",
+        "theme": "dark",
+        "readyMs": 185
+      },
+      {
+        "kind": "offices",
+        "theme": "dark",
+        "readyMs": 107
+      }
+    ],
+    "overallObservedRangeMs": {
+      "min": 107,
+      "max": 1006
+    },
+    "notes": "Single-browser measurements include click/route/data readiness; useful as spot checks only. Not load testing or a real-device performance benchmark."
+  },
+  "regression": {
+    "command": "npm test -- tests/settings.test.tsx tests/settings-template.test.ts tests/data-management.test.tsx --maxWorkers=2",
+    "filesPassed": 3,
+    "testsPassed": 135,
+    "durationSeconds": 16.17
+  },
+  "apiAndRuntime": {
+    "pageErrors": [],
+    "unexpectedApiErrors": [],
+    "blockedRealWriteAttempts": [],
+    "realConfigurationWrites": 0
+  },
+  "automationCorrections": [
+    {
+      "initialCheck": "Template add/move/remove sections and fields; cancel discards edits",
+      "reason": "The initial exact label selector omitted the required-field marker; repeated with stable visible input IDs.",
+      "verifiedBy": "rechecks.json"
+    },
+    {
+      "initialCheck": "Settings overview and create-user URL",
+      "reason": "The initial check expected an overview heading. Source confirms /settings intentionally redirects to /settings/users; correct behavior verified.",
+      "verifiedBy": "extra.json"
+    },
+    {
+      "initialCheck": "Request type pagination",
+      "reason": "Initial sequence acted before new rows finished rendering; repeated after visible row index changed, using real keyboard typing.",
+      "verifiedBy": "pagination.json"
+    }
+  ],
+  "limits": [
+    "Successful create/update/lock operations against the real backend were not exercised; existing system configuration and permissions were preserved.",
+    "Only nhandt01 used; role/permission denial matrix not covered.",
+    "Mobile/touch emulation was used, not a physical device. Browser/OS matrix and prolonged load testing not performed.",
+    "Failure/retry scenarios used controlled 503 responses, not actual server incidents.",
+    "Export verification checked successful download and XLSX archive signature; spreadsheet cell-by-cell correctness not audited."
+  ],
+  "applicationSourceModified": true,
+  "evidence": [
+    "browser.json",
+    "extra.json",
+    "rechecks.json",
+    "pagination.json",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/permission-help-before-resize.png",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/permission-help-after-resize.png",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/template-mobile.png",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/mobile-touch-office.png",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/positions-light.png",
+    "/tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023/positions-dark.png",
+    "fix-verification.json"
+  ],
+  "originalTestResult": "All seven settings pages passed core list/form/responsive checks. One minor UX finding confirmed: permission-help dialog closes when crossing the 640px responsive breakpoint. No JavaScript page errors or real configuration changes.",
+  "fixVerification": {
+    "frontend": "http://127.0.0.1:5186",
+    "backend": "https://ticket-api.aiminds.io.vn",
+    "previewOpenedInDefaultBrowser": true,
+    "hostedDeployment": false,
+    "regressionFilesPassed": 4,
+    "regressionTestsPassed": 151,
+    "newRegressionCases": 1,
+    "regressionDurationSeconds": 17.6,
+    "checksPassed": [
+      "lint",
+      "typecheck",
+      "TEST build",
+      "format of changed source/tests",
+      "git diff --check",
+      "same dialog DOM and focus remain across six viewport changes",
+      "close, reopen and Escape"
+    ],
+    "buildWarning": "Existing bundle chunk-size warning (some chunks exceed 500 kB)."
+  },
+  "imageStorage": "QA images moved outside the repository to /tmp/ticket-ui-qa/source-artifacts/settings-ui-20261023; new images will also stay outside source."
+}
