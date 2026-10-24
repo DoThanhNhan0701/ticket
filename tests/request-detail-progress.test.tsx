@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { useRef } from "react";
+import { Profiler, useRef } from "react";
 import { hrTerminationTemplate } from "./fixtures/create-request";
 import {
   act,
@@ -32,6 +32,7 @@ const groups: TemplateGroup[] = [
 ];
 const scroll = vi.fn();
 const submit = vi.fn();
+const progressCommit = vi.fn();
 let viewportWidth = 400;
 const resizeCallbacks: Array<() => void> = [];
 
@@ -50,12 +51,14 @@ function Harness({
   const scrollContainer = useRef<HTMLDivElement>(null);
   return (
     <form onSubmit={submit}>
-      <RequestDetailProgress
-        form={form}
-        fields={fields}
-        disabled={disabled}
-        scrollContainer={scrollContainer}
-      />
+      <Profiler id="detail-progress" onRender={progressCommit}>
+        <RequestDetailProgress
+          form={form}
+          fields={fields}
+          disabled={disabled}
+          scrollContainer={scrollContainer}
+        />
+      </Profiler>
       <div ref={scrollContainer}>
         <div />
       </div>
@@ -147,6 +150,24 @@ it("reveals missing inputs and counts both ends of a required date range without
   expect(screen.getByRole("button", { name: "Đến ô chưa nhập" })).toBeTruthy();
   expect(submit).not.toHaveBeenCalled();
   expect(screen.queryByRole("alert")).toBeNull();
+});
+
+it("does not commit progress again while typing without changing required completion", () => {
+  render(<Harness />);
+  const input = document.getElementById("detail-0-f0")!;
+  fireEvent.change(input, { target: { value: "Filled" } });
+  // Warm the subscription before measuring steady-state input edits.
+  fireEvent.change(input, { target: { value: "Filled warm" } });
+  progressCommit.mockClear();
+  for (let index = 0; index < 10; index++)
+    fireEvent.change(input, { target: { value: `Filled ${index}` } });
+  console.log(
+    `RENDER_AUDIT detail-progress: ${progressCommit.mock.calls.length}`,
+  );
+  expect(progressCommit).not.toHaveBeenCalled();
+  fireEvent.change(input, { target: { value: "" } });
+  expect(screen.getByText(/Đã nhập 0\/4 ô bắt buộc/)).toBeTruthy();
+  expect(progressCommit).toHaveBeenCalled();
 });
 
 it("updates totals when rows are added and removed", () => {

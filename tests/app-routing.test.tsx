@@ -114,6 +114,8 @@ let auth: AuthContextValue;
 let guideDocument: GuideDocument;
 
 beforeAll(async () => {
+  // Keep cold Vite module transformation outside UI assertion deadlines.
+  await Promise.all([import("@/pages/workspace"), import("@/pages/help")]);
   const buffer = Uint8Array.from(
     readFileSync(new URL("../public" + USER_GUIDE_URL, import.meta.url)),
   ).buffer;

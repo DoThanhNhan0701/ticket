@@ -29,7 +29,20 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
       observer.observe(container.firstElementChild);
     return () => observer.disconnect();
   }, [scrollContainer]);
-  const rows = useWatch({ control: form.control, name: "rows" });
+  const completedRows = useWatch({
+    control: form.control,
+    name: "rows",
+    // Subscribe to completion, so typing within a filled input stays local.
+    compute: (rows) =>
+      (rows ?? []).map((row) =>
+        Object.fromEntries(
+          Object.entries(row.values ?? {}).map(([key, value]) => [
+            key,
+            Boolean(value?.trim()),
+          ]),
+        ),
+      ),
+  });
   const requiredInputs = useMemo(
     () =>
       fields
@@ -61,9 +74,9 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
   const { total, missing, next } = useMemo(() => {
     let missing = 0;
     let next: { id: string; label: string } | undefined;
-    for (const [index, row] of (rows ?? []).entries()) {
+    for (const [index, row] of completedRows.entries()) {
       for (const input of requiredInputs) {
-        if (row.values?.[input.key]?.trim()) continue;
+        if (row[input.key]) continue;
         missing++;
         next ??= {
           id: `detail-${index}-${input.id}`,
@@ -72,11 +85,11 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
       }
     }
     return {
-      total: (rows?.length ?? 0) * requiredInputs.length,
+      total: completedRows.length * requiredInputs.length,
       missing,
       next,
     };
-  }, [rows, requiredInputs]);
+  }, [completedRows, requiredInputs]);
   if (!hasOverflow || !next) return null;
 
   return (

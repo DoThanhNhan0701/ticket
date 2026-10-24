@@ -2568,6 +2568,12 @@ it("restores calendar date, interviewer and view from URL and follows browser hi
     "/recruitment/interviews?from_date=2030-12-10&calendar_view=day&user_interview=test-user",
   );
   await screen.findByRole("grid", { name: "Lịch phỏng vấn" });
+  const calendarScroll = screen.getByRole("region", {
+    name: "Cuộn lịch phỏng vấn",
+  });
+  expect(calendarScroll.tabIndex).toBe(0);
+  calendarScroll.focus();
+  expect(document.activeElement).toBe(calendarScroll);
   expect(
     (screen.getByLabelText(/^Ngày xem lịch/) as HTMLInputElement).value,
   ).toBe("10/12/2030");

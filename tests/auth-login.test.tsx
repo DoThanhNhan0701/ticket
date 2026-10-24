@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, expect, it, vi } from "vitest";
 import App from "@/app/app";
 import { AuthProvider } from "@/features/auth/providers/auth-provider";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
@@ -26,6 +26,11 @@ import {
 } from "@/constants/auth";
 
 const fetchMock = vi.fn<typeof fetch>();
+beforeAll(async () => {
+  // Transform the real lazy route outside DOM assertion deadlines.
+  // Browser E2E still exercises the cold navigation and loading boundary.
+  await import("@/pages/workspace");
+});
 vi.mock("@/features/requests/api/requests-api", () => ({
   listRequestsRequest: vi.fn().mockResolvedValue({ count: 0, results: [] }),
   listRequestStatusesRequest: vi.fn().mockResolvedValue([]),

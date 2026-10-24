@@ -191,7 +191,13 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
   const today = format(new Date(), "yyyy-MM-dd");
   if (props.view === "month")
     return (
-      <div className="min-h-0 flex-1 overflow-auto rounded-xl border bg-card">
+      <div
+        role="region"
+        aria-label="Cuộn lịch phỏng vấn"
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Keyboard users need to scroll the calendar.
+        tabIndex={0}
+        className="min-h-0 flex-1 overflow-auto rounded-xl border bg-card focus-visible:outline-2 focus-visible:outline-ring"
+      >
         <div role="grid" aria-label="Lịch phỏng vấn" className="min-w-[980px]">
           {Array.from(
             { length: Math.ceil(props.days.length / 7) },
@@ -240,7 +246,11 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
   return (
     <div
       ref={scroll}
-      className="relative min-h-80 flex-1 overflow-auto rounded-xl border bg-card"
+      role="region"
+      aria-label="Cuộn lịch phỏng vấn"
+      // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Keyboard users need to scroll the calendar.
+      tabIndex={0}
+      className="relative min-h-80 flex-1 overflow-auto rounded-xl border bg-card focus-visible:outline-2 focus-visible:outline-ring"
     >
       <div
         role="grid"

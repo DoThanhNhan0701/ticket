@@ -78,8 +78,8 @@ const save = () =>
 const log = (event, data) => console.log(JSON.stringify({ event, ...data }));
 let browser;
 let current = "setup";
-async function login(context, credentials) {
-  const page = await context.newPage();
+async function login(context, credentials, existingPage) {
+  const page = existingPage || (await context.newPage());
   await page.goto(base + "/login");
   await page.locator("#login-username").fill(credentials.username);
   await page.locator("#login-password").fill(credentials.password);
@@ -307,10 +307,38 @@ async function verify(profile, password, full) {
     for (const [path, permission] of pages) {
       const requests = [];
       const apiErrors = [];
+      const responseChecks = [];
+      const responseMessages = [];
       const observeResponse = (response) => {
         const pathname = new URL(response.url()).pathname;
         if (pathname.startsWith("/api/") && response.status() >= 400)
           apiErrors.push({ path: pathname, status: response.status() });
+        if (
+          pathname.startsWith("/api/") &&
+          response.headers()["content-type"]?.includes("application/json")
+        ) {
+          responseChecks.push(
+            response
+              .json()
+              .then((body) => {
+                if (body?.message || body?.detail || body?.error)
+                  responseMessages.push({
+                    path: pathname,
+                    message: body.message,
+                    detail: body.detail,
+                    error: body.error,
+                  });
+                if (body?.message === "You do not have access")
+                  apiErrors.push({
+                    path: pathname,
+                    status: 403,
+                    httpStatus: response.status(),
+                    legacyDenied: true,
+                  });
+              })
+              .catch(() => {}),
+          );
+        }
       };
       const observe = (request) => {
         const path = new URL(request.url()).pathname;
@@ -324,6 +352,7 @@ async function verify(profile, password, full) {
       await page.goto(base + path);
       await restored;
       await page.waitForLoadState("networkidle");
+      await Promise.all(responseChecks);
       const expected = roles.has(permission);
       if (!expected) {
         await page
@@ -340,14 +369,30 @@ async function verify(profile, password, full) {
         );
       } else {
         await page.getByRole("main").waitFor();
+        const denied = await page
+          .getByRole("heading", {
+            name: "Bạn chưa có quyền truy cập",
+            exact: true,
+          })
+          .count();
+        // Functional access does not grant access to an unrelated ticket.
+        const resourceDenied =
+          contextual.has(path) &&
+          apiErrors.some((error) => error.status === 403);
+        if (denied && !resourceDenied) {
+          profile.denialDiagnostic = {
+            path,
+            requests,
+            apiErrors,
+            responseMessages,
+            url: page.url(),
+          };
+          save();
+        }
         assert.equal(
-          await page
-            .getByRole("heading", {
-              name: "Bạn chưa có quyền truy cập",
-              exact: true,
-            })
-            .count(),
-          0,
+          denied,
+          resourceDenied ? 1 : 0,
+          `Unexpected access result for ${profile.username}: ${path}`,
         );
       }
       assert.equal(
@@ -366,14 +411,25 @@ async function verify(profile, password, full) {
         expected: expected ? "allowed" : "denied",
         result: "passed",
         apiErrors,
+        resourceDenied:
+          expected && apiErrors.some((error) => error.status === 403),
         displayedAlerts: await page
           .getByRole("main")
           .getByRole("alert")
           .allTextContents(),
       });
       save();
+      if (expected && apiErrors.some((error) => error.status === 403)) {
+        // The current app clears its session after an API access denial.
+        // Reauthenticate through UI so subsequent route checks are independent.
+        await login(context, { username: profile.username, password }, page);
+      }
     }
     profile.verification = "passed";
+    if (profile.denialDiagnostic) {
+      profile.previousHarnessDiagnostic = profile.denialDiagnostic;
+      delete profile.denialDiagnostic;
+    }
     save();
     log("verified", {
       username: profile.username,
@@ -401,7 +457,9 @@ async function verify(profile, password, full) {
     const admin = await browser.newContext({
       viewport: { width: 1440, height: 1000 },
     });
-    const { page } = await login(admin, input.admin);
+    const { page, account: adminAccount } = await login(admin, input.admin);
+    report.availableSupplementalGroups = adminAccount.ls_permission;
+    report.adminPermissions = adminAccount.userPermission;
     const allow = new Set([
       "/api/token/",
       "/api/token/refresh/",
@@ -482,8 +540,27 @@ async function verify(profile, password, full) {
       report.team = { id: team.id, name: team.name };
       save();
     }
-    const profiles =
+    let profiles =
       mode === "smoke" ? report.profiles.slice(0, 1) : report.profiles;
+    if (process.env.PROFILE_USERNAMES) {
+      const requested = new Set(process.env.PROFILE_USERNAMES.split(","));
+      profiles = profiles.filter((profile) => requested.has(profile.username));
+      assert(profiles.length === requested.size, "Unknown profile requested");
+    }
+    if (mode === "verify") {
+      report.startedAt = new Date().toISOString();
+      report.failures = (report.failures || []).filter(
+        (failure) =>
+          !profiles.some((profile) => profile.username === failure.profile),
+      );
+      for (const profile of profiles) {
+        delete profile.verification;
+        delete profile.pages;
+        delete profile.login;
+        delete profile.sidebar;
+      }
+      save();
+    }
     for (const profile of profiles) {
       current = profile.username;
       if (mode === "create" && profile.verification === "passed") {
@@ -491,11 +568,24 @@ async function verify(profile, password, full) {
         continue;
       }
       if (mode !== "verify") await createUser(page, profile);
-      await verify(profile, input.testPassword, mode !== "smoke");
+      try {
+        await verify(profile, input.testPassword, mode !== "smoke");
+      } catch (error) {
+        if (mode !== "verify") throw error;
+        profile.verification = "failed";
+        report.failures.push({
+          profile: profile.username,
+          message: error.message,
+        });
+        save();
+        log("failed", { username: profile.username, message: error.message });
+      }
     }
     await admin.close();
     delete report.failure;
+    report.finishedAt = new Date().toISOString();
     save();
+    if (report.failures?.length) process.exitCode = 1;
     log("complete", { mode, profiles: profiles.length, report: reportPath });
   } finally {
     await browser.close();

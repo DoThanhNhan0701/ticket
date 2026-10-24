@@ -1,4 +1,9 @@
 import { interviewState } from "./modules/interview-state";
+import {
+  cleanupHrRoleTickets,
+  hrRoleWorkflow,
+  roleWorkflow,
+} from "./modules/role-workflow";
 import { duplicateUi } from "./modules/duplicate-ui";
 import { interviewUi, interviewerNamesUi } from "./modules/interview-ui";
 import { notificationJourney } from "./modules/notifications";
@@ -47,6 +52,24 @@ test("continuous frontend workflow: one browser, one context, UI-only navigation
   await h.install();
   try {
     await initialAuth(h);
+    if (process.env.E2E_ROLE_CLEANUP_FILES) {
+      await cleanupHrRoleTickets(
+        h,
+        JSON.parse(process.env.E2E_ROLE_CLEANUP_FILES),
+      );
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_HR_ROLE_WORKFLOW === "true") {
+      await hrRoleWorkflow(h);
+      await finalLogout(h);
+      return;
+    }
+    if (process.env.E2E_ROLE_WORKFLOW === "true") {
+      await roleWorkflow(h);
+      await finalLogout(h);
+      return;
+    }
     if (process.env.E2E_NAVIGATION_ROUTE) {
       const item = menu.find(
         (entry) => entry.route === process.env.E2E_NAVIGATION_ROUTE,
