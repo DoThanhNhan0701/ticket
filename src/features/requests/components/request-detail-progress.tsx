@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { memo, useEffect, useMemo, useState, type RefObject } from "react";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import { ArrowRight, ListChecks } from "lucide-react";
@@ -16,6 +17,7 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
   disabled: boolean;
   scrollContainer: RefObject<HTMLDivElement | null>;
 }>) {
+  const locale = useLocale();
   const [hasOverflow, setHasOverflow] = useState(false);
   useEffect(() => {
     const container = scrollContainer.current;
@@ -54,12 +56,12 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
                   {
                     key: `${field.fieldKey}_start`,
                     suffix: "-start",
-                    label: " – Từ ngày",
+                    label: t("request-create", " – Từ ngày", [], locale),
                   },
                   {
                     key: `${field.fieldKey}_end`,
                     suffix: "-end",
-                    label: " – Đến ngày",
+                    label: t("request-create", " – Đến ngày", [], locale),
                   },
                 ]
               : [{ key: field.fieldKey, suffix: "", label: "" }];
@@ -69,7 +71,7 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
             label: `${field.title}${part.label}`,
           }));
         }),
-    [fields],
+    [fields, locale],
   );
   const { total, missing, next } = useMemo(() => {
     let missing = 0;
@@ -80,7 +82,12 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
         missing++;
         next ??= {
           id: `detail-${index}-${input.id}`,
-          label: `Dòng ${index + 1} · ${input.label}`,
+          label: t(
+            "request-create",
+            "Dòng {0} · {1}",
+            [index + 1, input.label],
+            locale,
+          ),
         };
       }
     }
@@ -89,7 +96,7 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
       missing,
       next,
     };
-  }, [completedRows, requiredInputs]);
+  }, [completedRows, requiredInputs, locale]);
   if (!hasOverflow || !next) return null;
 
   return (
@@ -98,21 +105,28 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
       <div className="min-w-0 flex-1 text-xs" aria-live="polite">
         <p
           className="truncate font-medium"
-          title={`Đã nhập ${total - missing}/${total} ô bắt buộc · Còn ${missing} ô chưa nhập`}
+          title={t(
+            "request-create",
+            "Đã nhập {0}/{1} ô bắt buộc · Còn {2} ô chưa nhập",
+            [total - missing, total, missing],
+          )}
         >
-          Đã nhập {total - missing}/{total} ô bắt buộc
-          {` · Còn ${missing} ô chưa nhập`}
+          {" "}
+          {t("request-create", "Đã nhập")} {total - missing}/{total}{" "}
+          {t("request-create", "ô bắt buộc")}{" "}
+          {t("request-create", " · Còn {0} ô chưa nhập", [missing])}
         </p>
         <p className="mt-0.5 truncate" title={next.label}>
-          Tiếp theo: {next.label}
+          {" "}
+          {t("request-create", "Tiếp theo:")} {next.label}
         </p>
       </div>
       <Button
         type="button"
         size="sm"
         variant="outline"
-        aria-label="Đến ô chưa nhập"
-        title="Đến ô chưa nhập"
+        aria-label={t("request-create", "Đến ô chưa nhập")}
+        title={t("request-create", "Đến ô chưa nhập")}
         className="size-9 shrink-0 px-0 sm:h-8 sm:w-auto sm:px-3"
         disabled={disabled}
         onClick={() => {
@@ -121,7 +135,9 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
           input?.scrollIntoView({ block: "nearest", inline: "nearest" });
         }}
       >
-        <span className="hidden sm:inline">Đến ô chưa nhập</span>
+        <span className="hidden sm:inline">
+          {t("request-create", "Đến ô chưa nhập")}
+        </span>
         <ArrowRight className="size-3.5" aria-hidden="true" />
       </Button>
     </div>

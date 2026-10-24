@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { MobilePageAction } from "@/components/layout/mobile-page-action";
 import { useId, useState, type ReactNode } from "react";
 import { Search } from "lucide-react";
@@ -43,13 +44,14 @@ interface DataSearchProps {
 }
 
 function DataSearchForm({
-  label = "Tìm kiếm dữ liệu",
-  placeholder = "Tìm kiếm nhanh...",
+  label = t("common", "Tìm kiếm dữ liệu"),
+  placeholder = t("common", "Tìm kiếm nhanh..."),
   initialValue,
   filter,
   onSearch,
   iconOnlyOnMobile = false,
 }: Readonly<Omit<DataSearchProps, "actions" | "resetKey" | "className">>) {
+  useLocale();
   const [value, setValue] = useState(initialValue);
   const [filterValue, setFilterValue] = useState(filter?.initialValue ?? "");
   const filterId = useId();
@@ -110,8 +112,8 @@ function DataSearchForm({
         ))}
       <Button
         type="submit"
-        aria-label="Tìm kiếm"
-        title="Tìm kiếm"
+        aria-label={t("common", "Tìm kiếm")}
+        title={t("common", "Tìm kiếm")}
         className={
           iconOnlyOnMobile ? "w-11 px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
         }
@@ -120,7 +122,7 @@ function DataSearchForm({
           <Search className="size-4 sm:hidden" aria-hidden="true" />
         )}
         <span className={iconOnlyOnMobile ? "hidden sm:inline" : undefined}>
-          Tìm kiếm
+          {t("common", "Tìm kiếm")}
         </span>
       </Button>
     </form>
@@ -133,6 +135,7 @@ export function DataSearch({
   className,
   ...props
 }: Readonly<DataSearchProps>) {
+  useLocale();
   const mobile = useIsMobile();
   if (mobile)
     return (
@@ -172,13 +175,14 @@ export function DataSearch({
 function MobileDataSearch({
   initialValue,
   filter,
-  label = "Tìm kiếm dữ liệu",
-  placeholder = "Nhập từ khóa...",
+  label = t("common", "Tìm kiếm dữ liệu"),
+  placeholder = t("common", "Nhập từ khóa..."),
   mobileFilters,
   actions,
   className,
   onSearch,
 }: Readonly<DataSearchProps>) {
+  useLocale();
   const all = filter?.allOptionValue ?? "all";
   const fields: DataFilterField[] = [
     { name: "search", label, placeholder },
@@ -199,7 +203,7 @@ function MobileDataSearch({
   const drawer = (
     <DataFiltersDrawer
       iconOnly
-      label="Tìm kiếm nâng cao"
+      label={t("common", "Tìm kiếm nâng cao")}
       fields={mobileFilters?.fields ?? fields}
       initialValues={
         mobileFilters?.initialValues ?? {

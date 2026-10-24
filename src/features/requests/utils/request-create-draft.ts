@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { z } from "zod";
 import {
   createdRequestSchema,
@@ -77,7 +78,9 @@ function openDraftFiles() {
   if (!database) {
     database = new Promise<IDBDatabase>((resolve, reject) => {
       if (typeof indexedDB === "undefined") {
-        reject(new Error("Attachment storage unavailable"));
+        reject(
+          new Error(t("request-create", "Attachment storage unavailable")),
+        );
         return;
       }
       const request = indexedDB.open("ticket-request-drafts", 1);
@@ -85,7 +88,7 @@ function openDraftFiles() {
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
       request.onblocked = () =>
-        reject(new Error("Attachment storage is blocked"));
+        reject(new Error(t("request-create", "Attachment storage is blocked")));
     }).catch((error: unknown) => {
       database = undefined;
       throw error;

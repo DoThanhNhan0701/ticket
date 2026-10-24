@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useRef, type MouseEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -7,6 +8,7 @@ import type { GuideDocument } from "../api/user-guide-api";
 import "./guide-document.css";
 
 export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
+  useLocale();
   const [params, setParams] = useSearchParams();
   const scroll = useRef<HTMLDivElement>(null);
   const requested = Number(params.get("chapter") ?? 1);
@@ -39,13 +41,13 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
   return (
     <div className="grid min-h-0 min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden sm:rounded-2xl sm:border sm:border-border/80 sm:bg-card sm:shadow-sm lg:grid-cols-[18rem_minmax(0,1fr)] lg:grid-rows-1">
       <nav
-        aria-label="Mục lục hướng dẫn"
+        aria-label={t("help", "Mục lục hướng dẫn")}
         className="min-h-0 min-w-0 border-b border-border/70 pb-3 sm:bg-muted/20 sm:p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
       >
         <div className="lg:hidden">
           <SearchableSelect
             id="user-guide-chapter"
-            label="Chọn chương hướng dẫn"
+            label={t("help", "Chọn chương hướng dẫn")}
             value={String(selected + 1)}
             options={guide.chapters.map((item, index) => ({
               value: String(index + 1),
@@ -56,9 +58,9 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
         </div>
         <div className="hidden lg:block">
           <div className="mb-4 flex items-center justify-between px-2 py-2">
-            <p className="text-sm font-semibold">Mục lục</p>
+            <p className="text-sm font-semibold">{t("help", "Mục lục")}</p>
             <span className="text-xs text-muted-foreground">
-              {guide.chapters.length} chương
+              {guide.chapters.length} {t("help", "chương")}{" "}
             </span>
           </div>
           <div className="space-y-1">
@@ -97,12 +99,13 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
         >
           <div className="mb-4 border-b border-border/60 pb-3">
             <p className="mb-1.5 text-xs font-medium tracking-widest text-primary uppercase">
-              Chương {String(selected + 1).padStart(2, "0")}
+              {" "}
+              {t("help", "Chương")} {String(selected + 1).padStart(2, "0")}
               <span className="mx-2 text-border" aria-hidden="true">
                 /
               </span>
               <span className="tracking-normal text-muted-foreground">
-                {guide.chapters.length} chương
+                {guide.chapters.length} {t("help", "chương")}{" "}
               </span>
             </p>
             <h2
@@ -115,7 +118,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
           {selected === 0 && guide.introductionHtml && (
             <details className="mb-6 rounded-xl border border-border/70 p-4">
               <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
-                Thông tin tài liệu
+                {t("help", "Thông tin tài liệu")}
               </summary>
               <div
                 className="guide-document mt-4"
@@ -130,7 +133,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
             dangerouslySetInnerHTML={{ __html: chapter.html }}
           />
           <nav
-            aria-label="Điều hướng chương"
+            aria-label={t("help", "Điều hướng chương")}
             className="mt-10 grid grid-cols-2 gap-3 border-t border-border/60 pt-5"
           >
             <Button
@@ -140,7 +143,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
               className="h-auto min-h-11 justify-start px-3 text-xs whitespace-normal sm:text-sm"
             >
               <ArrowLeft className="size-4" aria-hidden="true" />
-              Chương trước
+              {t("help", "Chương trước")}
             </Button>
             <Button
               variant="outline"
@@ -148,7 +151,8 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
               onClick={() => selectChapter(String(selected + 2))}
               className="h-auto min-h-11 justify-end px-3 text-xs whitespace-normal sm:text-sm"
             >
-              Chương tiếp theo
+              {" "}
+              {t("help", "Chương tiếp theo")}{" "}
               <ArrowRight className="size-4" aria-hidden="true" />
             </Button>
           </nav>

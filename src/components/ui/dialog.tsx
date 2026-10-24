@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import * as React from "react";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { X } from "lucide-react";
@@ -13,6 +14,7 @@ function DialogContent({
   children,
   ...props
 }: Readonly<DialogPrimitive.Popup.Props>) {
+  useLocale();
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Backdrop className="fixed inset-0 z-50 bg-black/65 transition-opacity data-closed:opacity-0" />
@@ -33,6 +35,7 @@ function DialogContent({
 }
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+  useLocale();
   return (
     <div
       data-slot="dialog-header"
@@ -46,6 +49,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
+  useLocale();
   return (
     <div
       data-slot="dialog-footer"
@@ -62,6 +66,7 @@ function DialogTitle({
   className,
   ...props
 }: Readonly<DialogPrimitive.Title.Props>) {
+  useLocale();
   return (
     <DialogPrimitive.Title
       className={cn("m-0 text-sm leading-5 font-semibold", className)}
@@ -74,6 +79,7 @@ function DialogDescription({
   className,
   ...props
 }: Readonly<DialogPrimitive.Description.Props>) {
+  useLocale();
   return (
     <DialogPrimitive.Description
       className={cn(
@@ -98,6 +104,7 @@ function DialogHeading({
   description: React.ReactNode;
   descriptionId?: string;
 }>) {
+  useLocale();
   return (
     <div className="flex min-w-0 flex-1 items-center gap-3">
       <span
@@ -126,9 +133,10 @@ function DialogCloseButton({
   className,
   ...props
 }: Readonly<DialogPrimitive.Close.Props>) {
+  useLocale();
   return (
     <DialogPrimitive.Close
-      aria-label="Close dialog"
+      aria-label={t("common", "Close dialog")}
       className={cn(
         "flex h-11 w-11 shrink-0 sm:h-8 sm:w-8 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
         className,

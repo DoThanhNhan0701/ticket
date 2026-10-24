@@ -1,6 +1,7 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useState } from "react";
 import { Copy, FileText, Image, RotateCcw, X } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { getFileTileColor } from "../utils/file-tile-color";
 
@@ -25,9 +26,10 @@ export function FileAttachmentTile({
   onPreview,
   onRemove,
   onRestore,
-  removeLabel = `Bỏ tệp ${name}`,
+  removeLabel = t("attachments", "Bỏ tệp {0}", [name]),
   disabled,
 }: Readonly<FileAttachmentTileProps>) {
+  useLocale();
   const [localUrl, setLocalUrl] = useState("");
   const [failedSource, setFailedSource] = useState<string | null>(null);
   useEffect(() => {
@@ -120,21 +122,24 @@ function CopyFileLink({
   url,
   disabled,
 }: Readonly<{ name: string; url: string; disabled?: boolean }>) {
+  useLocale();
   return (
     <Button
       type="button"
       variant="outline"
       size="icon"
-      title="Sao chép liên kết"
-      aria-label={`Sao chép liên kết ${name}`}
+      title={t("attachments", "Sao chép liên kết")}
+      aria-label={t("attachments", "Sao chép liên kết {0}", [name])}
       disabled={disabled}
       className="pointer-events-none absolute right-1 bottom-1 z-10 size-7 rounded-md bg-card/95 opacity-0 shadow-xs group-hover/file:pointer-events-auto group-hover/file:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(url);
-          toast.success("Đã sao chép liên kết tệp.");
+          toast.success(t("attachments", "Đã sao chép liên kết tệp."));
         } catch {
-          toast.error("Không thể sao chép liên kết. Vui lòng thử lại.");
+          toast.error(
+            t("attachments", "Không thể sao chép liên kết. Vui lòng thử lại."),
+          );
         }
       }}
     >
@@ -155,6 +160,7 @@ function FileTileAction({
     "name" | "removeLabel" | "onRemove" | "onRestore" | "disabled"
   >
 >) {
+  useLocale();
   if (!onRemove && !onRestore) return null;
   return (
     <Button
@@ -163,8 +169,14 @@ function FileTileAction({
       size="icon"
       className="absolute top-0.5 right-0.5 z-10 size-6 rounded-full bg-card/95 shadow-xs"
       disabled={disabled}
-      aria-label={onRestore ? `Khôi phục tệp ${name}` : removeLabel}
-      title={onRestore ? "Khôi phục tệp" : "Bỏ tệp"}
+      aria-label={
+        onRestore ? t("attachments", "Khôi phục tệp {0}", [name]) : removeLabel
+      }
+      title={
+        onRestore
+          ? t("attachments", "Khôi phục tệp")
+          : t("attachments", "Bỏ tệp")
+      }
       onClick={onRestore || onRemove}
     >
       {onRestore ? (

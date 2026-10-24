@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { RecruitmentListData } from "../types";
@@ -11,12 +12,15 @@ export function RecruitmentAttachStatus({
   schedules: UseQueryResult<RecruitmentListData, Error>;
   hasDate: boolean;
 }>) {
+  useLocale();
   return (
     <div className="space-y-2 text-sm">
-      <p className="text-muted-foreground">Đã chọn {count} ứng viên.</p>
+      <p className="text-muted-foreground">
+        {t("recruitment", "Đã chọn")} {count} {t("recruitment", "ứng viên.")}
+      </p>
       {schedules.isFetching && (
         <p role="status" className="text-muted-foreground">
-          Đang tải lịch phỏng vấn...
+          {t("recruitment", "Đang tải lịch phỏng vấn...")}
         </p>
       )}
       {hasDate &&
@@ -24,7 +28,10 @@ export function RecruitmentAttachStatus({
         !schedules.isFetching &&
         schedules.data.results.length === 0 && (
           <p role="status" className="rounded-lg border bg-muted/30 p-3">
-            Không có lịch phỏng vấn trong ngày đã chọn. Vui lòng chọn ngày khác.
+            {t(
+              "recruitment",
+              "Không có lịch phỏng vấn trong ngày đã chọn. Vui lòng chọn ngày khác.",
+            )}
           </p>
         )}
       {schedules.isError && <ErrorToast message={schedules.error.message} />}

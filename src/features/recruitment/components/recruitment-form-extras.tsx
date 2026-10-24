@@ -1,6 +1,7 @@
+import { t, useLocale } from "@/i18n";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { Copy, Paperclip } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { RequestAttachments } from "@/features/requests/components/request-attachments";
 import { TicketFiles } from "@/features/requests/components/ticket-files";
@@ -24,12 +25,15 @@ export function RecruitmentFormExtras({
   onFile: (name: string, file: File | undefined) => void;
   hideInterviewFile?: boolean;
 }>) {
+  useLocale();
   return (
     <>
       {state.action === "request" && Boolean(state.row.link_cv) && (
         <div className="flex items-center gap-2">
           <span className="min-w-0 flex-1 truncate text-sm">
-            Mã link CV: {recruitmentText(state.row.link_cv)}
+            {" "}
+            {t("recruitment", "Mã link CV:")}{" "}
+            {recruitmentText(state.row.link_cv)}
           </span>
           <Button
             type="button"
@@ -44,20 +48,31 @@ export function RecruitmentFormExtras({
                   )!,
                 )
                 .then(
-                  () => toast.success("Đã sao chép link CV."),
-                  () => toast.error("Không sao chép được link CV."),
+                  () => toast.success(t("recruitment", "Đã sao chép link CV.")),
+                  () =>
+                    toast.error(
+                      t("recruitment", "Không sao chép được link CV."),
+                    ),
                 );
             }}
           >
             <Copy className="size-4" />
-            Sao chép
+            {t("recruitment", "Sao chép")}
           </Button>
         </div>
       )}
       {[
-        ["path_file_recr", "name_file_recr", "Tệp tuyển dụng"],
-        ["path_file_cv", "name_file_cv", "Tệp CV"],
-        ["path_file_interview", "name_file_interview", "Tệp phỏng vấn"],
+        [
+          "path_file_recr",
+          "name_file_recr",
+          t("recruitment", "Tệp tuyển dụng"),
+        ],
+        ["path_file_cv", "name_file_cv", t("recruitment", "Tệp CV")],
+        [
+          "path_file_interview",
+          "name_file_interview",
+          t("recruitment", "Tệp phỏng vấn"),
+        ],
       ]
         .filter(
           ([path]) => !hideInterviewFile || path !== "path_file_interview",
@@ -78,7 +93,8 @@ export function RecruitmentFormExtras({
                 previewAllFiles
                 layout="tiles"
                 files={{
-                  [recruitmentText(state.row[name]) || "Tệp đính kèm"]: href,
+                  [recruitmentText(state.row[name]) ||
+                  t("recruitment", "Tệp đính kèm")]: href,
                 }}
               />
             </section>
@@ -103,7 +119,9 @@ export function RecruitmentFormExtras({
           }
           files={files[name] ? [files[name]] : []}
           multiple={false}
-          description={`Chọn một tệp bất kỳ, tối đa ${name === "file_upload" && state.action !== "request" ? 10 : 50} MB.`}
+          description={t("recruitment", "Chọn một tệp bất kỳ, tối đa {0} MB.", [
+            name === "file_upload" && state.action !== "request" ? 10 : 50,
+          ])}
           disabled={disabled}
           onChange={(selected) => onFile(name, selected[0])}
         />
@@ -113,6 +131,8 @@ export function RecruitmentFormExtras({
 }
 
 function uploadLabel(name: string, action: string) {
-  if (name === "file_note") return "Tệp ghi chú phỏng vấn";
-  return action === "request" ? "Tệp tuyển dụng" : "Tệp CV";
+  if (name === "file_note") return t("recruitment", "Tệp ghi chú phỏng vấn");
+  return action === "request"
+    ? t("recruitment", "Tệp tuyển dụng")
+    : t("recruitment", "Tệp CV");
 }

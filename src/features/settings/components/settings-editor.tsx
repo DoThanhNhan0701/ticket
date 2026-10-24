@@ -1,10 +1,11 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { Settings2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { CheckboxField } from "@/components/form/checkbox-field";
 import { LoadingState } from "@/components/loading-state";
@@ -41,6 +42,7 @@ function SettingsForm({
   onClose: () => void;
   onBusyChange: (busy: boolean) => void;
 }>) {
+  useLocale();
   const { userId, refreshUserPermission } = useAuthContext();
   const client = useQueryClient();
   const config = settingsConfig[kind];
@@ -92,7 +94,11 @@ function SettingsForm({
         queryKey: ["settings", kind, userId],
         refetchType: "none",
       });
-      toast.success(record ? "Đã cập nhật dữ liệu." : "Đã thêm dữ liệu.");
+      toast.success(
+        record
+          ? t("settings", "Đã cập nhật dữ liệu.")
+          : t("settings", "Đã thêm dữ liệu."),
+      );
       onClose();
       const refreshList = client.refetchQueries({
         type: "active",
@@ -119,7 +125,7 @@ function SettingsForm({
   return (
     <div className="relative" aria-busy={loading}>
       <form
-        aria-label={`${record ? "Chỉnh sửa" : "Thêm"} ${config.label}`}
+        aria-label={`${record ? t("settings", "Chỉnh sửa") : t("settings", "Thêm")} ${config.label}`}
         noValidate
         className="space-y-4"
         onSubmit={form.handleSubmit((values) => {
@@ -133,7 +139,9 @@ function SettingsForm({
         )}
         {lookups.isError && (
           <ErrorToast
-            message={`Không tải được danh mục: ${lookups.error.message}`}
+            message={t("settings", "Không tải được danh mục: {0}", [
+              lookups.error.message,
+            ])}
           />
         )}
         {mutation.isError && <ErrorToast message={mutation.error.message} />}
@@ -152,13 +160,13 @@ function SettingsForm({
             control={form.control}
             name="is_active"
             id="settings-is-active"
-            label="Kích hoạt"
+            label={t("settings", "Kích hoạt")}
             disabled={busy || !ready}
           />
           {kind === "request-types" && (
             <FormFieldShell
               id="settings-attachment"
-              label="Tài liệu hướng dẫn (PDF)"
+              label={t("settings", "Tài liệu hướng dẫn (PDF)")}
               className="sm:col-span-2"
               invalid={Boolean(attachmentError)}
               error={{ message: attachmentError }}
@@ -174,7 +182,9 @@ function SettingsForm({
                     file &&
                     (file.type !== "application/pdf" ||
                       !file.name.toLowerCase().endsWith(".pdf"));
-                  setAttachmentError(invalid ? "Vui lòng chọn tệp PDF." : "");
+                  setAttachmentError(
+                    invalid ? t("settings", "Vui lòng chọn tệp PDF.") : "",
+                  );
                   setAttachment(invalid ? undefined : file);
                 }}
               />
@@ -185,7 +195,7 @@ function SettingsForm({
                   rel="noopener noreferrer"
                   className="text-sm text-primary underline-offset-4 hover:underline"
                 >
-                  Xem tài liệu hiện tại
+                  {t("settings", "Xem tài liệu hiện tại")}
                 </a>
               )}
             </FormFieldShell>
@@ -198,21 +208,21 @@ function SettingsForm({
             disabled={busy}
             onClick={onClose}
           >
-            Hủy
+            {t("settings", "Hủy")}
           </Button>
           <AsyncButton
             type="submit"
             loading={busy}
-            loadingText="Đang lưu..."
+            loadingText={t("settings", "Đang lưu...")}
             disabled={!ready || Boolean(attachmentError)}
           >
-            Lưu
+            {t("settings", "Lưu")}
           </AsyncButton>
         </DialogFooter>
       </form>
       {loading && (
         <LoadingState
-          message="Đang tải thông tin..."
+          message={t("settings", "Đang tải thông tin...")}
           className="absolute inset-0 z-20 rounded-lg bg-card/80"
         />
       )}
@@ -229,6 +239,7 @@ export function SettingsEditor({
   record?: SettingsRecord;
   onClose: () => void;
 }>) {
+  useLocale();
   const config = settingsConfig[kind];
   const [busy, setBusy] = useState(false);
   return (
@@ -242,8 +253,11 @@ export function SettingsEditor({
         <DialogHeader>
           <DialogHeading
             icon={<Settings2 aria-hidden="true" />}
-            title={`${record ? "Chỉnh sửa" : "Thêm"} ${config.label}`}
-            description="Cập nhật thông tin và trạng thái hoạt động."
+            title={`${record ? t("settings", "Chỉnh sửa") : t("settings", "Thêm")} ${config.label}`}
+            description={t(
+              "settings",
+              "Cập nhật thông tin và trạng thái hoạt động.",
+            )}
           />
           <DialogCloseButton disabled={busy} />
         </DialogHeader>

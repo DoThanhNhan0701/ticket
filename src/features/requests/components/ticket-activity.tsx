@@ -1,3 +1,4 @@
+import { t, useLocale, translateMessage } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
@@ -11,6 +12,7 @@ export function TicketHistory({
   id,
   active,
 }: Readonly<{ id: number; active: boolean }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const history = useQuery({
     queryKey: ["ticket-history", id, userId],
@@ -21,12 +23,12 @@ export function TicketHistory({
   return (
     <Card className="min-w-0 gap-4 p-4 sm:p-5">
       {history.isPending && active && (
-        <LoadingState message="Đang tải lịch sử..." />
+        <LoadingState message={t("request-detail", "Đang tải lịch sử...")} />
       )}
       {history.isError && <ErrorToast message={history.error.message} />}
       {history.data?.length === 0 && (
         <p className="text-sm text-muted-foreground">
-          Chưa có lịch sử thay đổi.
+          {t("request-detail", "Chưa có lịch sử thay đổi.")}
         </p>
       )}
       <ol className="space-y-3">
@@ -42,11 +44,16 @@ export function TicketHistory({
                   {entry.username}
                 </strong>
                 <time className="text-xs text-muted-foreground">
-                  {timestamp && `- cập nhật lúc ${timestamp}`}
+                  {timestamp &&
+                    t("request-detail", "- cập nhật lúc {0}", [timestamp])}
                 </time>
               </div>
               <p className="whitespace-pre-wrap wrap-anywhere">
-                {[entry.system_log, entry.user_log, entry.comment_content]
+                {[
+                  translateMessage(entry.system_log),
+                  entry.user_log,
+                  entry.comment_content,
+                ]
                   .filter(Boolean)
                   .join("\n")}
               </p>

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect } from "react";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import { SelectField } from "@/components/form/select-field";
@@ -20,6 +21,7 @@ export function TicketAssignmentFields({
   form: UseFormReturn<TicketActionValues>;
   disabled: boolean;
 }>) {
+  useLocale();
   const mode = useWatch({ control: form.control, name: "mode" });
   const selected = useWatch({ control: form.control, name: "users" });
   const { setValue } = form;
@@ -46,17 +48,19 @@ export function TicketAssignmentFields({
         control={form.control}
         name="mode"
         id="ticket-assignment-mode"
-        label="Loại phân công"
+        label={t("request-actions", "Loại phân công")}
         options={modes}
         searchable
-        placeholder="Chọn loại phân công"
+        placeholder={t("request-actions", "Chọn loại phân công")}
         disabled={disabled}
         required
       />
       {!modes.some((option) => !option.disabled) && (
         <p role="status" className="text-sm text-muted-foreground">
-          Hiện không có người phù hợp để thêm hoặc thay thế. Yêu cầu phải giữ ít
-          nhất một người xử lý.
+          {t(
+            "request-actions",
+            "Hiện không có người phù hợp để thêm hoặc thay thế. Yêu cầu phải giữ ít nhất một người xử lý.",
+          )}
         </p>
       )}
       {mode === "change" && (
@@ -65,7 +69,7 @@ export function TicketAssignmentFields({
             control={form.control}
             name="oldUser"
             id="ticket-assignment-old"
-            label="Người đang xử lý"
+            label={t("request-actions", "Người đang xử lý")}
             options={current}
             searchable
             disabled={disabled}
@@ -75,7 +79,7 @@ export function TicketAssignmentFields({
             control={form.control}
             name="newUser"
             id="ticket-assignment-new"
-            label="Người nhận xử lý mới"
+            label={t("request-actions", "Người nhận xử lý mới")}
             options={available}
             searchable
             disabled={disabled}
@@ -90,11 +94,11 @@ export function TicketAssignmentFields({
           id="ticket-assignment-users"
           label={
             mode === "delete"
-              ? "Người cần xóa khỏi yêu cầu"
-              : "Người nhận xử lý"
+              ? t("request-actions", "Người cần xóa khỏi yêu cầu")
+              : t("request-actions", "Người nhận xử lý")
           }
           options={mode === "delete" ? current : available}
-          placeholder="Chọn người xử lý"
+          placeholder={t("request-actions", "Chọn người xử lý")}
           disabled={disabled}
           required
         />
@@ -106,8 +110,8 @@ export function TicketAssignmentFields({
           id="ticket-assignment-reason"
           label={
             mode === "delete"
-              ? "Lý do xóa người xử lý"
-              : "Lý do thay đổi người xử lý"
+              ? t("request-actions", "Lý do xóa người xử lý")
+              : t("request-actions", "Lý do thay đổi người xử lý")
           }
           disabled={disabled}
           required
@@ -116,16 +120,18 @@ export function TicketAssignmentFields({
       {removingAllActive && (
         <div className="space-y-3 rounded-lg border border-border bg-muted/30 p-3">
           <p className="text-sm text-muted-foreground">
-            Bạn đã chọn tất cả người đang xử lý. Chọn người thay thế bên dưới;
-            nếu để trống, yêu cầu sẽ được hoàn thành sau khi xóa.
+            {t(
+              "request-actions",
+              "Bạn đã chọn tất cả người đang xử lý. Chọn người thay thế bên dưới; nếu để trống, yêu cầu sẽ được hoàn thành sau khi xóa.",
+            )}
           </p>
           <MultiSelectField
             control={form.control}
             name="replacements"
             id="ticket-assignment-replacements"
-            label="Người nhận xử lý thay thế"
+            label={t("request-actions", "Người nhận xử lý thay thế")}
             options={available}
-            placeholder="Chọn người thay thế"
+            placeholder={t("request-actions", "Chọn người thay thế")}
             disabled={disabled}
           />
         </div>

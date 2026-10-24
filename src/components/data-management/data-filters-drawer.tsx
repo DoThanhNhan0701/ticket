@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useState } from "react";
 import { DataFiltersPanel } from "./data-filters-panel";
@@ -7,7 +8,7 @@ import type { DataFilterField, DataFilterValues } from "./types";
 
 export function DataFiltersDrawer<Name extends string>({
   fields,
-  description = "Lọc dữ liệu theo các thông tin bên dưới.",
+  description = t("common", "Lọc dữ liệu theo các thông tin bên dưới."),
   initialValues,
   onApply,
   onClear,
@@ -24,6 +25,7 @@ export function DataFiltersDrawer<Name extends string>({
   activeFilterCount?: number;
   iconOnly?: boolean;
 }>) {
+  useLocale();
   const [open, setOpen] = useState(false);
   const mobile = useIsMobile();
   return (

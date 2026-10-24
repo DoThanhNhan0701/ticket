@@ -1,0 +1,21 @@
+{
+  "Không đọc được nội dung tài liệu.": "Unable to read the document.",
+  "Hướng dẫn sử dụng": "User guide",
+  "Tài liệu hướng dẫn không có nội dung.": "The user guide is empty.",
+  "Không tải được tài liệu hướng dẫn. Vui lòng thử lại.": "Unable to load the user guide. Please try again.",
+  "Mục lục hướng dẫn": "Guide contents",
+  "Chọn chương hướng dẫn": "Select a guide chapter",
+  "Mục lục": "Contents",
+  "chương": "chapters",
+  "Chương": "Chapter",
+  "Thông tin tài liệu": "Document information",
+  "Điều hướng chương": "Chapter navigation",
+  "Chương trước": "Previous chapter",
+  "Chương tiếp theo": "Next chapter",
+  "Phiên bản {0}": "Version {0}",
+  "Cập nhật {0}": "Updated {0}",
+  "Tra cứu hướng dẫn sử dụng Rainscales Ticket": "Rainscales Ticket user guide",
+  "Tải tài liệu Word": "Download Word document",
+  "Đang tải tài liệu hướng dẫn…": "Loading the user guide…",
+  "Không đọc được tài liệu hướng dẫn. Vui lòng thử lại hoặc tải bản Word.": "Unable to read the user guide. Try again or download the Word document."
+}

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useState } from "react";
 import { Image } from "lucide-react";
 import {
@@ -12,6 +13,7 @@ export function ImagePreviewDialog({
   file,
   onClose,
 }: Readonly<{ file: File; onClose: () => void }>) {
+  useLocale();
   const [source, setSource] = useState("");
   const [failed, setFailed] = useState(false);
   useEffect(() => {
@@ -32,16 +34,16 @@ export function ImagePreviewDialog({
           <DialogHeading
             icon={<Image aria-hidden="true" />}
             title={file.name}
-            description="Xem trước hình ảnh đính kèm."
+            description={t("common", "Xem trước hình ảnh đính kèm.")}
           />
-          <DialogCloseButton aria-label="Đóng xem trước ảnh" />
+          <DialogCloseButton aria-label={t("common", "Đóng xem trước ảnh")} />
         </DialogHeader>
         {failed ? (
           <p
             role="status"
             className="py-8 text-center text-sm text-muted-foreground"
           >
-            Không thể xem trước ảnh này.
+            {t("common", "Không thể xem trước ảnh này.")}
           </p>
         ) : (
           source && (

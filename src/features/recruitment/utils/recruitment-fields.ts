@@ -1,44 +1,69 @@
+import { t } from "@/i18n";
 import type { RecruitmentAction, RecruitmentField } from "../types";
 const candidateFields: RecruitmentField[] = [
   {
     name: "first_name",
-    label: "Họ và tên",
-    placeholder: "Nhập họ và tên ứng viên...",
+    get label() {
+      return t("recruitment", "Họ và tên");
+    },
+    get placeholder() {
+      return t("recruitment", "Nhập họ và tên ứng viên...");
+    },
     required: true,
     min: 3,
     max: 150,
   },
-  { name: "birthday", label: "Ngày sinh", type: "date" },
+  {
+    name: "birthday",
+    get label() {
+      return t("recruitment", "Ngày sinh");
+    },
+    type: "date",
+  },
   {
     name: "gender",
-    label: "Giới tính",
+    get label() {
+      return t("recruitment", "Giới tính");
+    },
     type: "select",
     lookup: "genders",
     required: true,
   },
   {
     name: "numberphone",
-    label: "Số điện thoại",
-    placeholder: "VD: 0912345678",
+    get label() {
+      return t("recruitment", "Số điện thoại");
+    },
+    get placeholder() {
+      return t("recruitment", "VD: 0912345678");
+    },
     required: true,
   },
   {
     name: "city_code",
-    label: "Tỉnh/Thành phố",
+    get label() {
+      return t("recruitment", "Tỉnh/Thành phố");
+    },
     type: "select",
     lookup: "cities",
     required: true,
   },
   {
     name: "district_code",
-    label: "Xã/Phường/Đặc khu",
+    get label() {
+      return t("recruitment", "Xã/Phường/Đặc khu");
+    },
     type: "select",
     lookup: "districts",
   },
   {
     name: "address",
-    label: "Địa chỉ",
-    placeholder: "Nhập số nhà, đường, phường/xã...",
+    get label() {
+      return t("recruitment", "Địa chỉ");
+    },
+    get placeholder() {
+      return t("recruitment", "Nhập số nhà, đường, phường/xã...");
+    },
   },
   {
     name: "email",
@@ -48,43 +73,89 @@ const candidateFields: RecruitmentField[] = [
   },
   {
     name: "education_level",
-    label: "Trình độ học vấn",
+    get label() {
+      return t("recruitment", "Trình độ học vấn");
+    },
     type: "select",
     lookup: "education",
   },
   {
     name: "education_major",
-    label: "Chuyên ngành",
-    placeholder: "VD: Công nghệ thông tin",
+    get label() {
+      return t("recruitment", "Chuyên ngành");
+    },
+    get placeholder() {
+      return t("recruitment", "VD: Công nghệ thông tin");
+    },
   },
   {
     name: "language_skill",
-    label: "Trình độ ngoại ngữ",
-    placeholder: "VD: Tiếng Anh giao tiếp, TOEIC 700",
+    get label() {
+      return t("recruitment", "Trình độ ngoại ngữ");
+    },
+    get placeholder() {
+      return t("recruitment", "VD: Tiếng Anh giao tiếp, TOEIC 700");
+    },
   },
-  { name: "application_date", label: "Ngày ứng tuyển", type: "date" },
+  {
+    name: "application_date",
+    get label() {
+      return t("recruitment", "Ngày ứng tuyển");
+    },
+    type: "date",
+  },
   {
     name: "candidate_source",
-    label: "Nguồn ứng viên",
+    get label() {
+      return t("recruitment", "Nguồn ứng viên");
+    },
     type: "select",
     lookup: "sources",
   },
 ];
 export const actionLabels: Record<RecruitmentAction, string> = {
-  request: "Chi tiết yêu cầu tuyển dụng",
-  candidate: "Chi tiết ứng viên",
-  "view-candidate": "Xem hồ sơ ứng viên",
-  "create-candidate": "Thêm ứng viên",
-  status: "Chuyển trạng thái CV",
-  duplicate: "Kiểm tra hồ sơ trùng",
-  "delete-candidate": "Xóa hồ sơ ứng viên",
-  "delete-file": "Xóa tệp CV",
-  attach: "Thêm ứng viên vào lịch phỏng vấn",
-  interview: "Lịch phỏng vấn",
-  "delete-interview": "Xóa lịch phỏng vấn",
-  note: "Ghi chú phỏng vấn",
-  "remove-interview-cv": "Bỏ ứng viên khỏi lịch phỏng vấn",
-  "candidate-time": "Đặt giờ phỏng vấn ứng viên",
+  get request() {
+    return t("recruitment", "Chi tiết yêu cầu tuyển dụng");
+  },
+  get candidate() {
+    return t("recruitment", "Chi tiết ứng viên");
+  },
+  get "view-candidate"() {
+    return t("recruitment", "Xem hồ sơ ứng viên");
+  },
+  get "create-candidate"() {
+    return t("recruitment", "Thêm ứng viên");
+  },
+  get status() {
+    return t("recruitment", "Chuyển trạng thái CV");
+  },
+  get duplicate() {
+    return t("recruitment", "Kiểm tra hồ sơ trùng");
+  },
+  get "delete-candidate"() {
+    return t("recruitment", "Xóa hồ sơ ứng viên");
+  },
+  get "delete-file"() {
+    return t("recruitment", "Xóa tệp CV");
+  },
+  get attach() {
+    return t("recruitment", "Thêm ứng viên vào lịch phỏng vấn");
+  },
+  get interview() {
+    return t("recruitment", "Lịch phỏng vấn");
+  },
+  get "delete-interview"() {
+    return t("recruitment", "Xóa lịch phỏng vấn");
+  },
+  get note() {
+    return t("recruitment", "Ghi chú phỏng vấn");
+  },
+  get "remove-interview-cv"() {
+    return t("recruitment", "Bỏ ứng viên khỏi lịch phỏng vấn");
+  },
+  get "candidate-time"() {
+    return t("recruitment", "Đặt giờ phỏng vấn ứng viên");
+  },
 };
 export function recruitmentFields(
   action: RecruitmentAction,
@@ -93,64 +164,88 @@ export function recruitmentFields(
   switch (action) {
     case "request":
       return [
-        { name: "ticket_code", label: "Mã yêu cầu", readonly: true },
-        { name: "title", label: "Tiêu đề yêu cầu", readonly: true },
+        {
+          name: "ticket_code",
+          label: t("recruitment", "Mã yêu cầu"),
+          readonly: true,
+        },
+        {
+          name: "title",
+          label: t("recruitment", "Tiêu đề yêu cầu"),
+          readonly: true,
+        },
         {
           name: "quantity",
-          label: "Số lượng",
+          label: t("recruitment", "Số lượng"),
           type: "number",
-          placeholder: "Nhập số lượng cần tuyển...",
+          placeholder: t("recruitment", "Nhập số lượng cần tuyển..."),
           required: true,
         },
         {
           name: "department_recruited_name",
-          label: "Bộ phận tuyển dụng",
+          label: t("recruitment", "Bộ phận tuyển dụng"),
           readonly: true,
         },
-        { name: "rec_position", label: "Vị trí tuyển dụng", readonly: true },
+        {
+          name: "rec_position",
+          label: t("recruitment", "Vị trí tuyển dụng"),
+          readonly: true,
+        },
         {
           name: "duedate",
-          label: "Ngày hết hạn",
+          label: t("recruitment", "Ngày hết hạn"),
           type: "date",
           readonly: true,
         },
-        { name: "work_location", label: "Địa điểm làm việc", readonly: true },
+        {
+          name: "work_location",
+          label: t("recruitment", "Địa điểm làm việc"),
+          readonly: true,
+        },
         {
           name: "reason_recr_id",
-          label: "Lý do tuyển",
+          label: t("recruitment", "Lý do tuyển"),
           type: "select",
           lookup: "reasons",
         },
         {
           name: "user_new_quits",
-          label: "Tuyển thay thế nhân viên",
-          placeholder: "Nhập tên nhân viên cần thay thế...",
+          label: t("recruitment", "Tuyển thay thế nhân viên"),
+          placeholder: t("recruitment", "Nhập tên nhân viên cần thay thế..."),
         },
         {
           name: "language_skill",
-          label: "Trình độ ngoại ngữ",
-          placeholder: "VD: Tiếng Anh giao tiếp, TOEIC 700",
+          label: t("recruitment", "Trình độ ngoại ngữ"),
+          placeholder: t("recruitment", "VD: Tiếng Anh giao tiếp, TOEIC 700"),
         },
         {
           name: "computer_skill",
-          label: "Trình độ tin học",
-          placeholder: "VD: Word, Excel, PowerPoint",
+          label: t("recruitment", "Trình độ tin học"),
+          placeholder: t("recruitment", "VD: Word, Excel, PowerPoint"),
         },
-        { name: "other_skill", label: "Kỹ năng khác", readonly: true },
-        { name: "user_update_name", label: "Người cập nhật", readonly: true },
+        {
+          name: "other_skill",
+          label: t("recruitment", "Kỹ năng khác"),
+          readonly: true,
+        },
+        {
+          name: "user_update_name",
+          label: t("recruitment", "Người cập nhật"),
+          readonly: true,
+        },
         {
           name: "job_description",
-          label: "Mô tả công việc",
+          label: t("recruitment", "Mô tả công việc"),
           type: "textarea",
           readonly: true,
         },
         {
           name: "experience",
-          label: "Yêu cầu chuyên môn",
+          label: t("recruitment", "Yêu cầu chuyên môn"),
           type: "textarea",
           readonly: true,
         },
-        { name: "note", label: "Ghi chú", type: "textarea" },
+        { name: "note", label: t("recruitment", "Ghi chú"), type: "textarea" },
       ];
     case "create-candidate":
       return [
@@ -159,7 +254,7 @@ export function recruitmentFields(
             ? { ...field, required: true }
             : field,
         ),
-        { name: "note", label: "Ghi chú", type: "textarea" },
+        { name: "note", label: t("recruitment", "Ghi chú"), type: "textarea" },
       ];
     case "view-candidate":
     case "candidate":
@@ -168,13 +263,13 @@ export function recruitmentFields(
           ...candidateFields,
           {
             name: "ls_user_received",
-            label: "Người phụ trách",
+            label: t("recruitment", "Người phụ trách"),
             type: "multi",
             lookup: "users",
           },
           {
             name: "cv_status",
-            label: "Trạng thái CV",
+            label: t("recruitment", "Trạng thái CV"),
             type: "select",
             lookup: "statuses",
             readonly: true,
@@ -183,7 +278,7 @@ export function recruitmentFields(
             ? [
                 {
                   name: "why_change",
-                  label: "Lý do chuyển trạng thái",
+                  label: t("recruitment", "Lý do chuyển trạng thái"),
                   type: "textarea" as const,
                   readonly: true,
                 },
@@ -193,7 +288,7 @@ export function recruitmentFields(
             ? [
                 {
                   name: "note",
-                  label: "Ghi chú / File phỏng vấn",
+                  label: t("recruitment", "Ghi chú / File phỏng vấn"),
                   type: "textarea" as const,
                   readonly: true,
                 },
@@ -207,15 +302,18 @@ export function recruitmentFields(
       return [
         {
           name: "cv_status",
-          label: "Trạng thái",
+          label: t("recruitment", "Trạng thái"),
           type: "select",
           lookup: "statuses",
           required: true,
         },
         {
           name: "why_change",
-          label: "Lý do chuyển trạng thái",
-          placeholder: "Nhập lý do chuyển trạng thái ứng viên...",
+          label: t("recruitment", "Lý do chuyển trạng thái"),
+          placeholder: t(
+            "recruitment",
+            "Nhập lý do chuyển trạng thái ứng viên...",
+          ),
           type: "textarea",
         },
       ];
@@ -223,49 +321,57 @@ export function recruitmentFields(
       return [
         {
           name: "title",
-          label: "Tiêu đề",
-          placeholder: "VD: Phỏng vấn vị trí Frontend Developer",
+          label: t("recruitment", "Tiêu đề"),
+          placeholder: t(
+            "recruitment",
+            "VD: Phỏng vấn vị trí Frontend Developer",
+          ),
           required: true,
           min: 5,
           max: 50,
         },
         {
           name: "start_date",
-          label: "Ngày phỏng vấn",
+          label: t("recruitment", "Ngày phỏng vấn"),
           type: "date",
           required: true,
         },
         {
           name: "time_start",
-          label: "Giờ bắt đầu",
+          label: t("recruitment", "Giờ bắt đầu"),
           type: "time",
           required: true,
         },
         {
           name: "time_end",
-          label: "Giờ kết thúc",
+          label: t("recruitment", "Giờ kết thúc"),
           type: "time",
           required: true,
         },
         {
           name: "user_interview",
-          label: "Người phỏng vấn",
+          label: t("recruitment", "Người phỏng vấn"),
           type: "multi",
           lookup: "users",
         },
-        { name: "note", label: "Ghi chú", type: "textarea", max: 255 },
+        {
+          name: "note",
+          label: t("recruitment", "Ghi chú"),
+          type: "textarea",
+          max: 255,
+        },
       ];
     case "attach":
       return [
         {
           name: "start_date",
-          label: "Ngày phỏng vấn",
+          label: t("recruitment", "Ngày phỏng vấn"),
           type: "date",
           required: true,
         },
         {
           name: "id_interview",
-          label: "Lịch phỏng vấn",
+          label: t("recruitment", "Lịch phỏng vấn"),
           type: "select",
           lookup: "interviews",
           required: true,
@@ -275,8 +381,11 @@ export function recruitmentFields(
       return [
         {
           name: "note",
-          label: "Ghi chú phỏng vấn",
-          placeholder: "Nhập nhận xét, kết quả hoặc lưu ý sau phỏng vấn...",
+          label: t("recruitment", "Ghi chú phỏng vấn"),
+          placeholder: t(
+            "recruitment",
+            "Nhập nhận xét, kết quả hoặc lưu ý sau phỏng vấn...",
+          ),
           type: "textarea",
         },
       ];
@@ -284,7 +393,7 @@ export function recruitmentFields(
       return [
         {
           name: "time_start",
-          label: "Giờ phỏng vấn",
+          label: t("recruitment", "Giờ phỏng vấn"),
           type: "time",
           minTime: timeRange?.start,
           maxTime: timeRange?.end,

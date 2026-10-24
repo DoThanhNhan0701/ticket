@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
@@ -27,6 +28,7 @@ function noteImage(name: string) {
 export function RecruitmentNoteHistory({
   candidateId,
 }: Readonly<{ candidateId: number }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const query = useQuery({
     queryKey: ["recruitment-notes", userId, candidateId],
@@ -52,7 +54,9 @@ export function RecruitmentNoteHistory({
   return (
     <div className="space-y-3">
       {query.isPending && (
-        <LoadingState message="Đang tải lịch sử ghi chú..." />
+        <LoadingState
+          message={t("candidates", "Đang tải lịch sử ghi chú...")}
+        />
       )}
       {query.isError && <ErrorToast message={query.error.message} />}
       {query.isSuccess && notes.length === 0 && (
@@ -60,13 +64,13 @@ export function RecruitmentNoteHistory({
           role="status"
           className="rounded-xl border border-dashed bg-muted/20 p-6 text-center text-sm text-muted-foreground"
         >
-          Chưa có lịch sử ghi chú phỏng vấn.
+          {t("candidates", "Chưa có lịch sử ghi chú phỏng vấn.")}
         </p>
       )}
       {download.isError && <ErrorToast message={download.error.message} />}
       {download.isPending && (
         <p role="status" className="text-xs text-muted-foreground">
-          Đang mở tệp...
+          {t("candidates", "Đang mở tệp...")}
         </p>
       )}
       {preview && (
@@ -77,12 +81,14 @@ export function RecruitmentNoteHistory({
       )}
       {notes.length > 0 && (
         <section
-          aria-label="Lịch sử ghi chú phỏng vấn"
+          aria-label={t("candidates", "Lịch sử ghi chú phỏng vấn")}
           className="min-w-0 space-y-3 border-t pt-4"
         >
           <div className="flex items-center gap-2">
             <History aria-hidden="true" className="size-4 text-primary" />
-            <h3 className="text-sm font-semibold">Lịch sử ghi chú phỏng vấn</h3>
+            <h3 className="text-sm font-semibold">
+              {t("candidates", "Lịch sử ghi chú phỏng vấn")}
+            </h3>
             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
               {notes.length}
             </span>
@@ -106,7 +112,7 @@ export function RecruitmentNoteHistory({
                         note.fore_user__username ||
                           note.user_create_name ||
                           note.username,
-                      ) || "Chưa rõ người ghi"}
+                      ) || t("candidates", "Chưa rõ người ghi")}
                     </p>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -128,7 +134,7 @@ export function RecruitmentNoteHistory({
                     </div>
                   ) : (
                     <p className="text-xs italic text-muted-foreground">
-                      Không có nội dung ghi chú.
+                      {t("candidates", "Không có nội dung ghi chú.")}
                     </p>
                   )}
                   {(recruitmentRows(note.data_file).length > 0 ||
@@ -139,7 +145,7 @@ export function RecruitmentNoteHistory({
                     <div className="min-w-0 space-y-2">
                       <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                         <Paperclip aria-hidden="true" className="size-3.5" />
-                        Tệp đính kèm
+                        {t("candidates", "Tệp đính kèm")}
                       </p>
                       <div className="flex min-w-0 flex-wrap gap-2">
                         <ul className="flex min-w-0 flex-wrap gap-2">
@@ -147,10 +153,11 @@ export function RecruitmentNoteHistory({
                             <FileAttachmentTile
                               key={file.id}
                               name={
-                                recruitmentText(file.file_name) || "Tệp ghi chú"
+                                recruitmentText(file.file_name) ||
+                                t("candidates", "Tệp ghi chú")
                               }
                               image={noteImage(recruitmentText(file.file_name))}
-                              previewLabel={`${noteImage(recruitmentText(file.file_name)) ? "Xem ảnh" : "Mở tệp"} ${recruitmentText(file.file_name) || "Tệp ghi chú"}`}
+                              previewLabel={`${noteImage(recruitmentText(file.file_name)) ? t("candidates", "Xem ảnh") : t("candidates", "Mở tệp")} ${recruitmentText(file.file_name) || t("candidates", "Tệp ghi chú")}`}
                               disabled={download.isPending}
                               onPreview={() => download.mutate(file)}
                             />
@@ -165,10 +172,11 @@ export function RecruitmentNoteHistory({
                             layout="tiles"
                             files={{
                               [recruitmentText(note.name_file_note) ||
-                              "Tệp ghi chú"]: recruitmentFileHref(
-                                note.path_file_note,
-                                note.name_file_note,
-                              )!,
+                              t("candidates", "Tệp ghi chú")]:
+                                recruitmentFileHref(
+                                  note.path_file_note,
+                                  note.name_file_note,
+                                )!,
                             }}
                           />
                         )}

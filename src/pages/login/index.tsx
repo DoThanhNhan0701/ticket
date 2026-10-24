@@ -1,8 +1,10 @@
+import { t, useLocale } from "@/i18n";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, LockKeyhole } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { LanguageSwitch } from "@/components/language-switch";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +37,7 @@ export function LoginPage({
   error,
   setError,
 }: Readonly<LoginPageProps>) {
+  useLocale();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -50,26 +53,27 @@ export function LoginPage({
 
   return (
     <div className="app-dashed-background relative flex min-h-svh w-full bg-background text-foreground">
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <LanguageSwitch />
         <ThemeToggle />
       </div>
       <section
-        aria-label="Rainscales Ticket workspace"
+        aria-label={t("login", "Rainscales Ticket workspace")}
         className="hidden w-105 shrink-0 flex-col justify-between gap-10 border-r border-border bg-card p-10 lg:flex xl:w-125 xl:p-12"
       >
         <BrandLogo className="h-9 w-56 max-w-full" />
         <div>
           <Badge tone="brand" className="mb-5">
-            Your internal ticket workspace
+            {t("login", "Your internal ticket workspace")}
           </Badge>
           <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight">
-            Rainscales
-            <br />
-            Ticket
+            {t("login", "Rainscales")} <br /> {t("login", "Ticket")}
           </h1>
           <p className="mt-5 max-w-sm text-base leading-relaxed text-muted-foreground">
-            Sign in with your Rainscales account to access the internal Ticket
-            workspace.
+            {t(
+              "login",
+              "Sign in with your Rainscales account to access the internal Ticket workspace.",
+            )}
           </p>
           <img
             src="/brand/scout-telescope.png"
@@ -81,9 +85,9 @@ export function LoginPage({
         </div>
         <div className="space-y-4">
           {[
-            "Dedicated Ticket Workspace",
-            "Rainscales Account Access",
-            "Secure Sign-in",
+            t("login", "Dedicated Ticket Workspace"),
+            t("login", "Rainscales Account Access"),
+            t("login", "Secure Sign-in"),
           ].map((label) => (
             <div
               key={label}
@@ -97,7 +101,7 @@ export function LoginPage({
             </div>
           ))}
           <p className="border-t border-border pt-5 text-xs text-muted-foreground">
-            © 2026 Rainscales · Ticket
+            {t("login", "© 2026 Rainscales · Ticket")}
           </p>
         </div>
       </section>
@@ -109,10 +113,13 @@ export function LoginPage({
           <Card className="gap-6 p-6 shadow-md sm:p-8">
             <CardHeader className="gap-2 p-0">
               <CardTitle className="text-2xl font-semibold tracking-tight">
-                Sign In to Ticket
+                {t("login", "Sign In to Ticket")}
               </CardTitle>
               <CardDescription className="text-sm leading-relaxed">
-                Enter your Rainscales credentials to access Ticket.
+                {t(
+                  "login",
+                  "Enter your Rainscales credentials to access Ticket.",
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
@@ -126,8 +133,8 @@ export function LoginPage({
                     control={form.control}
                     name="username"
                     id="login-username"
-                    label="Username"
-                    placeholder="Enter username"
+                    label={t("login", "Username")}
+                    placeholder={t("login", "Enter username")}
                     autoComplete="username"
                     disabled={isLoading}
                     required
@@ -136,8 +143,8 @@ export function LoginPage({
                     control={form.control}
                     name="password"
                     id="login-password"
-                    label="Password"
-                    placeholder="Enter password"
+                    label={t("login", "Password")}
+                    placeholder={t("login", "Enter password")}
                     autoComplete="current-password"
                     required
                     disabled={isLoading}
@@ -146,20 +153,20 @@ export function LoginPage({
                 <AsyncButton
                   type="submit"
                   loading={isLoading}
-                  loadingText="Authenticating..."
+                  loadingText={t("login", "Authenticating...")}
                   className="w-full"
                 >
-                  Sign In to Ticket
+                  {t("login", "Sign In to Ticket")}
                 </AsyncButton>
               </form>
             </CardContent>
             <div className="flex items-center justify-center gap-2 border-t border-border pt-5 text-xs text-muted-foreground">
               <LockKeyhole className="h-3.5 w-3.5" aria-hidden="true" />
-              Authorized personnel only
+              {t("login", "Authorized personnel only")}
             </div>
           </Card>
           <p className="mt-5 text-center text-xs text-muted-foreground">
-            Rainscales Ticket · © 2026
+            {t("login", "Rainscales Ticket · © 2026")}
           </p>
         </div>
       </main>

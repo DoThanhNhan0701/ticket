@@ -1,4 +1,6 @@
 "use client";
+import { t, useLocale } from "@/i18n";
+import { vi, enGB } from "date-fns/locale";
 
 import * as React from "react";
 
@@ -29,10 +31,18 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
+  const language = useLocale();
   const defaultClassNames = getDefaultClassNames();
 
   return (
     <DayPicker
+      locale={language === "vi" ? vi : enGB}
+      labels={{
+        labelMonthDropdown: () => t("common", "Choose the Month"),
+        labelYearDropdown: () => t("common", "Choose the Year"),
+        labelNext: () => t("common", "Go to the Next Month"),
+        labelPrevious: () => t("common", "Go to the Previous Month"),
+      }}
       showOutsideDays={showOutsideDays}
       className={cn(
         "group/calendar bg-background p-3 [--cell-size:--spacing(8)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
@@ -43,7 +53,9 @@ function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString(language === "vi" ? "vi-VN" : "en-GB", {
+            month: "short",
+          }),
         ...formatters,
       }}
       classNames={{

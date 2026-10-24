@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { interviewCalendarBackLink } from "@/features/recruitment/utils/interview-navigation";
 import { APP_ROUTES } from "@/constants/routes";
 import { MobilePageActionProvider } from "@/components/layout/mobile-page-action";
@@ -40,6 +41,7 @@ const requestListScopesByPath: Readonly<
 export function WorkspacePage({
   page,
 }: Readonly<{ page: WorkspacePageDefinition }>) {
+  useLocale();
   const { permissions, userId } = useAuthContext();
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -54,8 +56,11 @@ export function WorkspacePage({
   const Icon = page.icon;
   let content = (
     <EmptyState
-      title="Trang đang được chuẩn bị"
-      description="Chức năng này đang được hoàn thiện. Bạn có thể chọn mục khác trong thanh điều hướng."
+      title={t("common", "Trang đang được chuẩn bị")}
+      description={t(
+        "common",
+        "Chức năng này đang được hoàn thiện. Bạn có thể chọn mục khác trong thanh điều hướng.",
+      )}
       icon={<Icon className="size-6" aria-hidden="true" />}
       className="my-auto min-h-72"
     />
@@ -106,23 +111,25 @@ export function WorkspacePage({
     <MobilePageActionProvider>
       <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
         <PageHeader
-          title={page.label}
-          description={page.description}
+          title={t("layout", page.label)}
+          description={t("layout", page.description)}
           icon={Icon}
           onBack={backActionsByPath[page.path]}
-          backLabel="Quay lại lịch phỏng vấn"
+          backLabel={t("common", "Quay lại lịch phỏng vấn")}
           actions={
             page.path === HOME_PATH &&
             canAccessPage(createTicketPage, permissions) ? (
               <Link
                 to={createTicketPage.path}
-                title={createTicketPage.label}
+                title={t("layout", createTicketPage.label)}
                 className={buttonVariants({
                   className: "max-sm:size-11 max-sm:gap-0 max-sm:px-0",
                 })}
               >
                 <createTicketPage.icon className="size-4" aria-hidden="true" />
-                <span className="max-sm:sr-only">{createTicketPage.label}</span>
+                <span className="max-sm:sr-only">
+                  {t("layout", createTicketPage.label)}
+                </span>
               </Link>
             ) : undefined
           }

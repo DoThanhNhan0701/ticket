@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ export function SettingsList({
   kind,
   createUser = false,
 }: Readonly<{ kind: SettingsKind; createUser?: boolean }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -89,18 +91,18 @@ export function SettingsList({
       <DataSearch
         iconOnlyOnMobile
         className="flex-none sm:max-w-none sm:justify-between"
-        label={`Tìm kiếm ${config.label}`}
+        label={t("settings", "Tìm kiếm {0}", [config.label])}
         initialValue={params.search}
         resetKey={JSON.stringify(params)}
         filter={{
-          label: "Trạng thái",
+          label: t("settings", "Trạng thái"),
           initialValue: params.status || "all",
           searchable: true,
           allOptionValue: "all",
           options: [
-            { value: "all", label: "Tất cả trạng thái" },
-            { value: "true", label: "Kích hoạt" },
-            { value: "false", label: "Khóa" },
+            { value: "all", label: t("settings", "Tất cả trạng thái") },
+            { value: "true", label: t("settings", "Kích hoạt") },
+            { value: "false", label: t("settings", "Khóa") },
           ],
         }}
         onSearch={(search, status) =>
@@ -116,39 +118,45 @@ export function SettingsList({
               <Button
                 type="button"
                 variant="ghost"
-                aria-label="Xóa lọc"
-                title="Xóa lọc"
+                aria-label={t("settings", "Xóa lọc")}
+                title={t("settings", "Xóa lọc")}
                 className="hidden w-11 px-0 sm:inline-flex lg:w-auto lg:px-4"
                 onClick={() =>
                   update({ search: undefined, is_active: undefined, page: 1 })
                 }
               >
                 <FilterX className="size-4" aria-hidden="true" />
-                <span className="hidden lg:inline">Xóa lọc</span>
+                <span className="hidden lg:inline">
+                  {t("settings", "Xóa lọc")}
+                </span>
               </Button>
             )}
             {kind === "positions" && (
               <Button
                 type="button"
                 variant="outline"
-                aria-label="Thông tin quyền hạn"
-                title="Thông tin quyền hạn"
+                aria-label={t("settings", "Thông tin quyền hạn")}
+                title={t("settings", "Thông tin quyền hạn")}
                 className="w-11 px-0 lg:w-auto lg:px-4"
                 onClick={() => setPermissionHelpOpen(true)}
               >
                 <Info className="size-4" aria-hidden="true" />
-                <span className="hidden lg:inline">Thông tin quyền hạn</span>
+                <span className="hidden lg:inline">
+                  {t("settings", "Thông tin quyền hạn")}
+                </span>
               </Button>
             )}
             <Button
               type="button"
-              aria-label="Thêm mới"
-              title="Thêm mới"
+              aria-label={t("settings", "Thêm mới")}
+              title={t("settings", "Thêm mới")}
               className="w-11 px-0 lg:w-auto lg:px-4"
               onClick={() => setEditor({})}
             >
               <Plus className="size-4" aria-hidden="true" />
-              <span className="hidden lg:inline">Thêm mới</span>
+              <span className="hidden lg:inline">
+                {t("settings", "Thêm mới")}
+              </span>
             </Button>
             {kind === "users" && <UserExportButton icon={Download} />}
           </div>
@@ -156,14 +164,16 @@ export function SettingsList({
       />
       {lookups.isError && (
         <ErrorToast
-          message={`Không tải được danh mục: ${lookups.error.message}`}
+          message={t("settings", "Không tải được danh mục: {0}", [
+            lookups.error.message,
+          ])}
         />
       )}
       <DataResults
         refreshStyle="subtle"
         query={query}
-        label={`Danh sách ${config.label}`}
-        emptyTitle={`Không tìm thấy ${config.label}`}
+        label={t("settings", "Danh sách {0}", [config.label])}
+        emptyTitle={t("settings", "Không tìm thấy {0}", [config.label])}
         pagination={{
           ...pagination,
           pageSizes,

@@ -1,7 +1,8 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { downloadFile } from "@/lib/download";
 import { EmptyState } from "@/components/empty-state";
@@ -26,6 +27,8 @@ import { ReportResults } from "./report-results";
 export function ReportsPage({
   mode = "dashboard",
 }: Readonly<{ mode?: ReportMode }>) {
+  useLocale();
+  const namespace = mode === "dashboard" ? "reports" : "data-export";
   const { userId, permissions } = useAuthContext();
   const defaults = useMemo(() => getDefaultReportFilters(mode), [mode]);
   const [applied, setApplied] = useState<ReportFilters | null>(null);
@@ -64,7 +67,7 @@ export function ReportsPage({
         groups.find((group) => String(group.id) === filters.handlinggroup)
           ?.name ?? "Report";
       downloadFile(blob, getReportFilename(mode, name, filters));
-      toast.success("Đã tạo tệp Excel.");
+      toast.success(t(namespace, "Đã tạo tệp Excel."));
     },
     onSettled: () => {
       exporting.current = false;
@@ -85,21 +88,26 @@ export function ReportsPage({
     else setApplied(filters);
   };
   if (groupsQuery.isPending)
-    return <LoadingState message="Đang tải bộ phận xử lý..." />;
+    return <LoadingState message={t(namespace, "Đang tải bộ phận xử lý...")} />;
   if (groupsQuery.isError)
     return (
       <ErrorToast
-        message={`Không tải được bộ phận xử lý: ${groupsQuery.error.message}`}
+        message={t(namespace, "Không tải được bộ phận xử lý: {0}", [
+          groupsQuery.error.message,
+        ])}
       />
     );
   if (groups.length === 0)
     return (
       <EmptyState
-        title="Không có bộ phận xử lý phù hợp"
+        title={t(namespace, "Không có bộ phận xử lý phù hợp")}
         description={
           mode === "export"
-            ? "Bạn cần được phân quyền quản lý bộ phận để truy xuất dữ liệu."
-            : "Chưa có bộ phận xử lý đang hoạt động."
+            ? t(
+                namespace,
+                "Bạn cần được phân quyền quản lý bộ phận để truy xuất dữ liệu.",
+              )
+            : t(namespace, "Chưa có bộ phận xử lý đang hoạt động.")
         }
         className="my-auto"
       />

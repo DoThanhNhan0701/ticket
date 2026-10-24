@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useState, type ComponentProps } from "react";
 import { Clock3 } from "lucide-react";
 import { Button } from "./button";
@@ -41,6 +42,7 @@ export function TimePicker({
   maxTime,
   ...props
 }: Readonly<TimePickerProps>) {
+  useLocale();
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (disabled) setOpen(false);
@@ -65,7 +67,7 @@ export function TimePicker({
           <Input
             {...props}
             type="text"
-            placeholder="HH:mm"
+            placeholder={t("common", "HH:mm")}
             autoComplete="off"
             spellCheck={false}
             value={value}
@@ -94,8 +96,8 @@ export function TimePicker({
               variant="ghost"
               size="icon"
               disabled={disabled}
-              aria-label={`Chọn ${label.toLowerCase()}`}
-              title={`Chọn ${label.toLowerCase()}`}
+              aria-label={t("common", "Chọn {0}", [label.toLowerCase()])}
+              title={t("common", "Chọn {0}", [label.toLowerCase()])}
               className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
             >
               <Clock3 className="size-4" aria-hidden="true" />
@@ -106,18 +108,18 @@ export function TimePicker({
       <PopoverContent
         align="start"
         className="w-56 max-w-[calc(100vw-2rem)] p-0"
-        aria-label={`Chọn ${label.toLowerCase()}`}
+        aria-label={t("common", "Chọn {0}", [label.toLowerCase()])}
       >
         <div className="grid grid-cols-2 divide-x">
           <TimeOptions
-            label="Giờ"
+            label={t("common", "Giờ")}
             count={24}
             selected={selected.hour}
             isDisabled={(hour) => hour * 60 + 59 < min || hour * 60 > max}
             onSelect={(hour) => changePart("hour", hour)}
           />
           <TimeOptions
-            label="Phút"
+            label={t("common", "Phút")}
             count={60}
             selected={selected.minute}
             isDisabled={(minute) =>
@@ -138,10 +140,10 @@ export function TimePicker({
               setOpen(false);
             }}
           >
-            Xóa giờ
+            {t("common", "Xóa giờ")}
           </Button>
           <Button type="button" size="sm" onClick={() => setOpen(false)}>
-            Xong
+            {t("common", "Xong")}
           </Button>
         </div>
       </PopoverContent>
@@ -162,6 +164,7 @@ function TimeOptions({
   onSelect: (value: number) => void;
   isDisabled?: (value: number) => boolean;
 }>) {
+  useLocale();
   const enabled = Array.from({ length: count }, (_, value) => value).filter(
     (value) => !isDisabled(value),
   );

@@ -236,12 +236,12 @@ async function fill(kind: SettingsKind) {
     change("Họ", "Nguyễn");
     change("Tên", "An");
     change("Email", "new@example.com");
-    await select("Department", "Department AI");
-    await select("Team", "Team AI");
+    await select("Bộ phận sử dụng", "Department AI");
+    await select("Nhóm", "Team AI");
     await select("Chức vụ", "Developer");
     await select("Nhóm quyền bổ sung", "Staff");
   } else change(settingsConfig[kind].fields[0].label, "Tên mới");
-  if (kind === "teams") await select("Department", "Department AI");
+  if (kind === "teams") await select("Bộ phận sử dụng", "Department AI");
   if (kind === "request-types") await select("Bộ phận xử lý", "ISMS");
   if (kind === "handling-departments") {
     change("Email bộ phận", "new-group@example.com");
@@ -695,7 +695,7 @@ it("prevents duplicate writes and dismissal while saving", async () => {
   );
   expect(
     screen
-      .getByRole("button", { name: "Close dialog" })
+      .getByRole("button", { name: "Đóng hộp thoại" })
       .hasAttribute("disabled"),
   ).toBe(true);
   await act(async () => finish(Response.json(settingsFixtures.offices)));
@@ -837,7 +837,7 @@ it("excludes retired permissions from new assignments and Select all", async () 
   expect(
     screen.queryByRole("button", { name: /Tìm kiếm yêu cầu|Xóa yêu cầu/ }),
   ).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Select all" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn tất cả" }));
   fireEvent.keyDown(document, { key: "Escape" });
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
@@ -1263,8 +1263,8 @@ it("blocks creating a user without a position and clears the error when one is s
   change("Họ", "TEST QC");
   change("Tên", "Không chức vụ");
   change("Email", "test-without-position@example.invalid");
-  await select("Department", "Department AI");
-  await select("Team", "Team AI");
+  await select("Bộ phận sử dụng", "Department AI");
+  await select("Nhóm", "Team AI");
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   await screen.findByText("Vui lòng chọn chức vụ.");
   const position = screen.getByRole("combobox", { name: "Chức vụ" });

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useState } from "react";
 import { Download, FileText } from "lucide-react";
 import {
@@ -35,7 +36,8 @@ export function FilePreviewDialog({
   url,
   onClose,
 }: Readonly<FilePreviewProps>) {
-  const name = file?.name ?? remoteName ?? "Tệp đính kèm";
+  useLocale();
+  const name = file?.name ?? remoteName ?? t("common", "Tệp đính kèm");
   const kind = previewKind(name, file?.type);
   const [source, setSource] = useState(kind === "pdf" ? "" : (url ?? ""));
   const [failed, setFailed] = useState(false);
@@ -58,7 +60,7 @@ export function FilePreviewDialog({
       setSource("");
       void fetch(url, { credentials: "omit", signal: abort.signal })
         .then((response) => {
-          if (!response.ok) throw new Error("Không tải được tệp.");
+          if (!response.ok) throw new Error(t("common", "Không tải được tệp."));
           return response.blob();
         })
         .then((blob) => {
@@ -88,11 +90,13 @@ export function FilePreviewDialog({
             <DialogHeading
               icon={<FileText aria-hidden="true" />}
               title={name}
-              description="Xem tệp đính kèm."
+              description={t("common", "Xem tệp đính kèm.")}
             />
             <DialogCloseButton
               aria-label={
-                kind === "image" ? "Đóng xem trước ảnh" : "Đóng xem tệp"
+                kind === "image"
+                  ? t("common", "Đóng xem trước ảnh")
+                  : t("common", "Đóng xem tệp")
               }
             />
           </DialogHeader>
@@ -101,7 +105,7 @@ export function FilePreviewDialog({
               role="status"
               className="py-8 text-center text-sm text-muted-foreground"
             >
-              Đang tải tệp...
+              {t("common", "Đang tải tệp...")}
             </p>
           )}
           {(source || failed) && (
@@ -123,7 +127,7 @@ export function FilePreviewDialog({
                 className={buttonVariants({ variant: "outline" })}
               >
                 <Download aria-hidden="true" className="size-4" />
-                Tải xuống
+                {t("common", "Tải xuống")}
               </a>
             </div>
           )}
@@ -146,6 +150,7 @@ function PreviewContent({
   failed: boolean;
   onError: () => void;
 }>) {
+  useLocale();
   if (failed)
     return (
       <p
@@ -153,8 +158,11 @@ function PreviewContent({
         className="py-8 text-center text-sm text-muted-foreground"
       >
         {kind === "image"
-          ? "Không thể xem trước ảnh này."
-          : "Không thể xem trước tệp này. Bạn có thể tải xuống để mở."}
+          ? t("common", "Không thể xem trước ảnh này.")
+          : t(
+              "common",
+              "Không thể xem trước tệp này. Bạn có thể tải xuống để mở.",
+            )}
       </p>
     );
   if (kind === "image")
@@ -216,8 +224,10 @@ function PreviewContent({
       <FileText aria-hidden="true" className="size-10" />
       <p className="max-w-full break-all font-medium text-foreground">{name}</p>
       <p>
-        Trình duyệt chưa hỗ trợ xem trước định dạng này. Bạn có thể tải xuống để
-        mở.
+        {t(
+          "common",
+          "Trình duyệt chưa hỗ trợ xem trước định dạng này. Bạn có thể tải xuống để mở.",
+        )}
       </p>
     </div>
   );

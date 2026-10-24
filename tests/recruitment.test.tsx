@@ -468,7 +468,7 @@ it("keeps the chooser behind child forms, ignores Escape, and closes only via it
     screen.getByRole("button", { name: "Kiểm tra trùng TEST-CV" }),
   );
   await screen.findByText("Không tìm thấy hồ sơ trùng lặp.");
-  fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
+  fireEvent.click(screen.getByRole("button", { name: "Đóng hộp thoại" }));
   await waitFor(() =>
     expect(
       screen.queryByRole("dialog", { name: "Kiểm tra hồ sơ trùng" }),

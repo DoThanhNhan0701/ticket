@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { ReactNode } from "react";
 import {
   Controller,
@@ -46,7 +47,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   label,
   options,
   placeholder = "Select...",
-  noDataText = "No data",
+  noDataText = t("common", "No data"),
   required = false,
   className,
   labelAddon,
@@ -55,6 +56,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   searchable = false,
   allOptionValue,
 }: Readonly<SelectFieldProps<TFieldValues>>) {
+  useLocale();
   return (
     <Controller
       name={name}
@@ -82,7 +84,9 @@ export function SelectField<TFieldValues extends FieldValues>({
               disabled={disabled || isLoading}
               invalid={fieldState.invalid}
               describedBy={fieldState.error ? `${id}-error` : undefined}
-              placeholder={isLoading ? "Đang tải danh sách..." : placeholder}
+              placeholder={
+                isLoading ? t("common", "Đang tải danh sách...") : placeholder
+              }
               noDataText={noDataText}
               allOptionValue={allOptionValue}
             />
@@ -102,7 +106,9 @@ export function SelectField<TFieldValues extends FieldValues>({
                 aria-invalid={fieldState.invalid}
               >
                 <SelectValue
-                  placeholder={isLoading ? "Loading list..." : placeholder}
+                  placeholder={
+                    isLoading ? t("common", "Loading list...") : placeholder
+                  }
                 />
               </SelectTrigger>
               <SelectContent className="max-h-60">

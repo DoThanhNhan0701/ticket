@@ -11,10 +11,7 @@
     "backend": "Real TEST API",
     "writes": "All real configuration writes blocked. Save-error test intercepted the request and returned a controlled 503, without reaching the backend.",
     "responsive": "Viewport widths 320,390,768,1440; separate 390px mobile/touch browser context",
-    "themes": [
-      "light",
-      "dark"
-    ],
+    "themes": ["light", "dark"],
     "visualReview": [
       "users form at 390px",
       "positions list in light theme",

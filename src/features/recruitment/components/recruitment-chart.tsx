@@ -1,10 +1,7 @@
+import { t, useLocale } from "@/i18n";
 import type { RecruitmentRow } from "../types";
 import { recruitmentText } from "../utils/recruitment-format";
 import "./recruitment-report.css";
-
-const numberFormat = new Intl.NumberFormat("vi-VN", {
-  maximumFractionDigits: 1,
-});
 
 function chartValue(value: unknown) {
   const number = Number(value);
@@ -15,6 +12,11 @@ export function RecruitmentChart({
   rows,
   section,
 }: Readonly<{ rows: RecruitmentRow[]; section?: string }>) {
+  const locale = useLocale();
+  const numberFormat = new Intl.NumberFormat(
+    locale === "vi" ? "vi-VN" : "en-GB",
+    { maximumFractionDigits: 1 },
+  );
   const isDuration = section === "result_time_recruitment";
   const metric = isDuration
     ? "rate_pass"
@@ -29,20 +31,22 @@ export function RecruitmentChart({
       ].find((key) => rows.some((row) => row[key] !== undefined)) ??
       "number_cv");
   const metricTitles: Record<string, string> = {
-    number_cv_pass: "Số CV đã nhận việc",
-    quantity: "Số lượng yêu cầu",
-    value: "Số lượng",
-    count: "Số lượng",
-    rate: "Tỷ lệ (%)",
+    number_cv_pass: t("recruitment-reports", "Số CV đã nhận việc"),
+    quantity: t("recruitment-reports", "Số lượng yêu cầu"),
+    value: t("recruitment-reports", "Số lượng"),
+    count: t("recruitment-reports", "Số lượng"),
+    rate: t("recruitment-reports", "Tỷ lệ (%)"),
   };
   const title = isDuration
-    ? "Thời gian tuyển dụng (ngày)"
-    : (metricTitles[metric] ?? "Số lượng CV");
+    ? t("recruitment-reports", "Thời gian tuyển dụng (ngày)")
+    : (metricTitles[metric] ?? t("recruitment-reports", "Số lượng CV"));
   const maximum = Math.max(1, ...rows.map((row) => chartValue(row[metric])));
   return (
     <figure
       aria-label={
-        isDuration ? "Biểu đồ thời gian tuyển dụng" : "Biểu đồ số lượng CV"
+        isDuration
+          ? t("recruitment-reports", "Biểu đồ thời gian tuyển dụng")
+          : t("recruitment-reports", "Biểu đồ số lượng CV")
       }
       className="min-w-0 shrink-0 space-y-4 rounded-xl border bg-linear-to-br from-primary/5 via-card to-card p-3 sm:p-5"
     >
@@ -52,7 +56,8 @@ export function RecruitmentChart({
           {title}
         </span>
         <span className="text-xs font-normal text-muted-foreground">
-          {numberFormat.format(rows.length)} nhóm dữ liệu
+          {numberFormat.format(rows.length)}{" "}
+          {t("recruitment-reports", "nhóm dữ liệu")}{" "}
         </span>
       </figcaption>
       <div

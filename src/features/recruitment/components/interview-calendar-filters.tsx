@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { addDays, addMonths, addWeeks, format } from "date-fns";
 import { useController, useWatch, type Control } from "react-hook-form";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -16,6 +17,7 @@ export function InterviewCalendarFilters(
     disabled: boolean;
   }>,
 ) {
+  useLocale();
   const mobile = useIsMobile();
   return (
     <>
@@ -23,8 +25,8 @@ export function InterviewCalendarFilters(
         {...props}
         name="user_interview"
         id="recruitment-filter-interviewer"
-        label="Người phỏng vấn"
-        placeholder="Nhập tên đăng nhập..."
+        label={t("interviews", "Người phỏng vấn")}
+        placeholder={t("interviews", "Nhập tên đăng nhập...")}
       />
       {mobile && <MobileCalendarNavigation {...props} />}
     </>
@@ -38,6 +40,7 @@ function MobileCalendarNavigation({
   control: Control<Record<string, string>>;
   disabled: boolean;
 }>) {
+  useLocale();
   const { field: date } = useController({ control, name: "from_date" });
   const view = useWatch({
     control,
@@ -63,11 +66,11 @@ function MobileCalendarNavigation({
         disabled={disabled}
         name="calendar_view"
         id="recruitment-calendar-view"
-        label="Chế độ xem lịch"
+        label={t("interviews", "Chế độ xem lịch")}
         options={[
-          { value: "month", label: "Tháng" },
-          { value: "week", label: "Tuần" },
-          { value: "day", label: "Ngày" },
+          { value: "month", label: t("interviews", "Tháng") },
+          { value: "week", label: t("interviews", "Tuần") },
+          { value: "day", label: t("interviews", "Ngày") },
         ]}
       />
       <div className="col-span-full grid grid-cols-[auto_minmax(0,1fr)_auto] gap-2">
@@ -76,8 +79,8 @@ function MobileCalendarNavigation({
           variant="outline"
           size="icon"
           disabled={disabled}
-          aria-label="Khoảng trước"
-          title="Khoảng trước"
+          aria-label={t("interviews", "Khoảng trước")}
+          title={t("interviews", "Khoảng trước")}
           className="size-11"
           onClick={() => shift(-1)}
         >
@@ -89,15 +92,15 @@ function MobileCalendarNavigation({
           disabled={disabled}
           onClick={() => date.onChange(format(new Date(), "dd/MM/yyyy"))}
         >
-          Hôm nay
+          {t("interviews", "Hôm nay")}
         </Button>
         <Button
           type="button"
           variant="outline"
           size="icon"
           disabled={disabled}
-          aria-label="Khoảng sau"
-          title="Khoảng sau"
+          aria-label={t("interviews", "Khoảng sau")}
+          title={t("interviews", "Khoảng sau")}
           className="size-11"
           onClick={() => shift(1)}
         >

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { format, isValid, parse, startOfDay } from "date-fns";
 import {
   cleanTemplateTitle,
@@ -90,16 +91,23 @@ function fieldError(
   row: DetailRow,
 ) {
   const value = detailValue(field, row).trim();
-  if (!value) return field.required ? `Vui lòng nhập ${field.title}.` : "";
+  if (!value)
+    return field.required
+      ? t("request-detail", "Vui lòng nhập {0}.", [field.title])
+      : "";
   const options = fieldOptions(field);
   if (options.length)
     return options.includes(value)
       ? ""
-      : "Vui lòng chọn giá trị trong danh sách.";
+      : t("request-detail", "Vui lòng chọn giá trị trong danh sách.");
   if (field.type === "number")
-    return Number.isFinite(Number(value)) ? "" : "Vui lòng nhập số hợp lệ.";
+    return Number.isFinite(Number(value))
+      ? ""
+      : t("request-detail", "Vui lòng nhập số hợp lệ.");
   if (field.type === "date-text")
-    return parseRequestDate(value) ? "" : "Ngày không hợp lệ (DD/MM/YYYY).";
+    return parseRequestDate(value)
+      ? ""
+      : t("request-detail", "Ngày không hợp lệ (DD/MM/YYYY).");
   if (field.type === "range-date-text")
     return rangeDateError(field.fieldKey, row);
   return "";
@@ -109,7 +117,10 @@ function rangeDateError(key: string, row: DetailRow) {
   const end = parseRequestDate(row.values[`${key}_end`] ?? "");
   return start && end && start <= end
     ? ""
-    : "Vui lòng nhập đủ khoảng ngày hợp lệ, ngày kết thúc không trước ngày bắt đầu.";
+    : t(
+        "request-detail",
+        "Vui lòng nhập đủ khoảng ngày hợp lệ, ngày kết thúc không trước ngày bắt đầu.",
+      );
 }
 function comparisonError(
   field: ReturnType<typeof detailFields>[number],
@@ -127,7 +138,11 @@ function comparisonError(
   const target = fields.find(
     (other) => other.title === cleanTemplateTitle(String(rule.target)),
   );
-  if (!target) return "Điều kiện so sánh ngày trong biểu mẫu không hợp lệ.";
+  if (!target)
+    return t(
+      "request-detail",
+      "Điều kiện so sánh ngày trong biểu mẫu không hợp lệ.",
+    );
   const current = parseRequestDate(
     row.values[
       field.type === "range-date-text"
@@ -151,7 +166,10 @@ function comparisonError(
   };
   return comparisons[String(rule.operator)]
     ? ""
-    : `Ngày phải ${String(rule.operator)} ${target.title}.`;
+    : t("request-detail", "Ngày phải {0} {1}.", [
+        String(rule.operator),
+        target.title,
+      ]);
 }
 export function isDetailDateDisabled(
   date: Date,
@@ -198,7 +216,7 @@ export function validateDetailRows(
   if (fields.length && !rows.length)
     issues.push({
       path: ["rows"],
-      message: "Vui lòng thêm ít nhất một dòng chi tiết.",
+      message: t("request-detail", "Vui lòng thêm ít nhất một dòng chi tiết."),
     });
   rows.forEach((row, index) =>
     fields.forEach((field) => {
@@ -233,7 +251,10 @@ export function serializeRequestDetails(
   const fields = detailFields(groups);
   if (fields.some((field) => field.title === "key"))
     throw new Error(
-      "Biểu mẫu có tên trường dành riêng ‘key’. Vui lòng chỉnh lại cấu hình.",
+      t(
+        "request-detail",
+        "Biểu mẫu có tên trường dành riêng ‘key’. Vui lòng chỉnh lại cấu hình.",
+      ),
     );
   const header = groups.map((group, groupIndex) => ({
     ...group,
@@ -295,12 +316,14 @@ export function importedDetailRows(
   groups: readonly TemplateGroup[],
   data: readonly Record<string, string | number | null>[],
 ) {
-  if (!data.length) throw new Error("Tệp Excel không có dữ liệu.");
+  if (!data.length)
+    throw new Error(t("request-detail", "Tệp Excel không có dữ liệu."));
   const fields = detailFields(groups),
     keys = new Set<string>();
   return data.map((row, index) => {
     const key = String(row.key ?? row.STT ?? index + 1);
-    if (keys.has(key)) throw new Error("STT trong tệp Excel bị trùng.");
+    if (keys.has(key))
+      throw new Error(t("request-detail", "STT trong tệp Excel bị trùng."));
     keys.add(key);
     const cells = new Map(
       Object.entries(row).map(([name, value]) => [
@@ -309,7 +332,9 @@ export function importedDetailRows(
       ]),
     );
     if (!fields.every((field) => cells.has(field.title)))
-      throw new Error("Tệp Excel không khớp biểu mẫu đã chọn.");
+      throw new Error(
+        t("request-detail", "Tệp Excel không khớp biểu mẫu đã chọn."),
+      );
     const values: Record<string, string> = {};
     for (const field of fields) {
       const value = cells.get(field.title) ?? "";

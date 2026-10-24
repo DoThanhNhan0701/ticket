@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +23,7 @@ export function CommentMentions({
   invalid: boolean;
   children?: ReactNode;
 }>) {
+  useLocale();
   const input = useRef<HTMLTextAreaElement>(null);
   const listId = useId();
   const [caret, setCaret] = useState(value.length);
@@ -72,7 +74,10 @@ export function CommentMentions({
           aria-activedescendant={
             open && options[selected] ? `${listId}-${selected}` : undefined
           }
-          placeholder="Nhập phản hồi, gõ @ để nhắc đến người dùng..."
+          placeholder={t(
+            "request-discussion",
+            "Nhập phản hồi, gõ @ để nhắc đến người dùng...",
+          )}
           className="min-h-14 max-h-[min(40dvh,15rem)] min-w-0 resize-none overflow-y-auto border-0 bg-transparent py-1.5 field-sizing-content shadow-none ring-0 whitespace-pre-wrap wrap-anywhere focus-visible:ring-0"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -129,12 +134,14 @@ export function CommentMentions({
         {children}
       </CommentInputFrame>
       <p id={`${id}-hint`} className="text-xs text-muted-foreground">
-        Enter để gửi, Shift+Enter để xuống dòng. Gõ @ và tên để nhắc đến người
-        dùng. Mỗi tệp tối đa 50 MB.
+        {t(
+          "request-discussion",
+          "Enter để gửi, Shift+Enter để xuống dòng. Gõ @ và tên để nhắc đến người dùng. Mỗi tệp tối đa 50 MB.",
+        )}
       </p>
       {invalid && (
         <p id={`${id}-error`} className="text-sm text-destructive">
-          Vui lòng nhập phản hồi.
+          {t("request-discussion", "Vui lòng nhập phản hồi.")}
         </p>
       )}
       {open && (
@@ -154,6 +161,7 @@ function CommentInputFrame({
   invalid,
   children,
 }: Readonly<{ invalid: boolean; children: ReactNode }>) {
+  useLocale();
   return (
     <div
       className={`min-w-0 rounded-2xl border bg-card p-1.5 shadow-xs focus-within:ring-2 focus-within:ring-ring/25 ${invalid ? "border-destructive" : "border-input focus-within:border-ring"}`}
@@ -164,9 +172,13 @@ function CommentInputFrame({
 }
 function suggestionStatus(current: boolean, failed: boolean, success: boolean) {
   if (current && failed)
-    return "Không tải được người dùng. Bạn vẫn có thể nhập @tên trực tiếp.";
-  if (current && success) return "Không tìm thấy người dùng đang hoạt động.";
-  return "Đang tìm người dùng...";
+    return t(
+      "request-discussion",
+      "Không tải được người dùng. Bạn vẫn có thể nhập @tên trực tiếp.",
+    );
+  if (current && success)
+    return t("request-discussion", "Không tìm thấy người dùng đang hoạt động.");
+  return t("request-discussion", "Đang tìm người dùng...");
 }
 function MentionSuggestions({
   listId,
@@ -181,9 +193,14 @@ function MentionSuggestions({
   onChoose: (username: string) => void;
   status: string;
 }>) {
+  useLocale();
   return (
     <div className="max-h-52 overflow-y-auto rounded-lg border border-border bg-popover p-1 shadow-sm">
-      <div id={listId} role="listbox" aria-label="Người dùng được gắn thẻ">
+      <div
+        id={listId}
+        role="listbox"
+        aria-label={t("request-discussion", "Người dùng được gắn thẻ")}
+      >
         {options.map((user, index) => (
           <button
             key={user.username}

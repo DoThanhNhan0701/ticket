@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useRef, type KeyboardEvent } from "react";
@@ -28,15 +29,36 @@ import { TicketCloneButton } from "./ticket-clone-button";
 import { TicketDiscussion, TicketHistory } from "./ticket-activity";
 
 const tabs = [
-  { label: "Thông tin chung", icon: Info },
-  { label: "Chi tiết yêu cầu", icon: ListChecks },
-  { label: "Trao đổi", icon: MessageSquare },
-  { label: "Lịch sử", icon: History },
+  {
+    get label() {
+      return t("request-detail", "Thông tin chung");
+    },
+    icon: Info,
+  },
+  {
+    get label() {
+      return t("request-detail", "Chi tiết yêu cầu");
+    },
+    icon: ListChecks,
+  },
+  {
+    get label() {
+      return t("request-detail", "Trao đổi");
+    },
+    icon: MessageSquare,
+  },
+  {
+    get label() {
+      return t("request-detail", "Lịch sử");
+    },
+    icon: History,
+  },
 ];
 const tabKeys = ["general", "details", "discussion", "history"];
 function TicketStatusSummary({
   ticket,
 }: Readonly<{ ticket: RequestDetailData }>) {
+  useLocale();
   if (!ticket.ticket_status_name) return null;
   const color = /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(ticket.color)
     ? ticket.color
@@ -44,7 +66,7 @@ function TicketStatusSummary({
   return (
     <div
       role="group"
-      aria-label="Trạng thái yêu cầu"
+      aria-label={t("request-detail", "Trạng thái yêu cầu")}
       className="flex h-10 min-w-0 max-w-[25vw] items-center justify-center rounded-lg border px-2 sm:max-w-xs sm:px-3"
       style={{
         borderColor: `color-mix(in srgb, ${color} 50%, var(--card))`,
@@ -53,9 +75,9 @@ function TicketStatusSummary({
     >
       <span
         className="truncate text-xs font-medium sm:text-sm"
-        title={ticket.ticket_status_name}
+        title={t("statuses", ticket.ticket_status_name)}
       >
-        {ticket.ticket_status_name}
+        {t("statuses", ticket.ticket_status_name)}
       </span>
     </div>
   );
@@ -68,6 +90,7 @@ function DetailTabs({
   ticket: RequestDetailData;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
@@ -130,7 +153,7 @@ function DetailTabs({
         <div className="flex min-w-0 items-start justify-between gap-2">
           <div className="flex min-h-11 min-w-0 flex-1 flex-col justify-center gap-1 sm:min-h-0 sm:block">
             <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase sm:hidden">
-              Mã yêu cầu
+              {t("request-detail", "Mã yêu cầu")}
             </span>
             <TruncatedText
               text={ticket.ticket_code || `#${ticket.id}`}
@@ -150,7 +173,7 @@ function DetailTabs({
         ref={tabList}
         {...dragHandlers}
         role="tablist"
-        aria-label="Các bước yêu cầu"
+        aria-label={t("request-detail", "Các bước yêu cầu")}
         className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(4,minmax(9rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-xl border border-border bg-card p-1 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       >
         {tabs.map(({ label, icon: Icon }, index) => (
@@ -173,8 +196,10 @@ function DetailTabs({
             {label}
             {tabKeys[index] === "discussion" && (
               <span
-                aria-label={`${commentCount} bình luận`}
-                title="Tổng số bình luận và câu trả lời"
+                aria-label={t("request-detail", "{0} bình luận", [
+                  commentCount,
+                ])}
+                title={t("request-detail", "Tổng số bình luận và câu trả lời")}
                 className={`inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-medium tabular-nums ${active === index ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"}`}
               >
                 {commentCount}
@@ -207,6 +232,7 @@ function DetailTabs({
   );
 }
 export function RequestDetail() {
+  useLocale();
   const { ticketID = "" } = useParams();
   const { userId } = useAuthContext();
   const navigate = useNavigate();
@@ -237,20 +263,23 @@ export function RequestDetail() {
   const error = query.error;
   let message = error?.message;
   if (error instanceof ApiError && error.status === 404)
-    message = "Không tìm thấy yêu cầu.";
+    message = t("request-detail", "Không tìm thấy yêu cầu.");
   if (error instanceof ApiError && error.status === 403)
-    message = "Bạn không có quyền xem yêu cầu này.";
+    message = t("request-detail", "Bạn không có quyền xem yêu cầu này.");
   const canShowTicket =
     Boolean(query.data) &&
     !(error instanceof ApiError && [401, 403, 404].includes(error.status));
   return (
     <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3 overflow-hidden">
       <PageHeader
-        title="Chi tiết yêu cầu"
-        description="Xem nội dung và tiến độ xử lý yêu cầu."
+        title={t("request-detail", "Chi tiết yêu cầu")}
+        description={t(
+          "request-detail",
+          "Xem nội dung và tiến độ xử lý yêu cầu.",
+        )}
         icon={FileText}
         onBack={goBack}
-        backLabel="Quay lại"
+        backLabel={t("request-detail", "Quay lại")}
         actions={
           <>
             {query.data && canShowTicket && (
@@ -261,8 +290,8 @@ export function RequestDetail() {
               variant="outline"
               size="icon"
               className="size-10"
-              aria-label="Tải lại yêu cầu"
-              title="Tải lại yêu cầu"
+              aria-label={t("request-detail", "Tải lại yêu cầu")}
+              title={t("request-detail", "Tải lại yêu cầu")}
               disabled={!valid || query.isFetching}
               onClick={() => void refresh().catch(() => undefined)}
             >
@@ -273,12 +302,18 @@ export function RequestDetail() {
           </>
         }
       />
-      {!valid && <ErrorAlert message="Mã yêu cầu không hợp lệ." />}
+      {!valid && (
+        <ErrorAlert message={t("request-detail", "Mã yêu cầu không hợp lệ.")} />
+      )}
       {valid && query.isPending && (
-        <LoadingState message="Đang tải chi tiết yêu cầu..." />
+        <LoadingState
+          message={t("request-detail", "Đang tải chi tiết yêu cầu...")}
+        />
       )}
       {query.isError && (
-        <ErrorToast message={message ?? "Không tải được yêu cầu."} />
+        <ErrorToast
+          message={message ?? t("request-detail", "Không tải được yêu cầu.")}
+        />
       )}
       {query.data && canShowTicket && (
         <DetailTabs key={ticketID} ticket={query.data} onSaved={refresh} />

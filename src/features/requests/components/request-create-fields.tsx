@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { UseFormReturn } from "react-hook-form";
 import { startOfToday } from "date-fns";
 import { SelectField } from "@/components/form/select-field";
@@ -28,22 +29,23 @@ export function RequestAssignmentFields({
 }: Readonly<
   FieldsProps & { types: readonly RequestType[]; typesLoading: boolean }
 >) {
+  useLocale();
   const fields = [
     {
       name: "handling_group",
-      label: "Bộ phận xử lý",
+      label: t("request-create", "Bộ phận xử lý"),
       options: options(lookups?.groups ?? []),
     },
     {
       name: "ticket_type",
-      label: "Loại yêu cầu",
+      label: t("request-create", "Loại yêu cầu"),
       options: options(types),
       loading: typesLoading,
       disabled: !types.length,
     },
     {
       name: "approve_user",
-      label: "Người phê duyệt",
+      label: t("request-create", "Người phê duyệt"),
       options: (lookups?.approvers ?? []).map((row) => ({
         value: String(row.id),
         label:
@@ -53,7 +55,7 @@ export function RequestAssignmentFields({
     },
     {
       name: "fore_cus",
-      label: "Công ty",
+      label: t("request-create", "Công ty"),
       options: options(lookups?.customers ?? []),
     },
   ] as const;
@@ -66,13 +68,15 @@ export function RequestAssignmentFields({
           name={field.name}
           id={`create-${field.name}`}
           label={field.label}
-          placeholder={`Chọn ${field.label.toLowerCase()}`}
+          placeholder={t("request-create", "Chọn {0}", [
+            field.label.toLowerCase(),
+          ])}
           required
           searchable
           options={field.options}
           isLoading={"loading" in field && field.loading}
           disabled={disabled || ("disabled" in field && field.disabled)}
-          noDataText="Không có dữ liệu để chọn"
+          noDataText={t("request-create", "Không có dữ liệu để chọn")}
         />
       ))}
     </div>
@@ -83,14 +87,15 @@ export function RequestGeneralFields({
   lookups,
   disabled,
 }: Readonly<FieldsProps>) {
+  useLocale();
   return (
     <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <InputField
         control={form.control}
         name="title"
         id="create-title"
-        label="Tiêu đề yêu cầu"
-        placeholder="Bạn cần hỗ trợ việc gì?"
+        label={t("request-create", "Tiêu đề yêu cầu")}
+        placeholder={t("request-create", "Bạn cần hỗ trợ việc gì?")}
         maxLength={300}
         required
         disabled={disabled}
@@ -100,8 +105,8 @@ export function RequestGeneralFields({
         control={form.control}
         name="bophansudung"
         id="create-department"
-        label="Department"
-        placeholder="Chọn Department"
+        label={t("request-create", "Department")}
+        placeholder={t("request-create", "Chọn Department")}
         required
         searchable
         options={options(lookups?.departments ?? [])}
@@ -111,8 +116,8 @@ export function RequestGeneralFields({
         control={form.control}
         name="other1"
         id="create-teams"
-        label="Team sử dụng"
-        placeholder="Chọn Team"
+        label={t("request-create", "Team sử dụng")}
+        placeholder={t("request-create", "Chọn Team")}
         options={options(lookups?.teams ?? [])}
         disabled={disabled}
         maxBadgeCount={3}
@@ -121,8 +126,8 @@ export function RequestGeneralFields({
         control={form.control}
         name="vanphong"
         id="create-office"
-        label="Văn phòng"
-        placeholder="Chọn văn phòng"
+        label={t("request-create", "Văn phòng")}
+        placeholder={t("request-create", "Chọn văn phòng")}
         required
         searchable
         options={options(lookups?.offices ?? [])}
@@ -132,10 +137,13 @@ export function RequestGeneralFields({
         control={form.control}
         name="duedate"
         id="create-due-date"
-        label="Ngày mong muốn"
+        label={t("request-create", "Ngày mong muốn")}
         required
         isDateDisabled={(date) => date < startOfToday()}
-        disabledDateMessage="Ngày mong muốn không được trước hôm nay."
+        disabledDateMessage={t(
+          "request-create",
+          "Ngày mong muốn không được trước hôm nay.",
+        )}
         endYear={new Date().getFullYear() + 10}
         disabled={disabled}
       />
@@ -147,13 +155,17 @@ export function RequestNotesField({
   form,
   disabled,
 }: Readonly<Pick<FieldsProps, "form" | "disabled">>) {
+  useLocale();
   return (
     <TextareaField
       control={form.control}
       name="description"
       id="create-description"
-      label="Ghi chú"
-      placeholder="Thông tin bổ sung cho người xử lý (tối đa 1000 ký tự)"
+      label={t("request-create", "Ghi chú")}
+      placeholder={t(
+        "request-create",
+        "Thông tin bổ sung cho người xử lý (tối đa 1000 ký tự)",
+      )}
       disabled={disabled}
     />
   );

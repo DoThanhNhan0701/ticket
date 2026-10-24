@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { PAGE_LINKS } from "@/constants/routes";
 import { useState } from "react";
 import { ChartNoAxesColumn } from "lucide-react";
@@ -17,6 +18,7 @@ import type { ReportResponse } from "../schemas/reports-schema";
 export function ReportSummaryCards({
   data,
 }: Readonly<{ data: ReportResponse["dict_bieudo_01"] }>) {
+  useLocale();
   const [selected, setSelected] = useState<string | null>(null);
   const detail = selected === null ? undefined : data[selected];
   return (
@@ -29,7 +31,10 @@ export function ReportSummaryCards({
             variant="outline"
             onClick={() => setSelected(label)}
             className="h-auto min-h-24 min-w-0 flex-col items-start gap-3 p-4 text-left sm:h-auto sm:pointer-coarse:h-auto"
-            aria-label={`${label}: ${summary.count} yêu cầu`}
+            aria-label={t("reports", "{0}: {1} yêu cầu", [
+              label,
+              summary.count,
+            ])}
           >
             <TruncatedText
               text={label}
@@ -52,7 +57,11 @@ export function ReportSummaryCards({
             <DialogHeading
               icon={<ChartNoAxesColumn aria-hidden="true" />}
               title={selected}
-              description={`${detail?.count ?? 0} yêu cầu trong khoảng thời gian đã chọn.`}
+              description={t(
+                "reports",
+                "{0} yêu cầu trong khoảng thời gian đã chọn.",
+                [detail?.count ?? 0],
+              )}
             />
             <DialogCloseButton />
           </DialogHeader>
@@ -73,7 +82,7 @@ export function ReportSummaryCards({
             </ul>
           ) : (
             <EmptyState
-              title="Không có yêu cầu chi tiết"
+              title={t("reports", "Không có yêu cầu chi tiết")}
               className="border-0 shadow-none"
             />
           )}

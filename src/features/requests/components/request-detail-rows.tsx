@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { memo, useEffect, useMemo, useRef } from "react";
 import {
@@ -7,7 +8,7 @@ import {
 } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Copy, Download, Plus, Trash2, Upload } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { ErrorAlert } from "@/components/error-alert";
@@ -50,6 +51,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
   disabled: boolean;
   onBusyChange: (value: boolean) => void;
 }>) {
+  useLocale();
   const rows = useFieldArray({ control: form.control, name: "rows" });
   const { errors } = useFormState({ control: form.control, name: "rows" });
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -74,7 +76,12 @@ export const RequestDetailRows = memo(function RequestDetailRows({
       if (!live.current) return;
       rows.replace(importedDetailRows(groups, data));
       form.clearErrors("rows");
-      toast.success("Đã nhập Excel. Vui lòng kiểm tra các dòng chi tiết.");
+      toast.success(
+        t(
+          "request-create",
+          "Đã nhập Excel. Vui lòng kiểm tra các dòng chi tiết.",
+        ),
+      );
     },
     onSettled: () => {
       if (live.current) onBusyChange(false);
@@ -90,24 +97,32 @@ export const RequestDetailRows = memo(function RequestDetailRows({
   const columns = widths.map((width) => `minmax(${width}px, 1fr)`).join(" ");
   const groupTitle = groups.map((group) => group.title).join(" · ");
   return (
-    <section aria-label="Chi tiết yêu cầu" className="min-w-0">
+    <section
+      aria-label={t("request-create", "Chi tiết yêu cầu")}
+      className="min-w-0"
+    >
       <RequestFormSection
         step={3}
         title={
           <span
             className="block min-w-0 truncate"
-            title={`Chi tiết yêu cầu · ${groupTitle}`}
+            title={t("request-create", "Chi tiết yêu cầu · {0}", [groupTitle])}
           >
-            Chi tiết yêu cầu
+            {" "}
+            {t("request-create", "Chi tiết yêu cầu")}{" "}
             <span className="hidden sm:inline">{` · ${groupTitle}`}</span>
           </span>
         }
-        description={`${rows.fields.length} dòng · Cuộn ngang khi cần để xem thêm trường.`}
+        description={t(
+          "request-create",
+          "{0} dòng · Cuộn ngang khi cần để xem thêm trường.",
+          [rows.fields.length],
+        )}
         actions={
           <>
             <AsyncButton
               mobileIconOnly
-              title="Tải mẫu"
+              title={t("request-create", "Tải mẫu")}
               icon={<Download className="size-4" aria-hidden="true" />}
               type="button"
               variant="outline"
@@ -115,11 +130,11 @@ export const RequestDetailRows = memo(function RequestDetailRows({
               disabled={busy}
               onClick={() => download.mutate()}
             >
-              Tải mẫu
+              {t("request-create", "Tải mẫu")}
             </AsyncButton>
             <AsyncButton
               mobileIconOnly
-              title="Nhập Excel"
+              title={t("request-create", "Nhập Excel")}
               icon={<Upload className="size-4" aria-hidden="true" />}
               type="button"
               variant="outline"
@@ -127,14 +142,14 @@ export const RequestDetailRows = memo(function RequestDetailRows({
               disabled={busy}
               onClick={() => input.current?.click()}
             >
-              Nhập Excel
+              {t("request-create", "Nhập Excel")}
             </AsyncButton>
             <input
               ref={input}
               type="file"
               tabIndex={-1}
               accept=".xlsx"
-              aria-label="Nhập chi tiết từ Excel"
+              aria-label={t("request-create", "Nhập chi tiết từ Excel")}
               className="sr-only"
               disabled={busy}
               onChange={(event) => {
@@ -161,7 +176,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
         <div
           ref={scrollContainer}
           role="region"
-          aria-label="Các dòng chi tiết yêu cầu"
+          aria-label={t("request-create", "Các dòng chi tiết yêu cầu")}
           className="relative min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
         >
           <div
@@ -170,7 +185,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
           >
             <div
               role="group"
-              aria-label="Tiêu đề các cột chi tiết"
+              aria-label={t("request-create", "Tiêu đề các cột chi tiết")}
               className="grid items-start gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/40 px-3 py-2"
               style={{ gridTemplateColumns: columns }}
             >
@@ -207,7 +222,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                     {field.type === "range-date-text" &&
                       !fieldOptions(field).length && (
                         <span className="shrink-0 whitespace-nowrap text-xs font-normal text-muted-foreground">
-                          (Từ ngày – Đến ngày)
+                          {t("request-create", "(Từ ngày – Đến ngày)")}
                         </span>
                       )}
                   </div>
@@ -217,20 +232,24 @@ export const RequestDetailRows = memo(function RequestDetailRows({
             {rows.fields.map((row, index) => (
               <fieldset
                 key={row.id}
-                aria-label={`Dòng ${index + 1}`}
+                aria-label={t("request-create", "Dòng {0}", [index + 1])}
                 className="min-w-0 rounded-lg border border-border px-3 pt-1 pb-2"
               >
                 <legend className="sticky left-0 z-10 rounded-lg bg-card px-2 text-sm font-semibold">
                   <div className="flex items-center gap-2">
-                    <span className="whitespace-nowrap">Dòng {index + 1}</span>
+                    <span className="whitespace-nowrap">
+                      {t("request-create", "Dòng")} {index + 1}
+                    </span>
                     <div className="flex items-center gap-1">
                       <Button
                         type="button"
                         variant="outline"
                         size="icon"
                         className="size-11 sm:size-9"
-                        title="Sao chép dòng"
-                        aria-label={`Sao chép dòng ${index + 1}`}
+                        title={t("request-create", "Sao chép dòng")}
+                        aria-label={t("request-create", "Sao chép dòng {0}", [
+                          index + 1,
+                        ])}
                         disabled={busy}
                         onClick={() =>
                           rows.append({
@@ -247,8 +266,10 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                         variant="outline"
                         size="icon"
                         className="size-11 text-destructive sm:size-9"
-                        title="Xóa dòng"
-                        aria-label={`Xóa dòng ${index + 1}`}
+                        title={t("request-create", "Xóa dòng")}
+                        aria-label={t("request-create", "Xóa dòng {0}", [
+                          index + 1,
+                        ])}
                         disabled={busy || rows.fields.length === 1}
                         onClick={() => rows.remove(index)}
                       >
@@ -293,7 +314,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
           onClick={() => rows.append(emptyDetailRow(groups))}
         >
           <Plus className="size-4" aria-hidden="true" />
-          Thêm dòng
+          {t("request-create", "Thêm dòng")}
         </Button>
       </RequestFormSection>
     </section>

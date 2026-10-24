@@ -641,11 +641,9 @@ it("selects a future due date with the shared calendar and submits its ISO date"
   expect(
     (screen.getByLabelText("Ngày mong muốn") as HTMLInputElement).value,
   ).toBe("21/10/2027");
+  fireEvent.click(screen.getByRole("button", { name: "Chọn ngày mong muốn" }));
   fireEvent.click(
-    screen.getByRole("button", { name: "Choose ngày mong muốn" }),
-  );
-  fireEvent.click(
-    await screen.findByRole("button", { name: /October 22nd, 2027/ }),
+    await screen.findByRole("button", { name: /ngày 22 tháng 10 năm 2027/ }),
   );
   expect(
     (screen.getByLabelText("Ngày mong muốn") as HTMLInputElement).value,

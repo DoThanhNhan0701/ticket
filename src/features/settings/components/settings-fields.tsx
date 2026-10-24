@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
@@ -24,6 +25,7 @@ export function SettingsFieldControl({
   disabled: boolean;
   editing: boolean;
 }>) {
+  useLocale();
   const value = useWatch({ control: form.control, name: field.name });
   const shared = {
     control: form.control,
@@ -49,8 +51,8 @@ export function SettingsFieldControl({
               )
             : settingsOptions(lookups[field.lookup!] ?? [], value)
         }
-        placeholder={`Chọn ${field.label.toLowerCase()}`}
-        noDataText="Không có dữ liệu"
+        placeholder={t("settings", "Chọn {0}", [field.label.toLowerCase()])}
+        noDataText={t("settings", "Không có dữ liệu")}
         maxBadgeCount={3}
       />
     );
@@ -60,18 +62,20 @@ export function SettingsFieldControl({
         {...shared}
         searchable
         options={[
-          ...(!field.required ? [{ value: "", label: "Không chọn" }] : []),
+          ...(!field.required
+            ? [{ value: "", label: t("settings", "Không chọn") }]
+            : []),
           ...settingsOptions(lookups[field.lookup!] ?? [], value),
         ]}
-        placeholder={`Chọn ${field.label.toLowerCase()}`}
-        noDataText="Không có dữ liệu"
+        placeholder={t("settings", "Chọn {0}", [field.label.toLowerCase()])}
+        noDataText={t("settings", "Không có dữ liệu")}
       />
     );
   if (field.type === "textarea")
     return (
       <TextareaField
         {...shared}
-        placeholder={`Nhập ${field.label.toLowerCase()}`}
+        placeholder={t("settings", "Nhập {0}", [field.label.toLowerCase()])}
         className="sm:col-span-2"
       />
     );
@@ -82,7 +86,7 @@ export function SettingsFieldControl({
       maxLength={field.maxLength}
       disabled={disabled || (editing && field.createOnly)}
       required={field.required && !(editing && field.createOnly)}
-      placeholder={`Nhập ${field.label.toLowerCase()}`}
+      placeholder={t("settings", "Nhập {0}", [field.label.toLowerCase()])}
     />
   );
 }

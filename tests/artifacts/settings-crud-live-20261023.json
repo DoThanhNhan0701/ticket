@@ -25,10 +25,7 @@
       "name": "TESTCFG_MVKEWIPB_CV_U",
       "description": "TESTCFG_MVKEWIPB updated position",
       "is_active": false,
-      "permission": [
-        1,
-        4
-      ]
+      "permission": [1, 4]
     },
     "teams": {
       "id": 91,
@@ -116,9 +113,7 @@
       "elapsedMs": 4310,
       "id": 40,
       "expected": {
-        "permission": [
-          4
-        ]
+        "permission": [4]
       },
       "readbackVerified": true
     },
@@ -153,9 +148,7 @@
       "id": 26,
       "expected": {
         "is_manager": 794,
-        "ls_member": [
-          820
-        ]
+        "ls_member": [820]
       },
       "readbackVerified": true
     },
@@ -206,10 +199,7 @@
       "id": 40,
       "expected": {
         "name": "TESTCFG_MVKEWIPB_CV_U",
-        "permission": [
-          1,
-          4
-        ]
+        "permission": [1, 4]
       },
       "readbackVerified": true,
       "visibleAfterReload": true
@@ -270,12 +260,7 @@
       "name": "create-template-four-field-types",
       "status": "passed",
       "elapsedMs": 7999,
-      "fieldTypes": [
-        "text",
-        "number",
-        "date-text",
-        "range-date-text"
-      ],
+      "fieldTypes": ["text", "number", "date-text", "range-date-text"],
       "readbackVerified": true
     },
     {
@@ -787,9 +772,7 @@
       "elapsedMs": 4310,
       "id": 40,
       "expected": {
-        "permission": [
-          4
-        ]
+        "permission": [4]
       },
       "readbackVerified": true
     },
@@ -824,9 +807,7 @@
       "id": 26,
       "expected": {
         "is_manager": 794,
-        "ls_member": [
-          820
-        ]
+        "ls_member": [820]
       },
       "readbackVerified": true
     },
@@ -867,10 +848,7 @@
       "id": 40,
       "expected": {
         "name": "TESTCFG_MVKEWIPB_CV_U",
-        "permission": [
-          1,
-          4
-        ]
+        "permission": [1, 4]
       },
       "readbackVerified": true,
       "visibleAfterReload": true
@@ -926,12 +904,7 @@
       "name": "create-template-four-field-types",
       "status": "passed",
       "elapsedMs": 7999,
-      "fieldTypes": [
-        "text",
-        "number",
-        "date-text",
-        "range-date-text"
-      ],
+      "fieldTypes": ["text", "number", "date-text", "range-date-text"],
       "readbackVerified": true
     },
     {

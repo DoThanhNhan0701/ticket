@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Paperclip, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -42,21 +43,24 @@ function PickerContent({
   description?: string;
   multiple: boolean;
 }>) {
+  useLocale();
   if (compact) return <Paperclip className="size-5" aria-hidden="true" />;
   if (style === "inline")
     return (
       <>
         <Paperclip className="size-5" aria-hidden="true" />
-        <span>Thêm tệp đính kèm</span>
+        <span>{t("attachments", "Thêm tệp đính kèm")}</span>
       </>
     );
   return (
     <>
       <Upload className="size-5 text-muted-foreground" aria-hidden="true" />
-      <span>Chọn tệp hoặc kéo thả vào đây</span>
+      <span>{t("attachments", "Chọn tệp hoặc kéo thả vào đây")}</span>
       <span className="text-xs font-normal text-muted-foreground">
         {description ??
-          (multiple ? "Có thể đính kèm nhiều tệp." : "Chọn một tệp đính kèm.")}
+          (multiple
+            ? t("attachments", "Có thể đính kèm nhiều tệp.")
+            : t("attachments", "Chọn một tệp đính kèm."))}
       </span>
     </>
   );
@@ -71,7 +75,7 @@ export function RequestAttachments({
   actions,
   existingAttachments,
   inputId,
-  label = "Tệp đính kèm",
+  label = t("attachments", "Tệp đính kèm"),
   hideLabel,
   previewAllFiles,
   multiple = true,
@@ -93,6 +97,7 @@ export function RequestAttachments({
   description?: string;
   pickerStyle?: "dropzone" | "inline";
 }>) {
+  useLocale();
   const generatedId = useId();
   const id = inputId ?? generatedId;
   const input = useRef<HTMLInputElement>(null);
@@ -125,9 +130,9 @@ export function RequestAttachments({
       type="button"
       variant="outline"
       size={compact ? "icon" : "default"}
-      title={compact ? "Đính kèm tệp" : undefined}
+      title={compact ? t("attachments", "Đính kèm tệp") : undefined}
       disabled={disabled}
-      aria-label={`Chọn ${label.toLowerCase()}`}
+      aria-label={t("attachments", "Chọn {0}", [label.toLowerCase()])}
       className={pickerClassName(compact, pickerStyle)}
       onClick={() => input.current?.click()}
       onDragOver={(event) => event.preventDefault()}
@@ -224,6 +229,7 @@ function AttachmentList({
   onPreview: (file: File) => void;
   onChange: (files: File[]) => void;
 }>) {
+  useLocale();
   return (
     <ul className={tiles ? "flex min-w-0 flex-wrap gap-2" : "space-y-2"}>
       {files.map((file, index) =>
@@ -233,7 +239,7 @@ function AttachmentList({
             file={file}
             name={file.name}
             image={isImageFile(file)}
-            previewLabel={`${isImageFile(file) ? "Xem ảnh" : "Mở tệp"} ${file.name}`}
+            previewLabel={`${isImageFile(file) ? t("attachments", "Xem ảnh") : t("attachments", "Mở tệp")} ${file.name}`}
             disabled={disabled}
             onPreview={
               isImageFile(file) || previewAllFiles
@@ -252,7 +258,7 @@ function AttachmentList({
             {isImageFile(file) || previewAllFiles ? (
               <button
                 type="button"
-                aria-label={`${isImageFile(file) ? "Xem ảnh" : "Mở tệp"} ${file.name}`}
+                aria-label={`${isImageFile(file) ? t("attachments", "Xem ảnh") : t("attachments", "Mở tệp")} ${file.name}`}
                 className="flex min-h-11 min-w-0 flex-1 items-center gap-2 text-left text-sm underline-offset-4 hover:text-primary hover:underline focus-visible:rounded focus-visible:outline-2 focus-visible:outline-ring"
                 title={file.name}
                 onClick={() => onPreview(file)}
@@ -268,7 +274,8 @@ function AttachmentList({
               </span>
             )}
             <span className="shrink-0 text-xs text-muted-foreground">
-              {Math.max(1, Math.ceil(file.size / 1024))} KB
+              {Math.max(1, Math.ceil(file.size / 1024))}{" "}
+              {t("attachments", "KB")}{" "}
             </span>
             <Button
               type="button"
@@ -276,7 +283,7 @@ function AttachmentList({
               size="icon"
               className="size-11"
               disabled={disabled}
-              aria-label={`Bỏ tệp ${file.name}`}
+              aria-label={t("attachments", "Bỏ tệp {0}", [file.name])}
               onClick={() =>
                 onChange(files.filter((_, position) => position !== index))
               }

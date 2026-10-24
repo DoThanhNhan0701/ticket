@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useState, type ReactNode } from "react";
 import { useForm, useWatch, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +34,7 @@ export function RecruitmentFilters({
   onReset: () => void;
   actions?: ReactNode;
 }>) {
+  useLocale();
   const mobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -86,7 +88,7 @@ export function RecruitmentFilters({
       actions={actions}
     >
       <form
-        aria-label="Bộ lọc tuyển dụng"
+        aria-label={t("recruitment", "Bộ lọc tuyển dụng")}
         noValidate
         className="space-y-3 rounded-xl border bg-card p-3"
         onSubmit={submit}
@@ -97,11 +99,15 @@ export function RecruitmentFilters({
               {...shared}
               name={mode === "requests" ? "title" : "search"}
               id="recruitment-filter-search"
-              label={mode === "requests" ? "Tiêu đề" : "Tìm kiếm"}
+              label={
+                mode === "requests"
+                  ? t("recruitment", "Tiêu đề")
+                  : t("recruitment", "Tìm kiếm")
+              }
               placeholder={
                 mode === "requests"
-                  ? "Nhập tiêu đề yêu cầu..."
-                  : "Nhập tên, email, số điện thoại..."
+                  ? t("recruitment", "Nhập tiêu đề yêu cầu...")
+                  : t("recruitment", "Nhập tên, email, số điện thoại...")
               }
             />
           )}
@@ -111,16 +117,16 @@ export function RecruitmentFilters({
               name="ticket_status"
               searchable
               id="recruitment-filter-status"
-              label="Trạng thái yêu cầu"
-              placeholder="Tất cả trạng thái"
+              label={t("recruitment", "Trạng thái yêu cầu")}
+              placeholder={t("recruitment", "Tất cả trạng thái")}
               options={[
-                { value: "", label: "Tất cả trạng thái" },
+                { value: "", label: t("recruitment", "Tất cả trạng thái") },
                 ...[
-                  [2, "Đã phê duyệt"],
-                  [3, "Đang xử lý"],
-                  [4, "Hoàn thành"],
-                  [6, "Xử lý lại"],
-                  [7, "Hủy"],
+                  [2, t("recruitment", "Đã phê duyệt")],
+                  [3, t("recruitment", "Đang xử lý")],
+                  [4, t("recruitment", "Hoàn thành")],
+                  [6, t("recruitment", "Xử lý lại")],
+                  [7, t("recruitment", "Hủy")],
                 ].map(([value, label]) => ({
                   value: String(value),
                   label: String(label),
@@ -133,11 +139,11 @@ export function RecruitmentFilters({
               {...shared}
               name="cv_status"
               id="recruitment-filter-status"
-              label="Trạng thái CV"
-              placeholder="Tất cả trạng thái"
+              label={t("recruitment", "Trạng thái CV")}
+              placeholder={t("recruitment", "Tất cả trạng thái")}
               searchable
               options={[
-                { value: "", label: "Tất cả trạng thái" },
+                { value: "", label: t("recruitment", "Tất cả trạng thái") },
                 ...(lookups.statuses ?? []),
               ]}
             />
@@ -147,7 +153,7 @@ export function RecruitmentFilters({
               {...shared}
               name="from_date"
               id="recruitment-filter-from"
-              label="Ngày xem lịch"
+              label={t("recruitment", "Ngày xem lịch")}
               required
               endYear={new Date().getFullYear() + 5}
             />
@@ -221,11 +227,12 @@ function RecruitmentDateRange({
   control,
   disabled,
 }: Readonly<{ control: Control<Record<string, string>>; disabled: boolean }>) {
+  useLocale();
   return (
     <>
       {[
-        ["from_date", "from", "Từ ngày"],
-        ["to_date", "to", "Đến ngày"],
+        ["from_date", "from", t("recruitment", "Từ ngày")],
+        ["to_date", "to", t("recruitment", "Đến ngày")],
       ].map(([name, id, label]) => (
         <DatePickerField
           key={name}
@@ -313,6 +320,7 @@ function RecruitmentAdvancedFields({
   control: Control<Record<string, string>>;
   disabled: boolean;
 }>) {
+  useLocale();
   const shared = { control, disabled };
   return (
     <>
@@ -322,8 +330,8 @@ function RecruitmentAdvancedFields({
           {...shared}
           name="department_recruited"
           id="recruitment-filter-department"
-          label="Bộ phận tuyển dụng"
-          placeholder="Chọn bộ phận"
+          label={t("recruitment", "Bộ phận tuyển dụng")}
+          placeholder={t("recruitment", "Chọn bộ phận")}
           options={lookups.departments ?? []}
           valueFormat="csv"
         />
@@ -334,8 +342,8 @@ function RecruitmentAdvancedFields({
             {...shared}
             name="ticket_code"
             id="recruitment-filter-ticket"
-            label="Mã yêu cầu tuyển dụng"
-            placeholder="Nhập mã yêu cầu tuyển dụng..."
+            label={t("recruitment", "Mã yêu cầu tuyển dụng")}
+            placeholder={t("recruitment", "Nhập mã yêu cầu tuyển dụng...")}
           />
         </>
       )}
@@ -345,11 +353,11 @@ function RecruitmentAdvancedFields({
           {...shared}
           name="user_received"
           id="recruitment-filter-user"
-          placeholder="Tất cả người dùng"
-          label="Người phụ trách"
+          placeholder={t("recruitment", "Tất cả người dùng")}
+          label={t("recruitment", "Người phụ trách")}
           searchable
           options={[
-            { value: "", label: "Tất cả người dùng" },
+            { value: "", label: t("recruitment", "Tất cả người dùng") },
             ...(lookups.users ?? []),
           ]}
         />

@@ -30,7 +30,7 @@ function PasswordForm() {
       control={control}
       name="password"
       id="password"
-      label="Password"
+      label="Mật khẩu"
     />
   );
 }
@@ -60,11 +60,11 @@ function CategoriesForm({
 describe("shared form controls", () => {
   it("toggles password visibility with an accessible button", () => {
     render(<PasswordForm />);
-    const input = screen.getByLabelText("Password");
+    const input = screen.getByLabelText("Mật khẩu");
     expect(input.getAttribute("type")).toBe("password");
-    fireEvent.click(screen.getByRole("button", { name: "Show password" }));
+    fireEvent.click(screen.getByRole("button", { name: "Hiện mật khẩu" }));
     expect(input.getAttribute("type")).toBe("text");
-    fireEvent.click(screen.getByRole("button", { name: "Hide password" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ẩn mật khẩu" }));
     expect(input.getAttribute("type")).toBe("password");
   });
   it("removes a selected category without nested interactive controls", () => {
@@ -76,7 +76,7 @@ describe("shared form controls", () => {
     expect(
       screen.queryByRole("button", { name: "Remove Human Resources" }),
     ).toBeNull();
-    expect(screen.getByText("Select categories...")).toBeTruthy();
+    expect(screen.getByText("Chọn danh mục...")).toBeTruthy();
   });
   it("keeps every selection while collapsing badges as the field narrows", () => {
     render(
@@ -109,7 +109,7 @@ describe("shared form controls", () => {
     expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(3);
     expect(screen.getByText("+2")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Categories" }));
-    expect(screen.getByText("Selected 5/6")).toBeTruthy();
+    expect(screen.getByText("Đã chọn 5/6")).toBeTruthy();
     expect(
       screen
         .getByRole("button", { name: "Human Resources" })
@@ -137,6 +137,6 @@ describe("shared form controls", () => {
     expect(screen.getByText("+6")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Clear categories" }));
     expect(screen.queryByText("+6")).toBeNull();
-    expect(screen.getByText("Select categories...")).toBeTruthy();
+    expect(screen.getByText("Chọn danh mục...")).toBeTruthy();
   });
 });

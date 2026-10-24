@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 export const getStorageItem = <T>(key: string): T | null => {
   let item: string | null;
   try {
@@ -16,7 +17,9 @@ export const getStorageItem = <T>(key: string): T | null => {
 export const setStorageItem = (key: string, value: unknown) => {
   const stringValue = typeof value === "string" ? value : JSON.stringify(value);
   if (typeof value !== "string" && !stringValue) {
-    throw new TypeError("Storage values must be JSON serializable.");
+    throw new TypeError(
+      t("common", "Storage values must be JSON serializable."),
+    );
   }
   try {
     localStorage.setItem(key, stringValue);

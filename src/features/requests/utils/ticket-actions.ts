@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
 
@@ -58,16 +59,22 @@ export function assignmentModes(ticket: RequestDetailData) {
   const current = processingUsers(ticket);
   return [
     ...(available.length
-      ? [{ value: "add", label: "Thêm người xử lý", disabled: false }]
+      ? [
+          {
+            value: "add",
+            label: t("request-actions", "Thêm người xử lý"),
+            disabled: false,
+          },
+        ]
       : []),
     {
       value: "delete",
-      label: "Xóa người xử lý",
+      label: t("request-actions", "Xóa người xử lý"),
       disabled: !current.length || ticket.list_user_received.length <= 1,
     },
     {
       value: "change",
-      label: "Thay đổi người xử lý",
+      label: t("request-actions", "Thay đổi người xử lý"),
       disabled: !current.length || !available.length,
     },
   ];
@@ -76,13 +83,15 @@ export function actionReasonLabel(
   action: TicketActionOperation,
   status: number,
 ) {
-  if (action === "Hủy") return "Lý do hủy yêu cầu";
-  if (action === "Xử lý lại") return "Lý do xử lý lại";
-  if (action === "Hoàn thành" && status === 6) return "Lý do không xử lý lại";
+  if (action === "Hủy") return t("request-actions", "Lý do hủy yêu cầu");
+  if (action === "Xử lý lại") return t("request-actions", "Lý do xử lý lại");
+  if (action === "Hoàn thành" && status === 6)
+    return t("request-actions", "Lý do không xử lý lại");
   return "";
 }
 function requireReason(reason: string) {
-  if (!reason.trim()) throw new Error("Vui lòng nhập lý do.");
+  if (!reason.trim())
+    throw new Error(t("request-actions", "Vui lòng nhập lý do."));
   return reason.trim();
 }
 function requireUsers(selected: string[], options: { value: string }[]) {
@@ -90,7 +99,7 @@ function requireUsers(selected: string[], options: { value: string }[]) {
     !selected.length ||
     !selected.every((id) => options.some((option) => option.value === id))
   )
-    throw new Error("Vui lòng chọn người xử lý hợp lệ.");
+    throw new Error(t("request-actions", "Vui lòng chọn người xử lý hợp lệ."));
   return [...new Set(selected)].map(Number);
 }
 function assignmentPlan(
@@ -125,11 +134,14 @@ function assignmentPlan(
       },
     ];
   if (values.mode !== "delete")
-    throw new Error("Vui lòng chọn loại phân công.");
+    throw new Error(t("request-actions", "Vui lòng chọn loại phân công."));
   const users = requireUsers(values.users, current);
   if (users.length >= ticket.list_user_received.length)
     throw new Error(
-      "Yêu cầu phải có ít nhất một người xử lý. Hãy thay đổi người xử lý hoặc hoàn thành yêu cầu.",
+      t(
+        "request-actions",
+        "Yêu cầu phải có ít nhất một người xử lý. Hãy thay đổi người xử lý hoặc hoàn thành yêu cầu.",
+      ),
     );
   const steps: TicketActionStep[] = [
     {
@@ -168,7 +180,10 @@ export function buildTicketActionPlan(
   const requiredAction = action === "Chuyển tiếp" ? "Hoàn thành" : action;
   if (!availableTicketActions(ticket).includes(requiredAction))
     throw new Error(
-      "Bạn không còn quyền thực hiện thao tác này. Vui lòng tải lại yêu cầu.",
+      t(
+        "request-actions",
+        "Bạn không còn quyền thực hiện thao tác này. Vui lòng tải lại yêu cầu.",
+      ),
     );
   if (action === "Phân công") return assignmentPlan(ticket, values);
   if (action === "Chuyển tiếp")
@@ -205,7 +220,9 @@ export function buildTicketActionPlan(
   if (action === "Hủy")
     for (const file of files) {
       if (file.size > 50 * 1024 * 1024)
-        throw new Error(`Tệp “${file.name}” vượt quá 50 MB.`);
+        throw new Error(
+          t("request-actions", "Tệp “{0}” vượt quá 50 MB.", [file.name]),
+        );
       const upload = new FormData();
       upload.append("ticket_id", String(ticket.id));
       upload.append("att_file", file);

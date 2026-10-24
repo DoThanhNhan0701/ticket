@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -129,9 +130,13 @@ export function useCloneRequest({
     setInitialized(true);
   }, [ticket, templateReady, selectedType, groups, form, username, userId]);
   let error = source.error?.message;
-  if (id && !validTicketId(id)) error = "Mã yêu cầu sao chép không hợp lệ.";
+  if (id && !validTicketId(id))
+    error = t("request-create", "Mã yêu cầu sao chép không hợp lệ.");
   else if (unavailable)
-    error = "Bộ phận hoặc loại yêu cầu đã bị vô hiệu hóa. Không thể sao chép.";
+    error = t(
+      "request-create",
+      "Bộ phận hoặc loại yêu cầu đã bị vô hiệu hóa. Không thể sao chép.",
+    );
   return {
     id,
     ready: !id || initialized,

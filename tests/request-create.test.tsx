@@ -235,7 +235,7 @@ async function fillAssignment() {
 }
 async function fillBase() {
   await fillAssignment();
-  await select("Department", "Department AI");
+  await select("Bộ phận sử dụng", "Department AI");
   await select("Văn phòng", "VP Huế");
   change("create-title", "Yêu cầu TEST");
 }
@@ -252,7 +252,7 @@ async function fillDetails() {
 
 async function openCalendar(label: string, index = 0) {
   fireEvent.click(
-    screen.getAllByRole("button", { name: `Choose ${label.toLowerCase()}` })[
+    screen.getAllByRole("button", { name: `Chọn ${label.toLowerCase()}` })[
       index
     ],
   );
@@ -260,7 +260,7 @@ async function openCalendar(label: string, index = 0) {
 }
 function calendarDay(date: Date) {
   return screen.getByRole("button", {
-    name: new RegExp(format(date, "MMMM do, yyyy")),
+    name: new RegExp(format(date, "'ngày' d 'tháng' MM 'năm' yyyy")),
   }) as HTMLButtonElement;
 }
 
@@ -285,7 +285,7 @@ it("reveals each section only after the previous section is complete without sub
   expect(
     screen.getByRole("heading", { name: "Thông tin yêu cầu" }),
   ).toBeTruthy();
-  await select("Department", "Department AI");
+  await select("Bộ phận sử dụng", "Department AI");
   await select("Văn phòng", "VP Huế");
   change("create-title", "   ");
   expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
@@ -371,7 +371,7 @@ it("validates a due date on first submit and clears the error as soon as it is c
   renderPage();
   await fillAssignment();
   change("create-due-date", format(addDays(startOfToday(), -1), "dd/MM/yyyy"));
-  await select("Department", "Department AI");
+  await select("Bộ phận sử dụng", "Department AI");
   await select("Văn phòng", "VP Huế");
   change("create-title", "Yêu cầu mới");
   fireEvent.blur(document.getElementById("create-due-date")!);
@@ -418,7 +418,7 @@ it("revalidates required selections and text on change after the first submit, w
   ).toBe("true");
   await select("Loại yêu cầu", "Đăng ký từ xa");
   await select("Người phê duyệt", "Đỗ Nhân");
-  await select("Department", "Department AI");
+  await select("Bộ phận sử dụng", "Department AI");
   await select("Văn phòng", "VP Huế");
   change("create-title", "   ");
   await waitFor(() =>
@@ -598,8 +598,8 @@ it("rejects selections removed from current catalogs and clears the error after 
   );
   await waitFor(() =>
     expect(
-      screen.getByRole("combobox", { name: "Department" }).textContent,
-    ).toContain("Chọn Department"),
+      screen.getByRole("combobox", { name: "Bộ phận sử dụng" }).textContent,
+    ).toContain("Chọn bộ phận sử dụng"),
   );
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByText("Vui lòng chọn thông tin hợp lệ.");
@@ -607,7 +607,7 @@ it("rejects selections removed from current catalogs and clears the error after 
     document.getElementById("create-department")?.getAttribute("aria-invalid"),
   ).toBe("true");
   expect(calls("/ticket_manager")).toHaveLength(0);
-  await select("Department", "Department mới");
+  await select("Bộ phận sử dụng", "Department mới");
   await waitFor(() =>
     expect(
       document

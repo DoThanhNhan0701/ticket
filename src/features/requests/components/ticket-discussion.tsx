@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState } from "react";
 import { format, isValid } from "date-fns";
 import { MessageSquare, Pencil, Reply } from "lucide-react";
@@ -27,6 +28,7 @@ import { TicketFiles } from "./ticket-files";
 import { RequestFormSection } from "./request-form-section";
 
 function MentionContent({ text }: Readonly<{ text: string }>) {
+  useLocale();
   return (
     <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-anywhere">
       {text.split(/(@[\p{L}\p{N}_.-]+)/u).map((part, index) =>
@@ -55,12 +57,15 @@ function CommentMessage({
   onReply?: () => void;
   replyDisabled?: boolean;
 }>) {
+  useLocale();
   const date = new Date(message.created);
   const timestamp = isValid(date) ? format(date, "dd/MM/yyyy HH:mm") : "";
   return (
     <article
       className="group/comment min-w-0 space-y-2"
-      aria-label={`Phản hồi của ${message.username}`}
+      aria-label={t("request-discussion", "Phản hồi của {0}", [
+        message.username,
+      ])}
     >
       <div className="flex min-w-0 items-start gap-2">
         <UserAvatar
@@ -91,8 +96,8 @@ function CommentMessage({
               variant="outline"
               size="icon"
               className="size-8 shrink-0 rounded-lg"
-              aria-label="Trả lời"
-              title="Trả lời"
+              aria-label={t("request-discussion", "Trả lời")}
+              title={t("request-discussion", "Trả lời")}
               onClick={onReply}
               disabled={replyDisabled}
             >
@@ -105,8 +110,12 @@ function CommentMessage({
               variant="outline"
               size="icon"
               className="size-8 shrink-0 rounded-lg"
-              aria-label={`Chỉnh sửa phản hồi của ${message.username}`}
-              title="Chỉnh sửa phản hồi"
+              aria-label={t(
+                "request-discussion",
+                "Chỉnh sửa phản hồi của {0}",
+                [message.username],
+              )}
+              title={t("request-discussion", "Chỉnh sửa phản hồi")}
               onClick={onEdit}
             >
               <Pencil className="size-3.5" />
@@ -134,6 +143,7 @@ function EditCommentDialog({
   onClose: () => void;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const [busy, setBusy] = useState(false);
   return (
     <Dialog
@@ -146,17 +156,20 @@ function EditCommentDialog({
         <DialogHeader>
           <DialogHeading
             icon={<Pencil aria-hidden="true" />}
-            title="Chỉnh sửa bình luận"
-            description="Cập nhật nội dung và tệp đính kèm của bình luận."
+            title={t("request-discussion", "Chỉnh sửa bình luận")}
+            description={t(
+              "request-discussion",
+              "Cập nhật nội dung và tệp đính kèm của bình luận.",
+            )}
           />
           <DialogCloseButton
             disabled={busy}
-            aria-label="Đóng chỉnh sửa bình luận"
+            aria-label={t("request-discussion", "Đóng chỉnh sửa bình luận")}
           />
         </DialogHeader>
         <CommentComposer
           editing
-          label="Nội dung bình luận"
+          label={t("request-discussion", "Nội dung bình luận")}
           initialContent={editing.message.content}
           existingFiles={editing.message.att_file}
           onSend={(draft) =>
@@ -175,6 +188,7 @@ export function TicketDiscussion({
   ticket,
   onSaved,
 }: Readonly<{ ticket: RequestDetailData; onSaved: () => Promise<unknown> }>) {
+  useLocale();
   const { username } = useAuthContext();
   const canEdit = (message: TicketMessage) =>
     Boolean(username && message.username === username);
@@ -184,8 +198,11 @@ export function TicketDiscussion({
   return (
     <div className="min-w-0 space-y-4">
       <RequestFormSection
-        title="Trao đổi"
-        description="Gửi phản hồi, đính kèm tệp và nhắc đến người dùng để trao đổi về yêu cầu."
+        title={t("request-discussion", "Trao đổi")}
+        description={t(
+          "request-discussion",
+          "Gửi phản hồi, đính kèm tệp và nhắc đến người dùng để trao đổi về yêu cầu.",
+        )}
       >
         <CommentComposer
           onSend={(draft) =>
@@ -198,7 +215,8 @@ export function TicketDiscussion({
         <div className="min-w-0 space-y-3">
           <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <MessageSquare className="size-4" />
-            {ticket.comments.length} cuộc trao đổi
+            {ticket.comments.length}{" "}
+            {t("request-discussion", "cuộc trao đổi")}{" "}
           </p>
           {ticket.comments.map((comment) => (
             <Card key={comment.id} className="min-w-0 gap-2 p-3">
@@ -232,7 +250,9 @@ export function TicketDiscussion({
               {replyTo === comment.id && (
                 <div className="min-w-0 rounded-lg border border-border bg-muted/20 p-3">
                   <CommentComposer
-                    label={`Trả lời ${comment.username}`}
+                    label={t("request-discussion", "Trả lời {0}", [
+                      comment.username,
+                    ])}
                     onSend={(draft) => replyTicketComment(comment.id, draft)}
                     onSaved={onSaved}
                     onDone={() => setReplyTo(null)}
@@ -247,7 +267,7 @@ export function TicketDiscussion({
       ) : (
         <div className="flex min-h-36 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">
           <MessageSquare className="size-6" aria-hidden="true" />
-          <p>Chưa có phản hồi.</p>
+          <p>{t("request-discussion", "Chưa có phản hồi.")}</p>
         </div>
       )}
       {editing && (

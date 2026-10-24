@@ -1,8 +1,9 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useId, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Save, Send, X } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { ErrorAlert } from "@/components/error-alert";
@@ -27,7 +28,7 @@ interface CommentComposerProps {
   onBusyChange?: (busy: boolean) => void;
 }
 export function CommentComposer({
-  label = "Phản hồi",
+  label = t("request-discussion", "Phản hồi"),
   initialContent = "",
   existingFiles = {},
   editing = false,
@@ -37,6 +38,7 @@ export function CommentComposer({
   onDone,
   onBusyChange,
 }: Readonly<CommentComposerProps>) {
+  useLocale();
   const id = useId();
   const submitting = useRef(false);
   const [content, setContent] = useState(initialContent);
@@ -57,11 +59,20 @@ export function CommentComposer({
       setRemovedFiles([]);
       setEmpty(false);
       setFileError("");
-      toast.success(editing ? "Đã cập nhật phản hồi." : "Đã gửi phản hồi.");
+      toast.success(
+        editing
+          ? t("request-discussion", "Đã cập nhật phản hồi.")
+          : t("request-discussion", "Đã gửi phản hồi."),
+      );
       try {
         await onSaved();
       } catch {
-        toast.error("Đã lưu phản hồi. Vui lòng tải lại để xem dữ liệu mới.");
+        toast.error(
+          t(
+            "request-discussion",
+            "Đã lưu phản hồi. Vui lòng tải lại để xem dữ liệu mới.",
+          ),
+        );
       }
       onDone?.();
     },
@@ -72,7 +83,11 @@ export function CommentComposer({
   });
   return (
     <form
-      aria-label={editing ? "Chỉnh sửa bình luận" : `${label} mới`}
+      aria-label={
+        editing
+          ? t("request-discussion", "Chỉnh sửa bình luận")
+          : t("request-discussion", "{0} mới", [label])
+      }
       className="min-w-0 space-y-4"
       onSubmit={(event) => {
         event.preventDefault();
@@ -94,7 +109,9 @@ export function CommentComposer({
         <div className="min-w-0 space-y-3 px-2 pb-1">
           {Object.keys(existingFiles).length > 0 && (
             <div className="min-w-0 space-y-2">
-              <p className="text-sm font-medium">Tệp đã đính kèm</p>
+              <p className="text-sm font-medium">
+                {t("request-discussion", "Tệp đã đính kèm")}
+              </p>
               <TicketFiles
                 files={existingFiles}
                 layout="tiles"
@@ -117,8 +134,8 @@ export function CommentComposer({
                     variant="outline"
                     size="icon"
                     className="size-9 rounded-xl"
-                    aria-label="Hủy"
-                    title="Hủy"
+                    aria-label={t("request-discussion", "Hủy")}
+                    title={t("request-discussion", "Hủy")}
                     disabled={mutation.isPending}
                     onClick={onCancel}
                   >
@@ -130,13 +147,23 @@ export function CommentComposer({
                   loading={mutation.isPending}
                   loadingText={
                     <span className="sr-only">
-                      {editing ? "Đang lưu..." : "Đang gửi..."}
+                      {editing
+                        ? t("request-discussion", "Đang lưu...")
+                        : t("request-discussion", "Đang gửi...")}
                     </span>
                   }
                   size="icon"
                   variant="default"
-                  aria-label={editing ? "Lưu thay đổi" : "Gửi phản hồi"}
-                  title={editing ? "Lưu thay đổi" : "Gửi phản hồi"}
+                  aria-label={
+                    editing
+                      ? t("request-discussion", "Lưu thay đổi")
+                      : t("request-discussion", "Gửi phản hồi")
+                  }
+                  title={
+                    editing
+                      ? t("request-discussion", "Lưu thay đổi")
+                      : t("request-discussion", "Gửi phản hồi")
+                  }
                   icon={
                     editing ? (
                       <Save className="size-4" />
@@ -147,7 +174,9 @@ export function CommentComposer({
                   className="size-9 shrink-0 rounded-xl"
                 >
                   <span className="sr-only">
-                    {editing ? "Lưu thay đổi" : "Gửi phản hồi"}
+                    {editing
+                      ? t("request-discussion", "Lưu thay đổi")
+                      : t("request-discussion", "Gửi phản hồi")}
                   </span>
                 </AsyncButton>
               </div>
@@ -160,7 +189,9 @@ export function CommentComposer({
               );
               setFileError(
                 invalid.length
-                  ? `Tệp “${invalid[0].name}” vượt quá 50 MB.`
+                  ? t("request-discussion", "Tệp “{0}” vượt quá 50 MB.", [
+                      invalid[0].name,
+                    ])
                   : "",
               );
               setFiles(

@@ -1,8 +1,9 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileText, Plus } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { ErrorAlert } from "@/components/error-alert";
 import { LoadingState } from "@/components/loading-state";
@@ -45,6 +46,7 @@ function TemplateForm({
   onClose: () => void;
   onBusyChange: (busy: boolean) => void;
 }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const client = useQueryClient();
   const [groups, setGroups] = useState(initialGroups);
@@ -66,7 +68,7 @@ function TemplateForm({
           }),
         ),
       );
-      toast.success("Đã lưu biểu mẫu.");
+      toast.success(t("settings-templates", "Đã lưu biểu mẫu."));
       onClose();
     },
     onSettled: () => {
@@ -77,7 +79,7 @@ function TemplateForm({
   const busy = mutation.isPending;
   return (
     <form
-      aria-label="Cấu hình biểu mẫu"
+      aria-label={t("settings-templates", "Cấu hình biểu mẫu")}
       className="flex min-h-0 flex-1 flex-col"
       onSubmit={(event) => {
         event.preventDefault();
@@ -91,18 +93,24 @@ function TemplateForm({
           setError(
             failure instanceof Error
               ? failure.message
-              : "Biểu mẫu không hợp lệ.",
+              : t("settings-templates", "Biểu mẫu không hợp lệ."),
           );
         }
       }}
     >
       <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border p-3 sm:px-4">
         <div>
-          <h3 className="text-sm font-semibold">Nội dung biểu mẫu</h3>
+          <h3 className="text-sm font-semibold">
+            {t("settings-templates", "Nội dung biểu mẫu")}
+          </h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            {groups.length} phần ·{" "}
+            {groups.length} {t("settings-templates", "phần ·")}{" "}
             {groups.reduce((count, group) => count + group.children.length, 0)}{" "}
-            trường<span className="hidden sm:inline"> nhập liệu</span>
+            {t("settings-templates", "trường")}
+            <span className="hidden sm:inline">
+              {" "}
+              {t("settings-templates", "nhập liệu")}
+            </span>
           </p>
         </div>
         <Button
@@ -122,12 +130,12 @@ function TemplateForm({
           }
         >
           <Plus className="size-4" aria-hidden="true" />
-          Thêm phần
+          {t("settings-templates", "Thêm phần")}
         </Button>
       </div>
       <div
         role="region"
-        aria-label="Nội dung biểu mẫu"
+        aria-label={t("settings-templates", "Nội dung biểu mẫu")}
         className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-3 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-4"
       >
         {error && <ErrorAlert message={error} />}
@@ -138,9 +146,14 @@ function TemplateForm({
               className="mb-1 size-8 text-muted-foreground"
               aria-hidden="true"
             />
-            <p className="text-sm font-medium">Chưa có nội dung biểu mẫu</p>
+            <p className="text-sm font-medium">
+              {t("settings-templates", "Chưa có nội dung biểu mẫu")}
+            </p>
             <p className="text-sm text-muted-foreground">
-              Chọn “Thêm phần” để bắt đầu cấu hình các trường nhập liệu.
+              {t(
+                "settings-templates",
+                "Chọn “Thêm phần” để bắt đầu cấu hình các trường nhập liệu.",
+              )}
             </p>
           </div>
         )}
@@ -194,15 +207,15 @@ function TemplateForm({
           disabled={busy}
           onClick={onClose}
         >
-          Hủy
+          {t("settings-templates", "Hủy")}
         </Button>
         <AsyncButton
           type="submit"
           loading={busy}
-          loadingText="Đang lưu..."
+          loadingText={t("settings-templates", "Đang lưu...")}
           disabled={!userId}
         >
-          Lưu biểu mẫu
+          {t("settings-templates", "Lưu biểu mẫu")}
         </AsyncButton>
       </DialogFooter>
     </form>
@@ -212,6 +225,7 @@ export function RequestTemplateEditor({
   record,
   onClose,
 }: Readonly<{ record: SettingsRecord; onClose: () => void }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const [busy, setBusy] = useState(false);
   const query = useQuery({
@@ -231,12 +245,19 @@ export function RequestTemplateEditor({
         <DialogHeader className="static m-0 shrink-0 p-3 sm:m-0 sm:p-4">
           <DialogHeading
             icon={<FileText aria-hidden="true" />}
-            title={`Biểu mẫu · ${record.name}`}
-            description="Thêm phần, sắp xếp trường và thiết lập cách nhập liệu."
+            title={t("settings-templates", "Biểu mẫu · {0}", [record.name])}
+            description={t(
+              "settings-templates",
+              "Thêm phần, sắp xếp trường và thiết lập cách nhập liệu.",
+            )}
           />
           <DialogCloseButton disabled={busy} />
         </DialogHeader>
-        {query.isPending && <LoadingState message="Đang tải biểu mẫu..." />}
+        {query.isPending && (
+          <LoadingState
+            message={t("settings-templates", "Đang tải biểu mẫu...")}
+          />
+        )}
         {query.isError && <ErrorToast message={query.error.message} />}
         {query.data && (
           <TemplateForm

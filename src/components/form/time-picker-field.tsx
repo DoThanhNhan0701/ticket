@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import {
   Controller,
   type Control,
@@ -29,13 +30,16 @@ export function TimePickerField<T extends FieldValues>({
   minTime?: string;
   maxTime?: string;
 }>) {
+  useLocale();
   const hintId = minTime && maxTime ? `${id}-hint` : undefined;
   return (
     <Controller
       name={name}
       control={control}
       rules={{
-        required: required ? `Vui lòng chọn ${label.toLowerCase()}.` : false,
+        required: required
+          ? t("common", "Vui lòng chọn {0}.", [label.toLowerCase()])
+          : false,
         validate: (value) =>
           validateTimeRange(String(value ?? ""), minTime, maxTime) ?? true,
       }}
@@ -63,7 +67,8 @@ export function TimePickerField<T extends FieldValues>({
           />
           {minTime && maxTime && (
             <p id={hintId} className="text-xs text-muted-foreground">
-              Khung giờ cho phép: {minTime} – {maxTime}.
+              {" "}
+              {t("common", "Khung giờ cho phép:")} {minTime} – {maxTime}.
             </p>
           )}
         </FormFieldShell>

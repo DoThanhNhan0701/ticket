@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -21,13 +22,14 @@ export function DataFiltersForm<Name extends string>({
   onClear: () => void;
   onCancel?: () => void;
 }>) {
+  useLocale();
   const formId = useId();
   const { control, handleSubmit } = useForm<DataFilterValues>({
     defaultValues: getFilterValues(fields, initialValues),
   });
   return (
     <form
-      aria-label="Lọc nâng cao"
+      aria-label={t("common", "Lọc nâng cao")}
       className="flex min-h-0 flex-1 flex-col"
       onSubmit={handleSubmit((filters) =>
         onApply(normalizeFilterValues(fields, filters)),
@@ -58,7 +60,7 @@ export function DataFiltersForm<Name extends string>({
                 options={[...(field.options ?? [])]}
                 isLoading={field.isLoading}
                 searchable={field.searchable}
-                noDataText="Không có lựa chọn"
+                noDataText={t("common", "Không có lựa chọn")}
               />
             );
           if (field.type === "multi-select")
@@ -69,7 +71,7 @@ export function DataFiltersForm<Name extends string>({
                 options={[...(field.options ?? [])]}
                 isLoading={field.isLoading}
                 valueFormat="csv"
-                noDataText="Không có lựa chọn"
+                noDataText={t("common", "Không có lựa chọn")}
                 maxBadgeCount={2}
               />
             );
@@ -77,11 +79,16 @@ export function DataFiltersForm<Name extends string>({
         })}
       </div>
       <div className="grid shrink-0 grid-cols-2 gap-2 p-4 sm:flex sm:flex-wrap sm:p-6">
-        <Button title={onCancel ? "Tìm kiếm" : "Áp dụng bộ lọc"} type="submit">
-          {onCancel ? "Tìm kiếm" : "Áp dụng bộ lọc"}
+        <Button
+          title={
+            onCancel ? t("common", "Tìm kiếm") : t("common", "Áp dụng bộ lọc")
+          }
+          type="submit"
+        >
+          {onCancel ? t("common", "Tìm kiếm") : t("common", "Áp dụng bộ lọc")}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel ?? onClear}>
-          {onCancel ? "Hủy" : "Xóa bộ lọc nâng cao"}
+          {onCancel ? t("common", "Hủy") : t("common", "Xóa bộ lọc nâng cao")}
         </Button>
       </div>
     </form>

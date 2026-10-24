@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useMemo, useState, type Ref } from "react";
 import { Combobox } from "@base-ui/react/combobox";
 import { Check, ChevronDown, Search } from "lucide-react";
@@ -22,7 +23,7 @@ export function SearchableSelect({
   onBlur,
   ref,
   placeholder,
-  noDataText = "Không có lựa chọn",
+  noDataText = t("common", "Không có lựa chọn"),
   disabled = false,
   invalid = false,
   describedBy,
@@ -44,6 +45,7 @@ export function SearchableSelect({
   className?: string;
   allOptionValue?: string;
 }>) {
+  useLocale();
   const [search, setSearch] = useState("");
   const [searchSession, setSearchSession] = useState(0);
   const query = normalizeSearchText(useDebounce(search, 300, searchSession));
@@ -108,7 +110,7 @@ export function SearchableSelect({
           className="isolate z-50"
         >
           <Combobox.Popup
-            aria-label={`Chọn ${label.toLowerCase()}`}
+            aria-label={t("common", "Chọn {0}", [label.toLowerCase()])}
             className="flex max-h-(--available-height) w-(--anchor-width) min-w-48 max-w-(--available-width) flex-col rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-md outline-none"
           >
             <div className="relative mb-2 shrink-0">
@@ -120,13 +122,15 @@ export function SearchableSelect({
                 render={<Input />}
                 // Base UI defers root input changes during IME composition.
                 onChange={(event) => setSearch(event.currentTarget.value)}
-                aria-label={`Tìm ${label.toLowerCase()}`}
-                placeholder={`Tìm ${label.toLowerCase()}...`}
+                aria-label={t("common", "Tìm {0}", [label.toLowerCase()])}
+                placeholder={t("common", "Tìm {0}...", [label.toLowerCase()])}
                 className="pl-9"
               />
             </div>
             <Combobox.Empty className="px-2 py-3 text-center text-sm text-muted-foreground empty:hidden">
-              {options.length === 0 ? noDataText : "Không tìm thấy kết quả."}
+              {options.length === 0
+                ? noDataText
+                : t("common", "Không tìm thấy kết quả.")}
             </Combobox.Empty>
             <Combobox.List className="min-h-0 max-h-60 overflow-y-auto overscroll-contain">
               {(option: SearchableSelectOption) => (

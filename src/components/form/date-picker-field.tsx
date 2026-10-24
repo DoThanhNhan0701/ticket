@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import * as React from "react";
 import { format, getDaysInMonth, isValid, parse } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -48,9 +49,10 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   endYear = new Date().getFullYear(),
   disabled = false,
   isDateDisabled,
-  disabledDateMessage = "Ngày này không thể chọn.",
+  disabledDateMessage = t("common", "Ngày này không thể chọn."),
   inputActions,
 }: Readonly<DatePickerFieldProps<TFieldValues>>) {
+  useLocale();
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -117,8 +119,10 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                         disabled={disabled}
                         variant="ghost"
                         size="icon"
-                        aria-label={`Choose ${label.toLowerCase()}`}
-                        title={`Choose ${label.toLowerCase()}`}
+                        aria-label={t("common", "Choose {0}", [
+                          label.toLowerCase(),
+                        ])}
+                        title={t("common", "Choose {0}", [label.toLowerCase()])}
                         className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
                       >
                         <CalendarIcon className="h-4 w-4" />
@@ -170,7 +174,7 @@ function validateDate(
 ) {
   if (!value) return true;
   const date = parseDate(String(value));
-  if (!date) return "Enter a valid date (DD/MM/YYYY).";
+  if (!date) return t("common", "Enter a valid date (DD/MM/YYYY).");
   return !isDateDisabled?.(date) || disabledDateMessage;
 }
 

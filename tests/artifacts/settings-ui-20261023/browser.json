@@ -48,12 +48,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 2829,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "requesting-departments",
@@ -99,12 +94,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 1803,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "handling-departments",
@@ -150,12 +140,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 2001,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "request-types",
@@ -201,12 +186,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 2540,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "teams",
@@ -252,12 +232,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 2124,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "positions",
@@ -303,12 +278,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 1800,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "offices",
@@ -354,12 +324,7 @@
       "name": "Responsive list and scrollable form at 320/390/768/1440px",
       "status": "passed",
       "elapsedMs": 1550,
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     },
     {
       "kind": "users",

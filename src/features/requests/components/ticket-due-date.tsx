@@ -1,9 +1,10 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { CalendarDays, Pencil, Save, X } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { DatePickerField } from "@/components/form/date-picker-field";
@@ -19,6 +20,7 @@ export function TicketDueDate({
   ticket: RequestDetailData;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const [editing, setEditing] = useState(false);
   const form = useForm({ defaultValues: { duedate: ticket.duedate } });
   const { isDirty } = form.formState;
@@ -35,10 +37,15 @@ export function TicketDueDate({
       try {
         await onSaved();
       } catch {
-        toast.error("Đã lưu ngày mong muốn. Vui lòng tải lại yêu cầu.");
+        toast.error(
+          t(
+            "request-detail",
+            "Đã lưu ngày mong muốn. Vui lòng tải lại yêu cầu.",
+          ),
+        );
       }
       setEditing(false);
-      toast.success("Đã cập nhật ngày mong muốn.");
+      toast.success(t("request-detail", "Đã cập nhật ngày mong muốn."));
     },
   });
   const editable = [1, 2, 3, 6].includes(ticket.ticket_status);
@@ -55,13 +62,16 @@ export function TicketDueDate({
           control={form.control}
           name="duedate"
           id="ticket-due-date"
-          label="Ngày mong muốn"
+          label={t("request-detail", "Ngày mong muốn")}
           className="[&>[data-slot=field-label]]:font-medium [&>[data-slot=field-label]]:leading-5"
           required
           disabled={mutation.isPending}
           endYear={new Date().getFullYear() + 10}
           isDateDisabled={(date) => Boolean(previous && date <= previous)}
-          disabledDateMessage="Ngày mong muốn mới phải sau ngày mong muốn hiện tại."
+          disabledDateMessage={t(
+            "request-detail",
+            "Ngày mong muốn mới phải sau ngày mong muốn hiện tại.",
+          )}
           inputActions={
             <>
               <Button
@@ -69,8 +79,8 @@ export function TicketDueDate({
                 variant="outline"
                 size="icon"
                 className="size-11 sm:size-10 sm:pointer-coarse:size-11"
-                aria-label="Hủy đổi ngày"
-                title="Hủy đổi ngày"
+                aria-label={t("request-detail", "Hủy đổi ngày")}
+                title={t("request-detail", "Hủy đổi ngày")}
                 disabled={mutation.isPending}
                 onClick={() => setEditing(false)}
               >
@@ -80,12 +90,14 @@ export function TicketDueDate({
                 type="submit"
                 size="icon"
                 className="size-11 sm:size-10 sm:pointer-coarse:size-11"
-                aria-label="Lưu ngày mong muốn"
-                title="Lưu ngày mong muốn"
+                aria-label={t("request-detail", "Lưu ngày mong muốn")}
+                title={t("request-detail", "Lưu ngày mong muốn")}
                 loading={mutation.isPending}
                 icon={<Save className="size-4" aria-hidden="true" />}
               >
-                <span className="sr-only">Lưu ngày mong muốn</span>
+                <span className="sr-only">
+                  {t("request-detail", "Lưu ngày mong muốn")}
+                </span>
               </AsyncButton>
             </>
           }
@@ -98,11 +110,11 @@ export function TicketDueDate({
       <div className="min-w-0 flex-1 space-y-1.5">
         <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <CalendarDays className="size-3.5 shrink-0" aria-hidden="true" />
-          Ngày mong muốn
+          {t("request-detail", "Ngày mong muốn")}
         </p>
         <div className="flex min-h-5 min-w-0 items-center text-sm font-medium">
           <span
-            aria-label="Ngày mong muốn"
+            aria-label={t("request-detail", "Ngày mong muốn")}
             className="min-w-0 flex-1 wrap-anywhere"
           >
             {formatDataDate(ticket.duedate)}
@@ -114,8 +126,8 @@ export function TicketDueDate({
           type="button"
           variant="outline"
           size="icon"
-          aria-label="Đổi ngày mong muốn"
-          title="Đổi ngày mong muốn"
+          aria-label={t("request-detail", "Đổi ngày mong muốn")}
+          title={t("request-detail", "Đổi ngày mong muốn")}
           disabled={mutation.isPending}
           className="size-9 text-muted-foreground pointer-coarse:size-11"
           onClick={() => {

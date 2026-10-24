@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { PAGE_LINKS } from "@/constants/routes";
 import {
   DataTable,
@@ -15,6 +16,7 @@ const getRequestHref = (request: RequestTicket) =>
   PAGE_LINKS.requestDetail(request.id);
 
 function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
+  useLocale();
   if (!request.ticket_status_name) return null;
   const color =
     request.color && /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(request.color)
@@ -23,7 +25,7 @@ function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
   return (
     <Badge
       tone="brand"
-      title={request.ticket_status_name}
+      title={t("statuses", request.ticket_status_name)}
       className="leading-snug whitespace-nowrap"
     >
       <span
@@ -31,7 +33,7 @@ function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
         style={{ backgroundColor: color }}
         aria-hidden="true"
       />
-      <span>{request.ticket_status_name}</span>
+      <span>{t("statuses", request.ticket_status_name)}</span>
     </Badge>
   );
 }
@@ -39,7 +41,9 @@ function RequestStatus({ request }: Readonly<{ request: RequestTicket }>) {
 const columns: readonly DataColumn<RequestTicket>[] = [
   {
     id: "ticket_code",
-    label: "Mã yêu cầu",
+    get label() {
+      return t("request-list", "Mã yêu cầu");
+    },
     width: "14%",
     render: (request) => (
       <DataRowLink
@@ -51,13 +55,17 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
   {
     id: "ticket_type_name",
-    label: "Loại yêu cầu",
+    get label() {
+      return t("request-list", "Loại yêu cầu");
+    },
     width: "13%",
     render: (request) => <DataText text={request.ticket_type_name} />,
   },
   {
     id: "title",
-    label: "Tiêu đề",
+    get label() {
+      return t("request-list", "Tiêu đề");
+    },
     width: "18%",
     render: (request) => (
       <DataRowLink to={getRequestHref(request)} text={request.title} />
@@ -65,14 +73,18 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
   {
     id: "department",
-    label: "Department",
+    get label() {
+      return t("common", "Department");
+    },
     width: "8%",
     align: "center",
     render: (request) => <DataText text={request.bophansudung_name} />,
   },
   {
     id: "team",
-    label: "Team",
+    get label() {
+      return t("common", "Team");
+    },
     width: "4%",
     align: "center",
     render: (request) => (
@@ -83,13 +95,17 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
   {
     id: "office",
-    label: "Văn phòng",
+    get label() {
+      return t("request-list", "Văn phòng");
+    },
     width: "9%",
     render: (request) => <DataText text={request.vanphong_name} />,
   },
   {
     id: "duedate",
-    label: "Ngày mong muốn",
+    get label() {
+      return t("request-list", "Ngày mong muốn");
+    },
     width: "8%",
     align: "center",
     className: "tabular-nums",
@@ -97,14 +113,18 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
   {
     id: "approver",
-    label: "Người phê duyệt",
+    get label() {
+      return t("request-list", "Người phê duyệt");
+    },
     width: "7%",
     align: "center",
     render: (request) => <DataText text={request.approve_user_name} />,
   },
   {
     id: "status",
-    label: "Trạng thái",
+    get label() {
+      return t("request-list", "Trạng thái");
+    },
     // Automatic table layout expands this column to the full badge width.
     width: "1px",
     align: "center",
@@ -112,7 +132,9 @@ const columns: readonly DataColumn<RequestTicket>[] = [
   },
   {
     id: "updater",
-    label: "Cập nhật bởi",
+    get label() {
+      return t("request-list", "Cập nhật bởi");
+    },
     width: "7%",
     align: "center",
     render: (request) => <DataText text={request.updating_user_name} />,
@@ -134,7 +156,7 @@ const allColumns: readonly DataColumn<RequestTicket>[] = columns
     if (column.id === "approver")
       return {
         id: "handler",
-        label: "Người xử lý",
+        label: t("request-list", "Người xử lý"),
         width: "9%",
         align: "center",
         render: (request) => <DataText text={request.list_user_received} />,
@@ -147,7 +169,7 @@ const approvalColumns: readonly DataColumn<RequestTicket>[] = allColumns.map(
     column.id === "handler"
       ? {
           id: "requester",
-          label: "Người yêu cầu",
+          label: t("request-list", "Người yêu cầu"),
           width: column.width,
           align: "center",
           render: (request) => <DataText text={request.username_create} />,
@@ -174,7 +196,9 @@ const personalTaskColumns: readonly DataColumn<RequestTicket>[] = [
   })),
   {
     id: "created",
-    label: "Ngày tạo",
+    get label() {
+      return t("request-list", "Ngày tạo");
+    },
     width: "7%",
     align: "center",
     className: "tabular-nums",
@@ -186,7 +210,7 @@ const allTaskColumns: readonly DataColumn<RequestTicket>[] =
     column.id === "approver"
       ? {
           id: "handler",
-          label: "Người xử lý",
+          label: t("request-list", "Người xử lý"),
           width: column.width,
           align: "center",
           render: (request) => <DataText text={request.list_user_received} />,
@@ -216,6 +240,7 @@ export function RequestTable({
   scope?: RequestListScope;
   scrollResetKey?: string;
 }>) {
+  useLocale();
   return (
     <DataTable
       rows={rows}
@@ -231,7 +256,7 @@ export function RequestTable({
         ...columnsByScope[scope],
       ]}
       label={requestListConfig[scope].label}
-      scrollLabel="Cuộn bảng yêu cầu"
+      scrollLabel={t("request-list", "Cuộn bảng yêu cầu")}
       scrollResetKey={scrollResetKey}
       getRowKey={(request) => request.id}
       getRowHref={getRequestHref}

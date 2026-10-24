@@ -1,11 +1,15 @@
+import { t, useLocale } from "@/i18n";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
+  useLocale();
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
-  const label = isDark ? "Switch to light theme" : "Switch to dark theme";
+  const label = isDark
+    ? t("layout", "Switch to light theme")
+    : t("layout", "Switch to dark theme");
   const Icon = isDark ? Sun : Moon;
 
   return (

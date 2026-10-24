@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useBlocker } from "react-router-dom";
 import { Paperclip } from "lucide-react";
@@ -15,6 +16,7 @@ import { PendingAttachmentsContext } from "../context/pending-attachments-contex
 export function PendingAttachmentsProvider({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  useLocale();
   const [sources, setSources] = useState<Record<string, number>>({});
   const update = useCallback((id: string, count: number) => {
     setSources((previous) => {
@@ -67,8 +69,12 @@ export function PendingAttachmentsProvider({
           <DialogHeader>
             <DialogHeading
               icon={<Paperclip aria-hidden="true" />}
-              title="Tệp đính kèm chưa được gửi"
-              description={`Bạn còn ${count} tệp đính kèm chưa gửi hoặc tải lên. Nếu rời trang, các tệp đã chọn sẽ bị mất.`}
+              title={t("attachments", "Tệp đính kèm chưa được gửi")}
+              description={t(
+                "attachments",
+                "Bạn còn {0} tệp đính kèm chưa gửi hoặc tải lên. Nếu rời trang, các tệp đã chọn sẽ bị mất.",
+                [count],
+              )}
             />
           </DialogHeader>
           <DialogFooter>
@@ -77,14 +83,14 @@ export function PendingAttachmentsProvider({
               variant="outline"
               onClick={() => blocker.state === "blocked" && blocker.reset()}
             >
-              Ở lại
+              {t("attachments", "Ở lại")}
             </Button>
             <Button
               type="button"
               variant="destructive"
               onClick={() => blocker.state === "blocked" && blocker.proceed()}
             >
-              Rời trang
+              {t("attachments", "Rời trang")}
             </Button>
           </DialogFooter>
         </DialogContent>

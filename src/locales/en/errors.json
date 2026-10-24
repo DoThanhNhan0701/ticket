@@ -1,0 +1,9 @@
+{
+  "Session changed. Please retry your request.": "Session changed. Please retry your request.",
+  "You do not have access": "You do not have access",
+  "Bạn không có quyền thực hiện thao tác này.": "You do not have permission to perform this action.",
+  "Session expired. Please sign in again.": "Session expired. Please sign in again.",
+  "Invalid token refresh response from the server.": "Invalid token refresh response from the server.",
+  "Không có dữ liệu để xuất trong khoảng thời gian đã chọn.": "No data to export for the selected period.",
+  "Tệp Excel nhận được không hợp lệ.": "The received Excel file is invalid."
+}

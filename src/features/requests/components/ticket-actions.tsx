@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,7 @@ import {
   UserPlus,
   type LucideIcon,
 } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import {
@@ -54,14 +55,42 @@ const icons: Record<TicketAction, LucideIcon> = {
   "Xử lý lại": RotateCcw,
 };
 const actionDescriptions: Record<TicketActionOperation, string> = {
-  "Phê duyệt": "Phê duyệt để yêu cầu được chuyển sang bước xử lý.",
-  "Tiếp nhận": "Xác nhận tiếp nhận yêu cầu theo quy trình của bộ phận xử lý.",
-  "Phân công": "Thêm, thay thế hoặc gỡ người xử lý yêu cầu.",
-  "Hoàn thành": "Xác nhận bạn đã hoàn tất phần việc được giao.",
-  Đóng: "Đóng yêu cầu sau khi đã kiểm tra kết quả xử lý.",
-  Hủy: "Nhập lý do để hủy yêu cầu này.",
-  "Xử lý lại": "Nhập lý do để yêu cầu được xử lý lại.",
-  "Chuyển tiếp": "Chọn người nhận để chuyển tiếp yêu cầu.",
+  get "Phê duyệt"() {
+    return t(
+      "request-actions",
+      "Phê duyệt để yêu cầu được chuyển sang bước xử lý.",
+    );
+  },
+  get "Tiếp nhận"() {
+    return t(
+      "request-actions",
+      "Xác nhận tiếp nhận yêu cầu theo quy trình của bộ phận xử lý.",
+    );
+  },
+  get "Phân công"() {
+    return t("request-actions", "Thêm, thay thế hoặc gỡ người xử lý yêu cầu.");
+  },
+  get "Hoàn thành"() {
+    return t(
+      "request-actions",
+      "Xác nhận bạn đã hoàn tất phần việc được giao.",
+    );
+  },
+  get Đóng() {
+    return t(
+      "request-actions",
+      "Đóng yêu cầu sau khi đã kiểm tra kết quả xử lý.",
+    );
+  },
+  get Hủy() {
+    return t("request-actions", "Nhập lý do để hủy yêu cầu này.");
+  },
+  get "Xử lý lại"() {
+    return t("request-actions", "Nhập lý do để yêu cầu được xử lý lại.");
+  },
+  get "Chuyển tiếp"() {
+    return t("request-actions", "Chọn người nhận để chuyển tiếp yêu cầu.");
+  },
 };
 const actionColors: Record<TicketAction, string> = {
   "Phê duyệt":
@@ -84,6 +113,7 @@ export function TicketActions({
   ticket: RequestDetailData;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const [action, setAction] = useState<TicketAction | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const refreshAfterSave = async () => {
@@ -101,7 +131,7 @@ export function TicketActions({
       <div
         role="group"
         className="flex flex-wrap justify-end gap-2"
-        aria-label="Thao tác yêu cầu"
+        aria-label={t("request-actions", "Thao tác yêu cầu")}
         aria-busy={refreshing}
       >
         {actions.map((name) => {
@@ -113,13 +143,13 @@ export function TicketActions({
               variant="outline"
               size="sm"
               mobileIconOnly
-              title={name}
+              title={t("request-actions", name)}
               disabled={refreshing}
               className={`gap-1.5 ${actionColors[name]}`}
               onClick={() => setAction(name)}
             >
               <Icon className="size-4" aria-hidden="true" />
-              {name}
+              {t("request-actions", name)}
             </Button>
           );
         })}
@@ -154,13 +184,17 @@ function TicketActionSummary({
   ticket,
   operation,
 }: Readonly<{ ticket: RequestDetailData; operation: string }>) {
+  useLocale();
   return (
     <div className="space-y-2 rounded-xl border border-border bg-muted/40 p-4">
       <p
         id="ticket-action-description"
         className="text-sm leading-relaxed text-muted-foreground"
       >
-        Xác nhận {operation.toLowerCase()} yêu cầu{" "}
+        {" "}
+        {t("request-actions", "Xác nhận")}{" "}
+        {t("request-actions", operation).toLowerCase()}{" "}
+        {t("request-actions", "yêu cầu")}{" "}
         <strong className="font-semibold text-foreground wrap-anywhere">
           {ticket.ticket_code || `#${ticket.id}`}
         </strong>
@@ -186,6 +220,7 @@ function TicketActionDialog({
   onClose: () => void;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const [forward, setForward] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   usePendingAttachments(files.length);
@@ -220,11 +255,20 @@ function TicketActionDialog({
     onSuccess: async () => {
       const refresh = onSaved();
       onClose();
-      toast.success(`Đã thực hiện: ${operation}.`);
+      toast.success(
+        t("request-actions", "Đã thực hiện: {0}.", [
+          t("request-actions", operation),
+        ]),
+      );
       try {
         await refresh;
       } catch {
-        toast.error("Đã lưu thao tác. Vui lòng tải lại để xem trạng thái mới.");
+        toast.error(
+          t(
+            "request-actions",
+            "Đã lưu thao tác. Vui lòng tải lại để xem trạng thái mới.",
+          ),
+        );
       }
     },
     onError: () => {
@@ -238,7 +282,9 @@ function TicketActionDialog({
   const close = () => {
     if (completed > 0)
       void onSaved().catch(() =>
-        toast.error("Vui lòng tải lại để xem trạng thái mới."),
+        toast.error(
+          t("request-actions", "Vui lòng tải lại để xem trạng thái mới."),
+        ),
       );
     onClose();
   };
@@ -253,7 +299,9 @@ function TicketActionDialog({
       mutation.mutate(plan.current);
     } catch (cause) {
       setError(
-        cause instanceof Error ? cause.message : "Thông tin không hợp lệ.",
+        cause instanceof Error
+          ? cause.message
+          : t("request-actions", "Thông tin không hợp lệ."),
       );
     }
   };
@@ -272,17 +320,21 @@ function TicketActionDialog({
           <DialogHeading
             icon={<ActionIcon aria-hidden="true" />}
             iconClassName={actionColors[forward ? "Tiếp nhận" : action]}
-            title={`${operation} yêu cầu`}
+            title={t("request-actions", "{0} yêu cầu", [
+              t("request-actions", operation),
+            ])}
             description={actionDescriptions[operation]}
             descriptionId="ticket-action-help"
           />
           <DialogCloseButton
             disabled={mutation.isPending}
-            aria-label="Đóng thao tác yêu cầu"
+            aria-label={t("request-actions", "Đóng thao tác yêu cầu")}
           />
         </DialogHeader>
         <form
-          aria-label={`${operation} yêu cầu`}
+          aria-label={t("request-actions", "{0} yêu cầu", [
+            t("request-actions", operation),
+          ])}
           noValidate
           className="min-w-0 space-y-4"
           onSubmit={form.handleSubmit(submit)}
@@ -301,7 +353,7 @@ function TicketActionDialog({
               name="reason"
               id="ticket-action-reason"
               label={reasonLabel}
-              placeholder="Nhập lý do"
+              placeholder={t("request-actions", "Nhập lý do")}
               disabled={locked}
               required
             />
@@ -311,7 +363,7 @@ function TicketActionDialog({
               control={form.control}
               name="newUser"
               id="ticket-forward-user"
-              label="Người nhận chuyển tiếp"
+              label={t("request-actions", "Người nhận chuyển tiếp")}
               options={available}
               searchable
               disabled={locked}
@@ -329,8 +381,11 @@ function TicketActionDialog({
           {mutation.isError && <ErrorToast message={mutation.error.message} />}
           {completed > 0 && mutation.isError && (
             <p role="status" className="text-sm text-muted-foreground">
-              Đã lưu {completed} bước. Thử lại để tiếp tục phần còn lại; các
-              bước đã lưu sẽ không được gửi lại.
+              {t("request-actions", "Đã lưu")} {completed}{" "}
+              {t(
+                "request-actions",
+                "bước. Thử lại để tiếp tục phần còn lại; các bước đã lưu sẽ không được gửi lại.",
+              )}
             </p>
           )}
           <DialogFooter>
@@ -340,7 +395,7 @@ function TicketActionDialog({
               disabled={mutation.isPending}
               onClick={close}
             >
-              Thoát
+              {t("request-actions", "Thoát")}
             </Button>
             {action === "Hoàn thành" && available.length > 0 && (
               <Button
@@ -355,7 +410,9 @@ function TicketActionDialog({
                 }}
               >
                 <Forward className="size-4" aria-hidden="true" />
-                {forward ? "Quay lại" : "Chuyển tiếp"}
+                {forward
+                  ? t("request-actions", "Quay lại")
+                  : t("request-actions", "Chuyển tiếp")}
               </Button>
             )}
             <AsyncButton
@@ -363,12 +420,12 @@ function TicketActionDialog({
               variant={actionSubmitVariant(action)}
               className="shadow-xs"
               loading={mutation.isPending}
-              loadingText="Đang xử lý..."
+              loadingText={t("request-actions", "Đang xử lý...")}
               icon={<ActionIcon className="size-4" aria-hidden="true" />}
             >
               {mutation.isError && completed > 0
-                ? "Thử lại phần còn lại"
-                : operation}
+                ? t("request-actions", "Thử lại phần còn lại")
+                : t("request-actions", operation)}
             </AsyncButton>
           </DialogFooter>
         </form>

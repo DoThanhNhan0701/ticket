@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { ReactNode } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { Filter, X } from "lucide-react";
@@ -23,9 +24,12 @@ export function DataFiltersPanel({
   label?: string;
   iconOnly?: boolean;
 }>) {
+  useLocale();
   const filterDescription =
     activeFilterCount > 0
-      ? `${activeFilterCount} điều kiện lọc nâng cao đang áp dụng`
+      ? t("common", "{0} điều kiện lọc nâng cao đang áp dụng", [
+          activeFilterCount,
+        ])
       : undefined;
 
   return (
@@ -42,9 +46,9 @@ export function DataFiltersPanel({
                 ? "w-auto gap-2 px-3"
                 : "w-11 sm:w-10 sm:pointer-coarse:w-11",
             )}
-            aria-label={label ?? "Lọc nâng cao"}
+            aria-label={label ?? t("common", "Lọc nâng cao")}
             aria-description={filterDescription}
-            title={filterDescription ?? label ?? "Lọc nâng cao"}
+            title={filterDescription ?? label ?? t("common", "Lọc nâng cao")}
           />
         }
       >
@@ -67,7 +71,7 @@ export function DataFiltersPanel({
             <header className="flex shrink-0 items-center justify-between gap-3 p-4 sm:p-6">
               <DialogHeading
                 icon={<Filter aria-hidden="true" />}
-                title={label ?? "Lọc nâng cao"}
+                title={label ?? t("common", "Lọc nâng cao")}
                 description={description}
               />
               <Dialog.Close
@@ -77,7 +81,7 @@ export function DataFiltersPanel({
                     variant="ghost"
                     size="icon"
                     className="size-11 sm:size-9 sm:pointer-coarse:size-11"
-                    aria-label="Đóng bộ lọc nâng cao"
+                    aria-label={t("common", "Đóng bộ lọc nâng cao")}
                   />
                 }
               >

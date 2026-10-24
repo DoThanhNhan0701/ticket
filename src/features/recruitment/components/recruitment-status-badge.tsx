@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { Badge } from "@/components/ui/badge";
 import { recruitmentText } from "../utils/recruitment-format";
 
@@ -21,10 +22,11 @@ const statusColors: Record<string, string> = {
 export function RecruitmentStatusBadge({
   status,
 }: Readonly<{ status: unknown }>) {
+  useLocale();
   const label = recruitmentText(status).trim();
   return (
     <Badge className={statusColors[label.toLocaleLowerCase("vi-VN")]}>
-      {label || "—"}
+      {t("statuses", label) || "—"}
     </Badge>
   );
 }

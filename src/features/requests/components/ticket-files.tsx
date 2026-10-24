@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState } from "react";
 import { FilePreviewDialog } from "@/components/file-preview-dialog";
 import { FileText, Image } from "lucide-react";
@@ -32,6 +33,7 @@ export function TicketFiles({
   onDownload,
   previewAllFiles,
 }: Readonly<TicketFilesProps>) {
+  useLocale();
   const [preview, setPreview] = useState<{ name: string; url: string } | null>(
     null,
   );
@@ -62,14 +64,16 @@ export function TicketFiles({
                 url={url}
                 image={image}
                 disabled={disabled}
-                removeLabel={`Bỏ tệp cũ ${name}`}
+                removeLabel={t("attachments", "Bỏ tệp cũ {0}", [name])}
                 onRemove={onRemove ? () => onRemove(name) : undefined}
                 onRestore={
                   removedFiles.includes(name) && onRestore
                     ? () => onRestore(name)
                     : undefined
                 }
-                previewLabel={onDownload ? `Tải tệp ${name}` : name}
+                previewLabel={
+                  onDownload ? t("attachments", "Tải tệp {0}", [name]) : name
+                }
                 onPreview={tileAction}
               />
             );
@@ -97,7 +101,7 @@ export function TicketFiles({
               <button
                 type="button"
                 title={name}
-                aria-label={`Tải tệp ${name}`}
+                aria-label={t("attachments", "Tải tệp {0}", [name])}
                 className={className}
                 disabled={disabled}
                 onClick={() => onDownload(name)}
@@ -159,16 +163,18 @@ export function TicketFiles({
               <DialogHeading
                 icon={<Image aria-hidden="true" />}
                 title={preview.name}
-                description="Xem trước hình ảnh đính kèm."
+                description={t("attachments", "Xem trước hình ảnh đính kèm.")}
               />
-              <DialogCloseButton aria-label="Đóng xem trước ảnh" />
+              <DialogCloseButton
+                aria-label={t("attachments", "Đóng xem trước ảnh")}
+              />
             </DialogHeader>
             {failed ? (
               <p
                 role="status"
                 className="py-8 text-center text-sm text-muted-foreground"
               >
-                Không thể xem trước ảnh này.
+                {t("attachments", "Không thể xem trước ảnh này.")}
               </p>
             ) : (
               <img

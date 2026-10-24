@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -23,10 +24,20 @@ function PermissionInfoContent({
   loading,
   error,
 }: Readonly<PermissionInfoProps>) {
-  if (loading) return <LoadingState message="Đang tải quyền hạn..." />;
+  useLocale();
+  if (loading)
+    return (
+      <LoadingState
+        message={t("settings-positions", "Đang tải quyền hạn...")}
+      />
+    );
   if (error) return <ErrorToast message={error.message} />;
   if (permissions.length === 0)
-    return <p className="text-sm text-muted-foreground">Chưa có quyền hạn.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">
+        {t("settings-positions", "Chưa có quyền hạn.")}
+      </p>
+    );
   return (
     <dl className="space-y-3">
       {permissions.map((permission) => {
@@ -41,7 +52,11 @@ function PermissionInfoContent({
           >
             <dt className="flex flex-wrap items-center gap-2 text-sm font-semibold">
               <span>{info.label}</span>
-              {info.retired && <Badge tone="neutral">Ngừng cấp mới</Badge>}
+              {info.retired && (
+                <Badge tone="neutral">
+                  {t("settings-positions", "Ngừng cấp mới")}
+                </Badge>
+              )}
             </dt>
             <dd className="text-xs leading-5 text-muted-foreground">
               {info.description}
@@ -63,16 +78,22 @@ export function PositionPermissionsHelp({
     onOpenChange: (open: boolean) => void;
   }
 >) {
+  useLocale();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogHeading
             icon={<ShieldCheck aria-hidden="true" />}
-            title="Thông tin quyền hạn"
-            description="Các quyền đang dùng và quyền đã ngừng cấp mới."
+            title={t("settings-positions", "Thông tin quyền hạn")}
+            description={t(
+              "settings-positions",
+              "Các quyền đang dùng và quyền đã ngừng cấp mới.",
+            )}
           />
-          <DialogCloseButton aria-label="Đóng thông tin quyền hạn" />
+          <DialogCloseButton
+            aria-label={t("settings-positions", "Đóng thông tin quyền hạn")}
+          />
         </DialogHeader>
         <PermissionInfoContent {...props} />
       </DialogContent>

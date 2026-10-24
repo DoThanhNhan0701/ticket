@@ -1,7 +1,10 @@
+import { translateMessage, useLocale } from "@/i18n";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function ErrorAlert({ message }: Readonly<{ message: string }>) {
+  useLocale();
+  message = translateMessage(message);
   return (
     <Alert
       variant="destructive"

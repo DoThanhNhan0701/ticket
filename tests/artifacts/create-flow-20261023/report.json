@@ -140,12 +140,7 @@
     "frontend": "http://127.0.0.1:5186",
     "backend": "https://ticket-api.aiminds.io.vn",
     "deployed": false,
-    "browserModesPassed": [
-      "comment",
-      "reply",
-      "edit-comment",
-      "edit-reply"
-    ],
+    "browserModesPassed": ["comment", "reply", "edit-comment", "edit-reply"],
     "ticketWrites": 0,
     "pageErrors": 0,
     "regressionTestsPassed": 123,

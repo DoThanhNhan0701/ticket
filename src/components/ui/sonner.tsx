@@ -1,4 +1,5 @@
 import { useTheme } from "next-themes";
+import { t, useLocale } from "@/i18n";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 import {
   CircleCheckIcon,
@@ -9,10 +10,12 @@ import {
 } from "lucide-react";
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  useLocale();
   const { resolvedTheme } = useTheme();
 
   return (
     <Sonner
+      containerAriaLabel={t("common", "Thông báo")}
       theme={resolvedTheme === "light" ? "light" : "dark"}
       richColors
       className="toaster group"
@@ -44,6 +47,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         } as React.CSSProperties
       }
       toastOptions={{
+        closeButtonAriaLabel: t("common", "Đóng thông báo"),
         classNames: {
           toast: "cn-toast",
         },

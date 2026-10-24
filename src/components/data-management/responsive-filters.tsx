@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { MobilePageAction } from "@/components/layout/mobile-page-action";
 import { useEffect, useRef, type ReactNode } from "react";
 import { DataFiltersPanel } from "./data-filters-panel";
@@ -19,6 +20,7 @@ export function ResponsiveFilters({
   actionsInHeader?: boolean;
   children: ReactNode;
 }>) {
+  useLocale();
   const wasMobile = useRef(mobile);
   useEffect(() => {
     if (wasMobile.current && !mobile && open) onOpenChange(false);
@@ -31,8 +33,11 @@ export function ResponsiveFilters({
       open={open}
       onOpenChange={onOpenChange}
       activeFilterCount={activeCount}
-      label="Tìm kiếm nâng cao"
-      description="Nhập từ khóa và chọn các điều kiện để tìm kiếm."
+      label={t("common", "Tìm kiếm nâng cao")}
+      description={t(
+        "common",
+        "Nhập từ khóa và chọn các điều kiện để tìm kiếm.",
+      )}
     >
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4">
         {children}

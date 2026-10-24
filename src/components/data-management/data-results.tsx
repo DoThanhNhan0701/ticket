@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import type { ReactNode } from "react";
 import { Inbox } from "lucide-react";
@@ -10,10 +11,13 @@ import type { DataListQuery, DataPaginationProps } from "./types";
 export function DataResults<T>({
   query,
   label,
-  loadingMessage = "Đang tải danh sách...",
-  errorPrefix = "Không tải được danh sách",
-  emptyTitle = "Không tìm thấy dữ liệu",
-  emptyDescription = "Thử thay đổi từ khóa hoặc bộ lọc để tìm dữ liệu phù hợp.",
+  loadingMessage = t("common", "Đang tải danh sách..."),
+  errorPrefix = t("common", "Không tải được danh sách"),
+  emptyTitle = t("common", "Không tìm thấy dữ liệu"),
+  emptyDescription = t(
+    "common",
+    "Thử thay đổi từ khóa hoặc bộ lọc để tìm dữ liệu phù hợp.",
+  ),
   pagination,
   renderRows,
   refreshStyle = "overlay",
@@ -28,6 +32,7 @@ export function DataResults<T>({
   renderRows: (rows: T[]) => ReactNode;
   refreshStyle?: "overlay" | "subtle";
 }>) {
+  useLocale();
   const retainData = refreshStyle === "subtle" && Boolean(query.data);
   const data = visibleData(query, refreshStyle);
   return (
@@ -39,7 +44,7 @@ export function DataResults<T>({
       {query.isPending && <LoadingState message={loadingMessage} />}
       {query.isError && (
         <ResultsError
-          message={`${errorPrefix}: ${query.error?.message ?? "Lỗi không xác định"}`}
+          message={`${errorPrefix}: ${query.error?.message ?? t("common", "Lỗi không xác định")}`}
           retainData={retainData}
           pagination={pagination}
         />
@@ -85,6 +90,7 @@ function visibleData<T>(
 function DataRefreshIndicator({
   style,
 }: Readonly<{ style: "subtle" | "overlay" }>) {
+  useLocale();
   if (style === "subtle")
     return (
       <div
@@ -92,12 +98,14 @@ function DataRefreshIndicator({
         className="pointer-events-none absolute inset-x-0 top-0 z-20 h-0.5 overflow-hidden bg-primary/15"
       >
         <span className="block h-full w-full animate-pulse bg-primary/60 motion-reduce:animate-none" />
-        <span className="sr-only">Đang cập nhật danh sách...</span>
+        <span className="sr-only">
+          {t("common", "Đang cập nhật danh sách...")}
+        </span>
       </div>
     );
   return (
     <LoadingState
-      message="Đang cập nhật danh sách..."
+      message={t("common", "Đang cập nhật danh sách...")}
       className="absolute inset-0 z-20 bg-card/80"
     />
   );
@@ -112,6 +120,7 @@ function ResultsError({
   retainData: boolean;
   pagination: Pick<DataPaginationProps, "page" | "onPage">;
 }>) {
+  useLocale();
   return (
     <>
       <ErrorToast message={message} />
@@ -130,7 +139,7 @@ function ResultsError({
                 variant="outline"
                 onClick={() => pagination.onPage(1)}
               >
-                Về trang đầu
+                {t("common", "Về trang đầu")}
               </Button>
             )}
           </div>

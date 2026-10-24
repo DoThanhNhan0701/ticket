@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId } from "react";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/empty-state";
@@ -15,6 +16,7 @@ type RateEntry = [string, [number, number, number]];
 function RateValues({
   values,
 }: Readonly<{ values: readonly [number, number, number] }>) {
+  useLocale();
   const [rate, count, total] = values;
   return (
     <span className="shrink-0 whitespace-nowrap text-xs tabular-nums">
@@ -26,6 +28,7 @@ function RateValues({
   );
 }
 function RateTrack({ rate }: Readonly<{ rate: number }>) {
+  useLocale();
   return (
     <div
       className="h-2 overflow-hidden rounded-full bg-muted"
@@ -42,6 +45,7 @@ function CompactRates({
   entries,
   line,
 }: Readonly<{ entries: readonly RateEntry[]; line: boolean }>) {
+  useLocale();
   return (
     <ul className={line ? "space-y-3" : "space-y-2"}>
       {entries.map(([label, values]) =>
@@ -78,6 +82,7 @@ function RatePlot({
   width,
   line,
 }: Readonly<{ entries: readonly RateEntry[]; width: number; line: boolean }>) {
+  useLocale();
   const left = 42;
   const right = 18;
   const plotWidth = width - left - right;
@@ -197,6 +202,7 @@ function ResponsiveRates({
   entries,
   line,
 }: Readonly<{ title: string; entries: readonly RateEntry[]; line: boolean }>) {
+  useLocale();
   const { ref, width } = useElementWidth();
   const descriptionId = useId();
   const compact = width < Math.max(360, entries.length * 56 + 60);
@@ -237,6 +243,7 @@ export function ReportRateChart({
   data: ReportResponse["dict_bieudo_03"];
   line?: boolean;
 }>) {
+  useLocale();
   const entries = Object.entries(data);
   return (
     <Card className="min-w-0 gap-4 p-4 sm:p-5">
@@ -245,7 +252,7 @@ export function ReportRateChart({
         <ResponsiveRates title={title} entries={entries} line={line} />
       ) : (
         <EmptyState
-          title="Chưa có dữ liệu tỷ lệ"
+          title={t("reports", "Chưa có dữ liệu tỷ lệ")}
           className="min-h-48 border-0 shadow-none"
         />
       )}

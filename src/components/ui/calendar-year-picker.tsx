@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useRef, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { type DropdownProps, useDayPicker } from "react-day-picker";
@@ -10,8 +11,9 @@ export function CalendarYearPicker({
   options = [],
   value,
   disabled,
-  "aria-label": label = "Choose the Year",
+  "aria-label": label = t("common", "Choose the Year"),
 }: DropdownProps) {
+  useLocale();
   const { goToMonth, months } = useDayPicker();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -40,7 +42,7 @@ export function CalendarYearPicker({
           type="button"
           variant="outline"
           disabled={disabled}
-          aria-label={label}
+          aria-label={t("common", label)}
           className="h-11 gap-2 px-3 sm:h-9 sm:pointer-coarse:h-11"
         >
           {options.find((option) => option.value === Number(value))?.label ??
@@ -52,7 +54,7 @@ export function CalendarYearPicker({
         align="center"
         collisionPadding={8}
         className="w-68 max-w-[calc(100vw-2rem)] p-2"
-        aria-label="Choose year"
+        aria-label={t("common", "Choose year")}
         onOpenAutoFocus={() => {
           const list = listRef.current;
           const selected = selectedRef.current;
@@ -65,8 +67,8 @@ export function CalendarYearPicker({
         }}
       >
         <SearchInput
-          label="Search year"
-          placeholder="Enter year..."
+          label={t("common", "Search year")}
+          placeholder={t("common", "Enter year...")}
           inputMode="numeric"
           maxLength={4}
           value={search}
@@ -88,7 +90,7 @@ export function CalendarYearPicker({
           <div
             role="group"
             className="grid grid-cols-4 gap-1"
-            aria-label="Years"
+            aria-label={t("common", "Years")}
           >
             {visibleYears.map((option) => (
               <Button
@@ -110,7 +112,7 @@ export function CalendarYearPicker({
               role="status"
               className="py-4 text-center text-sm text-muted-foreground"
             >
-              No matching year.
+              {t("common", "No matching year.")}
             </p>
           )}
         </div>

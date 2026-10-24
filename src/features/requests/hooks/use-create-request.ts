@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { getRequestGroupNameError } from "../utils/request-code";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -6,7 +7,7 @@ import { useForm, useWatch, type UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getRequestTemplate } from "@/features/settings/api/template-api";
 import {
@@ -229,7 +230,11 @@ export function useCreateRequest() {
   ].every(Boolean);
   const oversizedFile = files.find((file) => file.size > 50 * 1024 * 1024);
   const attachmentError = oversizedFile
-    ? `Tệp “${oversizedFile.name}” vượt quá 50 MB. Vui lòng bỏ tệp hoặc chọn tệp nhỏ hơn.`
+    ? t(
+        "request-create",
+        "Tệp “{0}” vượt quá 50 MB. Vui lòng bỏ tệp hoặc chọn tệp nhỏ hơn.",
+        [oversizedFile.name],
+      )
     : undefined;
   const mutation = useMutation({
     mutationFn: async (values: CreateRequestValues) => {
@@ -253,7 +258,7 @@ export function useCreateRequest() {
     onSuccess: async () => {
       draft.clear();
       await client.invalidateQueries({ queryKey: ["requests"] });
-      toast.success("Đã tạo yêu cầu.");
+      toast.success(t("request-create", "Đã tạo yêu cầu."));
       navigate(APP_ROUTES.requests.list);
     },
     onSettled: () => {

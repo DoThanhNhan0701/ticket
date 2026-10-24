@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState, type ComponentProps, type ReactNode } from "react";
 import {
   CalendarPlus,
@@ -36,46 +37,152 @@ interface RowAction {
 }
 
 const actionHints: Partial<Record<RecruitmentAction, string>> = {
-  request: "Xem thông tin và cập nhật yêu cầu tuyển dụng",
-  "create-candidate": "Thêm ứng viên vào yêu cầu tuyển dụng này",
-  note: "Ghi chú phỏng vấn và đính kèm tệp",
-  "view-candidate": "Xem thông tin và lịch sử ứng viên",
-  candidate: "Sửa thông tin cá nhân và tệp CV",
-  status: "Chuyển trạng thái CV và nhập lý do",
-  "candidate-time": "Đặt giờ riêng cho ứng viên trong lịch này",
-  "remove-interview-cv":
-    "Bỏ ứng viên khỏi lịch này, giữ lại hồ sơ và trạng thái CV",
-  duplicate: "Tìm các hồ sơ ứng viên trùng thông tin",
-  attach: "Chọn lịch phỏng vấn cho ứng viên",
-  "delete-candidate": "Xóa toàn bộ hồ sơ ứng viên",
-  "delete-file": "Chỉ xóa tệp CV, giữ lại thông tin ứng viên",
+  get request() {
+    return t("recruitment", "Xem thông tin và cập nhật yêu cầu tuyển dụng");
+  },
+  get "create-candidate"() {
+    return t("recruitment", "Thêm ứng viên vào yêu cầu tuyển dụng này");
+  },
+  get note() {
+    return t("recruitment", "Ghi chú phỏng vấn và đính kèm tệp");
+  },
+  get "view-candidate"() {
+    return t("recruitment", "Xem thông tin và lịch sử ứng viên");
+  },
+  get candidate() {
+    return t("recruitment", "Sửa thông tin cá nhân và tệp CV");
+  },
+  get status() {
+    return t("recruitment", "Chuyển trạng thái CV và nhập lý do");
+  },
+  get "candidate-time"() {
+    return t("recruitment", "Đặt giờ riêng cho ứng viên trong lịch này");
+  },
+  get "remove-interview-cv"() {
+    return t(
+      "recruitment",
+      "Bỏ ứng viên khỏi lịch này, giữ lại hồ sơ và trạng thái CV",
+    );
+  },
+  get duplicate() {
+    return t("recruitment", "Tìm các hồ sơ ứng viên trùng thông tin");
+  },
+  get attach() {
+    return t("recruitment", "Chọn lịch phỏng vấn cho ứng viên");
+  },
+  get "delete-candidate"() {
+    return t("recruitment", "Xóa toàn bộ hồ sơ ứng viên");
+  },
+  get "delete-file"() {
+    return t("recruitment", "Chỉ xóa tệp CV, giữ lại thông tin ứng viên");
+  },
 };
 
 const requestActions: readonly RowAction[] = [
-  { action: "request", icon: Eye, label: "Xem yêu cầu" },
-  { action: "create-candidate", icon: FilePlus2, label: "Thêm ứng viên" },
+  {
+    action: "request",
+    icon: Eye,
+    get label() {
+      return t("recruitment", "Xem yêu cầu");
+    },
+  },
+  {
+    action: "create-candidate",
+    icon: FilePlus2,
+    get label() {
+      return t("recruitment", "Thêm ứng viên");
+    },
+  },
 ];
 const candidateActions: readonly RowAction[] = [
-  { action: "candidate", icon: Pencil, label: "Sửa hồ sơ" },
-  { action: "note", icon: FilePenLine, label: "Ghi chú" },
-  { action: "status", icon: RefreshCw, label: "Chuyển trạng thái" },
-  { action: "duplicate", icon: Files, label: "Kiểm tra trùng" },
-  { action: "attach", icon: CalendarPlus, label: "Gắn lịch phỏng vấn" },
-  { action: "delete-candidate", icon: Trash2, label: "Xóa hồ sơ" },
+  {
+    action: "candidate",
+    icon: Pencil,
+    get label() {
+      return t("recruitment", "Sửa hồ sơ");
+    },
+  },
+  {
+    action: "note",
+    icon: FilePenLine,
+    get label() {
+      return t("recruitment", "Ghi chú");
+    },
+  },
+  {
+    action: "status",
+    icon: RefreshCw,
+    get label() {
+      return t("recruitment", "Chuyển trạng thái");
+    },
+  },
+  {
+    action: "duplicate",
+    icon: Files,
+    get label() {
+      return t("recruitment", "Kiểm tra trùng");
+    },
+  },
+  {
+    action: "attach",
+    icon: CalendarPlus,
+    get label() {
+      return t("recruitment", "Gắn lịch phỏng vấn");
+    },
+  },
+  {
+    action: "delete-candidate",
+    icon: Trash2,
+    get label() {
+      return t("recruitment", "Xóa hồ sơ");
+    },
+  },
 ];
 const interviewActions: readonly RowAction[] = [
-  { action: "note", icon: FilePenLine, label: "Ghi chú" },
-  { action: "view-candidate", icon: Eye, label: "Xem hồ sơ" },
+  {
+    action: "note",
+    icon: FilePenLine,
+    get label() {
+      return t("recruitment", "Ghi chú");
+    },
+  },
+  {
+    action: "view-candidate",
+    icon: Eye,
+    get label() {
+      return t("recruitment", "Xem hồ sơ");
+    },
+  },
 ];
 const interviewManageActions: readonly RowAction[] = [
-  { action: "status", icon: RefreshCw, label: "Chuyển trạng thái" },
-  { action: "candidate-time", icon: Clock3, label: "Đặt giờ" },
+  {
+    action: "status",
+    icon: RefreshCw,
+    get label() {
+      return t("recruitment", "Chuyển trạng thái");
+    },
+  },
+  {
+    action: "candidate-time",
+    icon: Clock3,
+    get label() {
+      return t("recruitment", "Đặt giờ");
+    },
+  },
   {
     action: "remove-interview-cv",
     icon: UserRoundMinus,
-    label: "Bỏ khỏi lịch",
+    get label() {
+      return t("recruitment", "Bỏ khỏi lịch");
+    },
   },
-  { action: "candidate", icon: Pencil, label: "Sửa hồ sơ" },
+  {
+    action: "candidate",
+    icon: Pencil,
+    get label() {
+      return t("recruitment", "Sửa hồ sơ");
+    },
+  },
 ];
 
 function rowActions(
@@ -91,7 +198,11 @@ function rowActions(
   if (row.name_file_cv)
     return [
       ...candidateActions,
-      { action: "delete-file", icon: FileX2, label: "Xóa tệp CV" },
+      {
+        action: "delete-file",
+        icon: FileX2,
+        label: t("recruitment", "Xóa tệp CV"),
+      },
     ];
   return candidateActions;
 }
@@ -117,6 +228,7 @@ export function RecruitmentRowActions({
   onOpenChange?: (open: boolean) => void;
   hideTrigger?: boolean;
 }>) {
+  useLocale();
   const [localOpen, setLocalOpen] = useState(false);
   const open = controlledOpen ?? localOpen;
   const setOpen = onOpenChange ?? setLocalOpen;
@@ -130,8 +242,8 @@ export function RecruitmentRowActions({
           type="button"
           variant="outline"
           size="icon"
-          aria-label={`Thao tác ${name}`}
-          title="Thao tác"
+          aria-label={t("recruitment", "Thao tác {0}", [name])}
+          title={t("recruitment", "Thao tác")}
           aria-haspopup="dialog"
           aria-expanded={open}
           disabled={disabled || !row.id}
@@ -152,10 +264,12 @@ export function RecruitmentRowActions({
               <DialogHeader>
                 <DialogHeading
                   icon={<Ellipsis aria-hidden="true" />}
-                  title="Chọn thao tác"
+                  title={t("recruitment", "Chọn thao tác")}
                   description={name}
                 />
-                <DialogCloseButton aria-label="Đóng chọn thao tác" />
+                <DialogCloseButton
+                  aria-label={t("recruitment", "Đóng chọn thao tác")}
+                />
               </DialogHeader>
               <div className="grid gap-2 sm:grid-cols-2">
                 {rowActions(mode, row, canManage).map(
@@ -215,6 +329,7 @@ export function RecruitmentActionChooser({
     onClose: () => void;
   }
 >) {
+  useLocale();
   if (!row) return null;
   const current = rows?.find((item) => item.id === row.id);
   return (

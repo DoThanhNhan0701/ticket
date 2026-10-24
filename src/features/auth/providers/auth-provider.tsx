@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query-client";
@@ -28,6 +29,7 @@ import { AuthContext } from "../context/auth-context";
 import { cachedUserPermissionSchema } from "../schemas/account-schema";
 
 export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
+  useLocale();
   const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
   const [userPermission, setUserPermission] =
@@ -69,7 +71,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
           !(err instanceof TypeError)
         )
           window.dispatchEvent(new Event(AUTH_ACCESS_DENIED_EVENT));
-        console.error("Failed to fetch user permissions:", err);
+        console.error(t("login", "Failed to fetch user permissions:"), err);
         return null;
       }
     };
@@ -148,14 +150,20 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     }) => {
       const tokens = await loginRequest(vars.username, vars.password);
       if (getAuthSessionVersion() !== vars.version) {
-        throw new ApiError("Sign-in was cancelled. Please try again.", 409);
+        throw new ApiError(
+          t("login", "Sign-in was cancelled. Please try again."),
+          409,
+        );
       }
       const version = startAuthSession(tokens);
 
       try {
         const permission = await getUserPermissionRequest();
         if (getAuthSessionVersion() !== version) {
-          throw new ApiError("Sign-in was cancelled. Please try again.", 409);
+          throw new ApiError(
+            t("login", "Sign-in was cancelled. Please try again."),
+            409,
+          );
         }
         return {
           access: getCookie(COOKIE_TOKEN_KEY) ?? tokens.access,

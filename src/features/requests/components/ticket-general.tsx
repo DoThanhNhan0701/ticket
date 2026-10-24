@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId, type ReactNode } from "react";
 import {
   Building2,
@@ -40,6 +41,7 @@ function GeneralSection({
   children: ReactNode;
   className?: string;
 }>) {
+  useLocale();
   const id = useId();
   return (
     <section
@@ -80,6 +82,7 @@ function ReadField({
   value,
   icon: Icon,
 }: Readonly<{ label: string; value: ReactNode; icon: LucideIcon }>) {
+  useLocale();
   return (
     <div className="min-w-0 space-y-1.5">
       <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -100,51 +103,55 @@ export function TicketGeneral({
   ticket,
   onSaved,
 }: Readonly<{ ticket: RequestDetailData; onSaved: () => Promise<unknown> }>) {
+  useLocale();
   const manual = ticketFileUrl(ticket.ticket_type_att_file);
   const reasons = [
-    ["Lý do hủy", ticket.lydohuyyeucau],
-    ["Lý do xử lý lại", ticket.lydoxulylai],
-    ["Lý do không xử lý lại", ticket.lydokhongxulylai],
-    ["Lý do thay đổi người xử lý", ticket.lydothaydoinguoixuly],
+    [t("request-detail", "Lý do hủy"), ticket.lydohuyyeucau],
+    [t("request-detail", "Lý do xử lý lại"), ticket.lydoxulylai],
+    [t("request-detail", "Lý do không xử lý lại"), ticket.lydokhongxulylai],
+    [
+      t("request-detail", "Lý do thay đổi người xử lý"),
+      ticket.lydothaydoinguoixuly,
+    ],
   ].filter(([, value]) => value);
   return (
     <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] xl:grid-rows-[1fr_auto]">
       <GeneralSection
-        title="Thông tin yêu cầu"
+        title={t("request-detail", "Thông tin yêu cầu")}
         className="xl:col-start-1 xl:row-start-1"
-        description="Thông tin cơ bản và đơn vị sử dụng"
+        description={t("request-detail", "Thông tin cơ bản và đơn vị sử dụng")}
         icon={FileText}
       >
         <dl className="grid min-w-0 grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-6">
           <ReadField
-            label="Bộ phận xử lý"
+            label={t("request-detail", "Bộ phận xử lý")}
             icon={Wrench}
             value={ticket.handling_group_name}
           />
           <ReadField
-            label="Loại yêu cầu"
+            label={t("request-detail", "Loại yêu cầu")}
             icon={FileType}
             value={ticket.ticket_type_name}
           />
           <ReadField
-            label="Bộ phận sử dụng"
+            label={t("request-detail", "Bộ phận sử dụng")}
             icon={Network}
             value={ticket.bophansudung_name}
           />
           <ReadField
-            label="Team sử dụng"
+            label={t("request-detail", "Team sử dụng")}
             icon={UsersRound}
             value={ticket.list_name_team_use
               .map((team) => team.name)
               .join(", ")}
           />
           <ReadField
-            label="Văn phòng"
+            label={t("request-detail", "Văn phòng")}
             icon={MapPin}
             value={ticket.vanphong_name}
           />
           <ReadField
-            label="Công ty"
+            label={t("request-detail", "Công ty")}
             icon={Building2}
             value={ticket.customer_name}
           />
@@ -156,12 +163,12 @@ export function TicketGeneral({
             rel="noopener noreferrer"
             className="mt-4 inline-flex text-sm text-primary underline-offset-4 hover:underline"
           >
-            Tài liệu hướng dẫn
+            {t("request-detail", "Tài liệu hướng dẫn")}
           </a>
         )}
         <dl className="mt-5 space-y-4 border-t border-border pt-4">
           <ReadField
-            label="Ghi chú"
+            label={t("request-detail", "Ghi chú")}
             icon={NotebookPen}
             value={ticket.description}
           />
@@ -176,19 +183,22 @@ export function TicketGeneral({
         </dl>
       </GeneralSection>
       <GeneralSection
-        title="Thông tin xử lý"
+        title={t("request-detail", "Thông tin xử lý")}
         className="xl:col-start-2 xl:row-span-2 xl:row-start-1"
-        description="Người phụ trách, thời gian và trạng thái xử lý yêu cầu."
+        description={t(
+          "request-detail",
+          "Người phụ trách, thời gian và trạng thái xử lý yêu cầu.",
+        )}
         icon={UserRound}
       >
         <dl className="space-y-4 [&>div+div]:border-t [&>div+div]:border-border [&>div+div]:pt-4">
           <ReadField
-            label="Người phê duyệt"
+            label={t("request-detail", "Người phê duyệt")}
             icon={UserCheck}
             value={ticket.approve_user_name}
           />
           <ReadField
-            label="Người xử lý"
+            label={t("request-detail", "Người xử lý")}
             icon={UsersRound}
             value={
               ticket.list_user_received.length > 0 ? (
@@ -200,7 +210,10 @@ export function TicketGeneral({
                       className="size-4 shrink-0 text-muted-foreground group-open/handlers:rotate-180"
                     />
                   </summary>
-                  <ul aria-label="Tình trạng xử lý" className="space-y-3 pt-3">
+                  <ul
+                    aria-label={t("request-detail", "Tình trạng xử lý")}
+                    className="space-y-3 pt-3"
+                  >
                     {ticket.list_user_received.map((user, index) => (
                       <li
                         key={user.user_id ?? index}
@@ -222,7 +235,7 @@ export function TicketGeneral({
                           <p className="wrap-anywhere">{user.username}</p>
                           {user.status && (
                             <p className="mt-0.5 text-xs font-normal text-muted-foreground">
-                              {user.status}
+                              {t("statuses", user.status)}
                             </p>
                           )}
                         </div>
@@ -236,23 +249,23 @@ export function TicketGeneral({
             }
           />
           <ReadField
-            label="Người tạo"
+            label={t("request-detail", "Người tạo")}
             icon={UserPlus}
             value={ticket.username_create}
           />
           <ReadField
-            label="Ngày tạo"
+            label={t("request-detail", "Ngày tạo")}
             icon={CalendarPlus}
             value={formatDataDate(ticket.created)}
           />
           <div>
-            <dt className="sr-only">Ngày mong muốn</dt>
+            <dt className="sr-only">{t("request-detail", "Ngày mong muốn")}</dt>
             <dd>
               <TicketDueDate ticket={ticket} onSaved={onSaved} />
             </dd>
           </div>
           <ReadField
-            label="Ngày phê duyệt"
+            label={t("request-detail", "Ngày phê duyệt")}
             icon={CalendarCheck}
             value={formatDataDate(
               ticket.ticket_ngaypheduyet || ticket.approve_date,
@@ -261,7 +274,7 @@ export function TicketGeneral({
         </dl>
       </GeneralSection>
       <GeneralSection
-        title="Tệp đính kèm"
+        title={t("request-detail", "Tệp đính kèm")}
         className="xl:col-start-1 xl:row-start-2"
         icon={Paperclip}
         badge={Object.keys(ticket.attachment_files).length}

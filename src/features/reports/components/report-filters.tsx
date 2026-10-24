@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -23,14 +24,19 @@ function TypeFeedback({
   error,
   empty,
 }: Readonly<{ error: Error | null; empty: boolean }>) {
+  useLocale();
   if (error)
     return (
-      <ErrorToast message={`Không tải được loại yêu cầu: ${error.message}`} />
+      <ErrorToast
+        message={t("reports", "Không tải được loại yêu cầu: {0}", [
+          error.message,
+        ])}
+      />
     );
   if (empty)
     return (
       <p role="status" className="text-sm text-muted-foreground">
-        Bộ phận này không có loại yêu cầu đang hoạt động.
+        {t("reports", "Bộ phận này không có loại yêu cầu đang hoạt động.")}
       </p>
     );
   return null;
@@ -53,6 +59,8 @@ export function ReportFiltersForm({
   onApply: (values: ReportFilters) => void;
   onExport: (values: ReportFilters) => void;
 }>) {
+  useLocale();
+  const namespace = mode === "dashboard" ? "reports" : "data-export";
   const { userId } = useAuthContext();
   const mobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -83,7 +91,7 @@ export function ReportFiltersForm({
     if (busy || typeUnavailable) return;
     if (!groups.some((group) => String(group.id) === values.handlinggroup)) {
       form.setError("handlinggroup", {
-        message: "Vui lòng chọn bộ phận xử lý hợp lệ.",
+        message: t(namespace, "Vui lòng chọn bộ phận xử lý hợp lệ."),
       });
       return;
     }
@@ -93,7 +101,7 @@ export function ReportFiltersForm({
       !activeTypes.some((type) => String(type.id) === values.ticket_type_id)
     ) {
       form.setError("ticket_type_id", {
-        message: "Vui lòng chọn loại yêu cầu.",
+        message: t(namespace, "Vui lòng chọn loại yêu cầu."),
       });
       return;
     }
@@ -111,7 +119,9 @@ export function ReportFiltersForm({
       <Card className="gap-4 p-4 sm:p-5">
         <form
           aria-label={
-            mode === "export" ? "Truy xuất dữ liệu" : "Bộ lọc báo cáo"
+            mode === "export"
+              ? t(namespace, "Truy xuất dữ liệu")
+              : t(namespace, "Bộ lọc báo cáo")
           }
           noValidate
           className="space-y-4"
@@ -124,7 +134,7 @@ export function ReportFiltersForm({
               control={form.control}
               name="startdate"
               id={`${mode}-startdate`}
-              label="Từ ngày"
+              label={t(namespace, "Từ ngày")}
               required
               disabled={busy}
               endYear={new Date().getFullYear() + 1}
@@ -133,7 +143,7 @@ export function ReportFiltersForm({
               control={form.control}
               name="enddate"
               id={`${mode}-enddate`}
-              label="Đến ngày"
+              label={t(namespace, "Đến ngày")}
               required
               disabled={busy}
               endYear={new Date().getFullYear() + 1}
@@ -142,11 +152,11 @@ export function ReportFiltersForm({
               control={form.control}
               name="handlinggroup"
               id={`${mode}-group`}
-              label="Bộ phận xử lý"
+              label={t(namespace, "Bộ phận xử lý")}
               required
               searchable
               disabled={busy}
-              placeholder="Chọn bộ phận xử lý"
+              placeholder={t(namespace, "Chọn bộ phận xử lý")}
               options={groups.map((group) => ({
                 value: String(group.id),
                 label: group.name,
@@ -157,17 +167,20 @@ export function ReportFiltersForm({
                 control={form.control}
                 name="ticket_type_id"
                 id="export-type"
-                label="Loại yêu cầu"
+                label={t(namespace, "Loại yêu cầu")}
                 allOptionValue="All"
                 required
                 searchable
                 disabled={busy || typeUnavailable}
-                placeholder="Chọn loại yêu cầu"
+                placeholder={t(namespace, "Chọn loại yêu cầu")}
                 isLoading={types.isFetching}
                 options={
                   activeTypes.length
                     ? [
-                        { value: "All", label: "Tất cả loại yêu cầu" },
+                        {
+                          value: "All",
+                          label: t(namespace, "Tất cả loại yêu cầu"),
+                        },
                         ...activeTypes.map((type) => ({
                           value: String(type.id),
                           label: type.name,
@@ -187,30 +200,36 @@ export function ReportFiltersForm({
           <div className="grid auto-cols-fr grid-flow-col gap-2 sm:flex sm:flex-wrap">
             {mode === "dashboard" && (
               <AsyncButton
-                title="Tra cứu"
+                title={t(namespace, "Tra cứu")}
                 type="submit"
                 className="min-w-0"
                 loading={loading}
                 loadingText={
-                  <span className="truncate" title="Đang tra cứu...">
-                    Đang tra cứu...
+                  <span
+                    className="truncate"
+                    title={t(namespace, "Đang tra cứu...")}
+                  >
+                    {t(namespace, "Đang tra cứu...")}
                   </span>
                 }
                 disabled={exporting}
                 icon={<Search className="size-4" aria-hidden="true" />}
               >
-                Tra cứu
+                {t(namespace, "Tra cứu")}
               </AsyncButton>
             )}
             <AsyncButton
-              title="Xuất Excel"
+              title={t(namespace, "Xuất Excel")}
               type={mode === "export" ? "submit" : "button"}
               className="min-w-0"
               variant={mode === "export" ? "default" : "outline"}
               loading={exporting}
               loadingText={
-                <span className="truncate" title="Đang xuất Excel...">
-                  Đang xuất Excel...
+                <span
+                  className="truncate"
+                  title={t(namespace, "Đang xuất Excel...")}
+                >
+                  {t(namespace, "Đang xuất Excel...")}
                 </span>
               }
               disabled={loading || typeUnavailable}
@@ -221,7 +240,7 @@ export function ReportFiltersForm({
                   : undefined
               }
             >
-              Xuất Excel
+              {t(namespace, "Xuất Excel")}
             </AsyncButton>
           </div>
         </form>

@@ -269,8 +269,8 @@ it.each(pages)(
       "Mã yêu cầu",
       "Loại yêu cầu",
       "Tiêu đề",
-      "Department",
-      "Team",
+      "Bộ phận sử dụng",
+      "Nhóm",
       "Văn phòng",
       "Ngày mong muốn",
       userLabel,
@@ -324,7 +324,7 @@ it.each(pages)(
     await ready(label);
     fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
     await select("Loại yêu cầu", "IT - Thiết bị");
-    fireEvent.change(screen.getByLabelText("Department"), {
+    fireEvent.change(screen.getByLabelText("Bộ phận sử dụng"), {
       target: { value: " Kỹ thuật " },
     });
     fireEvent.change(screen.getByLabelText(userLabel), {
@@ -336,7 +336,7 @@ it.each(pages)(
     fireEvent.change(screen.getByLabelText("Ngày tạo đến"), {
       target: { value: "31/10/2026" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Team" }));
+    fireEvent.click(screen.getByRole("button", { name: "Nhóm" }));
     fireEvent.click(await screen.findByRole("button", { name: "Frontend" }));
     fireEvent.click(screen.getByRole("button", { name: "Backend" }));
     fireEvent.keyDown(

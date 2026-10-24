@@ -1,3 +1,4 @@
+import { translateMessage, useLocale } from "@/i18n";
 import type { ReactNode } from "react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ export function FormFieldShell({
   className,
   children,
 }: Readonly<FormFieldShellProps>) {
+  useLocale();
   return (
     <Field className={cn("min-w-0", className)} data-invalid={invalid}>
       <FieldLabel
@@ -43,7 +45,7 @@ export function FormFieldShell({
         <FieldError
           id={`${id}-error`}
           errors={[error]}
-          title={error?.message}
+          title={error?.message ? translateMessage(error.message) : undefined}
           className="min-w-0 truncate text-sm text-destructive"
         />
       )}

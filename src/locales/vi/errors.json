@@ -1,0 +1,9 @@
+{
+  "Session changed. Please retry your request.": "Phiên đăng nhập đã thay đổi. Vui lòng thử lại.",
+  "You do not have access": "Bạn không có quyền truy cập",
+  "Bạn không có quyền thực hiện thao tác này.": "Bạn không có quyền thực hiện thao tác này.",
+  "Session expired. Please sign in again.": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "Invalid token refresh response from the server.": "Phản hồi gia hạn phiên từ máy chủ không hợp lệ.",
+  "Không có dữ liệu để xuất trong khoảng thời gian đã chọn.": "Không có dữ liệu để xuất trong khoảng thời gian đã chọn.",
+  "Tệp Excel nhận được không hợp lệ.": "Tệp Excel nhận được không hợp lệ."
+}

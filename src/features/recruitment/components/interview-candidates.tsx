@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { interviewCandidateFilters } from "../utils/interview-navigation";
 import { useInterviewCandidatePagination } from "../hooks/use-interview-candidate-pagination";
 import { ErrorToast } from "@/components/error-toast";
@@ -30,6 +31,7 @@ import { InterviewCandidateFilters } from "./interview-candidate-filters";
 import { RecruitmentEditor } from "./recruitment-editor";
 import { RecruitmentStatusBadge } from "./recruitment-status-badge";
 export function InterviewCandidates() {
+  useLocale();
   const { codeInterview = "" } = useParams();
   const { userId, permissions } = useAuthContext();
   const canManage = permissions?.can_hr_rec === true;
@@ -84,19 +86,19 @@ export function InterviewCandidates() {
   const columns: DataColumn<RecruitmentRow>[] = [
     {
       id: "name",
-      label: "Họ và tên",
+      label: t("interviews", "Họ và tên"),
       width: "180px",
       render: (row) => <DataText text={text(row.first_name)} />,
     },
     {
       id: "birthday",
-      label: "Ngày sinh",
+      label: t("interviews", "Ngày sinh"),
       width: "140px",
       render: (row) => <DataText text={formatDataDate(text(row.birthday))} />,
     },
     {
       id: "phone",
-      label: "Số điện thoại",
+      label: t("interviews", "Số điện thoại"),
       width: "150px",
       render: (row) => <DataText text={text(row.numberphone)} />,
     },
@@ -108,13 +110,13 @@ export function InterviewCandidates() {
     },
     {
       id: "time",
-      label: "Giờ phỏng vấn",
+      label: t("interviews", "Giờ phỏng vấn"),
       width: "150px",
       render: (row) => <DataText text={interviewTime(row)} />,
     },
     {
       id: "status",
-      label: "Trạng thái CV",
+      label: t("interviews", "Trạng thái CV"),
       width: "160px",
       className: "whitespace-nowrap",
       render: (row) => (
@@ -125,7 +127,7 @@ export function InterviewCandidates() {
     },
     {
       id: "actions",
-      label: "Thao tác",
+      label: t("interviews", "Thao tác"),
       width: "80px",
       sticky: "right",
       render: (row) => (
@@ -173,7 +175,9 @@ export function InterviewCandidates() {
           </p>
           {names(interview.data_user_interview) && (
             <p className="min-w-0 wrap-anywhere">
-              Người phỏng vấn: {names(interview.data_user_interview)}
+              {" "}
+              {t("interviews", "Người phỏng vấn:")}{" "}
+              {names(interview.data_user_interview)}
             </p>
           )}
           <p className="whitespace-pre-wrap wrap-anywhere">
@@ -192,22 +196,22 @@ export function InterviewCandidates() {
               }
             : undefined,
         }}
-        label="Danh sách CV phỏng vấn"
+        label={t("interviews", "Danh sách CV phỏng vấn")}
         pagination={{
           page,
           pageSize,
           pageSizes: [100, 200],
-          itemLabel: "ứng viên",
+          itemLabel: t("interviews", "ứng viên"),
           onPage: (page) => update({ page }),
           onPageSize: (pageSize) => update({ page_size: pageSize, page: 1 }),
         }}
-        loadingMessage="Đang tải CV phỏng vấn..."
-        errorPrefix="Không tải được CV phỏng vấn"
-        emptyTitle="Không có ứng viên trong lịch phỏng vấn."
+        loadingMessage={t("interviews", "Đang tải CV phỏng vấn...")}
+        errorPrefix={t("interviews", "Không tải được CV phỏng vấn")}
+        emptyTitle={t("interviews", "Không có ứng viên trong lịch phỏng vấn.")}
         renderRows={(visibleRows) => (
           <DataTable
             className="min-w-[1140px]"
-            scrollLabel="Cuộn bảng tuyển dụng"
+            scrollLabel={t("interviews", "Cuộn bảng tuyển dụng")}
             rows={visibleRows}
             columns={[
               {
@@ -218,7 +222,7 @@ export function InterviewCandidates() {
               },
               ...columns,
             ]}
-            label="CV phỏng vấn"
+            label={t("interviews", "CV phỏng vấn")}
             getRowKey={(row) => String(row.id)}
             scrollResetKey={JSON.stringify([codeInterview, applied, offset])}
           />

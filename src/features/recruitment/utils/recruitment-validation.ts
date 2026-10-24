@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { z } from "zod";
 import { addMonths, format } from "date-fns";
 import { validateTimeRange } from "@/lib/time-range";
@@ -84,9 +85,9 @@ function validateTextField(
 ) {
   if (!value) return;
   if (field.min && value.length < field.min)
-    error(field.name, `Tối thiểu ${field.min} ký tự.`);
+    error(field.name, t("recruitment", "Tối thiểu {0} ký tự.", [field.min]));
   if (field.max && value.length > field.max)
-    error(field.name, `Tối đa ${field.max} ký tự.`);
+    error(field.name, t("recruitment", "Tối đa {0} ký tự.", [field.max]));
   if (field.type === "time") {
     const issue = validateTimeRange(value, field.minTime, field.maxTime);
     if (issue) error(field.name, issue);
@@ -94,25 +95,25 @@ function validateTextField(
   const checks: Record<string, [boolean, string]> = {
     email: [
       field.type === "email" && !z.email().safeParse(value).success,
-      "Email không hợp lệ.",
+      t("recruitment", "Email không hợp lệ."),
     ],
     date: [
       field.type === "date" && !recruitmentDate(value),
-      "Ngày không hợp lệ.",
+      t("recruitment", "Ngày không hợp lệ."),
     ],
     numberphone: [
       field.name === "numberphone" && !/^\d{10,12}$/.test(value),
-      "Số điện thoại phải có từ 10 đến 12 chữ số.",
+      t("recruitment", "Số điện thoại phải có từ 10 đến 12 chữ số."),
     ],
     quantity: [
       field.name === "quantity" &&
         (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))),
-      "Số lượng phải là số nguyên dương.",
+      t("recruitment", "Số lượng phải là số nguyên dương."),
     ],
     birthday: [
       field.name === "birthday" &&
         recruitmentDate(value) > format(now, "yyyy-MM-dd"),
-      "Ngày sinh không được ở tương lai.",
+      t("recruitment", "Ngày sinh không được ở tương lai."),
     ],
   };
   for (const [invalid, message] of Object.values(checks))
@@ -127,13 +128,19 @@ function validateRecruitmentField(
 ) {
   if (field.readonly) return;
   if ((field.type === "multi") !== Array.isArray(value)) {
-    error(field.name, "Giá trị không hợp lệ. Vui lòng nhập lại.");
+    error(
+      field.name,
+      t("recruitment", "Giá trị không hợp lệ. Vui lòng nhập lại."),
+    );
     return;
   }
   if (field.required && !value.length)
     error(
       field.name,
-      `Vui lòng ${field.lookup ? "chọn" : "nhập"} ${field.label.toLowerCase()}.`,
+      t("recruitment", "Vui lòng {0} {1}.", [
+        field.lookup ? t("settings", "chọn") : t("settings", "nhập"),
+        field.label.toLowerCase(),
+      ]),
     );
   if (field.lookup && value.length) {
     const selected = Array.isArray(value) ? value : [value];
@@ -148,7 +155,7 @@ function validateSelection(
   error: FieldError,
 ) {
   if (selected.some((id) => !options.some((option) => option.value === id)))
-    error(name, "Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+    error(name, t("recruitment", "Lựa chọn không hợp lệ. Vui lòng chọn lại."));
 }
 function validateInterview(
   values: RecruitmentValues,
@@ -160,9 +167,9 @@ function validateInterview(
   const start = String(values.time_start ?? ""),
     end = String(values.time_end ?? "");
   if (start && end && end <= start)
-    error("time_end", "Giờ kết thúc phải sau giờ bắt đầu.");
+    error("time_end", t("recruitment", "Giờ kết thúc phải sau giờ bắt đầu."));
   if (!editing && day && start && new Date(`${day}T${start}`) <= now)
-    error("start_date", "Không thể tạo lịch trong quá khứ.");
+    error("start_date", t("recruitment", "Không thể tạo lịch trong quá khứ."));
 }
 export function recruitmentFormSchema(
   action: RecruitmentAction,
@@ -198,14 +205,18 @@ export function validateRecruitmentRange(
 ): string | null {
   const start = recruitmentDate(from),
     end = recruitmentDate(to);
-  if (!start || !end) return "Vui lòng nhập đủ khoảng ngày hợp lệ.";
-  if (start > end) return "Ngày kết thúc phải từ ngày bắt đầu trở đi.";
+  if (!start || !end)
+    return t("recruitment", "Vui lòng nhập đủ khoảng ngày hợp lệ.");
+  if (start > end)
+    return t("recruitment", "Ngày kết thúc phải từ ngày bắt đầu trở đi.");
   if (
     maxMonths &&
     end >
       format(addMonths(new Date(`${start}T00:00:00`), maxMonths), "yyyy-MM-dd")
   )
-    return `Phạm vi tra cứu không quá ${maxMonths} tháng.`;
+    return t("recruitment", "Phạm vi tra cứu không quá {0} tháng.", [
+      maxMonths,
+    ]);
   return null;
 }
 
@@ -224,7 +235,8 @@ export function recruitmentFilterSchema(
       const from = values.from_date ?? "";
       const to = values.to_date ?? "";
       if (mode === "interviews") {
-        if (!recruitmentDate(from)) error("from_date", "Ngày không hợp lệ.");
+        if (!recruitmentDate(from))
+          error("from_date", t("recruitment", "Ngày không hợp lệ."));
         return;
       }
       const issue = validateRecruitmentRange(
@@ -268,7 +280,7 @@ export function interviewCandidateFilterSchema(lookups: RecruitmentLookups) {
       .trim()
       .refine(
         (value) => ["", "Nam", "Nữ"].includes(value),
-        "Giới tính không hợp lệ.",
+        t("recruitment", "Giới tính không hợp lệ."),
       ),
     cv_status: z
       .string()
@@ -277,7 +289,7 @@ export function interviewCandidateFilterSchema(lookups: RecruitmentLookups) {
         (value) =>
           !value ||
           (lookups.statuses ?? []).some((option) => option.value === value),
-        "Trạng thái CV không hợp lệ. Vui lòng chọn lại.",
+        t("recruitment", "Trạng thái CV không hợp lệ. Vui lòng chọn lại."),
       ),
   });
 }

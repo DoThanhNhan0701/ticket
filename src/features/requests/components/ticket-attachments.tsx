@@ -1,8 +1,9 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { AsyncButton } from "@/components/ui/async-button";
 import { uploadRequestAttachment } from "../api/create-request-api";
 import type { RequestDetailData } from "../schemas/request-detail-schema";
@@ -17,6 +18,7 @@ export function TicketAttachments({
   ticket: RequestDetailData;
   onSaved: () => Promise<unknown>;
 }>) {
+  useLocale();
   const [files, setFiles] = useState<File[]>([]);
   usePendingAttachments(files.length);
   const pending = useRef<File[]>([]);
@@ -33,13 +35,15 @@ export function TicketAttachments({
       }
     },
     onSuccess: () => {
-      toast.success("Đã tải tệp đính kèm.");
+      toast.success(t("attachments", "Đã tải tệp đính kèm."));
     },
     onSettled: async () => {
       try {
         if (uploadedCount.current > 0) await onSaved();
       } catch {
-        toast.error("Vui lòng tải lại yêu cầu để xem tệp đã lưu.");
+        toast.error(
+          t("attachments", "Vui lòng tải lại yêu cầu để xem tệp đã lưu."),
+        );
       } finally {
         submitting.current = false;
       }
@@ -53,7 +57,9 @@ export function TicketAttachments({
   return (
     <div className="min-w-0 space-y-3">
       {!existingAttachments && (
-        <p className="text-sm text-muted-foreground">Không có tệp đính kèm.</p>
+        <p className="text-sm text-muted-foreground">
+          {t("attachments", "Không có tệp đính kèm.")}
+        </p>
       )}
       {!canUpload && existingAttachments}
       {canUpload && (
@@ -72,22 +78,29 @@ export function TicketAttachments({
                   className="size-9 rounded-xl"
                   aria-label={
                     mutation.isError
-                      ? "Tải lại tệp còn lại"
-                      : "Tải lên đính kèm"
+                      ? t("attachments", "Tải lại tệp còn lại")
+                      : t("attachments", "Tải lên đính kèm")
                   }
                   title={
                     mutation.isError
-                      ? "Tải lại tệp còn lại"
-                      : "Tải lên đính kèm"
+                      ? t("attachments", "Tải lại tệp còn lại")
+                      : t("attachments", "Tải lên đính kèm")
                   }
-                  loadingText={<span className="sr-only">Đang tải lên...</span>}
+                  loadingText={
+                    <span className="sr-only">
+                      {t("attachments", "Đang tải lên...")}
+                    </span>
+                  }
                   loading={mutation.isPending}
                   icon={<Upload className="size-4" />}
                   onClick={() => {
                     if (submitting.current) return;
                     if (files.some((file) => file.size > 50 * 1024 * 1024)) {
                       toast.error(
-                        "Mỗi tệp đính kèm không được vượt quá 50 MB.",
+                        t(
+                          "attachments",
+                          "Mỗi tệp đính kèm không được vượt quá 50 MB.",
+                        ),
                       );
                       return;
                     }
@@ -99,8 +112,8 @@ export function TicketAttachments({
                 >
                   <span className="sr-only">
                     {mutation.isError
-                      ? "Tải lại tệp còn lại"
-                      : "Tải lên đính kèm"}
+                      ? t("attachments", "Tải lại tệp còn lại")
+                      : t("attachments", "Tải lên đính kèm")}
                   </span>
                 </AsyncButton>
               )

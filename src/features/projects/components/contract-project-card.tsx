@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ExternalLink, FileSignature } from "lucide-react";
 import type { Project } from "../types";
 import {
@@ -8,15 +9,22 @@ import {
 export function ContractProjectCard({
   projects,
 }: Readonly<{ projects: readonly Project[] }>) {
+  useLocale();
   if (projects.length === 0) return null;
   return (
-    <section aria-label="Contract Management" className={projectCardClassName}>
+    <section
+      aria-label={t("projects", "Contract Management")}
+      className={projectCardClassName}
+    >
       <ProjectCardContent
-        title="Contract Management"
+        title={t("projects", "Contract Management")}
         code="BO-CONTRACTS"
         icon={FileSignature}
         color="#263d88"
-        description="Internal system for contract management, revenue, and expense settlements."
+        description={t(
+          "projects",
+          "Internal system for contract management, revenue, and expense settlements.",
+        )}
       >
         <div className="flex flex-col gap-2">
           {projects.map((project) => (

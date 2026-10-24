@@ -110,12 +110,12 @@ function renderApp(path = "/login") {
 
 async function submitLogin() {
   const button = await screen.findByRole("button", {
-    name: "Sign In to Ticket",
+    name: "Đăng nhập vào Ticket",
   });
-  fireEvent.change(screen.getByLabelText(/Username/), {
+  fireEvent.change(screen.getByLabelText(/Tên đăng nhập/), {
     target: { value: "  ticket.user  " },
   });
-  fireEvent.change(screen.getByLabelText(/^Password/), {
+  fireEvent.change(screen.getByLabelText(/^Mật khẩu/), {
     target: { value: " password with spaces " },
   });
   fireEvent.click(button);
@@ -185,7 +185,7 @@ it("keeps sign-in pending until account information has loaded", async () => {
   await submitLogin();
   await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
   const button = await screen.findByRole("button", {
-    name: "Authenticating...",
+    name: "Đang đăng nhập...",
   });
   expect(button.hasAttribute("disabled")).toBe(true);
   expect(
@@ -236,9 +236,7 @@ it.each([
     renderApp();
     await submitLogin();
     expect(
-      await screen.findByText(
-        "Authentication tokens not received from the server.",
-      ),
+      await screen.findByText("Không nhận được thông tin xác thực từ máy chủ."),
     ).toBeTruthy();
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
     expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -281,9 +279,7 @@ it("rejects malformed account information without leaving a partial session", as
   renderApp();
   await submitLogin();
   expect(
-    await screen.findByText(
-      "Invalid account information received from the server.",
-    ),
+    await screen.findByText("Thông tin tài khoản từ máy chủ không hợp lệ."),
   ).toBeTruthy();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -312,9 +308,7 @@ it.each([
     renderApp();
     await submitLogin();
     expect(
-      await screen.findByText(
-        "Invalid account information received from the server.",
-      ),
+      await screen.findByText("Thông tin tài khoản từ máy chủ không hợp lệ."),
     ).toBeTruthy();
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
     expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -343,9 +337,9 @@ it("signs out and clears Ticket credentials, account information and cached data
   await submitLogin();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   queryClient.setQueryData(["private-data"], "cached");
-  fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+  fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
   expect(
-    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
   ).toBeTruthy();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -358,7 +352,7 @@ it("does not reuse a Homepage session for the Ticket API", async () => {
   setCookie("_access_token_homepage", "homepage-access");
   renderApp();
   expect(
-    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
   ).toBeTruthy();
   expect(fetchMock).not.toHaveBeenCalled();
   expect(getCookie("_access_token_homepage")).toBe("homepage-access");
@@ -409,7 +403,7 @@ it("rejects a session created for another environment before making API calls", 
     JSON.parse(screen.getByTestId("account").textContent ?? "{}").pathname,
   ).toBe("/forbidden");
   fireEvent.click(screen.getByRole("button", { name: "Đăng nhập lại" }));
-  await screen.findByRole("button", { name: "Sign In to Ticket" });
+  await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
 });
 
 it("redirects rejected account permissions to the denied page instead of using cached permissions", async () => {
@@ -539,7 +533,7 @@ it.each(["network", 500] as const)(
     expect(getCookie(COOKIE_REFRESH_KEY)).toBe(tokens.refresh);
     expect(queryClient.getQueryData(["private-data"])).toBe("cached");
     expect(
-      screen.queryByRole("button", { name: "Sign In to Ticket" }),
+      screen.queryByRole("button", { name: "Đăng nhập vào Ticket" }),
     ).toBeNull();
   },
 );
@@ -622,7 +616,7 @@ it("does not recreate the session when a refresh finishes after logout", async (
     status: 409,
   });
   await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
-  fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+  fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
   await act(async () => {
     finishRefresh(
       Response.json({ access: "late-access", refresh: "late-refresh" }),
@@ -630,7 +624,7 @@ it("does not recreate the session when a refresh finishes after logout", async (
     await outcome;
   });
   expect(
-    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
   ).toBeTruthy();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -686,8 +680,8 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
     await submitLogin();
     await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
-    fireEvent.click(screen.getByRole("button", { name: "Sign Out" }));
-    await screen.findByRole("button", { name: "Sign In to Ticket" });
+    fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
+    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   },
 );

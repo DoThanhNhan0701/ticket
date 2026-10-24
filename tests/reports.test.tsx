@@ -253,7 +253,9 @@ it("opens summary details with real record IDs and handles zero-count summaries"
   const link = within(dialog).getByRole("link", { name: "RS-0042" });
   expect(link.getAttribute("href")).toBe("/requests/42");
   expect(link.getAttribute("rel")).toBe("noopener noreferrer");
-  fireEvent.click(within(dialog).getByRole("button", { name: "Close dialog" }));
+  fireEvent.click(
+    within(dialog).getByRole("button", { name: "Đóng hộp thoại" }),
+  );
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   fireEvent.click(screen.getByRole("button", { name: "Chờ xử lý: 0 yêu cầu" }));
   expect(await screen.findByText("Không có yêu cầu chi tiết")).toBeTruthy();

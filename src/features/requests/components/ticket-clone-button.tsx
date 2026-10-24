@@ -1,8 +1,9 @@
+import { t, useLocale } from "@/i18n";
 import { PAGE_LINKS } from "@/constants/routes";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { AsyncButton } from "@/components/ui/async-button";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { getCreateRequestTypes } from "../api/create-request-api";
@@ -11,6 +12,7 @@ import type { RequestDetailData } from "../schemas/request-detail-schema";
 export function TicketCloneButton({
   ticket,
 }: Readonly<{ ticket: RequestDetailData }>) {
+  useLocale();
   const { permissions } = useAuthContext();
   const navigate = useNavigate();
   const mutation = useMutation({
@@ -18,7 +20,10 @@ export function TicketCloneButton({
       const types = await getCreateRequestTypes(String(ticket.handling_group));
       if (!types.some((type) => type.id === ticket.ticket_type))
         throw new Error(
-          "Loại yêu cầu đã bị vô hiệu hóa hoặc không còn tồn tại. Không thể sao chép yêu cầu này.",
+          t(
+            "request-create",
+            "Loại yêu cầu đã bị vô hiệu hóa hoặc không còn tồn tại. Không thể sao chép yêu cầu này.",
+          ),
         );
     },
     onSuccess: () => {
@@ -36,14 +41,14 @@ export function TicketCloneButton({
         variant="outline"
         size="sm"
         mobileIconOnly
-        title="Sao chép"
+        title={t("request-create", "Sao chép")}
         loading={mutation.isPending}
         icon={<Copy className="size-4" />}
         onClick={() => {
           if (!mutation.isPending) mutation.mutate();
         }}
       >
-        Sao chép
+        {t("request-create", "Sao chép")}
       </AsyncButton>
     </div>
   );

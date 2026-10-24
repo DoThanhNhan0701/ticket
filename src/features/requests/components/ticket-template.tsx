@@ -1,9 +1,10 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Pencil, Save, X } from "lucide-react";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
@@ -33,6 +34,7 @@ export function TicketTemplate({
   ticket,
   onSaved,
 }: Readonly<{ ticket: RequestDetailData; onSaved: () => Promise<unknown> }>) {
+  useLocale();
   const { username, userId } = useAuthContext();
   const { creator, processor, editingProcessor } = ticketFieldRoles(ticket, {
     username,
@@ -61,7 +63,9 @@ export function TicketTemplate({
   const mutation = useMutation({
     mutationFn: async (section: number) => {
       if (!mayEditSection(section))
-        throw new Error("Bạn không còn quyền chỉnh sửa phần này.");
+        throw new Error(
+          t("request-detail", "Bạn không còn quyền chỉnh sửa phần này."),
+        );
       await updateTicketSection(
         ticket.id,
         groups[section],
@@ -75,11 +79,13 @@ export function TicketTemplate({
     },
     onSuccess: async () => {
       setEditing(null);
-      toast.success("Đã lưu chi tiết yêu cầu.");
+      toast.success(t("request-detail", "Đã lưu chi tiết yêu cầu."));
       try {
         await onSaved();
       } catch {
-        toast.error("Đã lưu chi tiết. Vui lòng tải lại yêu cầu.");
+        toast.error(
+          t("request-detail", "Đã lưu chi tiết. Vui lòng tải lại yêu cầu."),
+        );
       }
     },
   });
@@ -109,16 +115,20 @@ export function TicketTemplate({
   };
   return (
     <RequestFormSection
-      title="Chi tiết yêu cầu"
+      title={t("request-detail", "Chi tiết yêu cầu")}
       description={
         groups.length
-          ? `${groups.length} phần · ${ticket.data_item?.dataform.data.length ?? 0} dòng · Cuộn ngang để xem thêm trường.`
+          ? t(
+              "request-detail",
+              "{0} phần · {1} dòng · Cuộn ngang để xem thêm trường.",
+              [groups.length, ticket.data_item?.dataform.data.length ?? 0],
+            )
           : undefined
       }
     >
       {!groups.length && (
         <p className="text-sm text-muted-foreground">
-          Yêu cầu này không có biểu mẫu chi tiết.
+          {t("request-detail", "Yêu cầu này không có biểu mẫu chi tiết.")}
         </p>
       )}
       {groups.map((group, index) => {
@@ -156,8 +166,8 @@ export function TicketTemplate({
                         variant="outline"
                         size="icon"
                         className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
-                        aria-label="Hủy"
-                        title="Hủy chỉnh sửa"
+                        aria-label={t("request-detail", "Hủy")}
+                        title={t("request-detail", "Hủy chỉnh sửa")}
                         disabled={mutation.isPending}
                         onClick={() => {
                           setEditing(null);
@@ -166,19 +176,23 @@ export function TicketTemplate({
                         }}
                       >
                         <X className="size-3.5" aria-hidden="true" />
-                        <span className="hidden sm:inline">Hủy</span>
+                        <span className="hidden sm:inline">
+                          {t("request-detail", "Hủy")}
+                        </span>
                       </Button>
                       <AsyncButton
                         type="button"
                         loading={mutation.isPending}
                         size="icon"
                         className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
-                        aria-label="Lưu thay đổi"
-                        title="Lưu thay đổi"
+                        aria-label={t("request-detail", "Lưu thay đổi")}
+                        title={t("request-detail", "Lưu thay đổi")}
                         icon={<Save className="size-3.5" aria-hidden="true" />}
                         onClick={() => save(index)}
                       >
-                        <span className="hidden sm:inline">Lưu thay đổi</span>
+                        <span className="hidden sm:inline">
+                          {t("request-detail", "Lưu thay đổi")}
+                        </span>
                       </AsyncButton>
                     </>
                   ) : (
@@ -187,8 +201,8 @@ export function TicketTemplate({
                       variant="outline"
                       size="icon"
                       className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
-                      aria-label="Chỉnh sửa"
-                      title="Chỉnh sửa phần này"
+                      aria-label={t("request-detail", "Chỉnh sửa")}
+                      title={t("request-detail", "Chỉnh sửa phần này")}
                       disabled={editing !== null}
                       onClick={() => {
                         form.reset({ rows: ticketDetailRows(ticket) });
@@ -197,7 +211,9 @@ export function TicketTemplate({
                       }}
                     >
                       <Pencil className="size-3.5" aria-hidden="true" />
-                      <span className="hidden sm:inline">Chỉnh sửa</span>
+                      <span className="hidden sm:inline">
+                        {t("request-detail", "Chỉnh sửa")}
+                      </span>
                     </Button>
                   )}
                 </div>
@@ -208,7 +224,7 @@ export function TicketTemplate({
             )}
             <div
               role="group"
-              aria-label={`Dữ liệu ${group.title}`}
+              aria-label={t("request-detail", "Dữ liệu {0}", [group.title])}
               className="max-w-full overflow-x-auto"
             >
               <table className="w-full text-sm">
@@ -293,7 +309,7 @@ export function TicketTemplate({
               </table>
               {!ticket.data_item?.dataform.data.length && (
                 <p className="p-4 text-sm text-muted-foreground">
-                  Chưa có dòng dữ liệu.
+                  {t("request-detail", "Chưa có dòng dữ liệu.")}
                 </p>
               )}
             </div>

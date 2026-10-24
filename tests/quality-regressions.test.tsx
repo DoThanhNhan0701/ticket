@@ -48,7 +48,7 @@ it("deduplicates validation messages and ignores missing error entries", () => {
   );
   const messages = within(screen.getByRole("alert")).getAllByRole("listitem");
   expect(messages.map((item) => item.textContent)).toEqual([
-    "Required",
+    "Bắt buộc",
     "Invalid date",
   ]);
   view.rerender(<FieldError errors={[undefined, {}]} />);

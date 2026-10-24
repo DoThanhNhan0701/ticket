@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,11 @@ function PageIndicator({
   disabled: boolean;
   onPage: (page: number) => void;
 }>) {
+  useLocale();
   const [draft, setDraft] = useState(String(page));
   return (
     <div className="flex min-w-0 items-center gap-1.5 px-1 text-xs tabular-nums sm:gap-2 sm:text-sm">
-      <span className="hidden sm:inline">Trang</span>
+      <span className="hidden sm:inline">{t("common", "Trang")}</span>
       <Input
         type="number"
         inputMode="numeric"
@@ -34,8 +36,10 @@ function PageIndicator({
         max={totalPages}
         step={1}
         required
-        aria-label="Đến trang"
-        title={`Nhập trang từ 1 đến ${totalPages}, nhấn Enter để chuyển`}
+        aria-label={t("common", "Đến trang")}
+        title={t("common", "Nhập trang từ 1 đến {0}, nhấn Enter để chuyển", [
+          totalPages,
+        ])}
         value={draft}
         disabled={disabled}
         className="h-11 w-12 px-1 text-center text-xs [appearance:textfield] sm:h-9 sm:w-14 sm:text-sm sm:pointer-coarse:h-11 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -67,11 +71,12 @@ export function DataPagination({
   page,
   pageSize,
   pageSizes,
-  itemLabel = "bản ghi",
+  itemLabel = t("common", "bản ghi"),
   disabled = false,
   onPage,
   onPageSize,
 }: Readonly<DataPaginationProps>) {
+  useLocale();
   const sizeId = useId();
   if (count === 0) return null;
   const totalPages = Math.max(1, Math.ceil(count / pageSize));
@@ -82,19 +87,26 @@ export function DataPagination({
       <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground sm:gap-3 sm:text-sm">
         <p
           aria-live="polite"
-          title={`Hiển thị ${first}–${last} trên ${count} ${itemLabel}`}
+          title={t("common", "Hiển thị {0}–{1} trên {2} {3}", [
+            first,
+            last,
+            count,
+            itemLabel,
+          ])}
           className="min-w-0 truncate tabular-nums"
         >
           <span aria-hidden="true" className="sm:hidden">
             {first}–{last} / {count}
           </span>
           <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Hiển thị {first}–{last} trên {count} {itemLabel}
+            {" "}
+            {t("common", "Hiển thị")} {first}–{last} {t("common", "trên")}{" "}
+            {count} {itemLabel}
           </span>
         </p>
         <div className="flex shrink-0 items-center gap-2">
           <Label htmlFor={sizeId} className="sr-only">
-            Số {itemLabel} mỗi trang
+            {t("common", "Số")} {itemLabel} {t("common", "mỗi trang")}
           </Label>
           <Select
             value={pageSize}
@@ -130,7 +142,7 @@ export function DataPagination({
         </div>
       </div>
       <nav
-        aria-label={`Phân trang ${itemLabel}`}
+        aria-label={t("common", "Phân trang {0}", [itemLabel])}
         className="flex shrink-0 flex-nowrap items-center sm:gap-3"
       >
         <Button
@@ -138,7 +150,7 @@ export function DataPagination({
           variant="outline"
           size="icon"
           className="size-11 sm:size-9 sm:pointer-coarse:size-11"
-          aria-label="Trang trước"
+          aria-label={t("common", "Trang trước")}
           disabled={disabled || page <= 1}
           onClick={() => onPage(page - 1)}
         >
@@ -156,7 +168,7 @@ export function DataPagination({
           variant="outline"
           size="icon"
           className="size-11 sm:size-9 sm:pointer-coarse:size-11"
-          aria-label="Trang sau"
+          aria-label={t("common", "Trang sau")}
           disabled={disabled || page >= totalPages}
           onClick={() => onPage(page + 1)}
         >

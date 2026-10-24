@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { DataFilterField } from "@/components/data-management";
 import type {
   RequestFilters,
@@ -15,7 +16,7 @@ export function getRequestStatusOptions(
 ) {
   const usesStatusIds = requestListConfig[scope].statusKey === "ticket_status";
   const options = [
-    { value: "all", label: "Tất cả trạng thái" },
+    { value: "all", label: t("request-list", "Tất cả trạng thái") },
     ...statuses
       .filter(
         (status) =>
@@ -23,13 +24,15 @@ export function getRequestStatusOptions(
       )
       .map((status) => ({
         value: usesStatusIds ? String(status.id) : status.name,
-        label: status.name,
+        label: t("statuses", status.name),
       })),
   ];
   if (selected && !options.some(({ value }) => value === selected))
     options.push({
       value: selected,
-      label: usesStatusIds ? `Trạng thái #${selected}` : selected,
+      label: usesStatusIds
+        ? t("request-list", "Trạng thái #{0}", [selected])
+        : selected,
     });
   return options;
 }
@@ -79,7 +82,7 @@ function getTypeOptions(
   selectedType: string | undefined,
 ) {
   const options = [
-    { value: "", label: "Tất cả loại yêu cầu" },
+    { value: "", label: t("request-list", "Tất cả loại yêu cầu") },
     ...types.map((type) => ({
       value: valueType === "name" ? type.name : String(type.id),
       label: `${type.handling_group_name} - ${type.name}`,
@@ -89,7 +92,9 @@ function getTypeOptions(
     options.push({
       value: selectedType,
       label:
-        valueType === "name" ? selectedType : `Loại yêu cầu #${selectedType}`,
+        valueType === "name"
+          ? selectedType
+          : t("request-list", "Loại yêu cầu #{0}", [selectedType]),
     });
   return [...new Map(options.map((option) => [option.value, option])).values()];
 }

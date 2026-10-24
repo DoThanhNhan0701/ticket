@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useId } from "react";
 import { ChevronDown, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,11 +35,13 @@ export function TemplateGroupFields({
   onFieldChange: (index: number, field: TemplateField) => void;
   onFieldRemove: (index: number) => void;
 }>) {
+  useLocale();
   const panelId = useId();
-  const title = group.title.trim() || `Phần ${index + 1}`;
+  const title =
+    group.title.trim() || t("settings-templates", "Phần {0}", [index + 1]);
   return (
     <section
-      aria-label={`Phần ${index + 1}`}
+      aria-label={t("settings-templates", "Phần {0}", [index + 1])}
       className="min-w-0 overflow-hidden rounded-xl border border-border"
     >
       <div
@@ -51,7 +54,10 @@ export function TemplateGroupFields({
           type="button"
           variant="ghost"
           className="col-span-2 h-auto min-h-11 min-w-0 justify-start gap-2.5 px-1 py-1 text-left sm:col-span-1 sm:h-auto sm:min-h-9"
-          aria-label={`${expanded ? "Thu gọn" : "Mở rộng"} phần ${index + 1}`}
+          aria-label={t("settings-templates", "{0} phần {1}", [
+            expanded ? "Thu gọn" : "Mở rộng",
+            index + 1,
+          ])}
           aria-expanded={expanded}
           aria-controls={panelId}
           onClick={onToggle}
@@ -67,7 +73,7 @@ export function TemplateGroupFields({
               {title}
             </span>
             <span className="hidden text-xs text-muted-foreground sm:block">
-              {group.children.length} trường
+              {group.children.length} {t("settings-templates", "trường")}{" "}
             </span>
           </span>
           <ChevronDown
@@ -79,10 +85,10 @@ export function TemplateGroupFields({
           />
         </Button>
         <span className="text-xs text-muted-foreground sm:hidden">
-          {group.children.length} trường
+          {group.children.length} {t("settings-templates", "trường")}{" "}
         </span>
         <TemplateItemActions
-          label={`phần ${index + 1}`}
+          label={t("settings-templates", "phần {0}", [index + 1])}
           disabled={disabled}
           first={index === 0}
           last={index === groups.length - 1}
@@ -94,14 +100,14 @@ export function TemplateGroupFields({
         <div className="grid grid-cols-1 items-end gap-2 sm:grid-cols-[1fr_auto] sm:gap-4">
           <FormFieldShell
             id={`template-group-${index}`}
-            label="Tên phần"
+            label={t("settings-templates", "Tên phần")}
             required
           >
             <Input
               id={`template-group-${index}`}
               value={group.title}
               disabled={disabled}
-              placeholder="Ví dụ: Thông tin yêu cầu"
+              placeholder={t("settings-templates", "Ví dụ: Thông tin yêu cầu")}
               onChange={(event) =>
                 onChange({ ...group, title: event.target.value })
               }
@@ -109,7 +115,7 @@ export function TemplateGroupFields({
           </FormFieldShell>
           <TemplateCheckbox
             id={`template-group-edit-${index}`}
-            label="Hiển thị khi tạo yêu cầu"
+            label={t("settings-templates", "Hiển thị khi tạo yêu cầu")}
             checked={group.editable !== false}
             disabled={disabled}
             onChange={(editable) => onChange({ ...group, editable })}
@@ -124,15 +130,20 @@ export function TemplateGroupFields({
               <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-1.5">
                 <h4
                   className="min-w-0 truncate text-sm font-medium"
-                  title={field.title || `Trường ${fieldIndex + 1}`}
+                  title={
+                    field.title ||
+                    t("settings-templates", "Trường {0}", [fieldIndex + 1])
+                  }
                 >
                   <span className="text-muted-foreground">
                     {fieldIndex + 1}.
                   </span>{" "}
-                  {field.title || "Trường mới"}
+                  {field.title || t("settings-templates", "Trường mới")}
                 </h4>
                 <TemplateItemActions
-                  label={`trường ${fieldIndex + 1}`}
+                  label={t("settings-templates", "trường {0}", [
+                    fieldIndex + 1,
+                  ])}
                   disabled={disabled}
                   first={fieldIndex === 0}
                   last={fieldIndex === group.children.length - 1}
@@ -162,7 +173,10 @@ export function TemplateGroupFields({
           ))}
           {!group.children.length && (
             <p className="py-4 text-center text-sm text-muted-foreground">
-              Chưa có trường nhập liệu. Thêm trường đầu tiên bên dưới.
+              {t(
+                "settings-templates",
+                "Chưa có trường nhập liệu. Thêm trường đầu tiên bên dưới.",
+              )}
             </p>
           )}
         </div>
@@ -190,7 +204,7 @@ export function TemplateGroupFields({
           }
         >
           <Plus className="size-4" aria-hidden="true" />
-          Thêm trường
+          {t("settings-templates", "Thêm trường")}
         </Button>
       </div>
     </section>

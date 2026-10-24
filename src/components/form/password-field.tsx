@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { t, useLocale } from "@/i18n";
 import { Eye, EyeOff } from "lucide-react";
 import type { FieldValues } from "react-hook-form";
 import { InputField, type InputFieldProps } from "./input-field";
@@ -14,6 +15,7 @@ export function PasswordField<TFieldValues extends FieldValues>({
   disabled,
   ...props
 }: Readonly<PasswordFieldProps<TFieldValues>>) {
+  useLocale();
   const [isVisible, setIsVisible] = useState(false);
   const Icon = isVisible ? EyeOff : Eye;
   return (
@@ -26,7 +28,10 @@ export function PasswordField<TFieldValues extends FieldValues>({
           type="button"
           disabled={disabled}
           onClick={() => setIsVisible((visible) => !visible)}
-          aria-label={`${isVisible ? "Hide" : "Show"} ${props.label.toLowerCase()}`}
+          aria-label={t(
+            "common",
+            isVisible ? "Hide password" : "Show password",
+          )}
           aria-pressed={isVisible}
           className="flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >

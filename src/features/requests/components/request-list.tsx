@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -30,6 +31,7 @@ import { RequestTable } from "./request-table";
 export function RequestList({
   scope = "created",
 }: Readonly<{ scope?: RequestListScope }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const params = parseRequestListParams(searchParams, scope);
@@ -120,13 +122,13 @@ export function RequestList({
               fields: [
                 {
                   name: "searchAll",
-                  label: "Tìm kiếm yêu cầu",
-                  placeholder: "Nhập từ khóa...",
+                  label: t("request-list", "Tìm kiếm yêu cầu"),
+                  placeholder: t("request-list", "Nhập từ khóa..."),
                 },
                 {
                   name: statusKey,
-                  label: "Trạng thái",
-                  placeholder: "Tất cả trạng thái",
+                  label: t("request-list", "Trạng thái"),
+                  placeholder: t("request-list", "Tất cả trạng thái"),
                   type: "select",
                   searchable: true,
                   options: statusOptions,
@@ -159,11 +161,11 @@ export function RequestList({
                   ...filterNames,
                 ]),
             }}
-            label="Tìm kiếm yêu cầu"
+            label={t("request-list", "Tìm kiếm yêu cầu")}
             resetKey={JSON.stringify(params)}
             initialValue={params.searchAll ?? ""}
             filter={{
-              label: "Trạng thái",
+              label: t("request-list", "Trạng thái"),
               initialValue: selectedStatus ?? "all",
               options: statusOptions,
               loading: statuses.isPending,
@@ -173,7 +175,10 @@ export function RequestList({
             actions={
               <DataFiltersDrawer
                 fields={filterFields}
-                description="Lọc yêu cầu theo các thông tin bên dưới."
+                description={t(
+                  "request-list",
+                  "Lọc yêu cầu theo các thông tin bên dưới.",
+                )}
                 initialValues={advancedFilters}
                 onApply={(filters) => update(filters)}
                 onClear={clearAdvanced}
@@ -198,37 +203,48 @@ export function RequestList({
                 update({}, ["searchAll", statusKey, "typeView", ...filterNames])
               }
             >
-              Xóa lọc
+              {t("request-list", "Xóa lọc")}
             </Button>
           )}
         </div>
         {statuses.isError && (
           <ErrorToast
-            message={`Không tải được trạng thái: ${statuses.error.message}`}
+            message={t("request-list", "Không tải được trạng thái: {0}", [
+              statuses.error.message,
+            ])}
           />
         )}
         {config.typeSource && types.isError && (
           <ErrorToast
-            message={`Không tải được loại yêu cầu: ${types.error.message}`}
+            message={t("request-list", "Không tải được loại yêu cầu: {0}", [
+              types.error.message,
+            ])}
           />
         )}
         {config.teams && teams.isError && (
-          <ErrorToast message={`Không tải được Team: ${teams.error.message}`} />
+          <ErrorToast
+            message={t("request-list", "Không tải được Team: {0}", [
+              teams.error.message,
+            ])}
+          />
         )}
       </div>
 
       <DataResults
         query={requests}
-        label="Kết quả yêu cầu"
-        loadingMessage="Đang tải yêu cầu..."
-        errorPrefix="Không tải được yêu cầu"
-        emptyTitle="Không tìm thấy yêu cầu"
-        emptyDescription="Thử thay đổi từ khóa hoặc bộ lọc để tìm yêu cầu phù hợp."
+        label={t("request-list", "Kết quả yêu cầu")}
+        loadingMessage={t("request-list", "Đang tải yêu cầu...")}
+        errorPrefix={t("request-list", "Không tải được yêu cầu")}
+        emptyTitle={t("request-list", "Không tìm thấy yêu cầu")}
+        emptyDescription={t(
+          "request-list",
+          "Thử thay đổi từ khóa hoặc bộ lọc để tìm yêu cầu phù hợp.",
+        )}
         pagination={{
           page: params.page,
           pageSize: params.page_size,
           pageSizes: requestPageSizes,
-          itemLabel: "yêu cầu",
+          itemLabel: t("request-list", "yêu cầu"),
           onPage: (page) => update({ page }),
           onPageSize: (size) => update({ page_size: size }),
         }}

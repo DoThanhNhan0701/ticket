@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@base-ui/react/dialog";
@@ -40,6 +41,7 @@ function CollapsedSidebarGroup({
   active: boolean;
   onNavigate?: () => void;
 }>) {
+  useLocale();
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const Icon = group.icon;
@@ -62,7 +64,7 @@ function CollapsedSidebarGroup({
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label={group.label}
+                aria-label={t("layout", group.label)}
                 aria-current={active ? "true" : undefined}
                 className={cn(
                   "relative size-11 rounded-xl",
@@ -83,7 +85,7 @@ function CollapsedSidebarGroup({
           </TooltipTrigger>
         </PopoverTrigger>
         <TooltipContent side="right" sideOffset={12}>
-          {group.label}
+          {t("layout", group.label)}
         </TooltipContent>
       </Tooltip>
       <PopoverContent
@@ -92,7 +94,7 @@ function CollapsedSidebarGroup({
         align="start"
         sideOffset={24}
         collisionPadding={12}
-        aria-label={group.label}
+        aria-label={t("layout", group.label)}
         className="w-64 max-w-[calc(100vw-2rem)] p-2"
         onOpenAutoFocus={(event) => {
           const firstLink =
@@ -104,9 +106,9 @@ function CollapsedSidebarGroup({
         }}
       >
         <h2 className="px-3 py-2 text-xs font-semibold tracking-wide text-muted-foreground">
-          {group.label}
+          {t("layout", group.label)}
         </h2>
-        <nav aria-label={group.label}>
+        <nav aria-label={t("layout", group.label)}>
           <ul className="space-y-1">
             {group.pages.map((page) => (
               <li key={page.path}>
@@ -130,6 +132,7 @@ function SidebarLink({
   page,
   onNavigate,
 }: Readonly<{ page: WorkspacePageDefinition; onNavigate?: () => void }>) {
+  useLocale();
   const { pathname } = useLocation();
   const active = isPageActive(page, pathname);
   const Icon = page.icon;
@@ -138,8 +141,8 @@ function SidebarLink({
     <Link
       to={page.path}
       onClick={onNavigate}
-      aria-label={page.label}
-      title={page.label}
+      aria-label={t("layout", page.label)}
+      title={t("layout", page.label)}
       aria-current={active ? "page" : undefined}
       className={cn(
         "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
@@ -149,7 +152,7 @@ function SidebarLink({
       )}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className="min-w-0 flex-1 truncate">{page.label}</span>
+      <span className="min-w-0 flex-1 truncate">{t("layout", page.label)}</span>
       {active && (
         <span
           className="size-1.5 shrink-0 rounded-full bg-current"
@@ -166,6 +169,7 @@ export function AppSidebar({
   groupsOpen,
   onGroupToggle,
 }: Readonly<SidebarProps>) {
+  useLocale();
   const { permissions } = useAuthContext();
   const { pathname } = useLocation();
   const groups = navigationGroups
@@ -178,7 +182,7 @@ export function AppSidebar({
   return (
     <div className="flex h-full min-h-0 flex-col text-sidebar-foreground">
       <nav
-        aria-label="Điều hướng Ticket"
+        aria-label={t("layout", "Điều hướng Ticket")}
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
       >
         <div
@@ -191,7 +195,10 @@ export function AppSidebar({
               role="status"
               title={
                 collapsed
-                  ? "Chưa có mục truy cập. Liên hệ quản trị viên để được cấp quyền cho các mục trong menu."
+                  ? t(
+                      "layout",
+                      "Chưa có mục truy cập. Liên hệ quản trị viên để được cấp quyền cho các mục trong menu.",
+                    )
                   : undefined
               }
               className={cn(
@@ -207,11 +214,13 @@ export function AppSidebar({
               />
               <div className={collapsed ? "sr-only" : "space-y-1"}>
                 <p className="text-sm font-semibold text-sidebar-foreground">
-                  Chưa có mục truy cập
+                  {t("layout", "Chưa có mục truy cập")}
                 </p>
                 <p className="text-xs leading-5">
-                  Liên hệ quản trị viên để được cấp quyền cho các mục trong
-                  menu.
+                  {t(
+                    "layout",
+                    "Liên hệ quản trị viên để được cấp quyền cho các mục trong menu.",
+                  )}
                 </p>
               </div>
             </div>
@@ -265,8 +274,11 @@ export function AppSidebar({
                     className="size-4 shrink-0 text-muted-foreground"
                     aria-hidden="true"
                   />
-                  <span className="min-w-0 flex-1 truncate" title={group.label}>
-                    {group.label}
+                  <span
+                    className="min-w-0 flex-1 truncate"
+                    title={t("layout", group.label)}
+                  >
+                    {t("layout", group.label)}
                   </span>
                   <ChevronDown
                     className="size-3.5 shrink-0 text-muted-foreground transition-transform group-open/sidebar-section:rotate-180"
@@ -286,7 +298,7 @@ export function AppSidebar({
       >
         <ShieldCheck className="size-3.5 shrink-0" aria-hidden="true" />
         <span className={collapsed ? "sr-only" : undefined}>
-          Rainscales · Internal workspace
+          {t("layout", "Rainscales · Internal workspace")}
         </span>
       </div>
     </div>
@@ -303,6 +315,7 @@ export function MobileSidebar({
     "groupsOpen" | "onGroupToggle"
   >
 >) {
+  useLocale();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -322,7 +335,7 @@ export function MobileSidebar({
             variant="outline"
             size="icon"
             className="size-11 lg:hidden"
-            aria-label="Mở menu điều hướng"
+            aria-label={t("layout", "Mở menu điều hướng")}
           />
         }
       >
@@ -342,8 +355,8 @@ export function MobileSidebar({
             <div className="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-sidebar-border px-4 py-3">
               <DialogHeading
                 icon={<Menu aria-hidden="true" />}
-                title="Điều hướng Ticket"
-                description="Chọn trang bạn muốn truy cập."
+                title={t("layout", "Điều hướng Ticket")}
+                description={t("layout", "Chọn trang bạn muốn truy cập.")}
               />
               <Dialog.Close
                 render={
@@ -351,7 +364,7 @@ export function MobileSidebar({
                     variant="ghost"
                     size="icon"
                     className="h-11 w-11"
-                    aria-label="Đóng menu điều hướng"
+                    aria-label={t("layout", "Đóng menu điều hướng")}
                   />
                 }
               >

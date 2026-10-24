@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useState } from "react";
@@ -40,6 +41,7 @@ export function RecruitmentEditor({
   lookups: RecruitmentLookups;
   onClose: () => void;
 }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const [busy, setBusy] = useState(false);
   const needsDetail = [
@@ -136,22 +138,28 @@ export function RecruitmentEditor({
               title={actionLabels[state.action]}
               description={
                 state.action === "view-candidate"
-                  ? "Thông tin ứng viên và tệp CV."
-                  : "Kiểm tra thông tin trước khi lưu thay đổi."
+                  ? t("recruitment", "Thông tin ứng viên và tệp CV.")
+                  : t(
+                      "recruitment",
+                      "Kiểm tra thông tin trước khi lưu thay đổi.",
+                    )
               }
             />
             <DialogCloseButton disabled={busy} />
           </DialogHeader>
           {state.action === "note" && (
             <p className="mb-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
-              Ứng viên:{" "}
+              {" "}
+              {t("recruitment", "Ứng viên:")}{" "}
               <span className="font-medium">
                 {recruitmentText(state.row.first_name) ||
                   recruitmentText(state.row.code_cv)}
               </span>
             </p>
           )}
-          {loading && <LoadingState message="Đang tải thông tin..." />}
+          {loading && (
+            <LoadingState message={t("recruitment", "Đang tải thông tin...")} />
+          )}
           {active?.isError && <ErrorToast message={active.error.message} />}
           {editorReady(active, loading) &&
             (state.action === "duplicate" ? (
@@ -172,16 +180,17 @@ export function RecruitmentEditor({
   );
 }
 function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
+  useLocale();
   return rows.length ? (
     <div className="flex h-80 min-w-0 flex-col">
       <DataTable
         className="min-w-[1630px]"
-        scrollLabel="Cuộn bảng tuyển dụng"
+        scrollLabel={t("recruitment", "Cuộn bảng tuyển dụng")}
         rows={rows}
         getRowKey={(row) =>
           String(row.id ?? row.code_cv ?? JSON.stringify(row))
         }
-        label="Hồ sơ trùng"
+        label={t("recruitment", "Hồ sơ trùng")}
         columns={[
           {
             id: "index",
@@ -192,13 +201,13 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "code_cv",
-            label: "Mã CV",
+            label: t("recruitment", "Mã CV"),
             width: "150px",
             render: (row) => <DataText text={recruitmentText(row.code_cv)} />,
           },
           {
             id: "ticket_code",
-            label: "Mã yêu cầu",
+            label: t("recruitment", "Mã yêu cầu"),
             width: "160px",
             render: (row) => (
               <DataText text={recruitmentText(row.ticket_code)} />
@@ -206,7 +215,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "numberphone",
-            label: "Số điện thoại",
+            label: t("recruitment", "Số điện thoại"),
             width: "150px",
             render: (row) => (
               <DataText text={recruitmentText(row.numberphone)} />
@@ -220,7 +229,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "name",
-            label: "Họ và tên",
+            label: t("recruitment", "Họ và tên"),
             width: "200px",
             render: (row) => (
               <DataText
@@ -235,7 +244,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "birthday",
-            label: "Ngày sinh",
+            label: t("recruitment", "Ngày sinh"),
             width: "140px",
             render: (row) => (
               <DataText text={formatDataDate(recruitmentText(row.birthday))} />
@@ -243,7 +252,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "status",
-            label: "Trạng thái CV",
+            label: t("recruitment", "Trạng thái CV"),
             width: "160px",
             className: "whitespace-nowrap",
             render: (row) => (
@@ -254,7 +263,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
           },
           {
             id: "created",
-            label: "Ngày tạo",
+            label: t("recruitment", "Ngày tạo"),
             width: "190px",
             render: (row) => (
               <DataText
@@ -267,7 +276,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
     </div>
   ) : (
     <p className="text-sm text-muted-foreground">
-      Không tìm thấy hồ sơ trùng lặp.
+      {t("recruitment", "Không tìm thấy hồ sơ trùng lặp.")}
     </p>
   );
 }

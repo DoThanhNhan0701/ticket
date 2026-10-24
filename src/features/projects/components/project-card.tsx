@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ExternalLink } from "lucide-react";
 import type { Project } from "../types";
 import { getProjectIcon } from "../utils/project-icon";
@@ -7,6 +8,7 @@ import {
 } from "./project-card-content";
 
 export function ProjectCard({ project }: Readonly<{ project: Project }>) {
+  useLocale();
   return (
     <a
       href={project.href}
@@ -23,7 +25,8 @@ export function ProjectCard({ project }: Readonly<{ project: Project }>) {
         description={`Internal operations and workflow system for ${project.name.toLowerCase()} built for Rainscales.`}
       >
         <span className="flex items-center justify-between border-t border-border pt-4 text-sm font-semibold text-brand-700 dark:text-brand-200">
-          Access Application
+          {" "}
+          {t("projects", "Access Application")}{" "}
           <ExternalLink className="h-4 w-4" aria-hidden="true" />
         </span>
       </ProjectCardContent>

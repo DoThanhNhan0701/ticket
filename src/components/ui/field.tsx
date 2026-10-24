@@ -1,3 +1,4 @@
+import { translateMessage, useLocale } from "@/i18n";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
@@ -178,9 +179,12 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
   errors?: Array<{ message?: string } | undefined>;
 }) {
+  useLocale();
   const messages = [
     ...new Set(
-      errors?.flatMap((error) => (error?.message ? [error.message] : [])) ?? [],
+      errors?.flatMap((error) =>
+        error?.message ? [translateMessage(error.message)] : [],
+      ) ?? [],
     ),
   ];
   if (!children && messages.length === 0) return null;

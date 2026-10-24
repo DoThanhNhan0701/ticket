@@ -180,7 +180,7 @@ it.each(["31/02/2026", "29/02/2025", "19/13/2026"])(
     const input = screen.getByRole("textbox", { name: "Date of Birth" });
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(
-      await screen.findByText("Enter a valid date (DD/MM/YYYY)."),
+      await screen.findByText("Vui lòng nhập ngày hợp lệ (DD/MM/YYYY)."),
     ).toBeTruthy();
     expect(input.getAttribute("aria-invalid")).toBe("true");
     expect(input.getAttribute("aria-describedby")).toBe("birthday-error");
@@ -196,7 +196,7 @@ it("does not submit an unfinished date", async () => {
   });
   fireEvent.click(screen.getByRole("button", { name: "Save" }));
   expect(
-    await screen.findByText("Enter a valid date (DD/MM/YYYY)."),
+    await screen.findByText("Vui lòng nhập ngày hợp lệ (DD/MM/YYYY)."),
   ).toBeTruthy();
   expect(onSubmit).not.toHaveBeenCalled();
 });
@@ -224,8 +224,10 @@ it("opens the calendar at a typed birthday and writes the chosen day back to the
   render(<BirthdayForm onSubmit={onSubmit} />);
   const input = screen.getByRole("textbox", { name: "Date of Birth" });
   fireEvent.change(input, { target: { value: "19/10/2000" } });
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
-  const day = await screen.findByRole("button", { name: /October 20th, 2000/ });
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
+  const day = await screen.findByRole("button", {
+    name: /ngày 20 tháng 10 năm 2000/,
+  });
   fireEvent.click(day);
   expect((input as HTMLInputElement).value).toBe("20/10/2000");
   await waitFor(() => expect(screen.queryByRole("grid")).toBeNull());
@@ -242,9 +244,9 @@ it("disables calendar days and rejects the same dates when typed manually", asyn
       onSubmit={onSubmit}
     />,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
   const blocked = (await screen.findByRole("button", {
-    name: /March 2nd, 2000/,
+    name: /ngày 2 tháng 03 năm 2000/,
   })) as HTMLButtonElement;
   expect(blocked.disabled).toBe(true);
   fireEvent.click(blocked);
@@ -268,14 +270,14 @@ it("locks an already open calendar when its field becomes disabled", async () =>
   const { rerender } = render(
     <BirthdayForm birthday="2000-03-02" onSubmit={onSubmit} />,
   );
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
   const day = (await screen.findByRole("button", {
-    name: /March 3rd, 2000/,
+    name: /ngày 3 tháng 03 năm 2000/,
   })) as HTMLButtonElement;
   expect(day.disabled).toBe(false);
   rerender(<BirthdayForm birthday="2000-03-02" disabled onSubmit={onSubmit} />);
   const lockedDay = screen.getByRole("button", {
-    name: /March 3rd, 2000/,
+    name: /ngày 3 tháng 03 năm 2000/,
   }) as HTMLButtonElement;
   expect(lockedDay.disabled).toBe(true);
   fireEvent.click(lockedDay);
@@ -290,41 +292,41 @@ it("finds a birth year quickly without changing the birthday until a day is chos
   const onSubmit = vi.fn();
   render(<BirthdayForm birthday="2000-10-19" onSubmit={onSubmit} />);
   const input = screen.getByRole("textbox", { name: "Date of Birth" });
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
-  fireEvent.click(screen.getByRole("button", { name: "Choose the Year" }));
-  const search = await screen.findByRole("searchbox", { name: "Search year" });
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn năm" }));
+  const search = await screen.findByRole("searchbox", { name: "Tìm năm" });
   fireEvent.change(search, { target: { value: "1995" } });
   expect(screen.getByRole("button", { name: "1995" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "1994" })).toBeNull();
   fireEvent.keyDown(search, { key: "Enter", code: "Enter" });
   await waitFor(() =>
-    expect(screen.queryByRole("searchbox", { name: "Search year" })).toBeNull(),
+    expect(screen.queryByRole("searchbox", { name: "Tìm năm" })).toBeNull(),
   );
   expect((input as HTMLInputElement).value).toBe("19/10/2000");
   expect(onSubmit).not.toHaveBeenCalled();
   fireEvent.click(
-    await screen.findByRole("button", { name: /October 20th, 1995/ }),
+    await screen.findByRole("button", { name: /ngày 20 tháng 10 năm 1995/ }),
   );
   expect((input as HTMLInputElement).value).toBe("20/10/1995");
 });
 
 it("limits the searchable years to the calendar bounds and resets search when reopened", async () => {
   render(<BirthdayForm birthday="2000-10-19" onSubmit={vi.fn()} />);
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
-  fireEvent.click(screen.getByRole("button", { name: "Choose the Year" }));
-  const search = await screen.findByRole("searchbox", { name: "Search year" });
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn năm" }));
+  const search = await screen.findByRole("searchbox", { name: "Tìm năm" });
   for (const year of ["1899", String(new Date().getFullYear() + 1)]) {
     fireEvent.change(search, { target: { value: year } });
-    expect(screen.getByText("No matching year.")).toBeTruthy();
+    expect(screen.getByText("Không tìm thấy năm phù hợp.")).toBeTruthy();
   }
   fireEvent.change(search, { target: { value: "1900" } });
   fireEvent.click(screen.getByRole("button", { name: "1900" }));
   expect(
-    await screen.findByRole("button", { name: /October 20th, 1900/ }),
+    await screen.findByRole("button", { name: /ngày 20 tháng 10 năm 1900/ }),
   ).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Choose the Year" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn năm" }));
   const reopenedSearch = await screen.findByRole("searchbox", {
-    name: "Search year",
+    name: "Tìm năm",
   });
   expect((reopenedSearch as HTMLInputElement).value).toBe("");
   expect(
@@ -334,12 +336,12 @@ it("limits the searchable years to the calendar bounds and resets search when re
 
 it("Escape dismisses only the year picker and keeps the calendar open", async () => {
   render(<BirthdayForm birthday="2000-10-19" onSubmit={vi.fn()} />);
-  fireEvent.click(screen.getByRole("button", { name: "Choose date of birth" }));
-  fireEvent.click(screen.getByRole("button", { name: "Choose the Year" }));
-  const search = await screen.findByRole("searchbox", { name: "Search year" });
+  fireEvent.click(screen.getByRole("button", { name: "Chọn date of birth" }));
+  fireEvent.click(screen.getByRole("button", { name: "Chọn năm" }));
+  const search = await screen.findByRole("searchbox", { name: "Tìm năm" });
   fireEvent.keyDown(search, { key: "Escape", code: "Escape" });
   await waitFor(() =>
-    expect(screen.queryByRole("searchbox", { name: "Search year" })).toBeNull(),
+    expect(screen.queryByRole("searchbox", { name: "Tìm năm" })).toBeNull(),
   );
-  expect(screen.getByRole("grid", { name: "October 2000" })).toBeTruthy();
+  expect(screen.getByRole("grid", { name: "Tháng Mười 2000" })).toBeTruthy();
 });

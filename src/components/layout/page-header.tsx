@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { MobilePageActionSlot } from "./mobile-page-action";
 import type { ReactNode } from "react";
 import { ArrowLeft, type LucideIcon } from "lucide-react";
@@ -19,10 +20,11 @@ export function PageHeader({
   description,
   icon: Icon,
   onBack,
-  backLabel = "Back to home",
+  backLabel = t("common", "Back to home"),
   backDisabled,
   actions,
 }: Readonly<PageHeaderProps>) {
+  useLocale();
   return (
     <header className="flex h-11 shrink-0 items-center sm:h-10 justify-between gap-2 sm:gap-3">
       <div className="flex min-w-0 flex-1 items-center gap-2">

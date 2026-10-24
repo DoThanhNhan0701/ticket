@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +33,7 @@ export function InterviewCandidateFilters({
   busy: boolean;
   onApply: (values: InterviewCandidateFilterValues) => void;
 }>) {
+  useLocale();
   const mobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -55,12 +57,17 @@ export function InterviewCandidateFilters({
       id="interview-filter-gender"
       name="gender"
       searchable
-      label="Giới tính ứng viên"
-      placeholder="Tất cả giới tính"
+      label={t("interviews", "Giới tính ứng viên")}
+      placeholder={t("interviews", "Tất cả giới tính")}
       options={[
-        { value: "", label: "Tất cả giới tính" },
-        { value: "Nam", label: "Nam" },
-        { value: "Nữ", label: "Nữ" },
+        { value: "", label: t("interviews", "Tất cả giới tính") },
+        {
+          value: "Nam",
+          get label() {
+            return t("common", "Nam");
+          },
+        },
+        { value: "Nữ", label: t("interviews", "Nữ") },
       ]}
     />
   );
@@ -78,7 +85,7 @@ export function InterviewCandidateFilters({
       activeCount={Object.values(values).filter((value) => value.trim()).length}
     >
       <form
-        aria-label="Bộ lọc CV phỏng vấn"
+        aria-label={t("interviews", "Bộ lọc CV phỏng vấn")}
         noValidate
         className="space-y-3 rounded-xl border bg-card p-3"
         onSubmit={submit}
@@ -88,17 +95,20 @@ export function InterviewCandidateFilters({
             {...shared}
             id="interview-filter-search"
             name="search"
-            label="Tìm ứng viên phỏng vấn"
-            placeholder="Tìm tên, email, số điện thoại..."
+            label={t("interviews", "Tìm ứng viên phỏng vấn")}
+            placeholder={t("interviews", "Tìm tên, email, số điện thoại...")}
           />
           <SelectField
             {...shared}
             id="interview-filter-status"
             name="cv_status"
-            label="Trạng thái ứng viên"
-            placeholder="Tất cả trạng thái"
+            label={t("interviews", "Trạng thái ứng viên")}
+            placeholder={t("interviews", "Tất cả trạng thái")}
             searchable
-            options={[{ value: "", label: "Tất cả trạng thái" }, ...statuses]}
+            options={[
+              { value: "", label: t("interviews", "Tất cả trạng thái") },
+              ...statuses,
+            ]}
           />
           {mobile && genderField}
           <RecruitmentFilterActions

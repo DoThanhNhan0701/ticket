@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,14 +17,15 @@ export function TemplateItemActions({
   onMove: (direction: -1 | 1) => void;
   onRemove: () => void;
 }>) {
+  useLocale();
   return (
     <div className="flex shrink-0 items-center gap-1 [&>button]:size-11 sm:[&>button]:size-9 sm:pointer-coarse:[&>button]:size-11">
       <Button
         type="button"
         variant="outline"
         size="icon"
-        aria-label={`Đưa ${label} lên`}
-        title="Di chuyển lên"
+        aria-label={t("settings-templates", "Đưa {0} lên", [label])}
+        title={t("settings-templates", "Di chuyển lên")}
         disabled={disabled || first}
         onClick={() => onMove(-1)}
       >
@@ -33,8 +35,8 @@ export function TemplateItemActions({
         type="button"
         variant="outline"
         size="icon"
-        aria-label={`Đưa ${label} xuống`}
-        title="Di chuyển xuống"
+        aria-label={t("settings-templates", "Đưa {0} xuống", [label])}
+        title={t("settings-templates", "Di chuyển xuống")}
         disabled={disabled || last}
         onClick={() => onMove(1)}
       >
@@ -45,8 +47,8 @@ export function TemplateItemActions({
         variant="outline"
         size="icon"
         className="text-destructive hover:bg-danger-soft hover:text-destructive"
-        aria-label={`Xóa ${label}`}
-        title="Xóa"
+        aria-label={t("settings-templates", "Xóa {0}", [label])}
+        title={t("settings-templates", "Xóa")}
         disabled={disabled}
         onClick={onRemove}
       >

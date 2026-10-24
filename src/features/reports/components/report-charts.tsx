@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/empty-state";
 import { TruncatedText } from "@/components/truncated-text";
@@ -12,6 +13,7 @@ import {
 function ShareChart({
   data,
 }: Readonly<{ data: ReportResponse["dict_bieudo_02"] }>) {
+  useLocale();
   const entries = Object.entries(data);
   const total = entries.reduce((sum, [, value]) => sum + value, 0);
   let cursor = 0;
@@ -22,12 +24,16 @@ function ShareChart({
   });
   return (
     <Card className="min-w-0 gap-4 p-4 sm:p-5">
-      <h2 className="text-base font-semibold">Tỷ lệ đảm nhận</h2>
+      <h2 className="text-base font-semibold">
+        {t("reports", "Tỷ lệ đảm nhận")}
+      </h2>
       {total > 0 ? (
         <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-5 sm:flex-row">
           <div
             role="img"
-            aria-label={`Tỷ lệ đảm nhận: ${numberFormat.format(total)} yêu cầu`}
+            aria-label={t("reports", "Tỷ lệ đảm nhận: {0} yêu cầu", [
+              numberFormat.format(total),
+            ])}
             className="relative flex size-44 shrink-0 items-center justify-center rounded-full"
             style={{ background: `conic-gradient(${segments.join(",")})` }}
           >
@@ -35,7 +41,9 @@ function ShareChart({
               <strong className="text-2xl tabular-nums">
                 {numberFormat.format(total)}
               </strong>
-              <span className="text-xs text-muted-foreground">yêu cầu</span>
+              <span className="text-xs text-muted-foreground">
+                {t("reports", "yêu cầu")}
+              </span>
             </div>
           </div>
           <ul className="w-full min-w-0 flex-1 space-y-2">
@@ -63,7 +71,7 @@ function ShareChart({
         </div>
       ) : (
         <EmptyState
-          title="Chưa có dữ liệu đảm nhận"
+          title={t("reports", "Chưa có dữ liệu đảm nhận")}
           className="min-h-48 border-0 shadow-none"
         />
       )}
@@ -72,17 +80,18 @@ function ShareChart({
 }
 
 export function ReportCharts({ report }: Readonly<{ report: ReportResponse }>) {
+  useLocale();
   return (
     <div className="space-y-4">
       <div className="grid min-w-0 gap-4 xl:grid-cols-2">
         <ShareChart data={report.dict_bieudo_02} />
         <ReportRateChart
-          title="Tỷ lệ yêu cầu đúng thời hạn"
+          title={t("reports", "Tỷ lệ yêu cầu đúng thời hạn")}
           data={report.dict_bieudo_03}
         />
       </div>
       <ReportRateChart
-        title="Tỷ lệ loại yêu cầu"
+        title={t("reports", "Tỷ lệ loại yêu cầu")}
         data={report.dict_bieudo_04}
         line
       />

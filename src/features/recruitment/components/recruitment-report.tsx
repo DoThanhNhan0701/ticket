@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { useEffect, useState } from "react";
@@ -51,27 +52,66 @@ const sections = [
   ["result_department_month", "Bộ phận theo tháng", CalendarDays],
 ] as const;
 const labels: Record<string, string> = {
-  ticket_code: "Mã yêu cầu",
-  rec_position: "Vị trí tuyển dụng",
-  department_recruited: "Bộ phận",
-  department_recruited_name: "Bộ phận",
-  username: "Người phụ trách",
-  number_cv_all: "Số lượng CV",
-  quantity: "Số lượng yêu cầu",
-  number_cv_pass: "Đã nhận việc",
-  rate_pass: "Tỷ lệ đạt",
-  candidate_source__name: "Nguồn ứng viên",
-  created: "Ngày tạo",
-  time_close: "Ngày đóng",
-  cv_status__name: "Trạng thái CV",
-  name: "Tên",
-  month: "Tháng",
-  value: "Số lượng",
-  count: "Số lượng",
-  rate: "Tỷ lệ",
-  number_cv: "Số lượng CV",
+  get ticket_code() {
+    return t("recruitment-reports", "Mã yêu cầu");
+  },
+  get rec_position() {
+    return t("recruitment-reports", "Vị trí tuyển dụng");
+  },
+  get department_recruited() {
+    return t("recruitment-reports", "Bộ phận");
+  },
+  get department_recruited_name() {
+    return t("recruitment-reports", "Bộ phận");
+  },
+  get username() {
+    return t("recruitment-reports", "Người phụ trách");
+  },
+  get number_cv_all() {
+    return t("recruitment-reports", "Số lượng CV");
+  },
+  get quantity() {
+    return t("recruitment-reports", "Số lượng yêu cầu");
+  },
+  get number_cv_pass() {
+    return t("recruitment-reports", "Đã nhận việc");
+  },
+  get rate_pass() {
+    return t("recruitment-reports", "Tỷ lệ đạt");
+  },
+  get candidate_source__name() {
+    return t("recruitment-reports", "Nguồn ứng viên");
+  },
+  get created() {
+    return t("recruitment-reports", "Ngày tạo");
+  },
+  get time_close() {
+    return t("recruitment-reports", "Ngày đóng");
+  },
+  get cv_status__name() {
+    return t("recruitment-reports", "Trạng thái CV");
+  },
+  get name() {
+    return t("recruitment-reports", "Tên");
+  },
+  get month() {
+    return t("recruitment-reports", "Tháng");
+  },
+  get value() {
+    return t("recruitment-reports", "Số lượng");
+  },
+  get count() {
+    return t("recruitment-reports", "Số lượng");
+  },
+  get rate() {
+    return t("recruitment-reports", "Tỷ lệ");
+  },
+  get number_cv() {
+    return t("recruitment-reports", "Số lượng CV");
+  },
 };
 export function RecruitmentReport() {
+  useLocale();
   const { ref: tabsRef, isDragging, handlers: dragHandlers } = useDragScroll();
   const { userId } = useAuthContext();
   const [paginationReset, resetPagination] = useState(0);
@@ -175,17 +215,14 @@ export function RecruitmentReport() {
       : "left",
     label:
       key === "rate_pass" && tab === "result_time_recruitment"
-        ? "Thời gian tuyển dụng (ngày)"
+        ? t("recruitment-reports", "Thời gian tuyển dụng (ngày)")
         : labels[key],
-    render: (row) => (
-      <DataText
-        text={
-          ["created", "time_close"].includes(key)
-            ? formatDataDate(recruitmentText(row[key]))
-            : recruitmentText(row[key])
-        }
-      />
-    ),
+    render: (row) => {
+      let text = recruitmentText(row[key]);
+      if (["created", "time_close"].includes(key)) text = formatDataDate(text);
+      if (key === "cv_status__name") text = t("statuses", text);
+      return <DataText text={text} />;
+    },
   }));
   return (
     <div
@@ -219,7 +256,7 @@ export function RecruitmentReport() {
         actions={
           <AsyncButton
             mobileIconOnly
-            title="Xuất Excel"
+            title={t("recruitment-reports", "Xuất Excel")}
             type="button"
             variant="outline"
             loading={exporting.isPending}
@@ -229,7 +266,7 @@ export function RecruitmentReport() {
               if (!exporting.isPending) exporting.mutate();
             }}
           >
-            Xuất Excel
+            {t("recruitment-reports", "Xuất Excel")}
           </AsyncButton>
         }
       />
@@ -240,7 +277,7 @@ export function RecruitmentReport() {
         {...dragHandlers}
         className={`recruitment-report-tabs relative grid min-w-0 shrink-0 auto-cols-[minmax(14rem,1fr)] grid-flow-col gap-1 overflow-x-auto rounded-xl border bg-card p-2 select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
         role="tablist"
-        aria-label="Báo cáo tuyển dụng"
+        aria-label={t("recruitment-reports", "Báo cáo tuyển dụng")}
       >
         {sections.map(([key, label, Icon]) => (
           <Button
@@ -270,14 +307,17 @@ export function RecruitmentReport() {
             onClick={() => setTab(key)}
           >
             <Icon className="size-4" aria-hidden="true" />
-            {label}
+            {t("recruitment-reports", label)}
           </Button>
         ))}
       </div>
       <section
         id="recruitment-report-panel"
         role="tabpanel"
-        aria-label={sections.find(([key]) => key === tab)?.[1]}
+        aria-label={t(
+          "recruitment-reports",
+          sections.find(([key]) => key === tab)![1],
+        )}
         className={cn(
           "flex min-w-0 flex-col gap-4 rounded-xl border bg-card p-3 sm:p-4",
           hasRows ? "shrink-0" : "min-h-0 flex-1",
@@ -326,18 +366,27 @@ export function RecruitmentReport() {
                 ? { results: rows, count: rows.length }
                 : undefined,
             }}
-            label="Kết quả báo cáo tuyển dụng"
-            itemLabel="bản ghi"
-            loadingMessage="Đang tải báo cáo tuyển dụng..."
-            errorPrefix="Không tải được báo cáo tuyển dụng"
-            emptyTitle="Không có dữ liệu báo cáo trong khoảng thời gian đã chọn."
+            label={t("recruitment-reports", "Kết quả báo cáo tuyển dụng")}
+            itemLabel={t("recruitment-reports", "bản ghi")}
+            loadingMessage={t(
+              "recruitment-reports",
+              "Đang tải báo cáo tuyển dụng...",
+            )}
+            errorPrefix={t(
+              "recruitment-reports",
+              "Không tải được báo cáo tuyển dụng",
+            )}
+            emptyTitle={t(
+              "recruitment-reports",
+              "Không có dữ liệu báo cáo trong khoảng thời gian đã chọn.",
+            )}
             renderRows={(visibleRows, offset) => (
               <DataTable
                 className="min-w-[48rem]"
-                scrollLabel="Cuộn bảng tuyển dụng"
+                scrollLabel={t("recruitment-reports", "Cuộn bảng tuyển dụng")}
                 rows={visibleRows}
                 columns={columns}
-                label="Bảng báo cáo tuyển dụng"
+                label={t("recruitment-reports", "Bảng báo cáo tuyển dụng")}
                 getRowKey={reportRowKey}
                 scrollResetKey={JSON.stringify([tab, filters, offset])}
               />

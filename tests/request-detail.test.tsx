@@ -158,7 +158,7 @@ it("leaves missing general fields, dates and detail cells blank", async () => {
   await ready();
   for (const label of [
     "Bộ phận sử dụng",
-    "Team sử dụng",
+    "Nhóm sử dụng",
     "Ngày phê duyệt",
     "Người xử lý",
     "Ghi chú",

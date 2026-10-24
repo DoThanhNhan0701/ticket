@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import { recruitmentMultipart, recruitmentWrite } from "../api/recruitment-api";
 import type { RecruitmentEditorState, RecruitmentValues } from "../types";
@@ -101,7 +102,9 @@ async function saveAdditionalAction(
     }
     case "note": {
       if (!String(data.note ?? "").trim() && !files.file_note)
-        throw new Error("Vui lòng nhập ghi chú hoặc đính kèm tệp.");
+        throw new Error(
+          t("recruitment", "Vui lòng nhập ghi chú hoặc đính kèm tệp."),
+        );
       const form = body();
       form.append("id_cv", String(id));
       return recruitmentWrite(API_ENDPOINTS.recruitment.note, "POST", form);
@@ -119,7 +122,7 @@ async function saveAdditionalAction(
     case "candidate-time":
       return saveCandidateInterviewTime(state, data);
     default:
-      throw new Error("Thao tác không hợp lệ.");
+      throw new Error(t("recruitment", "Thao tác không hợp lệ."));
   }
 }
 

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type { z } from "zod";
 import type { DataFilterField } from "@/components/data-management";
 import type {
@@ -21,33 +22,67 @@ export type RequestStatusesResponse = z.infer<
 >;
 
 export const requestFilterFields = [
-  { name: "ticket_code", label: "Mã yêu cầu", placeholder: "Nhập mã yêu cầu" },
+  {
+    name: "ticket_code",
+    get label() {
+      return t("request-detail", "Mã yêu cầu");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập mã yêu cầu");
+    },
+  },
   {
     name: "ticket_type_name",
-    label: "Loại yêu cầu",
-    placeholder: "Nhập loại yêu cầu",
+    get label() {
+      return t("request-detail", "Loại yêu cầu");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập loại yêu cầu");
+    },
   },
-  { name: "title", label: "Tiêu đề", placeholder: "Nhập tiêu đề" },
+  {
+    name: "title",
+    get label() {
+      return t("request-detail", "Tiêu đề");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập tiêu đề");
+    },
+  },
   {
     name: "vanphong_name",
-    label: "Văn phòng",
-    placeholder: "Nhập tên văn phòng",
+    get label() {
+      return t("request-detail", "Văn phòng");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập tên văn phòng");
+    },
   },
   {
     name: "duedate",
-    label: "Ngày mong muốn",
+    get label() {
+      return t("request-detail", "Ngày mong muốn");
+    },
     placeholder: "DD/MM/YYYY",
     type: "date",
   },
   {
     name: "approve_user_name",
-    label: "Người phê duyệt",
-    placeholder: "Nhập người phê duyệt",
+    get label() {
+      return t("request-detail", "Người phê duyệt");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập người phê duyệt");
+    },
   },
   {
     name: "updating_user_name",
-    label: "Cập nhật bởi",
-    placeholder: "Nhập người cập nhật",
+    get label() {
+      return t("request-detail", "Cập nhật bởi");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập người cập nhật");
+    },
   },
 ] as const satisfies readonly DataFilterField[];
 
@@ -72,16 +107,24 @@ export const allRequestFilterFields = requestFilterFields.map(
     if (field.name === "ticket_type_name")
       return {
         name: "ticket_type_id",
-        label: field.label,
-        placeholder: "Chọn loại yêu cầu",
+        get label() {
+          return field.label;
+        },
+        get placeholder() {
+          return t("request-detail", "Chọn loại yêu cầu");
+        },
         type: "select",
         searchable: true,
       };
     if (field.name === "approve_user_name")
       return {
         name: "list_user_received",
-        label: "Người xử lý",
-        placeholder: "Nhập người xử lý",
+        get label() {
+          return t("request-detail", "Người xử lý");
+        },
+        get placeholder() {
+          return t("request-detail", "Nhập người xử lý");
+        },
       };
     return field;
   },
@@ -92,18 +135,47 @@ export const approvalRequestFilterFields = requestFilterFields.map(
     field.name === "approve_user_name"
       ? {
           name: "username_create",
-          label: "Người yêu cầu",
-          placeholder: "Nhập người yêu cầu",
+          get label() {
+            return t("request-detail", "Người yêu cầu");
+          },
+          get placeholder() {
+            return t("request-detail", "Nhập người yêu cầu");
+          },
         }
       : field,
 );
 
 export const allRequestViews = [
-  { value: "all", label: "Tất cả" },
-  { value: "processing", label: "Đang xử lý" },
-  { value: "handle", label: "Cần xử lý" },
-  { value: "accepted", label: "Đã duyệt" },
-  { value: "received", label: "Đã tiếp nhận" },
+  {
+    value: "all",
+    get label() {
+      return t("request-detail", "Tất cả");
+    },
+  },
+  {
+    value: "processing",
+    get label() {
+      return t("request-detail", "Đang xử lý");
+    },
+  },
+  {
+    value: "handle",
+    get label() {
+      return t("request-detail", "Cần xử lý");
+    },
+  },
+  {
+    value: "accepted",
+    get label() {
+      return t("request-detail", "Đã duyệt");
+    },
+  },
+  {
+    value: "received",
+    get label() {
+      return t("request-detail", "Đã tiếp nhận");
+    },
+  },
 ] as const;
 
 export const personalTaskFilterFields: readonly DataFilterField<
@@ -113,7 +185,12 @@ export const personalTaskFilterFields: readonly DataFilterField<
     field.name === "ticket_type_name"
       ? {
           ...field,
-          placeholder: "Chọn loại yêu cầu",
+          get label() {
+            return field.label;
+          },
+          get placeholder() {
+            return t("request-detail", "Chọn loại yêu cầu");
+          },
           type: "select",
           searchable: true,
         }
@@ -121,37 +198,55 @@ export const personalTaskFilterFields: readonly DataFilterField<
   ),
   {
     name: "bophansudung_name",
-    label: "Department",
-    placeholder: "Nhập Department",
+    get label() {
+      return t("common", "Department");
+    },
+    get placeholder() {
+      return t("request-detail", "Nhập Department");
+    },
   },
   {
     name: "team_id",
-    label: "Team",
-    placeholder: "Chọn Team",
+    get label() {
+      return t("common", "Team");
+    },
+    get placeholder() {
+      return t("request-detail", "Chọn Team");
+    },
     type: "multi-select",
   },
   {
     name: "created_from",
-    label: "Ngày tạo từ",
+    get label() {
+      return t("request-detail", "Ngày tạo từ");
+    },
     placeholder: "DD/MM/YYYY",
     type: "date",
   },
   {
     name: "created_to",
-    label: "Ngày tạo đến",
+    get label() {
+      return t("request-detail", "Ngày tạo đến");
+    },
     placeholder: "DD/MM/YYYY",
     type: "date",
   },
   {
     name: "typeView",
-    label: "Nhóm nhiệm vụ",
-    placeholder: "Chọn nhóm nhiệm vụ",
+    get label() {
+      return t("request-detail", "Nhóm nhiệm vụ");
+    },
+    get placeholder() {
+      return t("request-detail", "Chọn nhóm nhiệm vụ");
+    },
     type: "select",
     searchable: true,
-    options: allRequestViews.map(({ value, label }) => ({
-      value: value === "all" ? "" : value,
-      label,
-    })),
+    get options() {
+      return allRequestViews.map(({ value, label }) => ({
+        value: value === "all" ? "" : value,
+        label,
+      }));
+    },
   },
 ];
 
@@ -161,25 +256,52 @@ export const allTaskFilterFields: readonly DataFilterField<
   ...personalTaskFilterFields.map(
     (field): DataFilterField<keyof RequestFilters> => {
       if (field.name === "ticket_type_name")
-        return { ...field, name: "ticket_type_id" };
+        return {
+          ...field,
+          name: "ticket_type_id",
+          get label() {
+            return field.label;
+          },
+          get placeholder() {
+            return field.placeholder;
+          },
+        };
       if (field.name === "approve_user_name")
         return {
           name: "list_user_received",
-          label: "Người xử lý",
-          placeholder: "Nhập người xử lý",
+          get label() {
+            return t("request-detail", "Người xử lý");
+          },
+          get placeholder() {
+            return t("request-detail", "Nhập người xử lý");
+          },
         };
       return field;
     },
   ),
   {
     name: "type_option",
-    label: "Gắn thẻ",
-    placeholder: "Chọn phạm vi gắn thẻ",
+    get label() {
+      return t("request-detail", "Gắn thẻ");
+    },
+    get placeholder() {
+      return t("request-detail", "Chọn phạm vi gắn thẻ");
+    },
     type: "select",
     searchable: true,
     options: [
-      { value: "", label: "Tất cả nhiệm vụ" },
-      { value: "0", label: "Được gắn thẻ" },
+      {
+        value: "",
+        get label() {
+          return t("request-detail", "Tất cả nhiệm vụ");
+        },
+      },
+      {
+        value: "0",
+        get label() {
+          return t("request-detail", "Được gắn thẻ");
+        },
+      },
     ],
   },
 ];

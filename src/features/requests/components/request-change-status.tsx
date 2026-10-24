@@ -1,9 +1,10 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { InputField } from "@/components/form/input-field";
 import { SelectField } from "@/components/form/select-field";
@@ -18,6 +19,7 @@ import {
 } from "../schemas/change-request-status-schema";
 
 export function RequestChangeStatus() {
+  useLocale();
   const { userId } = useAuthContext();
   const queryClient = useQueryClient();
   const submitting = useRef(false);
@@ -32,7 +34,7 @@ export function RequestChangeStatus() {
   });
   const statusOptions = (statuses.data ?? [])
     .filter(({ id }) => id !== 1)
-    .map(({ id, name }) => ({ value: String(id), label: name }));
+    .map(({ id, name }) => ({ value: String(id), label: t("statuses", name) }));
   const mutation = useMutation({
     mutationKey: ["request-change-status", userId],
     mutationFn: changeRequestStatusRequest,
@@ -51,7 +53,7 @@ export function RequestChangeStatus() {
     if (submitting.current || unavailable) return;
     if (!statusOptions.some(({ value }) => value === values.ticket_status_id)) {
       form.setError("ticket_status_id", {
-        message: "Vui lòng chọn trạng thái hợp lệ.",
+        message: t("request-status", "Vui lòng chọn trạng thái hợp lệ."),
       });
       return;
     }
@@ -65,10 +67,13 @@ export function RequestChangeStatus() {
   return (
     <Card className="m-auto w-full max-w-2xl shrink-0 gap-4 p-4 sm:p-6">
       <p className="text-sm text-muted-foreground">
-        Nhập mã yêu cầu và chọn trạng thái cần chuyển. Lý do không bắt buộc.
+        {t(
+          "request-status",
+          "Nhập mã yêu cầu và chọn trạng thái cần chuyển. Lý do không bắt buộc.",
+        )}
       </p>
       <form
-        aria-label="Chuyển trạng thái yêu cầu"
+        aria-label={t("request-status", "Chuyển trạng thái yêu cầu")}
         noValidate
         className="space-y-5"
         onSubmit={form.handleSubmit(submit)}
@@ -78,8 +83,8 @@ export function RequestChangeStatus() {
             control={form.control}
             name="ticket_code"
             id="change-status-code"
-            label="Mã yêu cầu"
-            placeholder="Nhập mã yêu cầu"
+            label={t("request-status", "Mã yêu cầu")}
+            placeholder={t("request-status", "Nhập mã yêu cầu")}
             required
             disabled={mutation.isPending}
           />
@@ -87,32 +92,34 @@ export function RequestChangeStatus() {
             control={form.control}
             name="ticket_status_id"
             id="change-status-value"
-            label="Trạng thái"
-            placeholder="Chọn trạng thái"
+            label={t("request-status", "Trạng thái")}
+            placeholder={t("request-status", "Chọn trạng thái")}
             options={statusOptions}
             searchable
             required
             isLoading={statuses.isPending}
             disabled={mutation.isPending || unavailable}
-            noDataText="Không có trạng thái để chọn"
+            noDataText={t("request-status", "Không có trạng thái để chọn")}
           />
         </div>
         <TextareaField
           control={form.control}
           name="lydohuyyeucau"
           id="change-status-reason"
-          label="Lý do"
-          placeholder="Nhập lý do chuyển trạng thái"
+          label={t("request-status", "Lý do")}
+          placeholder={t("request-status", "Nhập lý do chuyển trạng thái")}
           disabled={mutation.isPending}
         />
         {statuses.isError && (
           <ErrorToast
-            message={`Không tải được trạng thái: ${statuses.error.message}`}
+            message={t("request-status", "Không tải được trạng thái: {0}", [
+              statuses.error.message,
+            ])}
           />
         )}
         {statuses.isSuccess && statusOptions.length === 0 && (
           <p role="status" className="text-sm text-muted-foreground">
-            Không có trạng thái để chuyển.
+            {t("request-status", "Không có trạng thái để chuyển.")}
           </p>
         )}
         {mutation.isError && <ErrorToast message={mutation.error.message} />}
@@ -120,13 +127,16 @@ export function RequestChangeStatus() {
           <AsyncButton
             type="submit"
             loading={mutation.isPending}
-            loadingText="Đang cập nhật..."
+            loadingText={t("request-status", "Đang cập nhật...")}
             disabled={unavailable}
           >
-            Cập nhật
+            {t("request-status", "Cập nhật")}
           </AsyncButton>
           <p className="min-w-0 text-xs text-muted-foreground">
-            Thay đổi được lưu lịch sử và không gửi email.
+            {t(
+              "request-status",
+              "Thay đổi được lưu lịch sử và không gửi email.",
+            )}
           </p>
         </div>
       </form>

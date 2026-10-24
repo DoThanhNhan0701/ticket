@@ -1,6 +1,7 @@
+import { t, useLocale, getLocale } from "@/i18n";
 import { useEffect, useRef } from "react";
 import { format } from "date-fns";
-import { vi } from "date-fns/locale";
+import { vi, enGB } from "date-fns/locale";
 import { Clock3, Pencil, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,6 +67,7 @@ function InterviewCard({
   props,
   compact = false,
 }: Readonly<{ row: RecruitmentRow; props: GridProps; compact?: boolean }>) {
+  useLocale();
   const id = Number(row.id_interview ?? row.id);
   const record = { ...row, id };
   const title = text(row.title);
@@ -109,7 +111,9 @@ function InterviewCard({
           <Tooltip>
             <TooltipTrigger
               type="button"
-              aria-label={`Người phỏng vấn: ${interviewers.join(", ")}`}
+              aria-label={t("interviews", "Người phỏng vấn: {0}", [
+                interviewers.join(", "),
+              ])}
               className={cn(
                 "flex min-w-0 max-w-full items-center gap-1 rounded-sm text-left text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 compact ? "leading-3" : "leading-4",
@@ -126,7 +130,9 @@ function InterviewCard({
               role="tooltip"
               className="block whitespace-normal wrap-anywhere"
             >
-              <p className="mb-1 font-medium">Người phỏng vấn</p>
+              <p className="mb-1 font-medium">
+                {t("interviews", "Người phỏng vấn")}
+              </p>
               <ul>
                 {interviewers.map((name, index) => (
                   <li key={`${index}:${name}`}>{name}</li>
@@ -146,8 +152,8 @@ function InterviewCard({
           variant="ghost"
           size="icon-xs"
           className="text-brand-700 hover:bg-brand-100 dark:text-brand-200 dark:hover:bg-brand-900"
-          aria-label={`Sửa lịch ${title}`}
-          title="Chi tiết / sửa lịch"
+          aria-label={t("interviews", "Sửa lịch {0}", [title])}
+          title={t("interviews", "Chi tiết / sửa lịch")}
           disabled={props.disabled}
           onClick={() => props.onAction("interview", record)}
         >
@@ -157,8 +163,8 @@ function InterviewCard({
           variant="ghost"
           size="icon-xs"
           className="text-muted-foreground hover:bg-danger-soft hover:text-destructive dark:hover:bg-danger-soft"
-          aria-label={`Xóa lịch ${title}`}
-          title="Xóa lịch"
+          aria-label={t("interviews", "Xóa lịch {0}", [title])}
+          title={t("interviews", "Xóa lịch")}
           disabled={props.disabled}
           onClick={() => props.onAction("delete-interview", record)}
         >
@@ -169,8 +175,8 @@ function InterviewCard({
             variant="ghost"
             size="icon-xs"
             className="text-brand-700 hover:bg-brand-100 dark:text-brand-200 dark:hover:bg-brand-900"
-            aria-label={`Xem CV lịch ${title}`}
-            title="Xem CV phỏng vấn"
+            aria-label={t("interviews", "Xem CV lịch {0}", [title])}
+            title={t("interviews", "Xem CV phỏng vấn")}
             disabled={props.disabled}
             onClick={() => props.onViewCV(id)}
           >
@@ -182,6 +188,7 @@ function InterviewCard({
   );
 }
 export function InterviewCalendarGrid(props: Readonly<GridProps>) {
+  useLocale();
   const scroll = useRef<HTMLDivElement>(null);
   const reset = `${props.view}-${format(props.days[0], "yyyy-MM-dd")}`;
   useEffect(() => {
@@ -193,12 +200,16 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
     return (
       <div
         role="region"
-        aria-label="Cuộn lịch phỏng vấn"
+        aria-label={t("interviews", "Cuộn lịch phỏng vấn")}
         // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Keyboard users need to scroll the calendar.
         tabIndex={0}
         className="min-h-0 flex-1 overflow-auto rounded-xl border bg-card focus-visible:outline-2 focus-visible:outline-ring"
       >
-        <div role="grid" aria-label="Lịch phỏng vấn" className="min-w-[980px]">
+        <div
+          role="grid"
+          aria-label={t("interviews", "Lịch phỏng vấn")}
+          className="min-w-[980px]"
+        >
           {Array.from(
             { length: Math.ceil(props.days.length / 7) },
             (_, week) => (
@@ -216,10 +227,14 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
                         variant={date === today ? "default" : "ghost"}
                         className="h-8 px-2 text-xs"
                         disabled={props.disabled || date < today}
-                        aria-label={`Tạo lịch ngày ${format(day, "dd/MM/yyyy")}`}
+                        aria-label={t("interviews", "Tạo lịch ngày {0}", [
+                          format(day, "dd/MM/yyyy"),
+                        ])}
                         onClick={() => props.onCreate(date)}
                       >
-                        {format(day, "EEE dd/MM", { locale: vi })}
+                        {format(day, "EEE dd/MM", {
+                          locale: getLocale() === "vi" ? vi : enGB,
+                        })}
                       </Button>
                       {props.rows
                         .filter((row) => row.start_date === date)
@@ -247,14 +262,14 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
     <div
       ref={scroll}
       role="region"
-      aria-label="Cuộn lịch phỏng vấn"
+      aria-label={t("interviews", "Cuộn lịch phỏng vấn")}
       // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Keyboard users need to scroll the calendar.
       tabIndex={0}
       className="relative min-h-80 flex-1 overflow-auto rounded-xl border bg-card focus-visible:outline-2 focus-visible:outline-ring"
     >
       <div
         role="grid"
-        aria-label="Lịch phỏng vấn"
+        aria-label={t("interviews", "Lịch phỏng vấn")}
         className={props.view === "week" ? "min-w-[980px]" : "min-w-0"}
       >
         <div
@@ -266,7 +281,7 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
             role="columnheader"
             className="border-r p-2 text-xs text-muted-foreground"
           >
-            Giờ
+            {t("interviews", "Giờ")}
           </div>
           {props.days.map((day) => (
             <div
@@ -274,7 +289,9 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
               key={String(day)}
               className={`border-r p-2 text-center text-xs font-semibold ${format(day, "yyyy-MM-dd") === today ? "text-primary" : ""}`}
             >
-              {format(day, "EEE dd/MM", { locale: vi })}
+              {format(day, "EEE dd/MM", {
+                locale: getLocale() === "vi" ? vi : enGB,
+              })}
             </div>
           ))}
         </div>
@@ -285,7 +302,7 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
         >
           <div
             role="rowheader"
-            aria-label="Giờ trong ngày"
+            aria-label={t("interviews", "Giờ trong ngày")}
             className="border-r"
           >
             {Array.from({ length: 24 }, (_, hour) => (
@@ -315,7 +332,10 @@ export function InterviewCalendarGrid(props: Readonly<GridProps>) {
                       type="button"
                       className="block w-full border-b border-dashed border-border/60 hover:bg-primary/5 focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary disabled:pointer-events-none"
                       style={{ height: slotHeight }}
-                      aria-label={`Tạo lịch ${format(day, "dd/MM/yyyy")} ${time}`}
+                      aria-label={t("interviews", "Tạo lịch {0} {1}", [
+                        format(day, "dd/MM/yyyy"),
+                        time,
+                      ])}
                       disabled={
                         props.disabled ||
                         new Date(`${date}T${time}`) <= new Date()

@@ -1,9 +1,10 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { localizedToast as toast } from "@/i18n/toast";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
@@ -45,6 +46,7 @@ export function RecruitmentEditorForm({
   onClose: () => void;
   onBusy: (busy: boolean) => void;
 }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const client = useQueryClient();
   const submitting = useRef(false);
@@ -109,8 +111,13 @@ export function RecruitmentEditorForm({
     cities: address.cities,
     districts: address.districts,
     genders: [
-      { value: "Nam", label: "Nam" },
-      { value: "Nữ", label: "Nữ" },
+      {
+        value: "Nam",
+        get label() {
+          return t("common", "Nam");
+        },
+      },
+      { value: "Nữ", label: t("recruitment", "Nữ") },
     ],
     interviews: (schedules.data?.results ?? []).map((row) => ({
       value: String(row.id),
@@ -129,9 +136,9 @@ export function RecruitmentEditorForm({
         form.reset({ note: "" });
         setFiles({});
         setFileErrors({});
-        toast.success("Đã thêm ghi chú.");
+        toast.success(t("recruitment", "Đã thêm ghi chú."));
       } else {
-        toast.success("Đã lưu thay đổi.");
+        toast.success(t("recruitment", "Đã lưu thay đổi."));
         onClose();
       }
     },
@@ -148,7 +155,7 @@ export function RecruitmentEditorForm({
     ) {
       form.setError("note", {
         type: "manual",
-        message: "Vui lòng nhập ghi chú hoặc đính kèm tệp.",
+        message: t("recruitment", "Vui lòng nhập ghi chú hoặc đính kèm tệp."),
       });
       return;
     }
@@ -217,8 +224,10 @@ export function RecruitmentEditorForm({
       />
       {state.action === "candidate" && (
         <p className="text-xs text-muted-foreground">
-          Để thay đổi trạng thái CV, dùng chức năng Chuyển trạng thái trong cột
-          Thao tác.
+          {t(
+            "recruitment",
+            "Để thay đổi trạng thái CV, dùng chức năng Chuyển trạng thái trong cột Thao tác.",
+          )}
         </p>
       )}
       <RecruitmentAddressStatus
@@ -262,7 +271,9 @@ export function RecruitmentEditorForm({
           disabled={mutation.isPending}
           onClick={onClose}
         >
-          {state.action === "view-candidate" ? "Đóng" : "Hủy"}
+          {state.action === "view-candidate"
+            ? t("recruitment", "Đóng")
+            : t("recruitment", "Hủy")}
         </Button>
         {state.action !== "view-candidate" && (
           <AsyncButton
@@ -294,11 +305,12 @@ function editorDefaults(
 }
 
 function submitLabel(action: RecruitmentEditorState["action"]) {
-  if (action === "note") return "Thêm ghi chú";
-  if (action === "remove-interview-cv") return "Bỏ khỏi lịch phỏng vấn";
+  if (action === "note") return t("recruitment", "Thêm ghi chú");
+  if (action === "remove-interview-cv")
+    return t("recruitment", "Bỏ khỏi lịch phỏng vấn");
   if (action === "delete-file" || action === "delete-candidate")
     return actionLabels[action];
-  return "Lưu";
+  return t("recruitment", "Lưu");
 }
 
 function confirmationMessage(state: RecruitmentEditorState) {
@@ -306,12 +318,26 @@ function confirmationMessage(state: RecruitmentEditorState) {
     state.row.code_cv || state.row.title || state.row.id,
   );
   if (state.action === "delete-file")
-    return `Xóa tệp “${recruitmentText(state.row.name_file_cv)}” khỏi hồ sơ ${name}? Thông tin ứng viên được giữ lại.`;
+    return t(
+      "recruitment",
+      "Xóa tệp “{0}” khỏi hồ sơ {1}? Thông tin ứng viên được giữ lại.",
+      [recruitmentText(state.row.name_file_cv), name],
+    );
   if (state.action === "delete-candidate")
-    return `Xóa toàn bộ hồ sơ ứng viên ${name}${state.row.first_name ? ` — ${recruitmentText(state.row.first_name)}` : ""}?`;
+    return t("recruitment", "Xóa toàn bộ hồ sơ ứng viên {0}{1}?", [
+      name,
+      state.row.first_name ? ` — ${recruitmentText(state.row.first_name)}` : "",
+    ]);
   if (state.action === "remove-interview-cv")
-    return `Bỏ ứng viên ${recruitmentText(state.row.first_name) || name} khỏi lịch phỏng vấn ${state.code ?? ""}? Hồ sơ ứng viên và trạng thái CV được giữ lại.`;
-  return `Xác nhận ${actionLabels[state.action].toLowerCase()} ${name}?`;
+    return t(
+      "recruitment",
+      "Bỏ ứng viên {0} khỏi lịch phỏng vấn {1}? Hồ sơ ứng viên và trạng thái CV được giữ lại.",
+      [recruitmentText(state.row.first_name) || name, state.code ?? ""],
+    );
+  return t("recruitment", "Xác nhận {0} {1}?", [
+    actionLabels[state.action].toLowerCase(),
+    name,
+  ]);
 }
 
 function submissionBlocked(
@@ -346,7 +372,7 @@ function addressFields(
 ) {
   return fields.map((field) =>
     legacy && field.name === "district_code"
-      ? { ...field, label: "Quận/Huyện (địa chỉ cũ)" }
+      ? { ...field, label: t("recruitment", "Quận/Huyện (địa chỉ cũ)") }
       : field,
   );
 }

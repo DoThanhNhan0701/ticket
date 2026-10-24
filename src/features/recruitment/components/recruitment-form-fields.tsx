@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { type UseFormReturn } from "react-hook-form";
 
 import { InputField } from "@/components/form/input-field";
@@ -24,11 +25,12 @@ export function RecruitmentFormFields({
   lookups: RecruitmentLookups;
   disabled: boolean;
 }>) {
+  useLocale();
   const options = {
     ...lookups,
     genders: [
-      { value: "Nam", label: "Nam" },
-      { value: "Nữ", label: "Nữ" },
+      { value: "Nam", label: t("common", "Nam") },
+      { value: "Nữ", label: t("recruitment", "Nữ") },
     ],
   };
   return (
@@ -61,7 +63,7 @@ export function RecruitmentFormFields({
               searchable
               options={[
                 ...(!field.required
-                  ? [{ value: "", label: "Không chọn" }]
+                  ? [{ value: "", label: t("recruitment", "Không chọn") }]
                   : []),
                 ...(options[field.lookup! as keyof typeof options] ?? []),
               ]}
@@ -119,8 +121,8 @@ function fieldPlaceholder(field: RecruitmentField): string {
       return "HH:mm";
     case "select":
     case "multi":
-      return `Chọn ${field.label.toLowerCase()}`;
+      return t("recruitment", "Chọn {0}", [field.label.toLowerCase()]);
     default:
-      return `Nhập ${field.label.toLowerCase()}...`;
+      return t("recruitment", "Nhập {0}...", [field.label.toLowerCase()]);
   }
 }

@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { z } from "zod";
 import type {
   SettingsField,
@@ -68,20 +69,23 @@ function validateField(
 ): string[] {
   const messages: string[] = [];
   if (field.maxLength && value.length > field.maxLength)
-    messages.push(`Tối đa ${field.maxLength} ký tự.`);
+    messages.push(t("settings", "Tối đa {0} ký tự.", [field.maxLength]));
   if (field.required && !value.length)
     messages.push(
-      `Vui lòng ${field.lookup ? "chọn" : "nhập"} ${field.label.toLowerCase()}.`,
+      t("settings", "Vui lòng {0} {1}.", [
+        field.lookup ? t("settings", "chọn") : t("settings", "nhập"),
+        field.label.toLowerCase(),
+      ]),
     );
   if (field.type === "email" && value && !z.email().safeParse(value).success)
-    messages.push("Email không hợp lệ.");
+    messages.push(t("settings", "Email không hợp lệ."));
   if (field.lookup) {
     const options = lookups[field.lookup] ?? [];
     const selected = Array.isArray(value) ? value : [value].filter(Boolean);
     if (
       selected.some((id) => !options.some((option) => String(option.id) === id))
     )
-      messages.push("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+      messages.push(t("settings", "Lựa chọn không hợp lệ. Vui lòng chọn lại."));
   }
   return messages;
 }
@@ -109,7 +113,10 @@ export function getSettingsFormSchema(
       context.addIssue({
         code: "custom",
         path: ["permission"],
-        message: "Quyền đã ngừng sử dụng hoặc bị khóa, không thể cấp mới.",
+        message: t(
+          "settings",
+          "Quyền đã ngừng sử dụng hoặc bị khóa, không thể cấp mới.",
+        ),
       });
     for (const field of settingsConfig[kind].fields) {
       if (editing && field.createOnly) continue;

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { PAGE_LINKS } from "@/constants/routes";
 import { useEffect, useState } from "react";
@@ -41,6 +42,7 @@ import { RecruitmentFilters } from "./recruitment-filters";
 import { RecruitmentStatusBadge } from "./recruitment-status-badge";
 const pageSizes = [100, 200] as const;
 export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
+  useLocale();
   const { userId } = useAuthContext();
   const [params, setParams] = useSearchParams();
   const pagination = parseListPagination(params, pageSizes);
@@ -150,7 +152,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         <div className="flex items-center gap-3">
           {kind === "candidates" && (
             <Checkbox
-              aria-label={`Chọn CV ${text(row.code_cv)}`}
+              aria-label={t("recruitment", "Chọn CV {0}", [text(row.code_cv)])}
               checked={selected.includes(row.id!)}
               disabled={query.isFetching || !row.id}
               onCheckedChange={(checked) => toggleSelection(row.id!, checked)}
@@ -164,7 +166,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
     },
     {
       id: "ticket_code",
-      label: "Mã yêu cầu",
+      label: t("recruitment", "Mã yêu cầu"),
       width: "150px",
       render: (row) => {
         const id = String(row.link_ticket ?? "")
@@ -187,7 +189,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       ? [
           {
             id: "title",
-            label: "Tiêu đề",
+            label: t("recruitment", "Tiêu đề"),
             width: "220px",
             render: (row: RecruitmentRow) => (
               <DataText text={text(row.title)} />
@@ -197,7 +199,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       : [
           {
             id: "code_cv",
-            label: "Mã CV",
+            label: t("recruitment", "Mã CV"),
             width: "150px",
             render: (row: RecruitmentRow) => (
               <DataText text={text(row.code_cv)} />
@@ -205,7 +207,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           },
           {
             id: "first_name",
-            label: "Họ và tên",
+            label: t("recruitment", "Họ và tên"),
             width: "180px",
             render: (row: RecruitmentRow) => (
               <Button
@@ -221,7 +223,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         ]),
     {
       id: "position",
-      label: "Vị trí tuyển dụng",
+      label: t("recruitment", "Vị trí tuyển dụng"),
       width: "170px",
       render: (row) => (
         <DataText
@@ -233,7 +235,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
     },
     {
       id: "department",
-      label: "Bộ phận",
+      label: t("recruitment", "Bộ phận"),
       width: "120px",
       render: (row) => <DataText text={text(row.department_recruited_name)} />,
     },
@@ -241,7 +243,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       ? [
           {
             id: "quantity",
-            label: "Số lượng",
+            label: t("recruitment", "Số lượng"),
             width: "80px",
             render: (row: RecruitmentRow) => (
               <DataText text={text(row.quantity)} />
@@ -249,7 +251,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
           },
           {
             id: "duedate",
-            label: "Ngày hết hạn",
+            label: t("recruitment", "Ngày hết hạn"),
             width: "130px",
             render: (row: RecruitmentRow) => (
               <DataText text={formatDataDate(text(row.duedate))} />
@@ -259,7 +261,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       : [
           {
             id: "numberphone",
-            label: "Số điện thoại",
+            label: t("recruitment", "Số điện thoại"),
             width: "135px",
             render: (row: RecruitmentRow) => (
               <DataText text={text(row.numberphone)} />
@@ -276,13 +278,13 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         ]),
     {
       id: "received",
-      label: "Người phụ trách",
+      label: t("recruitment", "Người phụ trách"),
       width: "150px",
       render: (row) => <DataText text={names(row.detail_user_received)} />,
     },
     {
       id: "status",
-      label: "Trạng thái",
+      label: t("recruitment", "Trạng thái"),
       width: "140px",
       render: (row) =>
         kind === "requests" ? (
@@ -293,7 +295,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
     },
     {
       id: "actions",
-      label: "Thao tác",
+      label: t("recruitment", "Thao tác"),
       width: "80px",
       sticky: "right",
       render: (row) => (
@@ -339,7 +341,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
             {kind === "candidates" && (
               <Button
                 mobileIconOnly
-                title="Gắn lịch phỏng vấn"
+                title={t("recruitment", "Gắn lịch phỏng vấn")}
                 type="button"
                 variant="outline"
                 disabled={!selected.length || rowActionsDisabled}
@@ -348,12 +350,12 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
                 }
               >
                 <CalendarPlus className="size-4" />
-                {`Gắn lịch (${selected.length})`}
+                {t("recruitment", "Gắn lịch ({0})", [selected.length])}
               </Button>
             )}
             <AsyncButton
               mobileIconOnly
-              title="Xuất Excel"
+              title={t("recruitment", "Xuất Excel")}
               type="button"
               variant="outline"
               loading={exportFile.isPending}
@@ -362,7 +364,7 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
                 if (!exportFile.isPending) exportFile.mutate();
               }}
             >
-              Xuất Excel
+              {t("recruitment", "Xuất Excel")}
             </AsyncButton>
           </>
         }
@@ -375,28 +377,33 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
         query={query}
         label={
           kind === "requests"
-            ? "Danh sách yêu cầu tuyển dụng"
-            : "Danh sách ứng viên"
+            ? t("recruitment", "Danh sách yêu cầu tuyển dụng")
+            : t("recruitment", "Danh sách ứng viên")
         }
         emptyTitle={
           kind === "requests"
-            ? "Không tìm thấy yêu cầu tuyển dụng"
-            : "Không tìm thấy ứng viên"
+            ? t("recruitment", "Không tìm thấy yêu cầu tuyển dụng")
+            : t("recruitment", "Không tìm thấy ứng viên")
         }
         pagination={{
           ...pagination,
           pageSizes,
-          itemLabel: kind === "requests" ? "yêu cầu" : "ứng viên",
+          itemLabel:
+            kind === "requests"
+              ? t("recruitment", "yêu cầu")
+              : t("recruitment", "ứng viên"),
           onPage: (page) => update({ page }),
           onPageSize: (pageSize) => update({ page_size: pageSize, page: 1 }),
         }}
         renderRows={(rows) => (
           <DataTable
-            scrollLabel="Cuộn bảng tuyển dụng"
+            scrollLabel={t("recruitment", "Cuộn bảng tuyển dụng")}
             rows={rows}
             columns={columns}
             label={
-              kind === "requests" ? "Bảng yêu cầu tuyển dụng" : "Bảng ứng viên"
+              kind === "requests"
+                ? t("recruitment", "Bảng yêu cầu tuyển dụng")
+                : t("recruitment", "Bảng ứng viên")
             }
             getRowKey={(row) => String(row.id)}
             scrollResetKey={JSON.stringify(apiParams)}

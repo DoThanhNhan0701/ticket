@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { Controller, type Control } from "react-hook-form";
 import { FormFieldShell } from "@/components/form/form-field-shell";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,6 +29,7 @@ export function RecruitmentNoteComposer({
   disabled: boolean;
   onFile: (file: File | undefined) => void;
 }>) {
+  useLocale();
   const id = "recruitment-note";
   const existing = recruitmentFileHref(
     row.path_file_interview,
@@ -65,7 +67,10 @@ export function RecruitmentNoteComposer({
               id={id}
               rows={2}
               disabled={disabled || field.readonly}
-              placeholder={field.placeholder || "Nhập ghi chú phỏng vấn..."}
+              placeholder={
+                field.placeholder ||
+                t("candidates", "Nhập ghi chú phỏng vấn...")
+              }
               aria-invalid={fieldState.invalid}
               aria-describedby={fieldState.error ? `${id}-error` : `${id}-hint`}
               className="min-h-20 max-h-[min(40dvh,15rem)] min-w-0 resize-none overflow-y-auto border-0 bg-transparent py-1.5 field-sizing-content shadow-none ring-0 whitespace-pre-wrap wrap-anywhere focus-visible:ring-0"
@@ -77,7 +82,7 @@ export function RecruitmentNoteComposer({
                   layout="tiles"
                   files={{
                     [recruitmentText(row.name_file_interview) ||
-                    "Tệp phỏng vấn"]: existing,
+                    t("candidates", "Tệp phỏng vấn")]: existing,
                   }}
                 />
               )}
@@ -86,14 +91,14 @@ export function RecruitmentNoteComposer({
                   previewAllFiles
                   compact
                   inputId="recruitment-file_note"
-                  label="Tệp ghi chú phỏng vấn"
+                  label={t("candidates", "Tệp ghi chú phỏng vấn")}
                   multiple={false}
                   files={file ? [file] : []}
                   disabled={disabled}
                   onChange={(selected) => onFile(selected[0])}
                   actions={
                     <span className="text-xs text-muted-foreground">
-                      Mọi định dạng · Tối đa 50 MB
+                      {t("candidates", "Mọi định dạng · Tối đa 50 MB")}
                     </span>
                   }
                 />
@@ -101,7 +106,10 @@ export function RecruitmentNoteComposer({
             </div>
           </div>
           <p id={`${id}-hint`} className="text-xs text-muted-foreground">
-            Nội dung và tệp phỏng vấn được lưu cùng ghi chú.
+            {t(
+              "candidates",
+              "Nội dung và tệp phỏng vấn được lưu cùng ghi chú.",
+            )}
           </p>
         </FormFieldShell>
       )}

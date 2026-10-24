@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { SubmitEvent, ReactNode } from "react";
 import { DataFiltersPanel } from "@/components/data-management/data-filters-panel";
 import { Button } from "@/components/ui/button";
@@ -19,15 +20,19 @@ export function RecruitmentAdvancedDrawer({
   onClear: () => void;
   children: ReactNode;
 }>) {
+  useLocale();
   return (
     <DataFiltersPanel
       open={open}
       onOpenChange={onOpenChange}
       activeFilterCount={activeCount}
-      description="Lọc dữ liệu tuyển dụng theo các thông tin bên dưới."
+      description={t(
+        "recruitment",
+        "Lọc dữ liệu tuyển dụng theo các thông tin bên dưới.",
+      )}
     >
       <form
-        aria-label="Lọc nâng cao"
+        aria-label={t("recruitment", "Lọc nâng cao")}
         noValidate
         className="flex min-h-0 flex-1 flex-col"
         onSubmit={(event) => {
@@ -40,7 +45,7 @@ export function RecruitmentAdvancedDrawer({
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2 p-4 sm:p-6">
           <Button type="submit" disabled={disabled}>
-            Áp dụng bộ lọc
+            {t("recruitment", "Áp dụng bộ lọc")}
           </Button>
           <Button
             type="button"
@@ -48,7 +53,7 @@ export function RecruitmentAdvancedDrawer({
             disabled={disabled}
             onClick={onClear}
           >
-            Xóa bộ lọc nâng cao
+            {t("recruitment", "Xóa bộ lọc nâng cao")}
           </Button>
         </div>
       </form>

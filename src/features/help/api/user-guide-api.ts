@@ -1,9 +1,12 @@
 import mammoth from "mammoth/mammoth.browser";
 import DOMPurify from "dompurify";
+import type { Locale } from "@/i18n";
 
 export const USER_GUIDE_FILENAME =
   "Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx";
 export const USER_GUIDE_URL = `/docs/${USER_GUIDE_FILENAME}`;
+export const ENGLISH_GUIDE_URL = "/docs/Rainscales-Ticket-User-Guide.html";
+export const ENGLISH_GUIDE_FILENAME = "Rainscales-Ticket-User-Guide.docx";
 
 export interface GuideChapter {
   title: string;
@@ -66,8 +69,10 @@ export function parseGuideHtml(html: string): GuideDocument {
   return {
     chapters,
     introductionHtml,
-    version: text.match(/Phiên bản\s+([\d.]+)/)?.[1],
-    updatedAt: text.match(/Cập nhật(?: ngày)?\s+(\d{2}\/\d{2}\/\d{4})/)?.[1],
+    version: text.match(/(?:Phiên bản|Version)\s+([\d.]+)/)?.[1],
+    updatedAt: text.match(
+      /(?:Cập nhật(?: ngày)?|Updated)\s+(\d{2}\/\d{2}\/\d{4})/,
+    )?.[1],
   };
 }
 
@@ -87,10 +92,19 @@ export async function convertGuideDocument(
 
 export async function loadUserGuide(
   signal?: AbortSignal,
+  locale: Locale = "vi",
 ): Promise<GuideDocument> {
-  const response = await fetch(USER_GUIDE_URL, { signal, cache: "no-cache" });
+  const response = await fetch(
+    locale === "en" ? ENGLISH_GUIDE_URL : USER_GUIDE_URL,
+    { signal, cache: "no-cache" },
+  );
   if (!response.ok)
     throw new Error("Không tải được tài liệu hướng dẫn. Vui lòng thử lại.");
+  if (locale === "en") {
+    const html = await response.text();
+    signal?.throwIfAborted();
+    return parseGuideHtml(html);
+  }
   const buffer = await response.arrayBuffer();
   signal?.throwIfAborted();
   const guide = await convertGuideDocument(buffer);

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { ReactNode } from "react";
 import { RotateCcw, Search } from "lucide-react";
 import { AsyncButton } from "@/components/ui/async-button";
@@ -14,15 +15,16 @@ export function RecruitmentFilterActions({
   onCancel?: () => void;
   children?: ReactNode;
 }>) {
+  useLocale();
   return (
     <div className="col-span-full grid min-w-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center xl:flex-1">
       <AsyncButton
-        title="Tìm kiếm"
+        title={t("recruitment", "Tìm kiếm")}
         type="submit"
         loading={busy}
         icon={<Search className="size-4" aria-hidden="true" />}
       >
-        Tìm kiếm
+        {t("recruitment", "Tìm kiếm")}
       </AsyncButton>
       {onCancel ? (
         <Button
@@ -31,7 +33,7 @@ export function RecruitmentFilterActions({
           disabled={busy}
           onClick={onCancel}
         >
-          Hủy
+          {t("recruitment", "Hủy")}
         </Button>
       ) : (
         <Button
@@ -41,8 +43,8 @@ export function RecruitmentFilterActions({
           className="size-11 sm:size-10 sm:pointer-coarse:size-11"
           disabled={busy}
           onClick={onReset}
-          aria-label="Xóa lọc tuyển dụng"
-          title="Xóa lọc"
+          aria-label={t("recruitment", "Xóa lọc tuyển dụng")}
+          title={t("recruitment", "Xóa lọc")}
         >
           <RotateCcw className="size-4" aria-hidden="true" />
         </Button>

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { memo } from "react";
 import { useWatch, type UseFormReturn } from "react-hook-form";
 import { InputField } from "@/components/form/input-field";
@@ -25,6 +26,7 @@ export const RequestDetailField = memo(function RequestDetailField({
   disabled: boolean;
   hideLabel?: boolean;
 }>) {
+  useLocale();
   const options = fieldOptions(field).map((value) => ({ value, label: value }));
   // Only date controls compare their value against other inputs in the row.
   const values =
@@ -52,7 +54,7 @@ export const RequestDetailField = memo(function RequestDetailField({
         {...shared}
         searchable
         options={options}
-        placeholder="Chọn giá trị"
+        placeholder={t("request-create", "Chọn giá trị")}
       />
     );
   if (field.type === "date-text")
@@ -70,7 +72,7 @@ export const RequestDetailField = memo(function RequestDetailField({
           {...shared}
           name={`${name}_start`}
           id={`${id}-start`}
-          label={`${field.title} - Từ ngày`}
+          label={t("request-create", "{0} - Từ ngày", [field.title])}
           isDateDisabled={dateDisabled}
           endYear={new Date().getFullYear() + 10}
         />
@@ -78,7 +80,7 @@ export const RequestDetailField = memo(function RequestDetailField({
           {...shared}
           name={`${name}_end`}
           id={`${id}-end`}
-          label={`${field.title} - Đến ngày`}
+          label={t("request-create", "{0} - Đến ngày", [field.title])}
           isDateDisabled={(date) => dateDisabled(date, "end")}
           endYear={new Date().getFullYear() + 10}
         />
@@ -88,7 +90,7 @@ export const RequestDetailField = memo(function RequestDetailField({
     <InputField
       {...shared}
       type={field.type === "number" ? "number" : "text"}
-      placeholder={`Nhập ${field.title.toLowerCase()}`}
+      placeholder={t("request-create", "Nhập {0}", [field.title.toLowerCase()])}
     />
   );
 });

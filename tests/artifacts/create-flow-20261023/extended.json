@@ -44,20 +44,7 @@
     {
       "name": "Repeated tab switching preserves draft and pending file",
       "status": "passed",
-      "tabClickMs": [
-        88,
-        87,
-        89,
-        83,
-        77,
-        70,
-        87,
-        71,
-        135,
-        77,
-        78,
-        61
-      ]
+      "tabClickMs": [88, 87, 89, 83, 77, 70, 87, 71, 135, 77, 78, 61]
     },
     {
       "name": "Leaving with file warns; Stay preserves draft",
@@ -73,12 +60,7 @@
     {
       "name": "Long comment and filenames fit 320/390/768/1440 viewports",
       "status": "passed",
-      "widths": [
-        320,
-        390,
-        768,
-        1440
-      ]
+      "widths": [320, 390, 768, 1440]
     }
   ],
   "errors": [],

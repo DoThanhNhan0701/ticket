@@ -353,7 +353,7 @@ it("moves between guide chapters and disables navigation at the boundaries", asy
 it("requires sign-in before opening the user guide", async () => {
   auth.token = null;
   renderApp("/help");
-  await screen.findByRole("button", { name: "Sign In to Ticket" });
+  await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
   expect(screen.getByTestId("current-path").textContent).toBe("/login");
 });
 
@@ -369,12 +369,12 @@ it("redirects the root to the request list with no overview navigation", async (
   expect(screen.getByTestId("current-path").textContent).toBe("/requests");
   expect(
     screen
-      .getByRole("link", { name: "Rainscales Ticket home" })
+      .getByRole("link", { name: "Trang chủ Rainscales Ticket" })
       .getAttribute("href"),
   ).toBe("/requests");
-  expect(screen.getByRole("button", { name: "Sign Out" })).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Đăng xuất" })).toBeTruthy();
   expect(
-    screen.getByRole("button", { name: /Switch to .* theme/ }),
+    screen.getByRole("button", { name: /Chuyển sang giao diện/ }),
   ).toBeTruthy();
   const createLink = within(screen.getByRole("main")).getByRole("link", {
     name: "Tạo yêu cầu",
@@ -405,7 +405,7 @@ it.each(["/", "/login", "/unknown-page"])(
     expect(screen.getByTestId("current-path").textContent).toBe("/tasks/mine");
     expect(
       screen
-        .getByRole("link", { name: "Rainscales Ticket home" })
+        .getByRole("link", { name: "Trang chủ Rainscales Ticket" })
         .getAttribute("href"),
     ).toBe("/tasks/mine");
     expect(screen.queryByText("Bạn chưa có quyền truy cập")).toBeNull();
@@ -440,7 +440,7 @@ it.each([
   auth.token = null;
   renderApp(path);
   expect(
-    await screen.findByRole("button", { name: "Sign In to Ticket" }),
+    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
   ).toBeTruthy();
   expect(
     screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
@@ -556,7 +556,7 @@ it("shows ticketV2 navigation groups according to the account permissions", asyn
   renderApp();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   const sidebar = within(
-    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+    screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
   for (const label of [
     "Yêu cầu",
@@ -605,7 +605,7 @@ it.each([
     renderApp(path);
     expect(await screen.findByRole("heading", { name: label })).toBeTruthy();
     const sidebar = within(
-      screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+      screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
     );
     expect(
       sidebar.getByRole("link", { name: label }).getAttribute("aria-current"),
@@ -684,7 +684,7 @@ it.each([false, true])(
     renderApp("/help");
     await screen.findByRole("heading", { name: "Hướng dẫn sử dụng" });
     const sidebar = within(
-      screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+      screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
     );
     const status = sidebar.getByRole("status");
     expect(within(status).getByText("Chưa có mục truy cập")).toBeTruthy();
@@ -752,7 +752,7 @@ it("collapses the desktop sidebar while retaining accessible navigation", async 
   const expand = screen.getByRole("button", { name: "Mở rộng sidebar" });
   expect(expand.getAttribute("aria-expanded")).toBe("false");
   const sidebar = within(
-    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+    screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
   expect(sidebar.getAllByRole("button")).toHaveLength(2);
   expect(sidebar.queryByRole("link")).toBeNull();
@@ -780,7 +780,9 @@ it("restores sidebar width and explicitly opened or closed groups after remount"
   auth.permissions = { can_create: true, can_view: true, can_report: true };
   const view = renderApp();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
-  const sidebar = screen.getByRole("complementary", { name: "Sidebar Ticket" });
+  const sidebar = screen.getByRole("complementary", {
+    name: "Thanh điều hướng Ticket",
+  });
   const requests = within(sidebar).getByText("Yêu cầu").closest("details")!;
   const reports = within(sidebar)
     .getByText("Báo cáo & dữ liệu")
@@ -795,7 +797,7 @@ it("restores sidebar width and explicitly opened or closed groups after remount"
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   fireEvent.click(screen.getByRole("button", { name: "Mở rộng sidebar" }));
   const restored = within(
-    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+    screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
   expect(restored.getByText("Yêu cầu").closest("details")!.open).toBe(false);
   expect(restored.getByText("Báo cáo & dữ liệu").closest("details")!.open).toBe(
@@ -816,7 +818,7 @@ it("keeps collapsed flyouts permission-filtered and highlights the list for tick
   await screen.findByRole("heading", { name: "Chi tiết yêu cầu" });
   fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
   const sidebar = within(
-    screen.getByRole("complementary", { name: "Sidebar Ticket" }),
+    screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
   expect(sidebar.getAllByRole("button")).toHaveLength(1);
   const trigger = sidebar.getByRole("button", { name: "Yêu cầu" });
@@ -895,7 +897,7 @@ it("closes the mobile drawer at the desktop breakpoint and focuses the visible d
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   const desktopToggle = screen.getByRole("button", { name: "Thu gọn sidebar" });
   const brandLink = screen.getByRole("link", {
-    name: "Rainscales Ticket home",
+    name: "Trang chủ Rainscales Ticket",
   });
   fireEvent.click(screen.getByRole("button", { name: "Mở menu điều hướng" }));
   await screen.findByRole("dialog", { name: "Điều hướng Ticket" });
@@ -906,9 +908,9 @@ it("closes the mobile drawer at the desktop breakpoint and focuses the visible d
   });
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   await waitFor(() => expect(document.activeElement).toBe(desktopToggle));
-  expect(screen.getByRole("link", { name: "Rainscales Ticket home" })).toBe(
-    brandLink,
-  );
+  expect(
+    screen.getByRole("link", { name: "Trang chủ Rainscales Ticket" }),
+  ).toBe(brandLink);
 
   act(() => {
     isDesktop = false;
@@ -966,7 +968,7 @@ it.each(
     await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
     expect(client.getQueryCache().getAll()).toHaveLength(0);
     expect(
-      screen.queryByRole("complementary", { name: "Sidebar Ticket" }),
+      screen.queryByRole("complementary", { name: "Thanh điều hướng Ticket" }),
     ).toBeNull();
   },
 );

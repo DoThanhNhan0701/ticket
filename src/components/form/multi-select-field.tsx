@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useState, type ReactNode } from "react";
 import {
   Controller,
@@ -68,6 +69,7 @@ function SelectedBadges({
   disabled: boolean;
   onRemove: (value: string) => void;
 }>) {
+  useLocale();
   const { ref, width } = useElementWidth();
   const capacity =
     width >= options.length * 64
@@ -121,12 +123,13 @@ function MultiSelectInput({
   id,
   label,
   options,
-  placeholder = "Select categories...",
-  noDataText = "No data",
+  placeholder = t("common", "Select categories..."),
+  noDataText = t("common", "No data"),
   disabled = false,
   isLoading = false,
   maxBadgeCount,
 }: Readonly<MultiSelectInputProps>) {
+  useLocale();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const isDisabled = disabled || isLoading;
@@ -145,7 +148,8 @@ function MultiSelectInput({
     if (selectedValues.includes(selected)) removeOption(selected);
     else onChange([...selectedValues, selected]);
   };
-  const emptyMessage = options.length === 0 ? noDataText : "No results found";
+  const emptyMessage =
+    options.length === 0 ? noDataText : t("common", "No results found");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -181,7 +185,11 @@ function MultiSelectInput({
                   : "flex-1",
               )}
             >
-              {isLoading && <span className="truncate">Loading list...</span>}
+              {isLoading && (
+                <span className="truncate">
+                  {t("common", "Loading list...")}
+                </span>
+              )}
               {!isLoading && selectedOptions.length === 0 && (
                 <span className="truncate">{placeholder}</span>
               )}
@@ -217,7 +225,8 @@ function MultiSelectInput({
         {options.length > 0 && (
           <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 px-1 pb-1 border-b border-border text-xs font-medium text-muted-foreground">
             <span>
-              Selected {selectedValues.length}/{options.length}
+              {" "}
+              {t("common", "Selected")} {selectedValues.length}/{options.length}
             </span>
             <div className="flex items-center gap-2">
               <button
@@ -225,7 +234,7 @@ function MultiSelectInput({
                 onClick={() => onChange(options.map((option) => option.value))}
                 className="min-h-11 sm:min-h-0 sm:pointer-coarse:min-h-11 text-brand-700 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 cursor-pointer"
               >
-                Select all
+                {t("common", "Select all")}
               </button>
               <span>•</span>
               <button
@@ -233,7 +242,7 @@ function MultiSelectInput({
                 onClick={() => onChange([])}
                 className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 sm:pointer-coarse:min-h-11 sm:pointer-coarse:min-w-11 text-muted-foreground hover:text-foreground cursor-pointer"
               >
-                Clear
+                {t("common", "Clear")}
               </button>
             </div>
           </div>
@@ -288,6 +297,7 @@ export function MultiSelectField<TFieldValues extends FieldValues>({
   valueFormat = "array",
   ...props
 }: Readonly<MultiSelectFieldProps<TFieldValues>>) {
+  useLocale();
   return (
     <Controller
       name={name}

@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useInterviewCalendarState } from "../hooks/use-interview-calendar-state";
 import { ErrorToast } from "@/components/error-toast";
 import { PAGE_LINKS } from "@/constants/routes";
@@ -34,6 +35,7 @@ import { RecruitmentEditor } from "./recruitment-editor";
 import { interviewCalendarView } from "../utils/recruitment-format";
 import { RecruitmentFilters } from "./recruitment-filters";
 export function RecruitmentCalendar() {
+  useLocale();
   const { userId, permissions } = useAuthContext();
   const navigate = useNavigate();
   const { day, view, user, updateCalendar, shift } =
@@ -94,7 +96,7 @@ export function RecruitmentCalendar() {
   const createInterviewButton = (
     <Button
       mobileIconOnly
-      title="Tạo lịch phỏng vấn"
+      title={t("interviews", "Tạo lịch phỏng vấn")}
       disabled={!lookups.data || query.isFetching || query.isError}
       onClick={() =>
         setEditor({
@@ -104,7 +106,7 @@ export function RecruitmentCalendar() {
       }
     >
       <CalendarPlus className="size-4" />
-      Tạo lịch phỏng vấn
+      {t("interviews", "Tạo lịch phỏng vấn")}
     </Button>
   );
   return (
@@ -138,26 +140,26 @@ export function RecruitmentCalendar() {
             variant="outline"
             size="icon"
             onClick={() => shift(-1)}
-            aria-label="Khoảng trước"
+            aria-label={t("interviews", "Khoảng trước")}
           >
             <ChevronLeft className="size-4" />
           </Button>
           <Button
             mobileIconOnly
-            title="Hôm nay"
+            title={t("interviews", "Hôm nay")}
             variant="outline"
             onClick={() =>
               updateCalendar({ from_date: format(new Date(), "yyyy-MM-dd") })
             }
           >
             <CalendarCheck className="size-4 sm:hidden" aria-hidden="true" />
-            Hôm nay
+            {t("interviews", "Hôm nay")}
           </Button>
           <Button
             variant="outline"
             size="icon"
             onClick={() => shift(1)}
-            aria-label="Khoảng sau"
+            aria-label={t("interviews", "Khoảng sau")}
           >
             <ChevronRight className="size-4" />
           </Button>
@@ -170,9 +172,9 @@ export function RecruitmentCalendar() {
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ["month", "Tháng", CalendarDays],
-              ["week", "Tuần", CalendarRange],
-              ["day", "Ngày", Calendar],
+              ["month", t("interviews", "Tháng"), CalendarDays],
+              ["week", t("interviews", "Tuần"), CalendarRange],
+              ["day", t("interviews", "Ngày"), Calendar],
             ] as const
           ).map(([value, label, ViewIcon]) => (
             <Button
@@ -191,7 +193,9 @@ export function RecruitmentCalendar() {
         </div>
       </div>
       {lookups.isError && <ErrorToast message={lookups.error.message} />}
-      {query.isPending && <LoadingState message="Đang tải lịch phỏng vấn..." />}
+      {query.isPending && (
+        <LoadingState message={t("interviews", "Đang tải lịch phỏng vấn...")} />
+      )}
       {query.isError && <ErrorToast message={query.error.message} />}
       {query.data && (
         <InterviewCalendarGrid

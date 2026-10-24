@@ -271,7 +271,7 @@ it("counts only configured applied filters and validates dates before applying t
     target: { value: "1/" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
-  await screen.findByText("Enter a valid date (DD/MM/YYYY).");
+  await screen.findByText("Vui lòng nhập ngày hợp lệ (DD/MM/YYYY).");
   expect(onApply).not.toHaveBeenCalled();
   fireEvent.change(screen.getByLabelText("Ngày gia nhập"), {
     target: { value: "20/11/2027" },
