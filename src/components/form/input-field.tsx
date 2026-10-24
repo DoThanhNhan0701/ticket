@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { ComponentProps, ReactNode } from "react";
 import {
   Controller,
@@ -42,11 +43,16 @@ export function InputField<TFieldValues extends FieldValues>({
   inputClassName,
   maxLength,
 }: Readonly<InputFieldProps<TFieldValues>>) {
+  useLocale();
   return (
     <Controller
       name={name}
       control={control}
-      rules={required ? { required: `${label} is required.` } : undefined}
+      rules={
+        required
+          ? { required: t("common", "{0} is required.", [label]) }
+          : undefined
+      }
       render={({ field, fieldState }) => (
         <FormFieldShell
           id={id}

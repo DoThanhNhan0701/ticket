@@ -34,7 +34,7 @@ function SearchExample() {
 it("returns keyboard focus to search after clearing its value", () => {
   render(<SearchExample />);
   const search = screen.getByRole("searchbox", { name: "Search users" });
-  fireEvent.click(screen.getByRole("button", { name: "Clear search users" }));
+  fireEvent.click(screen.getByRole("button", { name: "Xóa search users" }));
   expect((search as HTMLInputElement).value).toBe("");
   expect(document.activeElement).toBe(search);
 });
@@ -208,7 +208,7 @@ it("validates a required birthday after clearing it", async () => {
     target: { value: "" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(await screen.findByText("Date of Birth is required.")).toBeTruthy();
+  expect(await screen.findByText("Vui lòng nhập Date of Birth.")).toBeTruthy();
   expect(onSubmit).not.toHaveBeenCalled();
 });
 

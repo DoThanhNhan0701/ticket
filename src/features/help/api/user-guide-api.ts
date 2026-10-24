@@ -1,6 +1,6 @@
 import mammoth from "mammoth/mammoth.browser";
 import DOMPurify from "dompurify";
-import type { Locale } from "@/i18n";
+import { t, type Locale } from "@/i18n";
 
 export const USER_GUIDE_FILENAME =
   "Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx";
@@ -21,7 +21,10 @@ export interface GuideDocument {
   updatedAt?: string;
 }
 
-export function parseGuideHtml(html: string): GuideDocument {
+export function parseGuideHtml(
+  html: string,
+  locale: Locale = "vi",
+): GuideDocument {
   const body = DOMPurify.sanitize(html, {
     USE_PROFILES: { html: true },
     FORBID_ATTR: ["style"],
@@ -41,7 +44,9 @@ export function parseGuideHtml(html: string): GuideDocument {
   for (const element of Array.from(body.children)) {
     if (element.tagName === "H1") {
       chapters.push({
-        title: element.textContent?.trim() || "Hướng dẫn sử dụng",
+        title:
+          element.textContent?.trim() ||
+          t("help", "Hướng dẫn sử dụng", [], locale),
         html: "",
         anchors: [],
       });
@@ -58,7 +63,7 @@ export function parseGuideHtml(html: string): GuideDocument {
   }
   if (!chapters.length && text.trim()) {
     chapters.push({
-      title: "Hướng dẫn sử dụng",
+      title: t("help", "Hướng dẫn sử dụng", [], locale),
       html: introductionHtml,
       anchors: [],
     });
@@ -103,7 +108,7 @@ export async function loadUserGuide(
   if (locale === "en") {
     const html = await response.text();
     signal?.throwIfAborted();
-    return parseGuideHtml(html);
+    return parseGuideHtml(html, locale);
   }
   const buffer = await response.arrayBuffer();
   signal?.throwIfAborted();

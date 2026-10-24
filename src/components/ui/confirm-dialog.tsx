@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import type { ReactNode } from "react";
 import { AlertTriangle, Info } from "lucide-react";
 import { AsyncButton } from "./async-button";
@@ -30,13 +31,14 @@ export function ConfirmDialog({
   onOpenChange,
   title,
   description,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = t("common", "Confirm"),
+  cancelText = t("common", "Cancel"),
   variant = "default",
   isLoading = false,
   onConfirm,
   icon,
 }: Readonly<ConfirmDialogProps>) {
+  useLocale();
   const isWarning = variant === "destructive" || variant === "warning";
   const Icon = isWarning ? AlertTriangle : Info;
 

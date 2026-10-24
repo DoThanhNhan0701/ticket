@@ -60,7 +60,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
       name={name}
       control={control}
       rules={{
-        required: required ? `${label} is required.` : false,
+        required: required ? t("common", "{0} is required.", [label]) : false,
         validate: (value) =>
           validateDate(value, isDateDisabled, disabledDateMessage),
       }}

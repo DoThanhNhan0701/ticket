@@ -32,5 +32,6 @@
   "Tệp đính kèm chưa được gửi": "Unsent attachments",
   "Bạn còn {0} tệp đính kèm chưa gửi hoặc tải lên. Nếu rời trang, các tệp đã chọn sẽ bị mất.": "You have {0} attachments that have not been sent or uploaded. Leaving this page will discard the selected files.",
   "Ở lại": "Stay",
-  "Rời trang": "Leave page"
+  "Rời trang": "Leave page",
+  "File": "File"
 }

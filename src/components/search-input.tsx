@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import { useRef, type ComponentProps } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,7 @@ export function SearchInput({
   disabled,
   ...props
 }: Readonly<SearchInputProps>) {
+  useLocale();
   const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div className={cn("relative min-w-0", wrapperClassName)}>
@@ -50,7 +52,7 @@ export function SearchInput({
             onValueChange("");
             inputRef.current?.focus();
           }}
-          aria-label={`Clear ${label.toLowerCase()}`}
+          aria-label={t("common", "Clear {0}", [label.toLowerCase()])}
           className="absolute top-1/2 right-0.5 flex h-11 w-11 sm:h-9 sm:w-9 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           <X className="h-3.5 w-3.5" aria-hidden="true" />

@@ -114,5 +114,6 @@
   "Biểu mẫu có tên trường dành riêng ‘key’. Vui lòng chỉnh lại cấu hình.": "Biểu mẫu có tên trường dành riêng ‘key’. Vui lòng chỉnh lại cấu hình.",
   "Tệp Excel không có dữ liệu.": "Tệp Excel không có dữ liệu.",
   "STT trong tệp Excel bị trùng.": "STT trong tệp Excel bị trùng.",
-  "Tệp Excel không khớp biểu mẫu đã chọn.": "Tệp Excel không khớp biểu mẫu đã chọn."
+  "Tệp Excel không khớp biểu mẫu đã chọn.": "Tệp Excel không khớp biểu mẫu đã chọn.",
+  "{0} người xử lý": "{0} người xử lý"
 }

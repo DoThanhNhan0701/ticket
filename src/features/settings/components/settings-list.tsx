@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
@@ -165,7 +165,7 @@ export function SettingsList({
       {lookups.isError && (
         <ErrorToast
           message={t("settings", "Không tải được danh mục: {0}", [
-            lookups.error.message,
+            translateMessage(lookups.error.message),
           ])}
         />
       )}

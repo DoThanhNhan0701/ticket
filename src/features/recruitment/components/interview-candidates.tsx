@@ -154,7 +154,10 @@ export function InterviewCandidates() {
         statuses={
           canManage
             ? (lookups.data?.statuses ?? [])
-            : recruitmentOptions(statuses.data)
+            : recruitmentOptions(statuses.data).map((option) => ({
+                ...option,
+                label: t("statuses", option.label),
+              }))
         }
         busy={query.isFetching}
         onApply={(next) => {

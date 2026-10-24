@@ -562,7 +562,7 @@ it("clears stale selections when switching assignment modes", async () => {
   fireEvent.keyDown(document, { key: "Escape" });
   await select("Loại phân công", "Xóa người xử lý");
   expect(
-    screen.queryByRole("button", { name: "Remove new-handler" }),
+    screen.queryByRole("button", { name: "Bỏ chọn new-handler" }),
   ).toBeNull();
   confirm("Phân công");
   await waitFor(() =>

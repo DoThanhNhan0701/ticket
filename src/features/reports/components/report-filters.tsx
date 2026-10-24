@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -29,7 +29,7 @@ function TypeFeedback({
     return (
       <ErrorToast
         message={t("reports", "Không tải được loại yêu cầu: {0}", [
-          error.message,
+          translateMessage(error.message),
         ])}
       />
     );

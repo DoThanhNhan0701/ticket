@@ -32,7 +32,7 @@ export function getRequestStatusOptions(
       value: selected,
       label: usesStatusIds
         ? t("request-list", "Trạng thái #{0}", [selected])
-        : selected,
+        : t("statuses", selected),
     });
   return options;
 }

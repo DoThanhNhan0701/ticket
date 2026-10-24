@@ -35,7 +35,9 @@ export function ContractProjectCard({
               rel="noopener noreferrer"
               className="flex items-center justify-between gap-3 rounded-lg border border-border bg-subtle px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
             >
-              {project.project_code === "BO-CONTRACT" ? "Revenue" : "Expense"}
+              {project.project_code === "BO-CONTRACT"
+                ? t("projects", "Revenue")
+                : t("projects", "Expense")}
               <ExternalLink
                 className="h-4 w-4 text-muted-foreground"
                 aria-hidden="true"

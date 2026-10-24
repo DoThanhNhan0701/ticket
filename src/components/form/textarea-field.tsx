@@ -1,3 +1,4 @@
+import { t, useLocale } from "@/i18n";
 import {
   Controller,
   type Control,
@@ -30,11 +31,16 @@ export function TextareaField<TFieldValues extends FieldValues>({
   rows = 3,
   className,
 }: Readonly<TextareaFieldProps<TFieldValues>>) {
+  useLocale();
   return (
     <Controller
       control={control}
       name={name}
-      rules={required ? { required: `${label} is required.` } : undefined}
+      rules={
+        required
+          ? { required: t("common", "{0} is required.", [label]) }
+          : undefined
+      }
       render={({ field, fieldState }) => (
         <FormFieldShell
           id={id}

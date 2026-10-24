@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -83,14 +83,14 @@ export function RequestCreateMessages({ model }: Readonly<{ model: Model }>) {
       {model.lookups.isError && (
         <ErrorToast
           message={t("request-create", "Không tải được danh mục: {0}", [
-            model.lookups.error.message,
+            translateMessage(model.lookups.error.message),
           ])}
         />
       )}
       {model.template.isError && model.template.data && (
         <ErrorToast
           message={t("request-create", "Không tải được biểu mẫu: {0}", [
-            model.template.error.message,
+            translateMessage(model.template.error.message),
           ])}
         />
       )}
@@ -227,7 +227,7 @@ export function RequestTemplateSection({
       {model.selectedType && model.template.isError && (
         <ErrorToast
           message={t("request-create", "Không tải được biểu mẫu: {0}", [
-            model.template.error.message,
+            translateMessage(model.template.error.message),
           ])}
         />
       )}

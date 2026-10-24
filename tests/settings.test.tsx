@@ -853,7 +853,7 @@ it.each([false, true])(
     renderPage("positions");
     await editorReady("positions", true);
     const removeSearch = screen.getByRole("button", {
-      name: "Remove Tìm kiếm yêu cầu (Ngừng cấp mới)",
+      name: "Bỏ chọn Tìm kiếm yêu cầu (Ngừng cấp mới)",
     });
     if (remove) {
       fireEvent.click(removeSearch);

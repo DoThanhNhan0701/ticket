@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import type { ReactNode } from "react";
 import { Inbox } from "lucide-react";
@@ -44,7 +44,7 @@ export function DataResults<T>({
       {query.isPending && <LoadingState message={loadingMessage} />}
       {query.isError && (
         <ResultsError
-          message={`${errorPrefix}: ${query.error?.message ?? t("common", "Lỗi không xác định")}`}
+          message={`${errorPrefix}: ${translateMessage(query.error?.message ?? t("common", "Lỗi không xác định"))}`}
           retainData={retainData}
           pagination={pagination}
         />

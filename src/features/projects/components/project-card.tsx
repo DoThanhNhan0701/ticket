@@ -12,7 +12,7 @@ export function ProjectCard({ project }: Readonly<{ project: Project }>) {
   return (
     <a
       href={project.href}
-      aria-label={`Open ${project.name}`}
+      aria-label={t("projects", "Open {0}", [project.name])}
       target="_blank"
       rel="noopener noreferrer"
       className={projectCardClassName}
@@ -22,7 +22,11 @@ export function ProjectCard({ project }: Readonly<{ project: Project }>) {
         code={project.project_code}
         icon={getProjectIcon(project.icon, project.name)}
         color={project.bg}
-        description={`Internal operations and workflow system for ${project.name.toLowerCase()} built for Rainscales.`}
+        description={t(
+          "projects",
+          "Internal operations and workflow system for {0} built for Rainscales.",
+          [project.name],
+        )}
       >
         <span className="flex items-center justify-between border-t border-border pt-4 text-sm font-semibold text-brand-700 dark:text-brand-200">
           {" "}

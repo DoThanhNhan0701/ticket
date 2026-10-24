@@ -1,3 +1,5 @@
+import { getLocale } from "@/i18n";
+
 const colors = [
   "#7c72b8",
   "#2f9fbe",
@@ -13,9 +15,15 @@ const colors = [
   "#4584af",
   "#a78e57",
 ];
-export const reportNumberFormat = new Intl.NumberFormat("vi-VN", {
-  maximumFractionDigits: 1,
-});
+const numberFormats = {
+  vi: new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 1 }),
+  en: new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 }),
+};
+export const reportNumberFormat = {
+  format(value: number) {
+    return numberFormats[getLocale()].format(value);
+  },
+};
 export function reportChartColor(index: number) {
   return colors[index] ?? `hsl(${Math.round((index * 137.508) % 360)} 48% 56%)`;
 }

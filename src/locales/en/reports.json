@@ -44,5 +44,9 @@
   "Vui lòng chọn bộ phận xử lý.": "Please select a processing department.",
   "Bộ phận xử lý không hợp lệ.": "Invalid processing department.",
   "Vui lòng nhập ngày hợp lệ (DD/MM/YYYY).": "Please enter a valid date (DD/MM/YYYY).",
-  "Ngày kết thúc phải từ ngày bắt đầu trở đi.": "The end date must be on or after the start date."
+  "Ngày kết thúc phải từ ngày bắt đầu trở đi.": "The end date must be on or after the start date.",
+  "Tổng yêu cầu": "Total requests",
+  "Chờ xử lý": "Pending",
+  "Quá hạn": "Overdue",
+  "Đúng hạn": "On time"
 }

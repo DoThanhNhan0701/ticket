@@ -119,6 +119,7 @@ for (const [key, catalog] of Object.entries(catalogs)) {
       !text.includes("{0}") ||
       !/[.!]$/.test(source) ||
       (source !== "Vui lòng {0} {1}." &&
+        source !== "{0} is required." &&
         source.replace(/\{\d+\}/g, "").length < 15)
     )
       continue;
@@ -143,11 +144,11 @@ for (const [key, catalog] of Object.entries(catalogs)) {
   }
 }
 
-// Prefer the structured field-validation sentence over its single-parameter variants.
+// Match specific sentences before generic validation templates.
 messagePatterns.sort(
   (a, b) =>
-    Number(b.source === "Vui lòng {0} {1}.") -
-    Number(a.source === "Vui lòng {0} {1}."),
+    b.source.replace(/\{\d+\}/g, "").length -
+    a.source.replace(/\{\d+\}/g, "").length,
 );
 
 /** Validation messages may be produced before the user changes language. */
@@ -168,6 +169,20 @@ export function translateMessage(message: string): string {
           if (key)
             params[index] = t(key.namespace, key.source).toLocaleLowerCase();
         });
+      }
+      if (
+        [
+          "{0} is required.",
+          "Dữ liệu {0} không hợp lệ.",
+          "Không tải được thông tin {0}.",
+        ].includes(source)
+      ) {
+        const key = fieldMessageKeys.get(params[0].toLocaleLowerCase());
+        if (key) params[0] = t(key.namespace, key.source);
+      }
+      if (["Vui lòng nhập {0}.", "Vui lòng chọn {0}."].includes(source)) {
+        const key = fieldMessageKeys.get(params[0].toLocaleLowerCase());
+        if (key) params[0] = t(key.namespace, key.source).toLocaleLowerCase();
       }
       return t(namespace, source, params);
     }

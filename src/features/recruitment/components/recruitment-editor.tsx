@@ -194,7 +194,7 @@ function DuplicateResults({ rows }: Readonly<{ rows: RecruitmentRow[] }>) {
         columns={[
           {
             id: "index",
-            label: "STT",
+            label: t("common", "STT"),
             width: "60px",
             align: "center",
             render: (_row, index) => index + 1,

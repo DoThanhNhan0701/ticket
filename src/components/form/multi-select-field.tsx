@@ -98,7 +98,7 @@ function SelectedBadges({
           <button
             type="button"
             disabled={disabled}
-            aria-label={`Remove ${option.label}`}
+            aria-label={t("common", "Remove {0}", [option.label])}
             onClick={() => onRemove(option.value)}
             className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring sm:size-5 sm:pointer-coarse:size-6"
           >
@@ -201,7 +201,7 @@ function MultiSelectInput({
               type="button"
               disabled={isLoading}
               onClick={() => onChange([])}
-              aria-label={`Clear ${label.toLowerCase()}`}
+              aria-label={t("common", "Clear {0}", [label.toLowerCase()])}
               className="flex w-11 shrink-0 cursor-pointer items-center justify-center self-stretch rounded text-muted-foreground hover:text-foreground sm:w-6 sm:pointer-coarse:w-11"
             >
               <X className="h-3.5 w-3.5" />
@@ -215,10 +215,10 @@ function MultiSelectInput({
       >
         {options.length > 5 && (
           <SearchInput
-            label={`Search ${label.toLowerCase()}`}
+            label={t("common", "Search {0}", [label.toLowerCase()])}
             value={search}
             onValueChange={setSearch}
-            placeholder={`Search ${label.toLowerCase()}...`}
+            placeholder={t("common", "Search {0}...", [label.toLowerCase()])}
             wrapperClassName="shrink-0"
           />
         )}
@@ -302,7 +302,11 @@ export function MultiSelectField<TFieldValues extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      rules={required ? { required: `${props.label} is required.` } : undefined}
+      rules={
+        required
+          ? { required: t("common", "{0} is required.", [props.label]) }
+          : undefined
+      }
       render={({ field, fieldState }) => (
         <FormFieldShell
           id={props.id}

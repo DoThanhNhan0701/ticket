@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef, useState } from "react";
 import { Settings2 } from "lucide-react";
@@ -140,7 +140,7 @@ function SettingsForm({
         {lookups.isError && (
           <ErrorToast
             message={t("settings", "Không tải được danh mục: {0}", [
-              lookups.error.message,
+              translateMessage(lookups.error.message),
             ])}
           />
         )}

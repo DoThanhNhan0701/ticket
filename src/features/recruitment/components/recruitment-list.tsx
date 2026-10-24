@@ -288,7 +288,9 @@ export function RecruitmentList({ kind }: Readonly<{ kind: RecruitmentKind }>) {
       width: "140px",
       render: (row) =>
         kind === "requests" ? (
-          <Badge tone="brand">{text(row.ticket_status_name)}</Badge>
+          <Badge tone="brand">
+            {t("statuses", text(row.ticket_status_name))}
+          </Badge>
         ) : (
           <RecruitmentStatusBadge status={row.cv_status_name} />
         ),

@@ -6,5 +6,9 @@
   "tài liệu": "documents",
   "chi phí": "expenses",
   "tài sản": "assets",
-  "doanh thu": "revenue"
+  "doanh thu": "revenue",
+  "Open {0}": "Open {0}",
+  "Internal operations and workflow system for {0} built for Rainscales.": "Internal operations and workflow system for {0} built for Rainscales.",
+  "Revenue": "Revenue",
+  "Expense": "Expense"
 }

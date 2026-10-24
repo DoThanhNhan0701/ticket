@@ -79,6 +79,13 @@ export function RecruitmentChart({
           );
           if (section === "result_department_month" && row.month)
             label = `${label} · ${recruitmentText(row.month)}`;
+          if (section === "result_cv_status")
+            label = t(
+              "statuses",
+              recruitmentText(
+                row.cv_status__name || row.cv_status_name || row.name,
+              ),
+            );
           const value = chartValue(row[metric]);
           return (
             <div

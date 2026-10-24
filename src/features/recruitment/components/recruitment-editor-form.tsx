@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -53,7 +53,10 @@ export function RecruitmentEditorForm({
   const baseFields = recruitmentFields(state.action, state.timeRange);
   const [files, setFiles] = useState<Record<string, File | undefined>>({});
   const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
-  const fileError = Object.values(fileErrors).filter(Boolean).join(" ");
+  const fileError = Object.values(fileErrors)
+    .filter(Boolean)
+    .map(translateMessage)
+    .join(" ");
   const optionsRef = useRef<RecruitmentLookups>(lookups);
   const form = useForm<RecruitmentValues>({
     defaultValues: editorDefaults(state, baseFields),

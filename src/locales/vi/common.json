@@ -96,10 +96,21 @@
   "Choose {0}": "Chọn {0}",
   "Enter a valid date (DD/MM/YYYY).": "Vui lòng nhập ngày hợp lệ (DD/MM/YYYY).",
   "Required": "Bắt buộc",
-  "MSNV": "Mã nhân viên",
+  "MSNV": "MSNV",
   "Choose the Month": "Chọn tháng",
   "Go to the Previous Month": "Đến tháng trước",
   "Go to the Next Month": "Đến tháng sau",
   "Thông báo": "Thông báo",
-  "Đóng thông báo": "Đóng thông báo"
+  "Đóng thông báo": "Đóng thông báo",
+  "{0} / trang": "{0} / trang",
+  "/ trang": "/ trang",
+  "Remove {0}": "Bỏ chọn {0}",
+  "Clear {0}": "Xóa {0}",
+  "Search {0}": "Tìm {0}",
+  "Search {0}...": "Tìm {0}...",
+  "{0} is required.": "Vui lòng nhập {0}.",
+  "Select...": "Chọn...",
+  "Loading...": "Đang tải...",
+  "Confirm": "Xác nhận",
+  "Cancel": "Hủy"
 }

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
+import { parse } from "@babel/parser";
 import {
   act,
   cleanup,
@@ -18,6 +19,11 @@ import {
   translateMessage,
 } from "@/i18n";
 import { LanguageSwitch } from "@/components/language-switch";
+import { DataPagination } from "@/components/data-management/data-pagination";
+import { LoadingState } from "@/components/loading-state";
+import { SearchInput } from "@/components/search-input";
+import { reportNumberFormat } from "@/features/reports/utils/report-chart";
+import { RecruitmentChart } from "@/features/recruitment/components/recruitment-chart";
 import { LoginPage } from "@/pages/login";
 import { FieldError } from "@/components/ui/field";
 import {
@@ -212,4 +218,129 @@ it("provides the same 15 chapters in the English web and downloadable guides", a
   expect(web.version).toBe("1.2");
   expect(web.chapters[3].html).toContain("4.10. Complete example");
   expect(web.chapters[14].html).toContain("15.5. What to give support");
+});
+
+it("translates pagination, shared controls and number formats without remounting", () => {
+  render(
+    <>
+      <DataPagination
+        count={100}
+        page={1}
+        pageSize={20}
+        pageSizes={[20, 50]}
+        onPage={vi.fn()}
+        onPageSize={vi.fn()}
+      />
+      <LoadingState />
+      <SearchInput label="Tickets" value="draft" onValueChange={vi.fn()} />
+    </>,
+  );
+  expect(screen.getByTitle("20 / trang")).toBeTruthy();
+  expect(screen.getByText("Đang tải...")).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Xóa tickets" })).toBeTruthy();
+  expect(reportNumberFormat.format(1234.5)).toBe("1.234,5");
+  act(() => setLocale("en"));
+  expect(screen.getByTitle("20 / page")).toBeTruthy();
+  expect(screen.getByText("Loading...")).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Clear tickets" })).toBeTruthy();
+  expect(reportNumberFormat.format(1234.5)).toBe("1,234.5");
+});
+
+it("translates retained field and settings errors without changing user-provided names", () => {
+  setLocale("en");
+  expect(translateMessage("Tiêu đề yêu cầu is required.")).toBe(
+    "Request title is required.",
+  );
+  expect(translateMessage("Dữ liệu người dùng không hợp lệ.")).toBe(
+    "Invalid users data.",
+  );
+  expect(translateMessage("Tệp không được vượt quá 10 MB.")).toBe(
+    "The file must not exceed 10 MB.",
+  );
+  expect(
+    translateMessage("Vui lòng thêm trường cho phần Nội dung riêng."),
+  ).toBe("Please add fields to section Nội dung riêng.");
+  expect(parseGuideHtml("<p>English guide</p>", "en").chapters[0].title).toBe(
+    "User guide",
+  );
+});
+
+it("translates status chart categories without translating custom department names", () => {
+  setLocale("en");
+  render(
+    <>
+      <RecruitmentChart
+        section="result_cv_status"
+        rows={[{ cv_status__name: "Chờ phỏng vấn", number_cv: 2 }]}
+      />
+      <RecruitmentChart
+        section="result_department"
+        rows={[{ department_recruited: "Chờ phỏng vấn", number_cv: 3 }]}
+      />
+    </>,
+  );
+  expect(screen.getByText("Awaiting interview")).toBeTruthy();
+  expect(screen.getByText("Chờ phỏng vấn")).toBeTruthy();
+});
+
+it("has translations for literal calls and no untranslated visible JSX text", () => {
+  const catalogs: Record<string, Record<string, string>> = {};
+  for (const file of readdirSync(resolve("src/locales/en"))) {
+    catalogs[file.replace(/\.json$/, "")] = JSON.parse(
+      readFileSync(resolve("src/locales/en", file), "utf8"),
+    );
+  }
+  function checkDirectory(directory: string) {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const path = resolve(directory, entry.name);
+      if (entry.isDirectory()) {
+        checkDirectory(path);
+        continue;
+      }
+      if (!/\.tsx?$/.test(entry.name)) continue;
+      const ast = parse(readFileSync(path, "utf8"), {
+        sourceType: "module",
+        plugins: ["typescript", "jsx"],
+      });
+      function walk(value: unknown) {
+        if (!value || typeof value !== "object") return;
+        const node = value as Record<string, unknown>;
+        if (node.type === "JSXText") {
+          expect(String(node.value), path).not.toMatch(/[a-zA-Z\u00c0-\u1ef9]/);
+        }
+        if (
+          node.type === "CallExpression" &&
+          (node.callee as { name?: string })?.name === "t"
+        ) {
+          const [namespace, key] = node.arguments as {
+            type: string;
+            value: string;
+          }[];
+          if (
+            namespace?.type === "StringLiteral" &&
+            key?.type === "StringLiteral"
+          ) {
+            expect(
+              Object.prototype.hasOwnProperty.call(
+                catalogs[namespace.value] ?? {},
+                key.value,
+              ) ||
+                Object.prototype.hasOwnProperty.call(
+                  catalogs.common,
+                  key.value,
+                ),
+              `${path}: ${namespace.value}/${key.value}`,
+            ).toBe(true);
+          }
+        }
+        for (const [key, child] of Object.entries(node)) {
+          if (key === "loc") continue;
+          if (Array.isArray(child)) child.forEach(walk);
+          else if (typeof child === "object") walk(child);
+        }
+      }
+      walk(ast);
+    }
+  }
+  checkDirectory(resolve("src"));
 });

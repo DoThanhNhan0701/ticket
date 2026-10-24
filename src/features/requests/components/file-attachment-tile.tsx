@@ -61,7 +61,9 @@ export function FileAttachmentTile({
             <FileText className="size-6" />
           )}
           <span className="max-w-full truncate text-[10px] font-medium uppercase">
-            {name.includes(".") ? name.split(".").pop() : "File"}
+            {name.includes(".")
+              ? name.split(".").pop()
+              : t("attachments", "File")}
           </span>
         </span>
       )}

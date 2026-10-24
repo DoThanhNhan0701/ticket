@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -113,7 +113,7 @@ export function RequestChangeStatus() {
         {statuses.isError && (
           <ErrorToast
             message={t("request-status", "Không tải được trạng thái: {0}", [
-              statuses.error.message,
+              translateMessage(statuses.error.message),
             ])}
           />
         )}

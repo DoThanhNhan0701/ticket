@@ -1,10 +1,12 @@
+import { t, useLocale } from "@/i18n";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function LoadingState({
-  message = "Loading...",
+  message = t("common", "Loading..."),
   className,
 }: Readonly<{ message?: string; className?: string }>) {
+  useLocale();
   return (
     <div
       role="status"

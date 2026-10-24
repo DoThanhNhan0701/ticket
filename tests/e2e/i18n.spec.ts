@@ -159,6 +159,10 @@ test("switches all page headings and navigation, without translating stored requ
     await expect(
       page.getByRole("button", { name: "Sign out", exact: true }),
     ).toBeVisible();
+    if (url === "/requests") {
+      await expect(page.getByTitle("100 / page")).toBeVisible();
+      await expect(page.getByText("/ trang", { exact: true })).toHaveCount(0);
+    }
   }
   await page.goto("/requests/42");
   await expect(

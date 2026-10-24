@@ -113,7 +113,7 @@ export function DataPagination({
             disabled={disabled}
             items={pageSizes.map((size) => ({
               value: size,
-              label: `${size} / trang`,
+              label: t("common", "{0} / trang", [size]),
             }))}
             onValueChange={(value) => {
               if (value !== null) onPageSize(value);
@@ -121,20 +121,23 @@ export function DataPagination({
           >
             <SelectTrigger
               id={sizeId}
-              title={`${pageSize} / trang`}
+              title={t("common", "{0} / trang", [pageSize])}
               className="min-w-16 gap-1 px-2 text-xs min-[400px]:px-3 min-[400px]:text-sm sm:px-3 sm:text-sm"
             >
               <SelectValue>
                 <span>
                   {pageSize}
-                  <span className="hidden min-[400px]:inline"> / trang</span>
+                  <span className="hidden min-[400px]:inline">
+                    {" "}
+                    {t("common", "/ trang")}
+                  </span>
                 </span>
               </SelectValue>
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false}>
               {pageSizes.map((size) => (
                 <SelectItem key={size} value={size}>
-                  {size} / trang
+                  {t("common", "{0} / trang", [size])}
                 </SelectItem>
               ))}
             </SelectContent>

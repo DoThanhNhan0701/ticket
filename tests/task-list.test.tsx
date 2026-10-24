@@ -380,9 +380,11 @@ it.each(pages)(
     await ready(label);
     fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
     expect(
-      screen.getByRole("button", { name: "Remove Frontend" }),
+      screen.getByRole("button", { name: "Bỏ chọn Frontend" }),
     ).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Remove Backend" })).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "Bỏ chọn Backend" }),
+    ).toBeTruthy();
     expect(
       (screen.getByLabelText("Ngày tạo từ") as HTMLInputElement).value,
     ).toBe("01/10/2026");

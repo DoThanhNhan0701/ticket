@@ -560,9 +560,7 @@ it("submits keyword and status together and restores both from browser history",
   ).toContain("Đang xử lý");
   await ready();
   const callsBeforeClear = listCalls().length;
-  fireEvent.click(
-    screen.getByRole("button", { name: "Clear tìm kiếm yêu cầu" }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: "Xóa tìm kiếm yêu cầu" }));
   expect(listCalls()).toHaveLength(callsBeforeClear);
   expect(lastParams().searchAll).toBe("old");
   fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));

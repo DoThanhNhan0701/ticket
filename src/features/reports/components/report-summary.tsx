@@ -18,7 +18,7 @@ import type { ReportResponse } from "../schemas/reports-schema";
 export function ReportSummaryCards({
   data,
 }: Readonly<{ data: ReportResponse["dict_bieudo_01"] }>) {
-  useLocale();
+  const locale = useLocale();
   const [selected, setSelected] = useState<string | null>(null);
   const detail = selected === null ? undefined : data[selected];
   return (
@@ -32,16 +32,18 @@ export function ReportSummaryCards({
             onClick={() => setSelected(label)}
             className="h-auto min-h-24 min-w-0 flex-col items-start gap-3 p-4 text-left sm:h-auto sm:pointer-coarse:h-auto"
             aria-label={t("reports", "{0}: {1} yêu cầu", [
-              label,
+              t("reports", t("statuses", label)),
               summary.count,
             ])}
           >
             <TruncatedText
-              text={label}
+              text={t("reports", t("statuses", label))}
               className="max-w-full shrink-0 text-xs text-muted-foreground"
             />
             <span className="text-2xl font-semibold tabular-nums">
-              {new Intl.NumberFormat("vi-VN").format(summary.count)}
+              {new Intl.NumberFormat(
+                locale === "vi" ? "vi-VN" : "en-GB",
+              ).format(summary.count)}
             </span>
           </Button>
         ))}
@@ -56,7 +58,9 @@ export function ReportSummaryCards({
           <DialogHeader>
             <DialogHeading
               icon={<ChartNoAxesColumn aria-hidden="true" />}
-              title={selected}
+              title={
+                selected === null ? null : t("reports", t("statuses", selected))
+              }
               description={t(
                 "reports",
                 "{0} yêu cầu trong khoảng thời gian đã chọn.",

@@ -6,5 +6,9 @@
   "tài liệu": "tài liệu",
   "chi phí": "chi phí",
   "tài sản": "tài sản",
-  "doanh thu": "doanh thu"
+  "doanh thu": "doanh thu",
+  "Open {0}": "Mở {0}",
+  "Internal operations and workflow system for {0} built for Rainscales.": "Hệ thống vận hành và quy trình nội bộ cho {0}, được xây dựng cho Rainscales.",
+  "Revenue": "Doanh thu",
+  "Expense": "Chi phí"
 }

@@ -46,7 +46,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   id,
   label,
   options,
-  placeholder = "Select...",
+  placeholder = t("common", "Select..."),
   noDataText = t("common", "No data"),
   required = false,
   className,
@@ -61,7 +61,11 @@ export function SelectField<TFieldValues extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      rules={required ? { required: `${label} is required.` } : undefined}
+      rules={
+        required
+          ? { required: t("common", "{0} is required.", [label]) }
+          : undefined
+      }
       render={({ field, fieldState }) => (
         <FormFieldShell
           id={id}

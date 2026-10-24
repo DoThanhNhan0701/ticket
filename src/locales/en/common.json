@@ -96,10 +96,21 @@
   "Choose {0}": "Choose {0}",
   "Enter a valid date (DD/MM/YYYY).": "Enter a valid date (DD/MM/YYYY).",
   "Required": "Required",
-  "MSNV": "MSNV",
+  "MSNV": "Employee ID",
   "Choose the Month": "Choose the Month",
   "Go to the Previous Month": "Go to the Previous Month",
   "Go to the Next Month": "Go to the Next Month",
   "Thông báo": "Notifications",
-  "Đóng thông báo": "Close notification"
+  "Đóng thông báo": "Close notification",
+  "{0} / trang": "{0} / page",
+  "/ trang": "/ page",
+  "Remove {0}": "Remove {0}",
+  "Clear {0}": "Clear {0}",
+  "Search {0}": "Search {0}",
+  "Search {0}...": "Search {0}...",
+  "{0} is required.": "{0} is required.",
+  "Select...": "Select...",
+  "Loading...": "Loading...",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel"
 }

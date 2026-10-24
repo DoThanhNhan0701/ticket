@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -210,21 +210,21 @@ export function RequestList({
         {statuses.isError && (
           <ErrorToast
             message={t("request-list", "Không tải được trạng thái: {0}", [
-              statuses.error.message,
+              translateMessage(statuses.error.message),
             ])}
           />
         )}
         {config.typeSource && types.isError && (
           <ErrorToast
             message={t("request-list", "Không tải được loại yêu cầu: {0}", [
-              types.error.message,
+              translateMessage(types.error.message),
             ])}
           />
         )}
         {config.teams && teams.isError && (
           <ErrorToast
             message={t("request-list", "Không tải được Team: {0}", [
-              teams.error.message,
+              translateMessage(teams.error.message),
             ])}
           />
         )}

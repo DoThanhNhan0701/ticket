@@ -71,10 +71,10 @@ describe("shared form controls", () => {
     const { container } = render(<CategoriesForm />);
     expect(container.querySelector("button button")).toBeNull();
     fireEvent.click(
-      screen.getByRole("button", { name: "Remove Human Resources" }),
+      screen.getByRole("button", { name: "Bỏ chọn Human Resources" }),
     );
     expect(
-      screen.queryByRole("button", { name: "Remove Human Resources" }),
+      screen.queryByRole("button", { name: "Bỏ chọn Human Resources" }),
     ).toBeNull();
     expect(screen.getByText("Chọn danh mục...")).toBeTruthy();
   });
@@ -85,7 +85,9 @@ describe("shared form controls", () => {
         maxBadgeCount={3}
       />,
     );
-    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(3);
+    expect(screen.getAllByRole("button", { name: /^Bỏ chọn / })).toHaveLength(
+      3,
+    );
     expect(screen.getByText("+3")).toBeTruthy();
     act(() =>
       resize(
@@ -93,20 +95,24 @@ describe("shared form controls", () => {
         {} as ResizeObserver,
       ),
     );
-    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(1);
+    expect(screen.getAllByRole("button", { name: /^Bỏ chọn / })).toHaveLength(
+      1,
+    );
     expect(screen.getByText("+5")).toBeTruthy();
     fireEvent.click(
-      screen.getByRole("button", { name: "Remove Human Resources" }),
+      screen.getByRole("button", { name: "Bỏ chọn Human Resources" }),
     );
     expect(screen.getByText("+4")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Remove AF" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Bỏ chọn AF" })).toBeTruthy();
     act(() =>
       resize(
         [{ contentRect: { width: 400 } } as ResizeObserverEntry],
         {} as ResizeObserver,
       ),
     );
-    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(3);
+    expect(screen.getAllByRole("button", { name: /^Bỏ chọn / })).toHaveLength(
+      3,
+    );
     expect(screen.getByText("+2")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Categories" }));
     expect(screen.getByText("Đã chọn 5/6")).toBeTruthy();
@@ -133,9 +139,9 @@ describe("shared form controls", () => {
         {} as ResizeObserver,
       ),
     );
-    expect(screen.queryByRole("button", { name: /^Remove / })).toBeNull();
+    expect(screen.queryByRole("button", { name: /^Bỏ chọn / })).toBeNull();
     expect(screen.getByText("+6")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Clear categories" }));
+    fireEvent.click(screen.getByRole("button", { name: "Xóa categories" }));
     expect(screen.queryByText("+6")).toBeNull();
     expect(screen.getByText("Chọn danh mục...")).toBeTruthy();
   });

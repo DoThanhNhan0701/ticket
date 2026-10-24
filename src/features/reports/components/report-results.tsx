@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { LoadingState } from "@/components/loading-state";
@@ -15,7 +15,7 @@ export function ReportResults({
       {report.isError && (
         <ErrorToast
           message={t("reports", "Không tải được báo cáo: {0}", [
-            report.error.message,
+            translateMessage(report.error.message),
           ])}
         />
       )}

@@ -114,5 +114,6 @@
   "Biểu mẫu có tên trường dành riêng ‘key’. Vui lòng chỉnh lại cấu hình.": "The form contains the reserved field name ‘key’. Update the configuration.",
   "Tệp Excel không có dữ liệu.": "The Excel file contains no data.",
   "STT trong tệp Excel bị trùng.": "The Excel file contains duplicate row numbers.",
-  "Tệp Excel không khớp biểu mẫu đã chọn.": "The Excel file does not match the selected form."
+  "Tệp Excel không khớp biểu mẫu đã chọn.": "The Excel file does not match the selected form.",
+  "{0} người xử lý": "{0} assignees"
 }

@@ -55,7 +55,9 @@ export function TemplateGroupFields({
           variant="ghost"
           className="col-span-2 h-auto min-h-11 min-w-0 justify-start gap-2.5 px-1 py-1 text-left sm:col-span-1 sm:h-auto sm:min-h-9"
           aria-label={t("settings-templates", "{0} phần {1}", [
-            expanded ? "Thu gọn" : "Mở rộng",
+            expanded
+              ? t("settings-templates", "Thu gọn")
+              : t("settings-templates", "Mở rộng"),
             index + 1,
           ])}
           aria-expanded={expanded}

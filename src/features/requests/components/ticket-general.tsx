@@ -204,7 +204,11 @@ export function TicketGeneral({
               ticket.list_user_received.length > 0 ? (
                 <details className="group/handlers">
                   <summary className="flex min-h-5 cursor-pointer list-none items-center justify-between gap-2 rounded-md text-sm outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
-                    <span>{ticket.list_user_received.length} người xử lý</span>
+                    <span>
+                      {t("request-detail", "{0} người xử lý", [
+                        ticket.list_user_received.length,
+                      ])}
+                    </span>
                     <ChevronDown
                       aria-hidden="true"
                       className="size-4 shrink-0 text-muted-foreground group-open/handlers:rotate-180"

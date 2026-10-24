@@ -1,4 +1,4 @@
-import { t, useLocale } from "@/i18n";
+import { t, translateMessage, useLocale } from "@/i18n";
 import { ErrorToast } from "@/components/error-toast";
 import { useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -93,7 +93,7 @@ export function ReportsPage({
     return (
       <ErrorToast
         message={t(namespace, "Không tải được bộ phận xử lý: {0}", [
-          groupsQuery.error.message,
+          translateMessage(groupsQuery.error.message),
         ])}
       />
     );
