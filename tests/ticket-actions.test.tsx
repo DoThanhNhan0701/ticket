@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { toast } from "sonner";
 import {
+  act,
   cleanup,
   fireEvent,
   render,
@@ -583,4 +584,25 @@ it("cancels without submitting and discards the previous action's draft", async 
   fireEvent.click(screen.getByRole("button", { name: "Xử lý lại" }));
   expect((screen.getByRole("textbox") as HTMLTextAreaElement).value).toBe("");
   expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it("closes the saved dialog while refresh is pending and prevents actions on stale detail", async () => {
+  let resolveRefresh!: () => void;
+  onSaved.mockReturnValueOnce(
+    new Promise<void>((resolve) => {
+      resolveRefresh = resolve;
+    }),
+  );
+  open("Tiếp nhận");
+  confirm("Tiếp nhận");
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(onSaved).toHaveBeenCalledOnce();
+  const button = screen.getByRole("button", {
+    name: "Tiếp nhận",
+  }) as HTMLButtonElement;
+  expect(button.disabled).toBe(true);
+  fireEvent.click(button);
+  expect(fetchMock).toHaveBeenCalledOnce();
+  await act(async () => resolveRefresh());
+  await waitFor(() => expect(button.disabled).toBe(false));
 });

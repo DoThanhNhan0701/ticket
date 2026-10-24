@@ -85,6 +85,15 @@ export function TicketActions({
   onSaved: () => Promise<unknown>;
 }>) {
   const [action, setAction] = useState<TicketAction | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshAfterSave = async () => {
+    setRefreshing(true);
+    try {
+      await onSaved();
+    } finally {
+      setRefreshing(false);
+    }
+  };
   const actions = availableTicketActions(ticket);
   if (!actions.length) return null;
   return (
@@ -93,6 +102,7 @@ export function TicketActions({
         role="group"
         className="flex flex-wrap justify-end gap-2"
         aria-label="Thao tác yêu cầu"
+        aria-busy={refreshing}
       >
         {actions.map((name) => {
           const Icon = icons[name];
@@ -104,6 +114,7 @@ export function TicketActions({
               size="sm"
               mobileIconOnly
               title={name}
+              disabled={refreshing}
               className={`gap-1.5 ${actionColors[name]}`}
               onClick={() => setAction(name)}
             >
@@ -119,7 +130,7 @@ export function TicketActions({
           ticket={ticket}
           action={action}
           onClose={() => setAction(null)}
-          onSaved={onSaved}
+          onSaved={refreshAfterSave}
         />
       )}
     </>
@@ -207,13 +218,14 @@ function TicketActionDialog({
       }
     },
     onSuccess: async () => {
+      const refresh = onSaved();
+      onClose();
       toast.success(`Đã thực hiện: ${operation}.`);
       try {
-        await onSaved();
+        await refresh;
       } catch {
         toast.error("Đã lưu thao tác. Vui lòng tải lại để xem trạng thái mới.");
       }
-      onClose();
     },
     onError: () => {
       if (progress.current === 0) plan.current = null;

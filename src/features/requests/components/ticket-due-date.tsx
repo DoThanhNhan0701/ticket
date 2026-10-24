@@ -1,5 +1,5 @@
 import { ErrorToast } from "@/components/error-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { CalendarDays, Pencil, Save, X } from "lucide-react";
@@ -21,18 +21,24 @@ export function TicketDueDate({
 }>) {
   const [editing, setEditing] = useState(false);
   const form = useForm({ defaultValues: { duedate: ticket.duedate } });
+  const { isDirty } = form.formState;
+  useEffect(() => {
+    // A cached ticket can refresh after the editor opens. Keep untouched inputs
+    // current without replacing a date the user is already editing.
+    if (!isDirty) form.reset({ duedate: ticket.duedate });
+  }, [ticket.duedate, form, isDirty]);
   const previous = parseRequestDate(ticket.duedate);
   const mutation = useMutation({
     mutationFn: ({ duedate }: { duedate: string }) =>
       updateTicketDueDate(ticket.id, duedate, ticket.duedate),
     onSuccess: async () => {
-      setEditing(false);
-      toast.success("Đã cập nhật ngày mong muốn.");
       try {
         await onSaved();
       } catch {
         toast.error("Đã lưu ngày mong muốn. Vui lòng tải lại yêu cầu.");
       }
+      setEditing(false);
+      toast.success("Đã cập nhật ngày mong muốn.");
     },
   });
   const editable = [1, 2, 3, 6].includes(ticket.ticket_status);
@@ -110,6 +116,7 @@ export function TicketDueDate({
           size="icon"
           aria-label="Đổi ngày mong muốn"
           title="Đổi ngày mong muốn"
+          disabled={mutation.isPending}
           className="size-9 text-muted-foreground pointer-coarse:size-11"
           onClick={() => {
             form.reset({ duedate: ticket.duedate });

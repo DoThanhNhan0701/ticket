@@ -1,3 +1,5 @@
+import "./request-create.css";
+import { RequestRowsValidation } from "./request-rows-validation";
 import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +9,7 @@ import { AsyncButton } from "@/components/ui/async-button";
 import { LoadingState } from "@/components/loading-state";
 import { useCreateRequest } from "../hooks/use-create-request";
 import { useRequestCreateSteps } from "../hooks/use-request-create-steps";
+import { useRequestStepScroll } from "../hooks/use-request-step-scroll";
 import {
   RequestGeneralFields,
   RequestNotesField,
@@ -25,6 +28,7 @@ export function RequestCreate() {
   const steps = useRequestCreateSteps(model);
   const [excelBusy, setExcelBusy] = useState(false);
   const cloneLoading = useCloneFormLoading(model);
+  const formRef = useCreateRequestStepScroll(model, steps, cloneLoading);
   const busy = model.mutation.isPending || excelBusy;
   const disabled =
     busy ||
@@ -45,9 +49,10 @@ export function RequestCreate() {
     return <LoadingState message="Đang tải yêu cầu cần sao chép..." />;
   return (
     <form
+      ref={formRef}
       aria-label="Tạo yêu cầu mới"
       noValidate
-      className="relative w-full min-w-0 space-y-4 pb-3"
+      className="request-create-form relative w-full min-w-0 space-y-4 pb-3"
       aria-busy={busy || model.lookups.isPending}
       onSubmit={(event) => {
         if (busy || waitingForData || model.created) {
@@ -57,6 +62,7 @@ export function RequestCreate() {
         void model.form.handleSubmit(model.submit)(event);
       }}
     >
+      <RequestRowsValidation form={model.form} groups={model.groups} />
       <RequestCreateMessages model={model} />
       <div className="relative min-w-0 space-y-4">
         <RequestAssignmentPanel model={model} disabled={disabled} />
@@ -199,5 +205,21 @@ function useCloneFormLoading(model: ReturnType<typeof useCreateRequest>) {
     !model.lookups.isError &&
     !model.types.isError &&
     !model.template.isError,
+  );
+}
+
+function useCreateRequestStepScroll(
+  model: ReturnType<typeof useCreateRequest>,
+  steps: ReturnType<typeof useRequestCreateSteps>,
+  cloneLoading: boolean,
+) {
+  let currentStep = 1;
+  if (steps.additional) currentStep = 4;
+  else if (steps.details) currentStep = 3;
+  else if (steps.general) currentStep = 2;
+  return useRequestStepScroll(
+    currentStep,
+    !cloneLoading && !model.draft.loading && !model.created,
+    !model.template.isFetching,
   );
 }

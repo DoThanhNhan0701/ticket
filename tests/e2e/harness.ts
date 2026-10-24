@@ -353,7 +353,7 @@ export class Harness {
   }
   sanitizeTrace(file: string) {
     execFileSync(
-      "python3",
+      process.env.PYTHON_EXECUTABLE || "python3",
       [
         "-c",
         "import sys,json,zipfile,re,os; p=sys.argv[1]; secrets=json.load(sys.stdin); z=zipfile.ZipFile(p); out=p+'.safe'; w=zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED)\nfor i in z.infolist():\n b=z.read(i.filename)\n if not i.filename.endswith(('.png','.jpeg','.jpg','.webm')):\n  try:\n   t=b.decode('utf-8'); t=re.sub(r'eyJ[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+','[REDACTED_JWT]',t)\n   for s in secrets:\n    if s:t=t.replace(s,'[REDACTED]')\n   b=t.encode()\n  except UnicodeDecodeError:pass\n w.writestr(i,b)\nw.close();z.close();os.replace(out,p)",

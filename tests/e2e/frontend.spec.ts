@@ -47,6 +47,15 @@ test("continuous frontend workflow: one browser, one context, UI-only navigation
   await h.install();
   try {
     await initialAuth(h);
+    if (process.env.E2E_NAVIGATION_ROUTE) {
+      const item = menu.find(
+        (entry) => entry.route === process.env.E2E_NAVIGATION_ROUTE,
+      );
+      if (!item) throw new Error("Unknown E2E_NAVIGATION_ROUTE");
+      await listPage(h, item);
+      await finalLogout(h);
+      return;
+    }
     if (process.env.E2E_INTERVIEWER_NAMES_ONLY === "true") {
       await interviewerNamesUi(h);
       await finalLogout(h);

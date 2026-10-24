@@ -15,7 +15,7 @@ export function RequestFormSection({
   children: ReactNode;
 }>) {
   return (
-    <Card className="min-w-0 gap-4 p-4 sm:p-5">
+    <Card data-request-step={step} className="min-w-0 gap-4 p-4 sm:p-5">
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           {step !== undefined && (

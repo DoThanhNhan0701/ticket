@@ -155,13 +155,6 @@ export function useCreateRequest() {
     () => getCreateRequestGroups(templateGroups),
     [templateGroups],
   );
-  const rows = useWatch({ control: form.control, name: "rows" });
-  const { isSubmitted } = form.formState;
-  useEffect(() => {
-    // A date can invalidate another input in its row. Revalidate both range
-    // endpoints and comparison targets, including added/deleted/imported rows.
-    if (isSubmitted) void form.trigger("rows");
-  }, [rows, groups, isSubmitted, form]);
   const previousGroup = useRef(group);
   const previousType = useRef(type);
   const initializedType = useRef(draftKey.saved?.values.ticket_type);

@@ -46,7 +46,7 @@ execFileSync(
   { stdio: "inherit" },
 );
 execFileSync(
-  "python3",
+  process.env.PYTHON_EXECUTABLE || "python3",
   [path.join(__dirname, "sanitize-e2e-artifacts.py"), artifacts],
   {
     input: JSON.stringify([env.E2E_PASSWORD, env.E2E_TEST_PASSWORD]),

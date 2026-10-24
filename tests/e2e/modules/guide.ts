@@ -188,7 +188,7 @@ export async function guideRequest(h: Harness) {
       ).toBeVisible();
       await expect(p.locator("#detail-0-f0")).toHaveValue(first);
       const filled = path.join(h.root, "guide-filled.xlsx");
-      execFileSync("python3", [
+      execFileSync(process.env.PYTHON_EXECUTABLE || "python3", [
         "tests/browser/fill-guide-workbook.py",
         original,
         filled,

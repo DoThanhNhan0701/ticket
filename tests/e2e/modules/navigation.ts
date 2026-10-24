@@ -114,6 +114,9 @@ export async function listPage(h: Harness, item: (typeof menu)[number]) {
         await expect(p).toHaveURL(
           (url) => url.searchParams.get("page_size") === "200",
         );
+        // Router updates the URL before a concurrent list render commits.
+        // Wait for the new page size in the UI before inspecting Next.
+        await expect(sizes).toContainText("200");
         await h.settle();
         if (await next.isEnabled()) {
           await next.click();

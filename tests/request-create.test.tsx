@@ -1,3 +1,4 @@
+import * as createRequestHooks from "@/features/requests/hooks/use-create-request";
 // @vitest-environment jsdom
 import { refreshFailedQueries } from "./fixtures/refresh-failed-queries";
 import { expectErrorToast } from "./fixtures/assert-error-toast";
@@ -1832,4 +1833,19 @@ it("keeps typing and submission usable when draft storage is blocked", async () 
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByRole("heading", { name: "Đã về danh sách" });
   expect(calls("/ticket_manager")).toHaveLength(1);
+});
+
+it("keeps the create form stable while typing without changing step validity", async () => {
+  const renders = vi.spyOn(createRequestHooks, "useCreateRequest");
+  renderPage();
+  await fillBase();
+  await fillDetails();
+  for (const id of ["create-description", "create-title", "detail-0-f0"]) {
+    change(id, "Warm up");
+    renders.mockClear();
+    for (let index = 1; index <= 10; index++)
+      change(id, "Typing ".repeat(index));
+    console.log(`RENDER_AUDIT ${id}: ${renders.mock.calls.length}`);
+    expect.soft(renders.mock.calls.length, id).toBe(0);
+  }
 });

@@ -76,7 +76,14 @@ export default function App() {
 
             <Route path={APP_ROUTES.notFound} element={homeRedirect} />
           </Routes>
-          <Toaster position="top-right" />
+          <Toaster
+            position="top-right"
+            offset={{ top: "calc(4rem + 12px + env(safe-area-inset-top))" }}
+            mobileOffset={{
+              top: "calc(4rem + 12px + env(safe-area-inset-top))",
+            }}
+            closeButton
+          />
         </TooltipProvider>
       </Suspense>
     </AppErrorBoundary>

@@ -146,6 +146,21 @@ export async function confirmAction(
     h.page.getByText(`Đã thực hiện: ${name}.`, { exact: true }).first(),
   ).toBeVisible();
   await expect(d).toHaveCount(0);
+  await expect
+    .poll(() =>
+      h.page.evaluate(() => {
+        const header = document.querySelector("header");
+        const toast = document.querySelector(
+          '[data-sonner-toast][data-visible="true"][data-front="true"]',
+        );
+        if (!header || !toast) return true;
+        return (
+          toast.getBoundingClientRect().top >=
+          header.getBoundingClientRect().bottom
+        );
+      }),
+    )
+    .toBe(true);
   return {
     availableActions: await h.page
       .getByRole("group", { name: "Thao tác yêu cầu", exact: true })
