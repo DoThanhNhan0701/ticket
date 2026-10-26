@@ -16,7 +16,7 @@ export interface SettingsRecord {
   name: string;
   is_active: boolean;
   created?: string;
-  updated?: string;
+  updated?: string | null;
   description?: string | null;
   username?: string;
   first_name?: string | null;

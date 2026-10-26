@@ -35,7 +35,7 @@ export const settingsUserSchema = z
     date_joined: z.string(),
     last_login: z.string().nullable(),
     date_lock: z.string().nullable(),
-    updated: z.string(),
+    updated: z.string().nullable(),
     avatar: z.string().nullable(),
     birthday: z.string().nullable(),
     team: nullableId,

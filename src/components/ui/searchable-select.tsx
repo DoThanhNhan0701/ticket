@@ -28,7 +28,6 @@ export function SearchableSelect({
   invalid = false,
   describedBy,
   className,
-  allOptionValue,
 }: Readonly<{
   id: string;
   label: string;
@@ -56,11 +55,7 @@ export function SearchableSelect({
       ),
     [options, query],
   );
-  const selected = value
-    ? (options.find((option) => option.value === value) ?? null)
-    : null;
-  const includesAll =
-    allOptionValue !== undefined && selected?.value === allOptionValue;
+  const selected = options.find((option) => option.value === value) ?? null;
   return (
     <Combobox.Root
       items={options}
@@ -146,13 +141,9 @@ export function SearchableSelect({
                   >
                     {option.label}
                   </span>
-                  {includesAll && option.value !== allOptionValue ? (
+                  <Combobox.ItemIndicator>
                     <Check className="size-4" aria-hidden="true" />
-                  ) : (
-                    <Combobox.ItemIndicator>
-                      <Check className="size-4" aria-hidden="true" />
-                    </Combobox.ItemIndicator>
-                  )}
+                  </Combobox.ItemIndicator>
                 </Combobox.Item>
               )}
             </Combobox.List>

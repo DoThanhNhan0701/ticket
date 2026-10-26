@@ -1,6 +1,10 @@
 # syntax=docker/dockerfile:1
 
+ARG BUILD_ENV=test
+
 FROM node:24-alpine AS build
+
+ARG BUILD_ENV
 
 WORKDIR /app
 
@@ -10,14 +14,16 @@ RUN npm ci --include=dev --no-audit --no-fund
 COPY index.html tsconfig.json tsconfig.app.json tsconfig.node.json vite.config.ts vitest.config.ts ./
 COPY src ./src
 COPY public ./public
-COPY .env.test ./
-RUN VITE_API_BASE_URL=/api npm run build:test
+COPY .env.${BUILD_ENV} ./
+RUN VITE_API_BASE_URL=/api npm run build -- --mode "$BUILD_ENV"
 
 FROM nginxinc/nginx-unprivileged:1.30-alpine-slim AS runtime
 
+ARG BUILD_ENV
+
 ENV NGINX_ENVSUBST_FILTER=^API_UPSTREAM$
 
-COPY .env.test /etc/ticket/runtime.env
+COPY .env.${BUILD_ENV} /etc/ticket/runtime.env
 COPY docker/15-ticket-env.envsh /docker-entrypoint.d/15-ticket-env.envsh
 COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist /usr/share/nginx/html

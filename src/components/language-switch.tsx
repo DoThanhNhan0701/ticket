@@ -5,7 +5,7 @@ function LanguageFlag({ locale }: { locale: Locale }) {
   return (
     <svg
       viewBox="0 0 60 60"
-      className="block size-full shrink-0"
+      className="block size-full shrink-0 rounded-[4.5px]"
       aria-hidden="true"
       focusable="false"
     >
@@ -51,7 +51,7 @@ export function LanguageSwitch() {
       <Select.Trigger
         aria-label={locale === "vi" ? "Ngôn ngữ" : "Language"}
         title={locale === "vi" ? "Tiếng Việt" : "English"}
-        className="m-0 block size-11 shrink-0 cursor-pointer overflow-hidden rounded-md border-0 bg-card p-0 outline-none sm:size-9 sm:pointer-coarse:size-11"
+        className="m-0 block size-11 shrink-0 cursor-pointer overflow-hidden rounded-md border border-border bg-card p-[2.5px] outline-none hover:bg-accent sm:size-9 sm:pointer-coarse:size-11"
       >
         <LanguageFlag locale={locale} />
       </Select.Trigger>
