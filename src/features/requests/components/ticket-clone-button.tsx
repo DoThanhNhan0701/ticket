@@ -41,6 +41,7 @@ export function TicketCloneButton({
         variant="outline"
         size="sm"
         mobileIconOnly
+        className="border-slate-400 bg-slate-200 font-semibold text-slate-900 hover:border-slate-500 hover:bg-slate-300 hover:text-slate-950 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-400 dark:hover:bg-slate-600 dark:hover:text-slate-50"
         title={t("request-create", "Sao chép")}
         loading={mutation.isPending}
         icon={<Copy className="size-4" />}

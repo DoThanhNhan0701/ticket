@@ -94,17 +94,17 @@ const actionDescriptions: Record<TicketActionOperation, string> = {
 };
 const actionColors: Record<TicketAction, string> = {
   "Phê duyệt":
-    "border-success-border bg-success-soft text-success hover:border-success hover:bg-success-soft hover:text-success",
+    "border-[color-mix(in_oklch,var(--success)_65%,var(--success-soft))] bg-[color-mix(in_oklch,var(--success)_25%,var(--success-soft))] text-success hover:border-success hover:bg-[color-mix(in_oklch,var(--success)_35%,var(--success-soft))] hover:text-success",
   "Tiếp nhận":
-    "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400 hover:bg-blue-100 hover:text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300 dark:hover:border-blue-600 dark:hover:bg-blue-900 dark:hover:text-blue-200",
+    "border-blue-400 bg-blue-200 text-blue-900 hover:border-blue-500 hover:bg-blue-300 hover:text-blue-950 dark:border-blue-600 dark:bg-blue-900 dark:text-blue-100 dark:hover:border-blue-500 dark:hover:bg-blue-800 dark:hover:text-blue-50",
   "Phân công":
-    "border-brand-200 bg-brand-50 text-brand-700 hover:border-brand-400 hover:bg-brand-100 hover:text-brand-800 dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200 dark:hover:border-brand-500 dark:hover:bg-brand-900 dark:hover:text-brand-100",
+    "border-brand-400 bg-brand-200 text-brand-900 hover:border-brand-500 hover:bg-brand-300 hover:text-brand-950 dark:border-brand-500 dark:bg-brand-900 dark:text-brand-100 dark:hover:border-brand-400 dark:hover:bg-brand-800 dark:hover:text-brand-50",
   "Hoàn thành":
-    "border-success-border bg-success-soft text-success hover:border-success hover:bg-success-soft hover:text-success",
-  Đóng: "border-slate-300 bg-slate-100 text-slate-700 hover:border-slate-400 hover:bg-slate-200 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-200",
-  Hủy: "border-danger-border bg-danger-soft text-destructive hover:border-destructive hover:bg-danger-soft hover:text-destructive",
+    "border-[color-mix(in_oklch,var(--success)_65%,var(--success-soft))] bg-[color-mix(in_oklch,var(--success)_25%,var(--success-soft))] text-success hover:border-success hover:bg-[color-mix(in_oklch,var(--success)_35%,var(--success-soft))] hover:text-success",
+  Đóng: "border-slate-500 bg-slate-300 text-slate-900 hover:border-slate-600 hover:bg-slate-400 hover:text-slate-950 dark:border-slate-400 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-300 dark:hover:bg-slate-600 dark:hover:text-slate-50",
+  Hủy: "border-[color-mix(in_oklch,var(--destructive)_65%,var(--danger-soft))] bg-[color-mix(in_oklch,var(--destructive)_25%,var(--danger-soft))] text-destructive hover:border-destructive hover:bg-[color-mix(in_oklch,var(--destructive)_35%,var(--danger-soft))] hover:text-destructive",
   "Xử lý lại":
-    "border-warning-border bg-warning-soft text-warning hover:border-warning hover:bg-warning-soft hover:text-warning",
+    "border-[color-mix(in_oklch,var(--warning)_65%,var(--warning-soft))] bg-[color-mix(in_oklch,var(--warning)_25%,var(--warning-soft))] text-warning hover:border-warning hover:bg-[color-mix(in_oklch,var(--warning)_35%,var(--warning-soft))] hover:text-warning",
 };
 export function TicketActions({
   ticket,
@@ -145,7 +145,7 @@ export function TicketActions({
               mobileIconOnly
               title={t("request-actions", name)}
               disabled={refreshing}
-              className={`gap-1.5 ${actionColors[name]}`}
+              className={`gap-1.5 font-semibold ${actionColors[name]}`}
               onClick={() => setAction(name)}
             >
               <Icon className="size-4" aria-hidden="true" />
