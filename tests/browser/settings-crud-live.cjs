@@ -2,7 +2,7 @@
 // Resume with the same SETTINGS_CRUD_REPORT. Only this run's fixtures may be updated.
 // PLAYWRIGHT_MODULE/BROWSER_EXECUTABLE select existing local browser tooling.
 // BASE_URL may point to the local TEST preview. Screenshots are not written.
-process.env.TEST_ENV ??= "test";
+process.env.TEST_ENV ??= "development";
 const env = require("../env.cjs");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -14,8 +14,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 
 assert.equal(
   process.env.TEST_ENV,
-  "test",
-  "Live settings writes require TEST_ENV=test",
+  "development",
+  "Live settings writes require TEST_ENV=development",
 );
 assert.equal(new URL(env.apiUrl).host, "ticket-api.aiminds.io.vn");
 assert(

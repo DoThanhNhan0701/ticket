@@ -224,8 +224,8 @@ const forms = [
     });
     contexts.push(context);
     await context.addCookies([
-      { name: "_access_token_ticket", value: auth[user].access, url: base },
-      { name: "_refresh_token_ticket", value: auth[user].refresh, url: base },
+      { name: "rainscales_ticket_access", value: auth[user].access, url: base },
+      { name: "rainscales_ticket_refresh", value: auth[user].refresh, url: base },
     ]);
     await context.route("**/api/**", (route) => {
       const request = route.request(),

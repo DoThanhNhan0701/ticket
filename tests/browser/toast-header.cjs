@@ -15,7 +15,7 @@ fs.mkdirSync(root, { recursive: true });
       const context = await browser.newContext({ viewport });
       await context.addCookies([
         {
-          name: "_access_token_ticket",
+          name: "rainscales_ticket_access",
           value: "fixture",
           url: "http://127.0.0.1:5187",
         },

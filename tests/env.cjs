@@ -3,8 +3,10 @@ const { resolve } = require("node:path");
 
 const requestedMode = process.env.TEST_ENV || "development";
 const mode =
-  { dev: "development", test: "test", prod: "production" }[requestedMode] ||
-  requestedMode;
+  { dev: "development", prod: "production" }[requestedMode] || requestedMode;
+if (!["development", "production"].includes(mode)) {
+  throw new Error("TEST_ENV must be development or production");
+}
 for (const filename of [
   `.env.${mode}.local`,
   ".env.local",

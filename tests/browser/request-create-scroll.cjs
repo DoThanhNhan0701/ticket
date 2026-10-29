@@ -50,7 +50,7 @@ const template = {
       });
       await context.addCookies([
         {
-          name: "_access_token_ticket",
+          name: "rainscales_ticket_access",
           value: "ui-fixture-token",
           url: "http://localhost:5173",
         },

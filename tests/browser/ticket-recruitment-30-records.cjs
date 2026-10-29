@@ -175,7 +175,7 @@ async function eachRecord(rows, run) {
       .click();
     await page.waitForURL((u) => u.pathname !== "/login");
     token = (await context.cookies()).find(
-      (c) => c.name === "_access_token_ticket",
+      (c) => c.name === "rainscales_ticket_access",
     ).value;
     const permissions = await api("/list_permission/");
     assert(

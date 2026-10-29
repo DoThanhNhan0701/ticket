@@ -1,12 +1,14 @@
 # syntax=docker/dockerfile:1
 
-ARG BUILD_ENV=test
+ARG BUILD_ENV=production
 
 FROM node:24-alpine AS build
 
 ARG BUILD_ENV
 
 WORKDIR /app
+
+RUN case "$BUILD_ENV" in development|production) ;; *) echo "BUILD_ENV must be development or production" >&2; exit 1 ;; esac
 
 COPY package.json package-lock.json ./
 RUN npm ci --include=dev --no-audit --no-fund

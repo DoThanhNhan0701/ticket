@@ -123,8 +123,8 @@ const record = (name, detail = {}) => {
       viewport: { width: 1440, height: 1000 },
     });
     await ctx.addCookies([
-      { name: "_access_token_ticket", value: tokens[user].access, url: base },
-      { name: "_refresh_token_ticket", value: tokens[user].refresh, url: base },
+      { name: "rainscales_ticket_access", value: tokens[user].access, url: base },
+      { name: "rainscales_ticket_refresh", value: tokens[user].refresh, url: base },
     ]);
     await ctx.route("**/api/**", async (route) => {
       const q = route.request(),

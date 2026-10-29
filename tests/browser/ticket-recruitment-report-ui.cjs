@@ -72,7 +72,7 @@ const report = {
     console.error(request.url(), request.failure()?.errorText),
   );
   await context.addCookies([
-    { name: "_access_token_ticket", value: "report-layout-fixture", url: base },
+    { name: "rainscales_ticket_access", value: "report-layout-fixture", url: base },
   ]);
   await context.route("**/api/**", (route) => {
     const path = new URL(route.request().url()).pathname;

@@ -6,7 +6,7 @@
 .idea
 .env
 .env.*
-!.env.test
+!.env.development
 !.env.production
 .npmrc
 node_modules

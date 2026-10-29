@@ -158,7 +158,11 @@ General information supports extending the due date through `/api/update_duedate
 
 ## Docker
 
-Build and run the production web on port `5174`:
+The application has two environments: `development` (`.env.development`, Aiminds API/cookies) and `production` (`.env.production`, Rainscales API/cookies). Use `npm run dev` / `npm run build:dev` for development and `npm run dev:prod` / `npm run build:prod` for production.
+
+Set `VITE_COOKIE_DOMAIN` to a shared parent domain, or a comma-separated list when the same build is served on multiple domains. Production uses `.rainscales.com.vn,.aiminds.io.vn`; the frontend selects the domain matching the current hostname. Rebuild after changing this value.
+
+Docker defaults to `BUILD_ENV=production`. Build and run the production web on port `5174`:
 
 ```bash
 docker build --pull -t rainscales-ticket:local .
@@ -168,9 +172,9 @@ docker run -d --name rainscales-ticket --restart unless-stopped \
 
 Open `http://localhost:5174`. The image builds the application with Node.js and serves the generated files with unprivileged Nginx. It includes SPA routing, compressed responses, caching for hashed assets and a health check at `/healthz`.
 
-For `https://ticket-new.aiminds.io.vn/`, configure DNS and an HTTPS reverse proxy to forward requests to this container on port `5174`. The container serves HTTP; configure the TLS certificate at the reverse proxy. Vite also allows `ticket-new.aiminds.io.vn` when forwarding to the development server.
+For `https://ticket.rainscales.com.vn/`, configure DNS and an HTTPS reverse proxy to forward requests to this container on port `5174`. The container serves HTTP; configure the TLS certificate at the reverse proxy. For the development deployment at `ticket-new.aiminds.io.vn`, build with `docker build --build-arg BUILD_ENV=development -t ticket:dev .`.
 
-Docker excludes local environment files, including `.env.local`. The browser uses the `/api` prefix defined in source; Nginx proxies `/api` and `/media` to `https://ticket-api.aiminds.io.vn` by default. To use another backend, set `API_UPSTREAM` when starting the container, using its origin only, without a path or trailing slash:
+Docker includes the selected environment file and excludes local overrides such as `.env.local`. The browser uses the `/api` prefix; Nginx proxies `/api` and `/media` to `VITE_API_BASE_URL` from the selected environment file (`https://ticket.rainscales.com.vn` for production, `https://ticket-api.aiminds.io.vn` for development). To use another backend, set `API_UPSTREAM` when starting the container, using its origin only, without a path or trailing slash:
 
 ```bash
 docker run -d --name rainscales-ticket --restart unless-stopped \
@@ -340,7 +344,7 @@ Coverage checks require at least 80% statements, 80% lines, 70% branches and 75%
 
 Unit tests cover HTTP error/status handling, Ticket sign-in and session restoration, authentication expiration, slash fallback, routing, request-list API parameters, filtering, default ordering, pagination, retries, access rules and shared form controls. Their API calls are mocked and do not contact the backend. Test API configuration is isolated from `.env.local`.
 
-`npm run test:settings:live` runs the settings workflow in a visible browser against the real TEST API. It accepts `{ "username": "...", "password": "..." }` on stdin and never writes credentials or screenshots. Set `PLAYWRIGHT_MODULE` and `BROWSER_EXECUTABLE` to existing Playwright and browser installations; `BASE_URL` can point to a local frontend running `npm run dev:test`. The runner checks that the API is the configured TEST host before permitting writes.
+`npm run test:settings:live` runs the settings workflow in a visible browser against the real TEST API. It accepts `{ "username": "...", "password": "..." }` on stdin and never writes credentials or screenshots. Set `PLAYWRIGHT_MODULE` and `BROWSER_EXECUTABLE` to existing Playwright and browser installations; `BASE_URL` can point to a local frontend running `npm run dev`. The runner checks that the API is the configured TEST host before permitting writes.
 
 The live workflow creates its own `TESTCFG_*` department, office, position, team, user, handling department and request type, then updates them, uploads/replaces a PDF, creates/updates a template, locks/reactivates records and exports users. It verifies saved records with authenticated GET requests and reloads the UI. Only this run's records may be updated; successful runs finish by locking them in dependency order. The UI has no delete operation. `SETTINGS_CRUD_REPORT` selects the JSON report and resumable fixture IDs; reuse the same report to continue an interrupted run without recreating completed steps. Progress is saved under the system temporary directory, outside Vite's watched tree, and copied to the report after the run. A failed run retains its fixtures for inspection. `HEADLESS=true` disables the visible browser; `KEEP_BROWSER_OPEN=true` leaves it open after completion.
 
@@ -357,8 +361,8 @@ Run against an authorized TEST build. Use a stable build preview to distinguish
 application navigation from development server reloads:
 
 ```bash
-npm run build:test
-npm run preview -- --host 127.0.0.1 --port 5187
+npm run build:dev
+npm run preview:dev -- --host 127.0.0.1 --port 5187
 # In another terminal, with credentials supplied by your secret manager:
 BASE_URL=http://127.0.0.1:5187 npm run test:e2e:frontend
 ```
