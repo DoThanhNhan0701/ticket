@@ -217,9 +217,9 @@ it.each(pages)(
       const row = screen
         .getByRole("link", { name: `DUE-${index}` })
         .closest("tr")!;
-      expect(row.classList.contains("bg-danger-soft")).toBe(test.red);
+      expect(row.classList.contains("bg-[#ffe2de]")).toBe(test.red);
       if (test.red)
-        expect(row.classList.contains("hover:bg-danger-soft")).toBe(true);
+        expect(row.classList.contains("hover:bg-[#ffd8d2]")).toBe(true);
     }
   },
 );
@@ -238,7 +238,7 @@ it("keeps the created-request list styling unchanged for an overdue active ticke
     screen
       .getByRole("link", { name: ticket.ticket_code })
       .closest("tr")
-      ?.classList.contains("bg-danger-soft"),
+      ?.classList.contains("bg-[#ffe2de]"),
   ).toBe(false);
 });
 
@@ -270,7 +270,7 @@ it.each(pages)(
       "Loại yêu cầu",
       "Tiêu đề",
       "Bộ phận sử dụng",
-      "Nhóm",
+      "Team",
       "Văn phòng",
       "Ngày mong muốn",
       userLabel,
@@ -336,7 +336,7 @@ it.each(pages)(
     fireEvent.change(screen.getByLabelText("Ngày tạo đến"), {
       target: { value: "31/10/2026" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Nhóm" }));
+    fireEvent.click(screen.getByRole("button", { name: "Team" }));
     fireEvent.click(await screen.findByRole("button", { name: "Frontend" }));
     fireEvent.click(screen.getByRole("button", { name: "Backend" }));
     fireEvent.keyDown(

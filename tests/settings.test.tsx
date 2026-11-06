@@ -237,7 +237,7 @@ async function fill(kind: SettingsKind) {
     change("Tên", "An");
     change("Email", "new@example.com");
     await select("Bộ phận sử dụng", "Department AI");
-    await select("Nhóm", "Team AI");
+    await select("Team", "Team AI");
     await select("Chức vụ", "Developer");
     await select("Nhóm quyền bổ sung", "Staff");
   } else change(settingsConfig[kind].fields[0].label, "Tên mới");
@@ -1264,7 +1264,7 @@ it("blocks creating a user without a position and clears the error when one is s
   change("Tên", "Không chức vụ");
   change("Email", "test-without-position@example.invalid");
   await select("Bộ phận sử dụng", "Department AI");
-  await select("Nhóm", "Team AI");
+  await select("Team", "Team AI");
   fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
   await screen.findByText("Vui lòng chọn chức vụ.");
   const position = screen.getByRole("combobox", { name: "Chức vụ" });

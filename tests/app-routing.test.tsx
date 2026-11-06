@@ -123,6 +123,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
+  vi.stubEnv("VITE_HOMEPAGE_URL", "https://homepage.aiminds.io.vn/");
   vi.mocked(loadUserGuide).mockResolvedValue(guideDocument);
   localStorage.clear();
   vi.stubGlobal(
@@ -164,6 +165,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllEnvs();
   router?.dispose();
   router = undefined;
   client.clear();
@@ -371,7 +373,7 @@ it("redirects the root to the request list with no overview navigation", async (
     screen
       .getByRole("link", { name: "Trang chủ Rainscales Ticket" })
       .getAttribute("href"),
-  ).toBe("/requests");
+  ).toBe("https://homepage.aiminds.io.vn/");
   expect(screen.getByRole("button", { name: "Đăng xuất" })).toBeTruthy();
   expect(
     screen.getByRole("button", { name: /Chuyển sang giao diện/ }),
@@ -407,7 +409,7 @@ it.each(["/", "/login", "/unknown-page"])(
       screen
         .getByRole("link", { name: "Trang chủ Rainscales Ticket" })
         .getAttribute("href"),
-    ).toBe("/tasks/mine");
+    ).toBe("https://homepage.aiminds.io.vn/");
     expect(screen.queryByText("Bạn chưa có quyền truy cập")).toBeNull();
     expect(
       screen.queryByRole("link", { name: "Danh sách yêu cầu" }),

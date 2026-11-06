@@ -264,7 +264,7 @@ export function RequestTable({
         scope === "personal-tasks" || scope === "all-tasks"
           ? (request) =>
               isRequestOverdue(request)
-                ? "bg-danger-soft hover:bg-danger-soft"
+                ? "bg-[#ffe2de] hover:bg-[#ffd8d2] dark:bg-[#342329] dark:hover:bg-[#40292f]"
                 : undefined
           : undefined
       }

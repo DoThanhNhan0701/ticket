@@ -1,7 +1,7 @@
 import { t, useLocale } from "@/i18n";
 import { APP_ROUTES } from "@/constants/routes";
 import { useRef } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { BookOpen, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { BrandLogo } from "@/components/brand-logo";
@@ -11,7 +11,6 @@ import { LoadingScreen } from "@/components/loading-screen";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getDefaultWorkspacePath } from "../navigation";
 import { AppSidebar, MobileSidebar } from "./app-sidebar";
 import { useSidebarPreferences } from "./use-sidebar-preferences";
 
@@ -25,7 +24,7 @@ export function PrivateLayout() {
     toggleGroup,
   } = useSidebarPreferences();
   const desktopToggleRef = useRef<HTMLButtonElement>(null);
-  const { token, isInitializing, username, avatarUrl, logout, permissions } =
+  const { token, isInitializing, username, avatarUrl, logout } =
     useAuthContext();
   if (isInitializing) return <LoadingScreen />;
   if (!token) return <Navigate to={APP_ROUTES.login} replace />;
@@ -67,14 +66,14 @@ export function PrivateLayout() {
                 )}
               </Button>
             </div>
-            <Link
-              to={getDefaultWorkspacePath(permissions)}
+            <a
+              href={import.meta.env.VITE_HOMEPAGE_URL}
               aria-label={t("layout", "Rainscales Ticket home")}
               className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
               <BrandLogo variant="mark" className="size-8 sm:hidden" />
               <BrandLogo className="hidden h-7 w-[clamp(5.5rem,calc(100vw-16rem),10rem)] sm:inline-block" />
-            </Link>
+            </a>
             <div className="hidden min-w-0 items-center gap-2 border-l border-border pl-2 sm:flex">
               <UserAvatar name={username} src={avatarUrl} className="h-8 w-8" />
               <span className="hidden max-w-40 truncate text-sm font-medium sm:inline">

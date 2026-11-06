@@ -225,7 +225,7 @@ async function create() {
     .fill(title);
   await choose(page, "Department", labels.department);
   await choose(page, "Văn phòng", labels.office);
-  await multi(page, "Team sử dụng", labels.team);
+  await multi(page, "Team", labels.team);
   await page.getByRole("button", { name: "Tạo yêu cầu", exact: true }).click();
   await page.getByText("Vui lòng nhập Nội dung.", { exact: true }).waitFor();
   record("create-required-fields-visible-error");
