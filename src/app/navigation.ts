@@ -57,6 +57,7 @@ export interface WorkspacePageDefinition {
 export interface NavigationGroup {
   label: string;
   icon: LucideIcon;
+  hiddenFromSidebar?: boolean;
   pages: WorkspacePageDefinition[];
 }
 
@@ -172,6 +173,7 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: "Tuyển dụng",
     icon: BriefcaseBusiness,
+    hiddenFromSidebar: true,
     pages: [
       {
         path: APP_ROUTES.recruitment.requests,

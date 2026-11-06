@@ -239,7 +239,9 @@ async function fill(kind: SettingsKind) {
     await select("Bộ phận sử dụng", "Department AI");
     await select("Team", "Team AI");
     await select("Chức vụ", "Developer");
-    await select("Nhóm quyền bổ sung", "Staff");
+    expect(
+      screen.queryByRole("combobox", { name: "Nhóm quyền bổ sung" }),
+    ).toBeNull();
   } else change(settingsConfig[kind].fields[0].label, "Tên mới");
   if (kind === "teams") await select("Bộ phận sử dụng", "Department AI");
   if (kind === "request-types") await select("Bộ phận xử lý", "ISMS");
@@ -306,7 +308,7 @@ it.each(settingsKinds)(
         bophan: "20",
         team: "11",
         chucvu: "13",
-        nhomquyen: "6",
+        nhomquyen: "",
       });
     if (kind === "handling-departments")
       expect(body).toMatchObject({
@@ -331,6 +333,10 @@ it.each(settingsKinds)(
   async (kind) => {
     renderPage(kind);
     await editorReady(kind, true);
+    if (kind === "users")
+      expect(
+        screen.queryByRole("combobox", { name: "Nhóm quyền bổ sung" }),
+      ).toBeNull();
     fireEvent.click(screen.getByRole("checkbox", { name: "Kích hoạt" }));
     fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

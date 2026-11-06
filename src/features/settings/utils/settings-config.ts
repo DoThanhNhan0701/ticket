@@ -82,14 +82,6 @@ export const settingsConfig: Record<SettingsKind, SettingsConfig> = {
         lookup: "positions",
         required: true,
       },
-      {
-        name: "nhomquyen",
-        get label() {
-          return t("settings-users", "Nhóm quyền bổ sung");
-        },
-        type: "select",
-        lookup: "permission-groups",
-      },
     ],
   },
   "requesting-departments": {

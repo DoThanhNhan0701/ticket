@@ -502,7 +502,7 @@ it("preserves encoded record identifiers when redirecting an email ticket URL", 
   ).toBe("page");
 });
 
-it("redirects interview detail links and activates the English schedule link", async () => {
+it("redirects interview detail links while keeping recruitment navigation hidden", async () => {
   auth.permissions = { can_hr_rec: true, can_cv_interview: true };
   renderApp("/detail-interview/INT-2026?tab=feedback#notes");
   expect(
@@ -511,14 +511,7 @@ it("redirects interview detail links and activates the English schedule link", a
   expect(screen.getByTestId("current-path").textContent).toBe(
     "/recruitment/interviews/INT-2026?tab=feedback#notes",
   );
-  expect(
-    screen.getByRole("link", { name: "Lịch phỏng vấn" }).getAttribute("href"),
-  ).toBe("/recruitment/interviews");
-  expect(
-    screen
-      .getByRole("link", { name: "Lịch phỏng vấn" })
-      .getAttribute("aria-current"),
-  ).toBe("page");
+  expect(screen.queryByRole("link", { name: "Lịch phỏng vấn" })).toBeNull();
 });
 
 it("enforces access rules after redirecting an old settings URL", async () => {
@@ -565,10 +558,18 @@ it("shows ticketV2 navigation groups according to the account permissions", asyn
     "Danh sách phê duyệt",
     "Nhiệm vụ của tôi",
     "Báo cáo & dữ liệu",
-    "Tuyển dụng",
     "Cấu hình hệ thống",
   ]) {
     expect(sidebar.getByText(label)).toBeTruthy();
+  }
+  expect(sidebar.queryByText("Tuyển dụng")).toBeNull();
+  for (const label of [
+    "Yêu cầu tuyển dụng",
+    "Quản lý ứng viên",
+    "Lịch phỏng vấn",
+    "Báo cáo tuyển dụng",
+  ]) {
+    expect(sidebar.queryByRole("link", { name: label })).toBeNull();
   }
   expect(sidebar.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
   expect(
@@ -601,7 +602,7 @@ it.each([
   ["/settings/users", "Người dùng", "can_system"],
   ["/settings/offices", "Văn phòng", "can_system"],
 ])(
-  "opens %s directly and highlights the correct sidebar link",
+  "opens %s directly and highlights visible sidebar links",
   async (path, label, permission) => {
     auth.permissions = { [permission]: true };
     renderApp(path);
@@ -609,9 +610,13 @@ it.each([
     const sidebar = within(
       screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
     );
-    expect(
-      sidebar.getByRole("link", { name: label }).getAttribute("aria-current"),
-    ).toBe("page");
+    if (path.startsWith("/recruitment/")) {
+      expect(sidebar.queryByRole("link", { name: label })).toBeNull();
+    } else {
+      expect(
+        sidebar.getByRole("link", { name: label }).getAttribute("aria-current"),
+      ).toBe("page");
+    }
     expect(sidebar.queryByRole("link", { name: "Tổng quan" })).toBeNull();
     if (path.startsWith("/settings/")) {
       expect(

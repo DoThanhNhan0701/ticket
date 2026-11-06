@@ -173,6 +173,7 @@ export function AppSidebar({
   const { permissions } = useAuthContext();
   const { pathname } = useLocation();
   const groups = navigationGroups
+    .filter((group) => !group.hiddenFromSidebar)
     .map((group) => ({
       ...group,
       pages: group.pages.filter((page) => canAccessPage(page, permissions)),
