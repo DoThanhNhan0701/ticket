@@ -69,7 +69,7 @@ function CollapsedSidebarGroup({
                 className={cn(
                   "relative size-11 rounded-xl",
                   active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-xs ring-1 ring-inset ring-sidebar-ring/20 hover:bg-sidebar-accent"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-xs ring-1 ring-inset ring-sidebar-ring/20 hover:bg-primary-hover"
                     : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
                 )}
               />
@@ -147,7 +147,7 @@ function SidebarLink({
       className={cn(
         "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
         active
-          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+          ? "bg-sidebar-primary text-sidebar-primary-foreground"
           : "text-muted-foreground hover:bg-muted hover:text-sidebar-foreground",
       )}
     >
