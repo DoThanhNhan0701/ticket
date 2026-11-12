@@ -1,9 +1,10 @@
 import { APP_ROUTES } from "@/constants/routes";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ForbiddenPage } from "@/pages/forbidden";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { LoadingScreen } from "@/components/loading-screen";
+import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
 import { AppErrorBoundary } from "@/components/app-error-boundary";
 import { PrivateLayout } from "@/app/layouts/private-layout";
 import { Toaster } from "@/components/ui/sonner";
@@ -15,9 +16,9 @@ import { LegacyPageRedirect } from "./legacy-page-redirect";
 const LoginPage = lazy(() =>
   import("@/pages/login").then((m) => ({ default: m.LoginPage })),
 );
-const WorkspacePage = lazy(() =>
-  import("@/pages/workspace").then((m) => ({ default: m.WorkspacePage })),
-);
+const loadWorkspacePage = () =>
+  import("@/pages/workspace").then((m) => ({ default: m.WorkspacePage }));
+const WorkspacePage = lazy(loadWorkspacePage);
 const UserGuidePage = lazy(() =>
   import("@/pages/help").then((m) => ({ default: m.UserGuidePage })),
 );
@@ -25,12 +26,32 @@ const UserGuidePage = lazy(() =>
 export default function App() {
   const auth = useAuthContext();
   const location = useLocation();
+  useEffect(() => {
+    if (
+      auth.token &&
+      auth.isInitializing &&
+      ![APP_ROUTES.login, APP_ROUTES.forbidden, APP_ROUTES.help].some(
+        (path) => path === location.pathname,
+      )
+    ) {
+      // Download the landing page while fresh permissions are checked. Page data
+      // and permission-dependent UI still wait for authentication to finish.
+      void loadWorkspacePage().catch(() => undefined);
+    }
+  }, [auth.token, auth.isInitializing, location.pathname]);
   if (auth.accessDenied && location.pathname !== APP_ROUTES.forbidden)
     return <Navigate to={APP_ROUTES.forbidden} replace />;
-  const homeRedirect = auth.isInitializing ? (
-    <LoadingScreen />
-  ) : (
-    <Navigate to={getDefaultWorkspacePath(auth.permissions)} replace />
+  const homeRedirect = (
+    <>
+      {!auth.isInitializing && (
+        <Navigate to={getDefaultWorkspacePath(auth.permissions)} replace />
+      )}
+      {location.pathname === APP_ROUTES.root ? (
+        <WorkspaceSkeleton />
+      ) : (
+        <LoadingScreen />
+      )}
+    </>
   );
 
   return (

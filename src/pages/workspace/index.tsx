@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { t, useLocale } from "@/i18n";
 import { interviewCalendarBackLink } from "@/features/recruitment/utils/interview-navigation";
 import { APP_ROUTES } from "@/constants/routes";
@@ -15,17 +16,54 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
-import { RequestChangeStatus } from "@/features/requests/components/request-change-status";
-import { RequestCreate } from "@/features/requests/components/request-create";
-import { RequestDetail } from "@/features/requests/components/request-detail";
 import type { RequestListScope } from "@/features/requests/types";
-import { SettingsList } from "@/features/settings/components/settings-list";
 import { getSettingsKind } from "@/features/settings/utils/settings-config";
-import { ReportsPage } from "@/features/reports/components/reports-page";
-import { RecruitmentList } from "@/features/recruitment/components/recruitment-list";
-import { RecruitmentCalendar } from "@/features/recruitment/components/recruitment-calendar";
-import { RecruitmentReport } from "@/features/recruitment/components/recruitment-report";
-import { InterviewCandidates } from "@/features/recruitment/components/interview-candidates";
+
+const RequestChangeStatus = lazy(() =>
+  import("@/features/requests/components/request-change-status").then((m) => ({
+    default: m.RequestChangeStatus,
+  })),
+);
+const RequestCreate = lazy(() =>
+  import("@/features/requests/components/request-create").then((m) => ({
+    default: m.RequestCreate,
+  })),
+);
+const RequestDetail = lazy(() =>
+  import("@/features/requests/components/request-detail").then((m) => ({
+    default: m.RequestDetail,
+  })),
+);
+const SettingsList = lazy(() =>
+  import("@/features/settings/components/settings-list").then((m) => ({
+    default: m.SettingsList,
+  })),
+);
+const ReportsPage = lazy(() =>
+  import("@/features/reports/components/reports-page").then((m) => ({
+    default: m.ReportsPage,
+  })),
+);
+const RecruitmentList = lazy(() =>
+  import("@/features/recruitment/components/recruitment-list").then((m) => ({
+    default: m.RecruitmentList,
+  })),
+);
+const RecruitmentCalendar = lazy(() =>
+  import("@/features/recruitment/components/recruitment-calendar").then(
+    (m) => ({ default: m.RecruitmentCalendar }),
+  ),
+);
+const RecruitmentReport = lazy(() =>
+  import("@/features/recruitment/components/recruitment-report").then((m) => ({
+    default: m.RecruitmentReport,
+  })),
+);
+const InterviewCandidates = lazy(() =>
+  import("@/features/recruitment/components/interview-candidates").then(
+    (m) => ({ default: m.InterviewCandidates }),
+  ),
+);
 
 const requestListScopesByPath: Readonly<
   Partial<Record<string, RequestListScope>>
