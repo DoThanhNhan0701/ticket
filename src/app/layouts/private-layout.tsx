@@ -6,7 +6,6 @@ import { BookOpen, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitch } from "@/components/language-switch";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { LoadingScreen } from "@/components/loading-screen";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -98,7 +97,6 @@ export function PrivateLayout() {
               <BookOpen className="size-4" aria-hidden="true" />
             </Button>
             <LanguageSwitch />
-            <ThemeToggle />
             <Button
               type="button"
               variant="outline"

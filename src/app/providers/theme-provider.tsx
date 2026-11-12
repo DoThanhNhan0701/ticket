@@ -8,7 +8,8 @@ export function AppThemeProvider({
     <ThemeProvider
       attribute="class"
       storageKey="ticket-theme"
-      defaultTheme="dark"
+      defaultTheme="light"
+      forcedTheme="light"
       enableSystem={false}
       disableTransitionOnChange
     >

@@ -200,7 +200,7 @@ export async function shell(h: Harness) {
   await h.run(
     "navigation",
     "/requests",
-    "Header logo, theme toggles and real browser history",
+    "Header logo, light theme and real browser history",
     async () => {
       const p = h.page;
       await p
@@ -210,10 +210,8 @@ export async function shell(h: Harness) {
       const theme = p.getByRole("button", {
         name: /^Switch to (light|dark) theme$/,
       });
-      const before = await theme.getAttribute("aria-label");
-      await theme.click();
-      await expect(theme).not.toHaveAttribute("aria-label", before!);
-      await theme.click();
+      await expect(theme).toHaveCount(0);
+      await expect(p.locator("html")).toHaveClass(/\blight\b/);
       await h.nav("Người dùng");
       await h.nav("Văn phòng");
       await p.goBack();

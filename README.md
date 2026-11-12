@@ -2,7 +2,7 @@
 
 Rainscales Ticket is an internal ticket workspace built with React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form and Zod.
 
-The theme preference is stored independently under `ticket-theme` in local storage.
+The interface uses the light theme on all pages, including accounts with a previously saved dark preference. Theme-switching buttons are hidden.
 
 Session cookies use the `Secure` flag on HTTPS. Cached account data is validated before it can populate the interface or sidebar permissions.
 

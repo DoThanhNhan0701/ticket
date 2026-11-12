@@ -386,8 +386,8 @@ it("redirects the root to the request list with no overview navigation", async (
   ).toBe("https://homepage.aiminds.io.vn/");
   expect(screen.getByRole("button", { name: "Đăng xuất" })).toBeTruthy();
   expect(
-    screen.getByRole("button", { name: /Chuyển sang giao diện/ }),
-  ).toBeTruthy();
+    screen.queryByRole("button", { name: /Chuyển sang giao diện/ }),
+  ).toBeNull();
   const createLink = within(screen.getByRole("main")).getByRole("link", {
     name: "Tạo yêu cầu",
   });

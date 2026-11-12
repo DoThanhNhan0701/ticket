@@ -11,12 +11,12 @@ import {
 
 const Toaster = ({ ...props }: ToasterProps) => {
   useLocale();
-  const { resolvedTheme } = useTheme();
+  const { forcedTheme, resolvedTheme } = useTheme();
 
   return (
     <Sonner
       containerAriaLabel={t("common", "Thông báo")}
-      theme={resolvedTheme === "light" ? "light" : "dark"}
+      theme={(forcedTheme ?? resolvedTheme) === "dark" ? "dark" : "light"}
       richColors
       className="toaster group"
       icons={{
