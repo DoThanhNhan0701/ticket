@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { HomepageRedirect } from "../homepage-redirect";
 import { AppSidebar, MobileSidebar } from "./app-sidebar";
 import { useSidebarPreferences } from "./use-sidebar-preferences";
+import "@/styles/homepage-dashboard-background.css";
 
 export function PrivateLayout() {
   useLocale();
@@ -30,7 +31,7 @@ export function PrivateLayout() {
   if (!token) return <HomepageRedirect />;
 
   return (
-    <div className="app-dashed-background flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">
       <header className="h-16 shrink-0 border-b border-border bg-card">
         <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.75rem,2vw,1.5rem)] lg:pl-3.5">
           <div className="flex min-w-0 items-center gap-2">
@@ -129,7 +130,7 @@ export function PrivateLayout() {
             onGroupToggle={toggleGroup}
           />
         </aside>
-        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-3 sm:p-6">
+        <main className="homepage-dashboard-background flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-3 sm:p-6">
           <div className="flex h-full min-h-full min-w-0 w-full flex-1 flex-col">
             <Outlet />
           </div>
