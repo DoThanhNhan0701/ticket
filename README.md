@@ -160,7 +160,7 @@ General information supports extending the due date through `/api/update_duedate
 
 The application has two environments: `development` (`.env.development`, Aiminds API/cookies) and `production` (`.env.production`, Rainscales API/cookies). Use `npm run dev` / `npm run build:dev` for development and `npm run dev:prod` / `npm run build:prod` for production.
 
-Set `VITE_HOMEPAGE_URL=https://homepage.aiminds.io.vn/` in `.env.development` and `VITE_HOMEPAGE_URL=https://homepage.rainscales.com.vn/` in `.env.production`. Clicking the header logo opens this URL in the current tab. Restart Vite or rebuild after changing it.
+Set `VITE_HOMEPAGE_URL=https://homepage.aiminds.io.vn/` in `.env.development` and `VITE_HOMEPAGE_URL=https://homepage.rainscales.com.vn/` in `.env.production`. Clicking the header logo opens this URL in the current tab. After session initialization, visitors without a Ticket session are redirected from protected routes to this URL. Clicking Sign Out clears the Ticket session and query cache, then redirects to this URL in the current tab. The explicit `/login` route remains available for Ticket sign-in. Restart Vite or rebuild after changing it.
 
 Set `VITE_COOKIE_DOMAIN` to a shared parent domain, or a comma-separated list when the same build is served on multiple domains. Production uses `.rainscales.com.vn,.aiminds.io.vn`; the frontend selects the domain matching the current hostname. Rebuild after changing this value.
 

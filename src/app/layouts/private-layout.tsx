@@ -1,7 +1,7 @@
 import { t, useLocale } from "@/i18n";
 import { APP_ROUTES } from "@/constants/routes";
 import { useRef } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { BookOpen, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { BrandLogo } from "@/components/brand-logo";
@@ -11,6 +11,7 @@ import { LoadingScreen } from "@/components/loading-screen";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { HomepageRedirect } from "../homepage-redirect";
 import { AppSidebar, MobileSidebar } from "./app-sidebar";
 import { useSidebarPreferences } from "./use-sidebar-preferences";
 
@@ -27,7 +28,7 @@ export function PrivateLayout() {
   const { token, isInitializing, username, avatarUrl, logout } =
     useAuthContext();
   if (isInitializing) return <LoadingScreen />;
-  if (!token) return <Navigate to={APP_ROUTES.login} replace />;
+  if (!token) return <HomepageRedirect />;
 
   return (
     <div className="app-dashed-background flex h-dvh min-h-0 flex-col overflow-hidden bg-background text-foreground">

@@ -112,6 +112,7 @@ vi.mock("@/features/help/api/user-guide-api", async (importOriginal) => {
 let client: QueryClient;
 let auth: AuthContextValue;
 let guideDocument: GuideDocument;
+const replaceLocationMock = vi.fn();
 
 beforeAll(async () => {
   // Keep cold Vite module transformation outside UI assertion deadlines.
@@ -124,6 +125,11 @@ beforeAll(async () => {
 
 beforeEach(() => {
   vi.stubEnv("VITE_HOMEPAGE_URL", "https://homepage.aiminds.io.vn/");
+  replaceLocationMock.mockReset();
+  vi.stubGlobal("location", {
+    ...window.location,
+    replace: replaceLocationMock,
+  });
   vi.mocked(loadUserGuide).mockResolvedValue(guideDocument);
   localStorage.clear();
   vi.stubGlobal(
@@ -355,8 +361,12 @@ it("moves between guide chapters and disables navigation at the boundaries", asy
 it("requires sign-in before opening the user guide", async () => {
   auth.token = null;
   renderApp("/help");
-  await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
-  expect(screen.getByTestId("current-path").textContent).toBe("/login");
+  await waitFor(() =>
+    expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+      "https://homepage.aiminds.io.vn/",
+    ),
+  );
+  expect(vi.mocked(loadUserGuide)).not.toHaveBeenCalled();
 });
 
 it("redirects the root to the request list with no overview navigation", async () => {
@@ -438,12 +448,16 @@ it.each([
   "/settings/users",
   "/tickets/42",
   "/chopheduyet",
+  "/unknown-page",
 ])("protects %s when signed out", async (path) => {
   auth.token = null;
+  auth.permissions = null;
   renderApp(path);
-  expect(
-    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+      "https://homepage.aiminds.io.vn/",
+    ),
+  );
   expect(
     screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
   ).toBeNull();

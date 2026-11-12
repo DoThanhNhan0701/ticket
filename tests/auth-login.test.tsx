@@ -26,6 +26,7 @@ import {
 } from "@/constants/auth";
 
 const fetchMock = vi.fn<typeof fetch>();
+const replaceLocationMock = vi.fn();
 beforeAll(async () => {
   // Transform the real lazy route outside DOM assertion deadlines.
   // Browser E2E still exercises the cold navigation and loading boundary.
@@ -61,6 +62,12 @@ beforeEach(() => {
   localStorage.clear();
   queryClient.clear();
   window.history.replaceState(null, "", "/login");
+  vi.stubEnv("VITE_HOMEPAGE_URL", "https://homepage.example.test/");
+  replaceLocationMock.mockReset();
+  vi.stubGlobal("location", {
+    ...window.location,
+    replace: replaceLocationMock,
+  });
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
   vi.stubGlobal(
@@ -80,6 +87,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllEnvs();
   clearAuthSession();
   deleteCookie("_access_token_homepage");
   queryClient.clear();
@@ -338,14 +346,15 @@ it("signs out and clears Ticket credentials, account information and cached data
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   queryClient.setQueryData(["private-data"], "cached");
   fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
-  expect(
-    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
-  ).toBeTruthy();
+  await waitFor(() => expect(replaceLocationMock).toHaveBeenCalledOnce());
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
   expect(localStorage.getItem(STORAGE_USERNAME_KEY)).toBeNull();
   expect(localStorage.getItem(STORAGE_USER_PERMISSION_KEY)).toBeNull();
   expect(queryClient.getQueryData(["private-data"])).toBeUndefined();
+  expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+    "https://homepage.example.test/",
+  );
 });
 
 it("does not reuse a Homepage session for the Ticket API", async () => {
@@ -550,6 +559,7 @@ it("refreshes expired access during restoration and updates the provider token",
     )
     .mockResolvedValueOnce(Response.json(account));
   renderApp("/");
+  expect(replaceLocationMock).not.toHaveBeenCalled();
   expect(
     await screen.findByRole("heading", { name: "Danh sách yêu cầu" }),
   ).toBeTruthy();
@@ -623,9 +633,11 @@ it("does not recreate the session when a refresh finishes after logout", async (
     );
     await outcome;
   });
-  expect(
-    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" }),
-  ).toBeTruthy();
+  await waitFor(() =>
+    expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+      "https://homepage.example.test/",
+    ),
+  );
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
 });
@@ -681,7 +693,11 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
     await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
     fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
-    await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
+    await waitFor(() =>
+      expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+        "https://homepage.example.test/",
+      ),
+    );
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   },
 );
