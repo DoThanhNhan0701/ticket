@@ -345,7 +345,10 @@ it("signs out and clears Ticket credentials, account information and cached data
   await submitLogin();
   await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
   queryClient.setQueryData(["private-data"], "cached");
-  fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: "Menu tài khoản của Ticket User" }),
+  );
+  fireEvent.click(screen.getByRole("menuitem", { name: "Đăng xuất" }));
   await waitFor(() => expect(replaceLocationMock).toHaveBeenCalledOnce());
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
@@ -626,7 +629,10 @@ it("does not recreate the session when a refresh finishes after logout", async (
     status: 409,
   });
   await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
-  fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: "Menu tài khoản của Ticket User" }),
+  );
+  fireEvent.click(screen.getByRole("menuitem", { name: "Đăng xuất" }));
   await act(async () => {
     finishRefresh(
       Response.json({ access: "late-access", refresh: "late-refresh" }),
@@ -692,7 +698,10 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
     await submitLogin();
     await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
-    fireEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Menu tài khoản của Ticket User" }),
+    );
+    fireEvent.click(screen.getByRole("menuitem", { name: "Đăng xuất" }));
     await waitFor(() =>
       expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
         "https://homepage.example.test/",

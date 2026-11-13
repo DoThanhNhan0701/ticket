@@ -273,10 +273,17 @@ it("preserves unsent files and reply text across all detail tabs, warning only w
 it("opens the guide from the header and lets signed-in users read chapters without feature permissions", async () => {
   auth.permissions = {};
   renderApp("/help?chapter=2");
-  const help = await screen.findByRole("button", {
+  const account = await screen.findByRole("button", {
+    name: "Menu tài khoản của ticket-user",
+  });
+  expect(account.closest("header")).toBeTruthy();
+  expect(
+    screen.queryByRole("menuitem", { name: "Hướng dẫn sử dụng" }),
+  ).toBeNull();
+  fireEvent.click(account);
+  const help = await screen.findByRole("menuitem", {
     name: "Hướng dẫn sử dụng",
   });
-  expect(help.closest("header")).toBeTruthy();
   fireEvent.click(help);
   await screen.findByRole("heading", { name: "1. Bắt đầu sử dụng" });
   expect(screen.getByTestId("current-path").textContent).toBe("/help");
@@ -295,6 +302,26 @@ it("opens the guide from the header and lets signed-in users read chapters witho
     "/docs/Rainscales-Ticket-Huong-dan-su-dung-toan-bo-website.docx",
   );
   expect(download.hasAttribute("download")).toBe(true);
+});
+
+it("keeps account actions inside the popover and signs out only when selected", async () => {
+  renderApp("/requests");
+  const account = await screen.findByRole("button", {
+    name: "Menu tài khoản của ticket-user",
+  });
+  expect(screen.queryByRole("menuitem", { name: "Đăng xuất" })).toBeNull();
+  fireEvent.click(account);
+  const popover = await screen.findByRole("menu");
+  expect(
+    within(popover).getByRole("menuitem", { name: "Hướng dẫn sử dụng" }),
+  ).toBeTruthy();
+  expect(
+    within(popover).getByRole("menuitem", { name: "Ngôn ngữ" }),
+  ).toBeTruthy();
+  expect(auth.logout).not.toHaveBeenCalled();
+  fireEvent.click(within(popover).getByRole("menuitem", { name: "Đăng xuất" }));
+  expect(auth.logout).toHaveBeenCalledOnce();
+  await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
 });
 
 it("falls back to the first guide chapter for an invalid chapter link", async () => {
@@ -384,7 +411,10 @@ it("redirects the root to the request list with no overview navigation", async (
       .getByRole("link", { name: "Trang chủ Rainscales Ticket" })
       .getAttribute("href"),
   ).toBe("https://homepage.aiminds.io.vn/");
-  expect(screen.getByRole("button", { name: "Đăng xuất" })).toBeTruthy();
+  expect(screen.queryByRole("menuitem", { name: "Đăng xuất" })).toBeNull();
+  expect(
+    screen.getByRole("button", { name: "Menu tài khoản của ticket-user" }),
+  ).toBeTruthy();
   expect(
     screen.queryByRole("button", { name: /Chuyển sang giao diện/ }),
   ).toBeNull();
@@ -772,10 +802,14 @@ it("collapses the desktop sidebar while retaining accessible navigation", async 
   fireEvent.click(screen.getByRole("button", { name: "Thu gọn sidebar" }));
   const expand = screen.getByRole("button", { name: "Mở rộng sidebar" });
   expect(expand.getAttribute("aria-expanded")).toBe("false");
+  expect(expand.closest("[data-sidebar-controls]")).not.toBeNull();
+  expect(expand.closest("header")).toBeNull();
   const sidebar = within(
     screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
-  expect(sidebar.getAllByRole("button")).toHaveLength(2);
+  expect(
+    within(sidebar.getByRole("navigation")).getAllByRole("button"),
+  ).toHaveLength(2);
   expect(sidebar.queryByRole("link")).toBeNull();
   fireEvent.click(sidebar.getByRole("button", { name: "Báo cáo & dữ liệu" }));
   const flyout = await screen.findByRole("dialog", {
@@ -841,7 +875,9 @@ it("keeps collapsed flyouts permission-filtered and highlights the list for tick
   const sidebar = within(
     screen.getByRole("complementary", { name: "Thanh điều hướng Ticket" }),
   );
-  expect(sidebar.getAllByRole("button")).toHaveLength(1);
+  expect(
+    within(sidebar.getByRole("navigation")).getAllByRole("button"),
+  ).toHaveLength(1);
   const trigger = sidebar.getByRole("button", { name: "Yêu cầu" });
   expect(trigger.getAttribute("aria-current")).toBe("true");
   fireEvent.click(trigger);

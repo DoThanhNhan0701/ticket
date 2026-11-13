@@ -2,7 +2,14 @@ import { t, useLocale } from "@/i18n";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@base-ui/react/dialog";
-import { ChevronDown, Menu, ShieldCheck, LockKeyhole, X } from "lucide-react";
+import {
+  ChevronDown,
+  Menu,
+  LockKeyhole,
+  PanelLeftClose,
+  PanelLeftOpen,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogHeading } from "@/components/ui/dialog";
 import {
@@ -27,6 +34,8 @@ import {
 
 interface SidebarProps {
   collapsed?: boolean;
+  collapseButtonRef?: RefObject<HTMLButtonElement | null>;
+  onToggleCollapsed?: () => void;
   onNavigate?: () => void;
   groupsOpen: Record<string, boolean>;
   onGroupToggle: (label: string, open: boolean) => void;
@@ -70,7 +79,7 @@ function CollapsedSidebarGroup({
                   "relative size-11 rounded-xl",
                   active
                     ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-xs ring-1 ring-inset ring-sidebar-ring/20 hover:bg-primary-hover"
-                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
+                    : "ticket-menu-item text-muted-foreground",
                 )}
               />
             }
@@ -148,7 +157,7 @@ function SidebarLink({
         "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
         active
           ? "bg-sidebar-primary text-sidebar-primary-foreground"
-          : "text-muted-foreground hover:bg-muted hover:text-sidebar-foreground",
+          : "ticket-menu-item text-muted-foreground",
       )}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
@@ -165,6 +174,8 @@ function SidebarLink({
 
 export function AppSidebar({
   collapsed = false,
+  collapseButtonRef,
+  onToggleCollapsed,
   onNavigate,
   groupsOpen,
   onGroupToggle,
@@ -184,11 +195,13 @@ export function AppSidebar({
     <div className="flex h-full min-h-0 flex-col text-sidebar-foreground">
       <nav
         aria-label={t("layout", "Điều hướng Ticket")}
-        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
+        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
       >
         <div
           className={cn(
-            collapsed ? "flex flex-col items-center gap-2" : "space-y-1",
+            collapsed
+              ? "flex w-full max-w-12 flex-col items-center gap-2"
+              : "space-y-1 lg:w-[calc(18rem-1px-1.5rem)]",
           )}
         >
           {groups.length === 0 && (
@@ -265,7 +278,7 @@ export function AppSidebar({
               >
                 <summary
                   className={cn(
-                    "flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-sidebar-ring [&::-webkit-details-marker]:hidden",
+                    "ticket-menu-item flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring [&::-webkit-details-marker]:hidden",
                     active
                       ? "text-sidebar-accent-foreground"
                       : "text-sidebar-foreground",
@@ -292,16 +305,35 @@ export function AppSidebar({
           })}
         </div>
       </nav>
-
-      <div
-        title={collapsed ? "Rainscales · Internal workspace" : undefined}
-        className="flex min-h-12 shrink-0 items-center justify-center gap-2 border-t border-sidebar-border px-4 py-3 text-xs text-muted-foreground"
-      >
-        <ShieldCheck className="size-3.5 shrink-0" aria-hidden="true" />
-        <span className={collapsed ? "sr-only" : undefined}>
-          {t("layout", "Rainscales · Internal workspace")}
-        </span>
-      </div>
+      {onToggleCollapsed && (
+        <Button
+          data-sidebar-controls=""
+          ref={collapseButtonRef}
+          size="icon"
+          type="button"
+          variant="ghost"
+          className="ticket-menu-item h-[69px] w-full shrink-0 cursor-pointer rounded-none border-0 border-t border-sidebar-border bg-transparent shadow-none focus-visible:ring-inset active:translate-y-0 aria-expanded:bg-transparent"
+          aria-label={
+            collapsed
+              ? t("layout", "Mở rộng sidebar")
+              : t("layout", "Thu gọn sidebar")
+          }
+          title={
+            collapsed
+              ? t("layout", "Mở rộng sidebar")
+              : t("layout", "Thu gọn sidebar")
+          }
+          aria-expanded={!collapsed}
+          aria-controls="desktop-sidebar"
+          onClick={onToggleCollapsed}
+        >
+          {collapsed ? (
+            <PanelLeftOpen className="size-4" aria-hidden="true" />
+          ) : (
+            <PanelLeftClose className="size-4" aria-hidden="true" />
+          )}
+        </Button>
+      )}
     </div>
   );
 }
@@ -335,7 +367,7 @@ export function MobileSidebar({
           <Button
             variant="outline"
             size="icon"
-            className="size-11 lg:hidden"
+            className="size-11 border-primary/30 bg-transparent hover:border-primary/50 hover:bg-white/60 lg:hidden"
             aria-label={t("layout", "Mở menu điều hướng")}
           />
         }

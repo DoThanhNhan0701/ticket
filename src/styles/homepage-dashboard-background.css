@@ -1,10 +1,13 @@
 .homepage-dashboard-background {
-  /* Match the Homepage /dashboard backdrop. */
-  --portal-grid: rgba(99, 121, 160, 0.045);
-  --portal-mesh-base: #eff0f6;
-  --portal-mesh-blue: rgba(113, 151, 244, 0.66);
-  --portal-mesh-cyan: rgba(146, 221, 245, 0.64);
-  --portal-mesh-violet: rgba(181, 178, 239, 0.38);
+  /* A softer Homepage-style backdrop for data-heavy Ticket screens. */
+  --portal-grid: rgba(99, 121, 160, 0.025);
+  --portal-mesh-base: #f3f5fa;
+  --portal-mesh-blue: rgba(113, 151, 244, 0.32);
+  --portal-mesh-cyan: rgba(146, 221, 245, 0.28);
+  --portal-mesh-violet: rgba(181, 178, 239, 0.18);
+  --workspace-skeleton-fill: #dce6f8;
+  --workspace-skeleton-soft: #edf2ff;
+  --workspace-skeleton-border: #d5dff2;
   position: relative;
   isolation: isolate;
   background:
@@ -37,7 +40,7 @@
   inset: 0;
   pointer-events: none;
   border-radius: inherit;
-  opacity: 0.035;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23000' filter='url(%23grain)' opacity='.7' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
 }
 .homepage-dashboard-background::after {

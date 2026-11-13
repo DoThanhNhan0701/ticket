@@ -74,5 +74,7 @@
   "Xem hồ sơ và thông tin phỏng vấn của ứng viên.": "View candidate profiles and interview information.",
   "Switch to light theme": "Switch to light theme",
   "Switch to dark theme": "Switch to dark theme",
-  "Loading your Ticket workspace...": "Loading your Ticket workspace..."
+  "Loading your Ticket workspace...": "Loading your Ticket workspace...",
+  "Account menu for {0}": "Account menu for {0}",
+  "Language": "Language"
 }

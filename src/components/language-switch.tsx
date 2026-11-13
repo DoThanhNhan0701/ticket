@@ -1,4 +1,5 @@
 import { Select } from "@base-ui/react/select";
+import { cn } from "@/lib/utils";
 import { setLocale, useLocale, type Locale } from "@/i18n";
 
 function LanguageFlag({ locale }: { locale: Locale }) {
@@ -39,7 +40,9 @@ const languages = [
   { value: "en", label: "English" },
 ] as const;
 
-export function LanguageSwitch() {
+export function LanguageSwitch({
+  className,
+}: Readonly<{ className?: string }>) {
   const locale = useLocale();
   return (
     <Select.Root
@@ -51,7 +54,10 @@ export function LanguageSwitch() {
       <Select.Trigger
         aria-label={locale === "vi" ? "Ngôn ngữ" : "Language"}
         title={locale === "vi" ? "Tiếng Việt" : "English"}
-        className="m-0 block size-11 shrink-0 cursor-pointer overflow-hidden rounded-md border border-border bg-card p-[2.5px] outline-none hover:bg-accent sm:size-9 sm:pointer-coarse:size-11"
+        className={cn(
+          "m-0 block size-11 shrink-0 cursor-pointer overflow-hidden rounded-md border border-border bg-card p-[2.5px] outline-none hover:bg-accent sm:size-9 sm:pointer-coarse:size-11",
+          className,
+        )}
       >
         <LanguageFlag locale={locale} />
       </Select.Trigger>
@@ -70,7 +76,7 @@ export function LanguageSwitch() {
                   value={language.value}
                   aria-label={language.label}
                   title={language.label}
-                  className="m-0 flex min-h-9 w-full cursor-pointer items-center border-0 px-3 py-2 text-sm outline-none data-highlighted:bg-accent data-highlighted:text-accent-foreground pointer-coarse:min-h-11"
+                  className="ticket-menu-item m-0 flex min-h-9 w-full cursor-pointer items-center border-0 px-3 py-2 text-sm outline-none pointer-coarse:min-h-11"
                 >
                   <Select.ItemText lang={language.value}>
                     {language.label}

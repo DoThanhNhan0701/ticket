@@ -1,0 +1,79 @@
+.ticket-menu-item {
+  --menu-hover-background: #edf2ff;
+  --menu-hover-foreground: #4664a8;
+  --menu-hover-border: #bccbed;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .ticket-menu-item:hover {
+    background-color: var(--menu-hover-background);
+    color: var(--menu-hover-foreground);
+    border-color: var(--menu-hover-border);
+  }
+
+  .ticket-menu-item:hover svg {
+    color: inherit;
+  }
+}
+
+.ticket-menu-item:is(:focus-visible, [data-highlighted]) {
+  background-color: var(--menu-hover-background);
+  color: var(--menu-hover-foreground);
+  border-color: var(--menu-hover-border);
+}
+
+.ticket-menu-item:is(:focus-visible, [data-highlighted]) svg {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-menu-item {
+    transition: none;
+  }
+}
+
+.ticket-account-menu {
+  width: 228px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 12px 36px rgba(36, 52, 91, 0.12);
+  outline: none;
+}
+
+.ticket-account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+.ticket-account-menu-item > svg {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.ticket-account-menu-separator {
+  height: 1px;
+  margin: 5px 6px;
+  background: var(--border);
+}
+
+@media (pointer: coarse) {
+  .ticket-account-menu-item {
+    min-height: 44px;
+  }
+}
