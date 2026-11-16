@@ -8,7 +8,11 @@ import {
 } from "@/features/auth/api/auth-api";
 import type { UserPermissionResponse } from "@/features/auth/types";
 import { getCookie } from "@/lib/cookies";
-import { getStorageItem, setStorageItem } from "@/lib/storage";
+import {
+  deleteStorageItem,
+  getStorageItem,
+  setStorageItem,
+} from "@/lib/storage";
 import {
   COOKIE_TOKEN_KEY,
   COOKIE_REFRESH_KEY,
@@ -19,6 +23,7 @@ import {
   STORAGE_AUTH_ENVIRONMENT_KEY,
 } from "@/constants";
 import {
+  adoptExternalAuthSession,
   clearAuthSession,
   getAuthSessionVersion,
   startAuthSession,
@@ -27,6 +32,16 @@ import { ApiError } from "@/lib/api/api-error";
 import { getAuthEnvironment } from "@/lib/auth-environment";
 import { AuthContext } from "../context/auth-context";
 import { cachedUserPermissionSchema } from "../schemas/account-schema";
+
+function readCookieSession() {
+  const access = getCookie(COOKIE_TOKEN_KEY);
+  const refresh = getCookie(COOKIE_REFRESH_KEY);
+  return {
+    access,
+    refresh,
+    key: JSON.stringify([access ?? null, refresh ?? null]),
+  };
+}
 
 export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   useLocale();
@@ -37,6 +52,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [isInitializing, setIsInitializing] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
   const isInitializedRef = useRef(false);
+  const cookieSessionRef = useRef("");
 
   const resetAuthState = () => {
     setToken(null);
@@ -46,6 +62,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   };
 
   const applyUserPermission = (permission: UserPermissionResponse) => {
+    setAccessDenied(false);
     setUserPermission(permission);
     setUsername(permission.username);
     setStorageItem(STORAGE_USER_PERMISSION_KEY, permission);
@@ -86,8 +103,11 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         clearAuthSession();
       queryClient.clear();
     };
+    cookieSessionRef.current = readCookieSession().key;
     const syncSession = () => {
-      const savedToken = getCookie(COOKIE_TOKEN_KEY);
+      const current = readCookieSession();
+      cookieSessionRef.current = current.key;
+      const savedToken = current.access;
       // A new sign-in still needs to finish loading its account information.
       setToken((current) => (current ? (savedToken ?? null) : null));
       if (!savedToken) {
@@ -119,16 +139,20 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
         const environment = getStorageItem<unknown>(
           STORAGE_AUTH_ENVIRONMENT_KEY,
         );
-        if (environment && environment !== getAuthEnvironment()) {
-          clearAuthSession();
+        const environmentChanged =
+          environment && environment !== getAuthEnvironment();
+        if (environmentChanged) {
+          // The marker describes cached account data, not newly issued SSO cookies.
+          deleteStorageItem(STORAGE_USERNAME_KEY);
+          deleteStorageItem(STORAGE_USER_PERMISSION_KEY);
+          deleteStorageItem(STORAGE_AUTH_ENVIRONMENT_KEY);
           queryClient.clear();
-          setAccessDenied(true);
-          setIsInitializing(false);
-          return;
         }
         setToken(savedToken ?? null);
-        if (typeof savedUsername === "string") setUsername(savedUsername);
-        if (savedPermission.success) setUserPermission(savedPermission.data);
+        if (!environmentChanged) {
+          if (typeof savedUsername === "string") setUsername(savedUsername);
+          if (savedPermission.success) setUserPermission(savedPermission.data);
+        }
 
         // Refresh the Ticket account and permissions on page reload.
         await fetchUserPermission();
@@ -140,6 +164,54 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     };
 
     initAuth();
+  }, []);
+
+  useEffect(() => {
+    let recovering = false;
+    let disposed = false;
+    const recoverHomepageSession = async () => {
+      const current = readCookieSession();
+      if (disposed || recovering || current.key === cookieSessionRef.current)
+        return;
+      recovering = true;
+      cookieSessionRef.current = current.key;
+      const version = adoptExternalAuthSession();
+      setToken(null);
+      setUsername("");
+      setUserPermission(null);
+      setAccessDenied(false);
+      setIsInitializing(true);
+      deleteStorageItem(STORAGE_USERNAME_KEY);
+      deleteStorageItem(STORAGE_USER_PERMISSION_KEY);
+      deleteStorageItem(STORAGE_AUTH_ENVIRONMENT_KEY);
+      void queryClient.cancelQueries();
+      queryClient.clear();
+      try {
+        if (current.access || current.refresh) await fetchUserPermission();
+      } finally {
+        if (!disposed && getAuthSessionVersion() === version) {
+          setToken(getCookie(COOKIE_TOKEN_KEY) ?? null);
+          setIsInitializing(false);
+        }
+        recovering = false;
+        if (!disposed && readCookieSession().key !== cookieSessionRef.current) {
+          void recoverHomepageSession();
+        }
+      }
+    };
+    const onFocus = () => {
+      void recoverHomepageSession();
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") onFocus();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      disposed = true;
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
 
   const loginMutation = useMutation({

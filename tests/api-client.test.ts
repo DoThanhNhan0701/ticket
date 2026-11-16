@@ -555,3 +555,38 @@ describe("HTTP client", () => {
     });
   });
 });
+
+it("does not let a late old-session 403 erase cookies supplied by Homepage", async () => {
+  let finish!: (response: Response) => void;
+  fetchMock.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const pending = getRequest("/list_permission/");
+  storedCookies.set(COOKIE_TOKEN_KEY, "fresh-homepage-ticket-access");
+  storedCookies.set(COOKIE_REFRESH_KEY, "fresh-homepage-ticket-refresh");
+  finish(jsonResponse({ detail: "Forbidden" }, 403));
+  await expect(pending).rejects.toMatchObject({ status: 409 });
+  expect(clearAuthSession).not.toHaveBeenCalled();
+  expect(window.dispatchEvent).not.toHaveBeenCalled();
+  expect(storedCookies.get(COOKIE_TOKEN_KEY)).toBe(
+    "fresh-homepage-ticket-access",
+  );
+});
+
+it("does not expose an old account response after Homepage replaces the access cookie", async () => {
+  let finish!: (response: Response) => void;
+  fetchMock.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const pending = getRequest("/list_permission/");
+  storedCookies.set(COOKIE_TOKEN_KEY, "another-homepage-account");
+  finish(jsonResponse({ private: "old account data" }));
+  await expect(pending).rejects.toMatchObject({ status: 409 });
+  expect(clearAuthSession).not.toHaveBeenCalled();
+});

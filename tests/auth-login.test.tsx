@@ -398,7 +398,7 @@ it.each([
   },
 );
 
-it("rejects a session created for another environment before making API calls", async () => {
+it("rejects wrong-environment credentials when the current account API denies them", async () => {
   setCookie(COOKIE_TOKEN_KEY, tokens.access);
   setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
   localStorage.setItem(
@@ -406,16 +406,23 @@ it("rejects a session created for another environment before making API calls", 
     "production:https://other-api.example/api",
   );
   queryClient.setQueryData(["private-data"], "cached");
+  fetchMock.mockResolvedValueOnce(
+    Response.json({ detail: "Forbidden" }, { status: 403 }),
+  );
   renderApp("/requests");
   await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
-  expect(fetchMock).not.toHaveBeenCalled();
+  expect(fetchMock).toHaveBeenCalledOnce();
   expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   expect(queryClient.getQueryData(["private-data"])).toBeUndefined();
   expect(
     JSON.parse(screen.getByTestId("account").textContent ?? "{}").pathname,
   ).toBe("/forbidden");
   fireEvent.click(screen.getByRole("button", { name: "Đăng nhập lại" }));
-  await screen.findByRole("button", { name: "Đăng nhập vào Ticket" });
+  await waitFor(() =>
+    expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(
+      "https://homepage.example.test/",
+    ),
+  );
 });
 
 it("redirects rejected account permissions to the denied page instead of using cached permissions", async () => {
@@ -710,3 +717,130 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
   },
 );
+
+it("validates fresh Homepage cookies instead of discarding them for an old environment marker", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  localStorage.setItem(
+    STORAGE_AUTH_ENVIRONMENT_KEY,
+    "production:https://previous-api.example/api",
+  );
+  localStorage.setItem(
+    STORAGE_USER_PERMISSION_KEY,
+    JSON.stringify({
+      username: "Old User",
+      userId: 1,
+      permission: { can_system: true },
+    }),
+  );
+  fetchMock.mockResolvedValueOnce(Response.json(account));
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  expect(fetchMock).toHaveBeenCalledOnce();
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+  expect(
+    JSON.parse(screen.getByTestId("account").textContent ?? "{}").userId,
+  ).toBe(42);
+});
+
+it("adopts Homepage cookies on focus and leaves a previous denied screen after server verification", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  setCookie(COOKIE_TOKEN_KEY, "old-ticket-access");
+  fetchMock.mockResolvedValueOnce(
+    Response.json({ detail: "Forbidden" }, { status: 403 }),
+  );
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  fetchMock.mockResolvedValueOnce(Response.json(account));
+  await act(async () => {
+    setCookie(COOKIE_TOKEN_KEY, tokens.access);
+    setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+    window.dispatchEvent(new Event("focus"));
+  });
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+  expect(fetchMock).toHaveBeenCalledTimes(2);
+});
+
+it("does not reload permissions merely because an unchanged Ticket session receives focus", async () => {
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  fetchMock.mockResolvedValueOnce(Response.json(account));
+  renderApp("/requests");
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+  await act(async () => {
+    window.dispatchEvent(new Event("focus"));
+  });
+  expect(fetchMock).toHaveBeenCalledOnce();
+});
+
+it("still denies fresh Homepage cookies when the Ticket server rejects their permissions", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  renderApp("/forbidden");
+  fetchMock.mockResolvedValueOnce(
+    Response.json({ detail: "Forbidden" }, { status: 403 }),
+  );
+  await act(async () => {
+    setCookie(COOKIE_TOKEN_KEY, tokens.access);
+    setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+    window.dispatchEvent(new Event("focus"));
+  });
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  await waitFor(() => expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined());
+  expect(
+    screen.queryByRole("heading", { name: "Danh sách yêu cầu" }),
+  ).toBeNull();
+});
+
+it("does not display permissions from a previous environment while validating Homepage cookies", async () => {
+  let finish!: (response: Response) => void;
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  localStorage.setItem(
+    STORAGE_AUTH_ENVIRONMENT_KEY,
+    "production:https://old-api.example/api",
+  );
+  localStorage.setItem(STORAGE_USERNAME_KEY, "Previous Environment User");
+  localStorage.setItem(
+    STORAGE_USER_PERMISSION_KEY,
+    JSON.stringify({
+      username: "Previous Environment User",
+      userId: 1,
+      permission: { can_system: true },
+    }),
+  );
+  fetchMock.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  renderApp("/requests");
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+  expect(
+    JSON.parse(screen.getByTestId("account").textContent ?? "{}").permissions,
+  ).toBeNull();
+  expect(screen.queryByText("Previous Environment User")).toBeNull();
+  await act(async () => {
+    finish(Response.json(account));
+  });
+  await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
+});
+
+it("clears Ticket credentials and redirects the denied-page sign-in button to the configured Homepage", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  const destination = "https://configured-homepage.example.test/portal/";
+  vi.stubEnv("VITE_HOMEPAGE_URL", destination);
+  setCookie(COOKIE_TOKEN_KEY, tokens.access);
+  setCookie(COOKIE_REFRESH_KEY, tokens.refresh);
+  fetchMock.mockRejectedValueOnce(new TypeError("Failed to fetch"));
+  renderApp("/forbidden");
+  await screen.findByRole("heading", { name: "Bạn chưa có quyền truy cập" });
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+  queryClient.setQueryData(["private-relogin-test"], "cached");
+  fireEvent.click(screen.getByRole("button", { name: "Đăng nhập lại" }));
+  await waitFor(() =>
+    expect(replaceLocationMock).toHaveBeenCalledExactlyOnceWith(destination),
+  );
+  expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+  expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
+  expect(queryClient.getQueryData(["private-relogin-test"])).toBeUndefined();
+});

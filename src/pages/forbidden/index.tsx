@@ -1,16 +1,34 @@
 import { t, useLocale } from "@/i18n";
 import { ShieldX, LogIn } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitch } from "@/components/language-switch";
 import { Button } from "@/components/ui/button";
-import { APP_ROUTES } from "@/constants/routes";
+import {
+  workspacePages,
+  getDefaultWorkspacePath,
+  canAccessPage,
+} from "@/app/navigation";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 
 export function ForbiddenPage() {
   useLocale();
-  const { logout } = useAuthContext();
-  const navigate = useNavigate();
+  const { logout, token, userPermission, accessDenied, isInitializing } =
+    useAuthContext();
+  const destination = workspacePages.find(
+    (page) =>
+      page.path === getDefaultWorkspacePath(userPermission?.permission ?? null),
+  );
+  if (
+    !isInitializing &&
+    !accessDenied &&
+    token &&
+    userPermission &&
+    destination &&
+    canAccessPage(destination, userPermission.permission)
+  ) {
+    return <Navigate to={destination.path} replace />;
+  }
   return (
     <main className="app-dashed-background flex min-h-dvh items-center justify-center bg-background px-5 py-10 text-foreground">
       <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -36,7 +54,7 @@ export function ForbiddenPage() {
           type="button"
           onClick={() => {
             logout();
-            navigate(APP_ROUTES.login, { replace: true });
+            window.location.replace(import.meta.env.VITE_HOMEPAGE_URL);
           }}
         >
           <LogIn className="size-4" aria-hidden="true" />

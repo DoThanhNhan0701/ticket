@@ -16,6 +16,13 @@ export function getAuthSessionVersion(): number {
   return sessionVersion;
 }
 
+// Shared cookies may be replaced by Homepage while this tab is in the background.
+export function adoptExternalAuthSession(): number {
+  sessionVersion += 1;
+  window.dispatchEvent(new Event(AUTH_SESSION_CHANGED_EVENT));
+  return sessionVersion;
+}
+
 function writeAuthTokens(tokens: { access: string; refresh?: string }): void {
   setCookie(COOKIE_TOKEN_KEY, tokens.access);
   if (tokens.refresh) setCookie(COOKIE_REFRESH_KEY, tokens.refresh);

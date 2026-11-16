@@ -252,6 +252,15 @@ async function request<T>(
     data = await readResponse(response, options.responseType);
     if (isAuthenticationFailure(response, data)) clearAuthAndRedirect(version);
   }
+  if (
+    !isPublic &&
+    getAuthSessionVersion() === version &&
+    getCookie(COOKIE_TOKEN_KEY) !== token
+  ) {
+    // Homepage can replace shared cookies without dispatching a Ticket event.
+    // A late response from the old cookie must not clear or expose the new session.
+    throw sessionChangedError();
+  }
   if (!isPublic && getAuthSessionVersion() !== version && response.ok) {
     // Do not expose an old account's response after logout or another login.
     throw sessionChangedError();
