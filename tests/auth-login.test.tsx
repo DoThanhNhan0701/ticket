@@ -844,3 +844,60 @@ it("clears Ticket credentials and redirects the denied-page sign-in button to th
   expect(getCookie(COOKIE_REFRESH_KEY)).toBeUndefined();
   expect(queryClient.getQueryData(["private-relogin-test"])).toBeUndefined();
 });
+
+it("keeps startup pending when an old account response arrives during Homepage recovery", async () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  let finishOld!: (response: Response) => void;
+  let finishNew!: (response: Response) => void;
+  setCookie(COOKIE_TOKEN_KEY, "old-access");
+  fetchMock
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishOld = resolve;
+        }),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishNew = resolve;
+        }),
+    );
+  function StartupState() {
+    const auth = useAuthContext();
+    return (
+      <output data-testid="startup">
+        {auth.isInitializing ? "loading" : auth.username || "anonymous"}
+      </output>
+    );
+  }
+  render(
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <StartupState />
+      </AuthProvider>
+    </QueryClientProvider>,
+  );
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  await act(async () => {
+    setCookie(COOKIE_TOKEN_KEY, "homepage-access");
+    setCookie(COOKIE_REFRESH_KEY, "homepage-refresh");
+    window.dispatchEvent(new Event("focus"));
+  });
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+  await act(async () => {
+    finishOld(Response.json(account));
+  });
+  expect(screen.getByTestId("startup").textContent).toBe("loading");
+  await act(async () => {
+    finishNew(
+      Response.json({
+        ...account,
+        infoUser: [77, "New Account", account.infoUser[2]],
+      }),
+    );
+  });
+  await waitFor(() =>
+    expect(screen.getByTestId("startup").textContent).toBe("New Account"),
+  );
+});

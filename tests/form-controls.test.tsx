@@ -67,12 +67,12 @@ it("Escape closes the category popover while keeping its parent form open", asyn
   render(<DialogExample onOpenChange={onOpenChange} />);
   fireEvent.click(screen.getByRole("button", { name: "Categories" }));
   const search = await screen.findByRole("searchbox", {
-    name: "Search categories",
+    name: "Tìm categories",
   });
   fireEvent.keyDown(search, { key: "Escape", code: "Escape" });
   await waitFor(() =>
     expect(
-      screen.queryByRole("searchbox", { name: "Search categories" }),
+      screen.queryByRole("searchbox", { name: "Tìm categories" }),
     ).toBeNull(),
   );
   expect(screen.getByRole("dialog", { name: "Access settings" })).toBeTruthy();
@@ -204,11 +204,14 @@ it("does not submit an unfinished date", async () => {
 it("validates a required birthday after clearing it", async () => {
   const onSubmit = vi.fn();
   render(<BirthdayForm birthday="2000-03-02" onSubmit={onSubmit} />);
-  fireEvent.change(screen.getByRole("textbox", { name: "Date of Birth" }), {
+  const input = screen.getByRole("textbox", { name: "Date of Birth" });
+  fireEvent.change(input, {
     target: { value: "" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(await screen.findByText("Vui lòng nhập Date of Birth.")).toBeTruthy();
+  expect(await screen.findByText("Vui lòng nhập ngày sinh.")).toBeTruthy();
+  expect(input.getAttribute("aria-invalid")).toBe("true");
+  expect(input.getAttribute("aria-describedby")).toBe("birthday-error");
   expect(onSubmit).not.toHaveBeenCalled();
 });
 

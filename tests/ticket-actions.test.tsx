@@ -406,7 +406,12 @@ it("does not preselect a disabled operation when no assignment is possible", asy
   expect(screen.getByText(/Hiện không có người phù hợp/)).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Người nhận xử lý" })).toBeNull();
   confirm("Phân công");
-  await screen.findByText(/Loại phân công is required/);
+  await screen.findByText("Vui lòng nhập loại phân công.");
+  expect(
+    screen
+      .getByRole("combobox", { name: "Loại phân công" })
+      .getAttribute("aria-invalid"),
+  ).toBe("true");
   expect(fetchMock).not.toHaveBeenCalled();
 });
 it("keeps deletion available without replacement candidates when other handlers have completed", () => {

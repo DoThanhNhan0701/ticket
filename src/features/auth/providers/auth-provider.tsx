@@ -23,6 +23,7 @@ import {
   STORAGE_AUTH_ENVIRONMENT_KEY,
 } from "@/constants";
 import {
+  EXTERNAL_AUTH_SESSION_CHANGED,
   adoptExternalAuthSession,
   clearAuthSession,
   getAuthSessionVersion,
@@ -128,6 +129,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     isInitializedRef.current = true;
 
     const initAuth = async () => {
+      const version = getAuthSessionVersion();
       const savedToken = getCookie(COOKIE_TOKEN_KEY);
       const savedRefresh = getCookie(COOKIE_REFRESH_KEY);
       const savedUsername = getStorageItem<unknown>(STORAGE_USERNAME_KEY);
@@ -156,6 +158,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
 
         // Refresh the Ticket account and permissions on page reload.
         await fetchUserPermission();
+        if (getAuthSessionVersion() !== version) return;
         setToken(getCookie(COOKIE_TOKEN_KEY) ?? null);
       } else {
         clearAuthSession();
@@ -205,10 +208,12 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     const onVisibility = () => {
       if (document.visibilityState === "visible") onFocus();
     };
+    window.addEventListener(EXTERNAL_AUTH_SESSION_CHANGED, onFocus);
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       disposed = true;
+      window.removeEventListener(EXTERNAL_AUTH_SESSION_CHANGED, onFocus);
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibility);
     };
