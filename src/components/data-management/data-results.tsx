@@ -5,6 +5,10 @@ import { Inbox } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { LoadingState } from "@/components/loading-state";
 import { Button } from "@/components/ui/button";
+import {
+  DataResultsSkeleton,
+  dataResultsClassName,
+} from "./data-results-skeleton";
 import { DataPagination } from "./data-pagination";
 import type { DataListQuery, DataPaginationProps } from "./types";
 
@@ -20,6 +24,7 @@ export function DataResults<T>({
   ),
   pagination,
   renderRows,
+  loadingTable = false,
   refreshStyle = "overlay",
 }: Readonly<{
   query: DataListQuery<T>;
@@ -30,6 +35,7 @@ export function DataResults<T>({
   emptyDescription?: string;
   pagination: Omit<DataPaginationProps, "count" | "disabled">;
   renderRows: (rows: T[]) => ReactNode;
+  loadingTable?: boolean;
   refreshStyle?: "overlay" | "subtle";
 }>) {
   useLocale();
@@ -39,9 +45,14 @@ export function DataResults<T>({
     <section
       aria-label={label}
       aria-busy={query.isFetching}
-      className="relative flex min-h-64 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:min-h-72"
+      className={dataResultsClassName}
     >
-      {query.isPending && <LoadingState message={loadingMessage} />}
+      {query.isPending &&
+        (loadingTable ? (
+          <DataResultsSkeleton message={loadingMessage} />
+        ) : (
+          <LoadingState message={loadingMessage} />
+        ))}
       {query.isError && (
         <ResultsError
           message={`${errorPrefix}: ${translateMessage(query.error?.message ?? t("common", "Lỗi không xác định"))}`}

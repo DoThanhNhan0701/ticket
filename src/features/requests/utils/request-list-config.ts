@@ -1,3 +1,5 @@
+import { HOME_PATH } from "@/constants/auth";
+import { APP_ROUTES } from "@/constants/routes";
 import { t } from "@/i18n";
 import { API_ENDPOINTS } from "@/lib/api/endpoints";
 import type { DataFilterField } from "@/components/data-management";
@@ -98,4 +100,15 @@ export const requestListConfig: Readonly<
     teams: true,
     allowViews: true,
   },
+};
+
+export const requestListScopesByPath: Readonly<
+  Partial<Record<string, RequestListScope>>
+> = {
+  [HOME_PATH]: "created",
+  [APP_ROUTES.requests.all]: "all",
+  [APP_ROUTES.approvals.pending]: "pending",
+  [APP_ROUTES.approvals.approved]: "approved",
+  [APP_ROUTES.tasks.mine]: "personal-tasks",
+  [APP_ROUTES.tasks.all]: "all-tasks",
 };

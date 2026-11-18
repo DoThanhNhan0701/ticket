@@ -1,47 +1,70 @@
+import { useLocation } from "react-router-dom";
+import {
+  canAccessPage,
+  createTicketPage,
+  getDefaultWorkspacePath,
+  workspacePages,
+} from "@/app/navigation";
+import { HOME_PATH } from "@/constants/auth";
+import { APP_ROUTES } from "@/constants/routes";
+import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
+import { requestListScopesByPath } from "@/features/requests/utils/request-list-config";
 import { t, useLocale } from "@/i18n";
+import {
+  DataResultsSkeleton,
+  DataSearchSkeleton,
+  dataResultsClassName,
+} from "./data-management/data-results-skeleton";
+import { PageHeaderSkeleton } from "./layout/page-header-skeleton";
 
 export function WorkspaceSkeleton() {
   useLocale();
+  const { pathname } = useLocation();
+  const { permissions } = useAuthContext();
+  const route =
+    pathname === APP_ROUTES.root
+      ? getDefaultWorkspacePath(permissions)
+      : pathname.replace(/\/+$/, "").toLowerCase();
+  const page = workspacePages.find(
+    (item) =>
+      item.path === route ||
+      item.legacyPaths?.some((path) => path.toLowerCase() === route),
+  );
+  const listPath = page?.path ?? route;
+  const listScope = requestListScopesByPath[listPath];
+  const showCreate =
+    listPath === HOME_PATH && canAccessPage(createTicketPage, permissions);
+
   return (
     <div
       role="status"
       aria-label={t("common", "Loading...")}
       data-workspace-loading=""
-      className="flex min-h-0 w-full flex-1 flex-col gap-3"
+      className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3"
     >
-      <div
-        aria-hidden="true"
-        className="flex h-11 shrink-0 items-center gap-2 sm:h-10"
-      >
-        <div className="size-8 rounded-lg bg-(--workspace-skeleton-fill)" />
-        <div className="space-y-2">
-          <div className="h-4 w-40 rounded bg-(--workspace-skeleton-fill)" />
-          <div className="h-3 w-56 max-w-[50vw] rounded bg-(--workspace-skeleton-fill)" />
-        </div>
-      </div>
-      <div
-        aria-hidden="true"
-        className="flex min-h-14 shrink-0 items-center gap-3 rounded-xl border border-(--workspace-skeleton-border) bg-card p-3"
-      >
-        <div className="h-9 min-w-0 flex-1 rounded-lg bg-(--workspace-skeleton-fill) sm:max-w-80" />
-        <div className="h-9 w-24 shrink-0 rounded-lg bg-(--workspace-skeleton-fill)" />
-      </div>
-      <div
-        aria-hidden="true"
-        className="min-h-64 flex-1 overflow-hidden rounded-xl border border-(--workspace-skeleton-border) bg-card sm:min-h-72"
-      >
-        <div className="h-10 border-b border-(--workspace-skeleton-border) bg-(--workspace-skeleton-soft)" />
-        {Array.from({ length: 5 }, (_, index) => (
-          <div
-            key={index}
-            className="flex h-14 items-center gap-4 border-b border-(--workspace-skeleton-border)/50 px-4"
-          >
-            <div className="h-3 w-14 rounded bg-(--workspace-skeleton-fill)" />
-            <div className="h-3 flex-1 rounded bg-(--workspace-skeleton-soft)" />
-            <div className="hidden h-3 w-24 rounded bg-(--workspace-skeleton-soft) sm:block" />
+      <PageHeaderSkeleton
+        actions={
+          <>
+            {listScope && (
+              <div className="size-11 rounded-lg bg-(--workspace-skeleton-soft) sm:hidden" />
+            )}
+            {showCreate && (
+              <div className="size-11 rounded-lg bg-(--workspace-skeleton-fill) sm:h-10 sm:w-32" />
+            )}
+          </>
+        }
+      />
+      {listScope && (
+        <div
+          aria-hidden="true"
+          className="flex min-h-0 min-w-0 flex-1 flex-col gap-4"
+        >
+          <DataSearchSkeleton />
+          <div className={dataResultsClassName}>
+            <DataResultsSkeleton />
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

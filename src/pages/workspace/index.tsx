@@ -16,7 +16,7 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { HOME_PATH } from "@/constants/auth";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { RequestList } from "@/features/requests/components/request-list";
-import type { RequestListScope } from "@/features/requests/types";
+import { requestListScopesByPath } from "@/features/requests/utils/request-list-config";
 import { getSettingsKind } from "@/features/settings/utils/settings-config";
 
 const RequestChangeStatus = lazy(() =>
@@ -64,17 +64,6 @@ const InterviewCandidates = lazy(() =>
     (m) => ({ default: m.InterviewCandidates }),
   ),
 );
-
-const requestListScopesByPath: Readonly<
-  Partial<Record<string, RequestListScope>>
-> = {
-  [HOME_PATH]: "created",
-  [APP_ROUTES.requests.all]: "all",
-  [APP_ROUTES.approvals.pending]: "pending",
-  [APP_ROUTES.approvals.approved]: "approved",
-  [APP_ROUTES.tasks.mine]: "personal-tasks",
-  [APP_ROUTES.tasks.all]: "all-tasks",
-};
 
 export function WorkspacePage({
   page,

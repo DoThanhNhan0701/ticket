@@ -232,6 +232,7 @@ export function RequestList({
 
       <DataResults
         query={requests}
+        loadingTable
         label={t("request-list", "Kết quả yêu cầu")}
         loadingMessage={t("request-list", "Đang tải yêu cầu...")}
         errorPrefix={t("request-list", "Không tải được yêu cầu")}
