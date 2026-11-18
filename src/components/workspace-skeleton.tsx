@@ -1,5 +1,4 @@
 import { t, useLocale } from "@/i18n";
-import { BrandLogo } from "@/components/brand-logo";
 
 export function WorkspaceSkeleton() {
   useLocale();
@@ -44,25 +43,6 @@ export function WorkspaceSkeleton() {
         ))}
       </div>
     </div>
-  );
-}
-
-export function WorkspaceHeaderSkeleton() {
-  return (
-    <>
-      <div className="flex min-w-0 items-center gap-2">
-        <div
-          aria-hidden="true"
-          className="size-11 shrink-0 rounded-lg bg-(--workspace-skeleton-soft) lg:hidden"
-        />
-        <BrandLogo variant="mark" className="size-8 sm:hidden" />
-        <BrandLogo className="hidden h-7 w-[clamp(5.5rem,calc(100vw-16rem),10rem)] sm:inline-block" />
-      </div>
-      <div
-        aria-hidden="true"
-        className="h-11 w-36 shrink-0 rounded-lg bg-(--workspace-skeleton-soft)"
-      />
-    </>
   );
 }
 

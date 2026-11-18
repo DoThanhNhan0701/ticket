@@ -1,8 +1,8 @@
+import { WorkspaceHeader } from "@/app/layouts/workspace-header";
 import { WorkspaceFrame } from "@/app/layouts/workspace-frame";
 import { useSidebarPreferences } from "@/app/layouts/use-sidebar-preferences";
 import {
   WorkspaceSkeleton,
-  WorkspaceHeaderSkeleton,
   WorkspaceSidebarSkeleton,
 } from "@/components/workspace-skeleton";
 
@@ -12,7 +12,7 @@ export function LoadingScreen() {
     <WorkspaceFrame
       busy
       sidebarCollapsed={collapsed}
-      header={<WorkspaceHeaderSkeleton />}
+      header={<WorkspaceHeader loading />}
       sidebar={<WorkspaceSidebarSkeleton collapsed={collapsed} />}
     >
       <WorkspaceSkeleton />
