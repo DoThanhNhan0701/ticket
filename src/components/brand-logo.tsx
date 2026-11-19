@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { BrandWordmark } from "./brand-wordmark";
+import "./brand-logo.css";
 
 interface BrandLogoProps {
   variant?: "wordmark" | "mark";
@@ -9,32 +11,34 @@ export function BrandLogo({
   variant = "wordmark",
   className,
 }: Readonly<BrandLogoProps>) {
-  const asset = variant === "mark" ? "mark" : "logo";
-  const width = variant === "mark" ? 157 : 402;
-  const height = variant === "mark" ? 177 : 66;
-
   return (
     <span
       className={cn(
-        "inline-block shrink-0",
+        "brand-logo inline-block shrink-0",
         variant === "mark" ? "h-8 w-8" : "h-7 w-44",
         className,
       )}
     >
-      <img
-        src={`/brand/${asset}-color.svg`}
-        alt="Rainscales"
-        width={width}
-        height={height}
-        className="block h-full w-full object-contain dark:hidden"
-      />
-      <img
-        src={`/brand/${asset}-white.svg`}
-        alt="Rainscales"
-        width={width}
-        height={height}
-        className="hidden h-full w-full object-contain dark:block"
-      />
+      {variant === "wordmark" ? (
+        <BrandWordmark />
+      ) : (
+        <>
+          <img
+            src="/brand/mark-color.svg"
+            alt="Rainscales"
+            width={157}
+            height={177}
+            className="block h-full w-full object-contain dark:hidden"
+          />
+          <img
+            src="/brand/mark-white.svg"
+            alt="Rainscales"
+            width={157}
+            height={177}
+            className="hidden h-full w-full object-contain dark:block"
+          />
+        </>
+      )}
     </span>
   );
 }
