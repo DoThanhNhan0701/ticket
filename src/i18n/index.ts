@@ -1,5 +1,7 @@
+import Cookies from "js-cookie";
 import { createInstance, type i18n as I18nInstance } from "i18next";
 import { initReactI18next, useTranslation } from "react-i18next";
+import { COOKIE_LOCALE_KEY } from "@/constants/auth";
 
 export type Locale = "vi" | "en";
 type Catalog = Record<string, string>;
@@ -12,13 +14,8 @@ for (const [path, module] of Object.entries(modules)) {
   if (match) catalogs[`${match[1]}/${match[2]}`] = module.default;
 }
 
-export const localeStorageKey = "ticket.locale";
 function readLocale(): Locale {
-  try {
-    return localStorage.getItem(localeStorageKey) === "en" ? "en" : "vi";
-  } catch {
-    return "vi";
-  }
+  return Cookies.get(COOKIE_LOCALE_KEY) === "en" ? "en" : "vi";
 }
 const resources: Record<Locale, Record<string, Catalog>> = { vi: {}, en: {} };
 for (const [key, catalog] of Object.entries(catalogs)) {
@@ -50,21 +47,13 @@ export function getLocale(): Locale {
   return i18n.resolvedLanguage === "en" ? "en" : "vi";
 }
 
-function persistLocale() {
-  const locale = getLocale();
-  if (typeof document !== "undefined") document.documentElement.lang = locale;
-  try {
-    localStorage.setItem(localeStorageKey, locale);
-  } catch {
-    // Keep language switching usable when browser storage is blocked.
-  }
-}
-i18n.on("languageChanged", persistLocale);
+i18n.on("languageChanged", () => {
+  if (typeof document !== "undefined")
+    document.documentElement.lang = getLocale();
+});
 
 export function setLocale(next: Locale) {
-  if (next !== "vi" && next !== "en") return;
   if (getLocale() !== next) void i18n.changeLanguage(next);
-  else persistLocale();
 }
 
 export function useLocale(): Locale {
@@ -74,11 +63,11 @@ export function useLocale(): Locale {
 
 if (typeof window !== "undefined") {
   document.documentElement.lang = getLocale();
-  window.addEventListener("storage", (event) => {
-    if (event.key === localeStorageKey || event.key === null) {
-      const next = readLocale();
-      if (next !== getLocale()) void i18n.changeLanguage(next);
-    }
+  const syncLocale = () => setLocale(readLocale());
+  window.addEventListener("focus", syncLocale);
+  window.addEventListener("pageshow", syncLocale);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") syncLocale();
   });
 }
 

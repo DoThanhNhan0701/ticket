@@ -316,8 +316,8 @@ it("keeps account actions inside the popover and signs out only when selected", 
     within(popover).getByRole("menuitem", { name: "Hướng dẫn sử dụng" }),
   ).toBeTruthy();
   expect(
-    within(popover).getByRole("menuitem", { name: "Ngôn ngữ" }),
-  ).toBeTruthy();
+    within(popover).queryByRole("menuitem", { name: "Ngôn ngữ" }),
+  ).toBeNull();
   expect(auth.logout).not.toHaveBeenCalled();
   fireEvent.click(within(popover).getByRole("menuitem", { name: "Đăng xuất" }));
   expect(auth.logout).toHaveBeenCalledOnce();

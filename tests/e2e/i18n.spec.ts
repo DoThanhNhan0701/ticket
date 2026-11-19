@@ -87,8 +87,17 @@ async function login(page: Page) {
     .fill("mock-only-password");
   await page.getByRole("button", { name: "Đăng nhập vào Ticket" }).click();
   await expect(
-    page.getByRole("button", { name: "Đăng xuất", exact: true }),
+    page.getByRole("button", { name: /^Menu tài khoản của/ }),
   ).toBeVisible();
+}
+
+async function applyHomepageLanguage(page: Page, locale: "vi" | "en") {
+  await page
+    .context()
+    .addCookies([
+      { name: "rainscales_locale", value: locale, url: page.url() },
+    ]);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
 }
 
 test.beforeEach(async ({ page }) => mockApi(page));
@@ -104,8 +113,7 @@ test("defaults to Vietnamese, switches validation, retains input, persists acros
     page.getByText("Vui lòng nhập tên đăng nhập.", { exact: true }),
   ).toBeVisible();
   await page.getByLabel(/^Tên đăng nhập/).fill("bản nháp");
-  await page.getByRole("combobox", { name: "Ngôn ngữ" }).click();
-  await page.getByRole("option", { name: "English" }).click();
+  await applyHomepageLanguage(page, "en");
   await expect(page.getByLabel(/^Username/)).toHaveValue("bản nháp");
   await expect(
     page.getByText("Password is required.", { exact: true }),
@@ -114,8 +122,9 @@ test("defaults to Vietnamese, switches validation, retains input, persists acros
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   const tab = await context.newPage();
   await tab.goto("/login");
-  await tab.getByRole("combobox", { name: "Language" }).click();
-  await tab.getByRole("option", { name: "Tiếng Việt" }).click();
+  await expect(tab.locator("html")).toHaveAttribute("lang", "en");
+  await applyHomepageLanguage(tab, "vi");
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
   await expect(page.locator("html")).toHaveAttribute("lang", "vi");
   await tab.close();
 });
@@ -126,8 +135,7 @@ test("switches all page headings and navigation, without translating stored requ
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await login(page);
-  await page.getByRole("combobox", { name: "Ngôn ngữ" }).click();
-  await page.getByRole("option", { name: "English" }).click();
+  await applyHomepageLanguage(page, "en");
   const pages = [
     ["/requests", "Request list"],
     ["/requests/all", "All requests"],
@@ -157,7 +165,7 @@ test("switches all page headings and navigation, without translating stored requ
       url,
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Sign out", exact: true }),
+      page.getByRole("button", { name: /^Account menu for/ }),
     ).toBeVisible();
     if (url === "/requests") {
       await expect(page.getByTitle("100 / page")).toBeVisible();
@@ -181,8 +189,7 @@ test("switches all page headings and navigation, without translating stored requ
   await expect(
     page.getByRole("link", { name: "Download Word document" }),
   ).toHaveAttribute("href", /User-Guide\.docx$/);
-  await page.getByRole("combobox", { name: "Language" }).click();
-  await page.getByRole("option", { name: "Tiếng Việt" }).click();
+  await applyHomepageLanguage(page, "vi");
   await expect(
     page.getByRole("heading", { name: "1. Bắt đầu sử dụng", exact: true }),
   ).toBeVisible();
@@ -213,8 +220,7 @@ test("keeps a request draft and options intact while switching and fits mobile h
     exact: true,
   });
   await title.fill("Nội dung người dùng: Hủy");
-  await page.getByRole("combobox", { name: "Ngôn ngữ" }).click();
-  await page.getByRole("option", { name: "English" }).click();
+  await applyHomepageLanguage(page, "en");
   await expect(
     page.getByRole("textbox", { name: "Request title", exact: true }),
   ).toHaveValue("Nội dung người dùng: Hủy");
@@ -227,9 +233,9 @@ test("keeps a request draft and options intact while switching and fits mobile h
       .getByRole("banner")
       .evaluate((el) => el.scrollWidth > el.clientWidth);
     expect(overflow, `header at ${width}px`).toBe(false);
-    await expect(
-      page.getByRole("combobox", { name: "Language" }),
-    ).toBeVisible();
+    await expect(page.getByRole("combobox", { name: "Language" })).toHaveCount(
+      0,
+    );
   }
   await page.screenshot({
     path: "test-results/i18n/mobile-english.png",

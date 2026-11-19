@@ -7,7 +7,7 @@ import {
   getUserPermissionRequest,
 } from "@/features/auth/api/auth-api";
 import type { UserPermissionResponse } from "@/features/auth/types";
-import { getCookie } from "@/lib/cookies";
+import { deleteCookie, getCookie } from "@/lib/cookies";
 import {
   deleteStorageItem,
   getStorageItem,
@@ -16,6 +16,7 @@ import {
 import {
   COOKIE_TOKEN_KEY,
   COOKIE_REFRESH_KEY,
+  COOKIE_LOCALE_KEY,
   STORAGE_USERNAME_KEY,
   STORAGE_USER_PERMISSION_KEY,
   AUTH_SESSION_CHANGED_EVENT,
@@ -272,6 +273,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   };
 
   const logout = () => {
+    deleteCookie(COOKIE_LOCALE_KEY);
     setAccessDenied(false);
     resetAuthState();
     loginMutation.reset();

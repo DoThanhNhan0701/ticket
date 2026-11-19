@@ -10,15 +10,7 @@ import {
   screen,
 } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import {
-  getLocale,
-  i18n,
-  localeStorageKey,
-  setLocale,
-  t,
-  translateMessage,
-} from "@/i18n";
-import { LanguageSwitch } from "@/components/language-switch";
+import { getLocale, i18n, setLocale, t, translateMessage } from "@/i18n";
 import { DataPagination } from "@/components/data-management/data-pagination";
 import { LoadingState } from "@/components/loading-state";
 import { SearchInput } from "@/components/search-input";
@@ -44,16 +36,15 @@ afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
   setLocale("vi");
-  localStorage.removeItem(localeStorageKey);
+  document.cookie = "rainscales_locale=; Max-Age=0; Path=/";
 });
 
 it("reacts to library language changes and supports namespace fallback", async () => {
-  render(<LanguageSwitch />);
+  render(<LoadingState />);
   await act(async () => {
     await i18n.changeLanguage("en");
   });
-  expect(screen.getByRole("combobox", { name: "Language" })).toBeTruthy();
-  expect(localStorage.getItem(localeStorageKey)).toBe("en");
+  expect(screen.getByText("Loading...")).toBeTruthy();
   expect(document.documentElement.lang).toBe("en");
   expect(t("missing-page", "missing.key: text")).toBe("missing.key: text");
   expect(t("common", "{0}", ["<b>{1}</b> $t(other)"])).toBe(
@@ -62,7 +53,7 @@ it("reacts to library language changes and supports namespace fallback", async (
   expect(i18n.hasResourceBundle("en", "request-create")).toBe(true);
 });
 
-it("defaults to Vietnamese and persists a reactive choice without resetting form input", async () => {
+it("defaults to Vietnamese and follows Homepage without resetting form input", () => {
   expect(getLocale()).toBe("vi");
   render(
     <LoginPage
@@ -75,9 +66,10 @@ it("defaults to Vietnamese and persists a reactive choice without resetting form
   fireEvent.change(screen.getByLabelText(/^Tên đăng nhập/), {
     target: { value: "draft.user" },
   });
-  fireEvent.click(screen.getByRole("combobox", { name: "Ngôn ngữ" }));
-  fireEvent.keyDown(await screen.findByRole("option", { name: "English" }), {
-    key: "Enter",
+  expect(screen.queryByRole("combobox", { name: "Ngôn ngữ" })).toBeNull();
+  act(() => {
+    document.cookie = "rainscales_locale=en; Path=/";
+    window.dispatchEvent(new Event("focus"));
   });
   expect(screen.getByLabelText(/^Username/).getAttribute("value")).toBe(
     "draft.user",
@@ -86,32 +78,21 @@ it("defaults to Vietnamese and persists a reactive choice without resetting form
     screen.getByRole("button", { name: "Sign In to Ticket" }),
   ).toBeTruthy();
   expect(document.documentElement.lang).toBe("en");
-  expect(localStorage.getItem(localeStorageKey)).toBe("en");
-  fireEvent.click(screen.getByRole("combobox", { name: "Language" }));
-  fireEvent.keyDown(await screen.findByRole("option", { name: "Tiếng Việt" }), {
-    key: "Enter",
+  act(() => {
+    document.cookie = "rainscales_locale=vi; Path=/";
+    window.dispatchEvent(new Event("pageshow"));
   });
   expect(screen.getByLabelText(/^Tên đăng nhập/).getAttribute("value")).toBe(
     "draft.user",
   );
 });
 
-it("supports blocked storage and synchronizes preferences changed in another tab", () => {
-  render(<LanguageSwitch />);
-  const blocked = vi
-    .spyOn(Storage.prototype, "setItem")
-    .mockImplementation(() => {
-      throw new Error("blocked");
-    });
+it("defaults to Vietnamese for an invalid Homepage cookie", () => {
   act(() => setLocale("en"));
-  expect(screen.getByRole("combobox", { name: "Language" })).toBeTruthy();
-  blocked.mockRestore();
-  localStorage.setItem(localeStorageKey, "invalid");
-  act(() =>
-    window.dispatchEvent(
-      new StorageEvent("storage", { key: localeStorageKey }),
-    ),
-  );
+  act(() => {
+    document.cookie = "rainscales_locale=unsupported; Path=/";
+    window.dispatchEvent(new Event("focus"));
+  });
   expect(getLocale()).toBe("vi");
   expect(document.documentElement.lang).toBe("vi");
 });

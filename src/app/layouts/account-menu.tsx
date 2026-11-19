@@ -1,21 +1,14 @@
 import { Menu } from "@base-ui/react/menu";
-import {
-  BookOpen,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Languages,
-  LogOut,
-} from "lucide-react";
+import { BookOpen, ChevronDown, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { APP_ROUTES } from "@/constants/routes";
-import { setLocale, t, useLocale } from "@/i18n";
+import { t, useLocale } from "@/i18n";
 import { useAuthContext } from "@/features/auth/hooks/use-auth-context";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 
 export function AccountMenu() {
-  const locale = useLocale();
+  useLocale();
   const { username, avatarUrl, logout } = useAuthContext();
 
   return (
@@ -59,55 +52,6 @@ export function AccountMenu() {
               <BookOpen className="size-4" aria-hidden="true" />
               <span>{t("layout", "Hướng dẫn sử dụng")}</span>
             </Menu.LinkItem>
-            <Menu.SubmenuRoot>
-              <Menu.SubmenuTrigger
-                className="ticket-account-menu-item ticket-menu-item"
-                label={t("layout", "Language")}
-              >
-                <Languages className="size-4" aria-hidden="true" />
-                <span>{t("layout", "Language")}</span>
-                <ChevronRight className="ml-auto size-4" aria-hidden="true" />
-              </Menu.SubmenuTrigger>
-              <Menu.Portal>
-                <Menu.Positioner
-                  side="left"
-                  align="start"
-                  sideOffset={8}
-                  collisionPadding={12}
-                  className="z-50"
-                >
-                  <Menu.Popup
-                    aria-label={t("layout", "Language")}
-                    className="ticket-account-menu"
-                  >
-                    <Menu.RadioGroup
-                      value={locale}
-                      onValueChange={(value) => {
-                        if (value === "vi" || value === "en") setLocale(value);
-                      }}
-                    >
-                      {[
-                        { value: "vi", label: "Tiếng Việt" },
-                        { value: "en", label: "English" },
-                      ].map((language) => (
-                        <Menu.RadioItem
-                          key={language.value}
-                          value={language.value}
-                          label={language.label}
-                          className="ticket-account-menu-item ticket-menu-item"
-                          closeOnClick
-                        >
-                          <span lang={language.value}>{language.label}</span>
-                          <Menu.RadioItemIndicator className="ml-auto">
-                            <Check className="size-4" aria-hidden="true" />
-                          </Menu.RadioItemIndicator>
-                        </Menu.RadioItem>
-                      ))}
-                    </Menu.RadioGroup>
-                  </Menu.Popup>
-                </Menu.Positioner>
-              </Menu.Portal>
-            </Menu.SubmenuRoot>
             <Menu.Separator className="ticket-account-menu-separator" />
             <Menu.Item
               className="ticket-account-menu-item ticket-menu-item"

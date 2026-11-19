@@ -705,6 +705,7 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
     await submitLogin();
     await screen.findByRole("heading", { name: "Danh sách yêu cầu" });
     expect(getCookie(COOKIE_TOKEN_KEY)).toBe(tokens.access);
+    setCookie("rainscales_locale", "en");
     fireEvent.click(
       screen.getByRole("button", { name: "Menu tài khoản của Ticket User" }),
     );
@@ -715,6 +716,7 @@ it.each(["getItem", "setItem", "removeItem"] as const)(
       ),
     );
     expect(getCookie(COOKIE_TOKEN_KEY)).toBeUndefined();
+    expect(getCookie("rainscales_locale")).toBeUndefined();
   },
 );
 

@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, LockKeyhole } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand-logo";
-import { LanguageSwitch } from "@/components/language-switch";
 import { AsyncButton } from "@/components/ui/async-button";
 import { Badge } from "@/components/ui/badge";
 import { ErrorToast } from "@/components/error-toast";
@@ -52,9 +51,6 @@ export function LoginPage({
 
   return (
     <div className="app-dashed-background relative flex min-h-svh w-full bg-background text-foreground">
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        <LanguageSwitch />
-      </div>
       <section
         aria-label={t("login", "Rainscales Ticket workspace")}
         className="hidden w-105 shrink-0 flex-col justify-between gap-10 border-r border-border bg-card p-10 lg:flex xl:w-125 xl:p-12"
