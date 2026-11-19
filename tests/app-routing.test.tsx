@@ -132,6 +132,7 @@ beforeEach(() => {
   });
   vi.mocked(loadUserGuide).mockResolvedValue(guideDocument);
   localStorage.clear();
+  document.cookie = "rainscales_sidebar_collapsed=; Max-Age=0; Path=/";
   vi.stubGlobal(
     "ResizeObserver",
     vi.fn(function () {
