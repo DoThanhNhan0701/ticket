@@ -370,6 +370,7 @@ it.each(settingsKinds)(
         description: "Security group",
         ls_member: [42],
         is_manager: 42,
+        is_restricted_workflow: false,
       });
     if (kind === "request-types") {
       expect(data).not.toHaveProperty("attachment_file");
@@ -381,7 +382,7 @@ it.each(settingsKinds)(
 it("refreshes current account permissions and ticket caches after changing a handling department", async () => {
   const keys = [
     ["request-create-lookups", 42],
-    ["request-create-types", 42, "5"],
+    ["request-create-types", 42],
     ["requests", "all-tasks", 42],
     ["request-detail", 42, "42"],
   ];
@@ -1288,4 +1289,45 @@ it("blocks creating a user without a position and clears the error when one is s
   expect(writes).toHaveLength(1);
   const body = writes[0][1]!.body as FormData;
   expect(body.get("chucvu")).toBe("13");
+});
+
+it("displays, creates and updates is_restricted_workflow for handling departments", async () => {
+  renderPage("handling-departments");
+  await ready();
+  expect(
+    screen.getByRole("columnheader", { name: "Tiếp nhận qua trưởng bộ phận" }),
+  ).toBeTruthy();
+  expect(screen.getByText("Không")).toBeTruthy();
+
+  await editorReady("handling-departments");
+  change("Tên bộ phận", "Pháp chế");
+  await select("Người quản lý", "test-user · Đỗ Nhân");
+  const createCheckbox = screen.getByRole("checkbox", {
+    name: "Tiếp nhận qua trưởng bộ phận",
+  });
+  expect(createCheckbox.getAttribute("aria-checked")).toBe("false");
+  fireEvent.click(createCheckbox);
+  expect(createCheckbox.getAttribute("aria-checked")).toBe("true");
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const creates = requests("/api/handlinggroupmmanager/", "POST");
+  expect(creates).toHaveLength(1);
+  expect(JSON.parse(String(creates[0][1]?.body))).toMatchObject({
+    name: "Pháp chế",
+    is_restricted_workflow: true,
+  });
+
+  await editorReady("handling-departments", true);
+  const editCheckbox = screen.getByRole("checkbox", {
+    name: "Tiếp nhận qua trưởng bộ phận",
+  });
+  expect(editCheckbox.getAttribute("aria-checked")).toBe("false");
+  fireEvent.click(editCheckbox);
+  fireEvent.click(screen.getByRole("button", { name: "Lưu" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const updates = requests("/api/handlinggroupmmanager/5", "PUT");
+  expect(updates).toHaveLength(1);
+  expect(JSON.parse(String(updates[0][1]?.body))).toMatchObject({
+    is_restricted_workflow: true,
+  });
 });

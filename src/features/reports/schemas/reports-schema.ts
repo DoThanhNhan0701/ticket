@@ -52,6 +52,7 @@ export const reportGroupSchema = z.object({
   name: z.string(),
   description: z.string().nullable(),
   is_active: z.boolean(),
+  is_restricted_workflow: z.boolean().optional(),
   group_email: z.string().nullable(),
   is_manager: idSchema.nullable(),
   username_manager: z.string().optional(),

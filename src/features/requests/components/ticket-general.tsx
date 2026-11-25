@@ -124,14 +124,14 @@ export function TicketGeneral({
       >
         <dl className="grid min-w-0 grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-6">
           <ReadField
-            label={t("request-detail", "Bộ phận xử lý")}
-            icon={Wrench}
-            value={ticket.handling_group_name}
-          />
-          <ReadField
             label={t("request-detail", "Loại yêu cầu")}
             icon={FileType}
             value={ticket.ticket_type_name}
+          />
+          <ReadField
+            label={t("request-detail", "Bộ phận xử lý")}
+            icon={Wrench}
+            value={ticket.handling_group_name}
           />
           <ReadField
             label={t("request-detail", "Bộ phận sử dụng")}

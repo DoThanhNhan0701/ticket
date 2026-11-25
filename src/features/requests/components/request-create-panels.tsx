@@ -129,14 +129,14 @@ export function RequestAssignmentPanel({
       title={t("request-create", "Loại yêu cầu")}
       description={t(
         "request-create",
-        "Chọn bộ phận phụ trách, loại yêu cầu và người phê duyệt.",
+        "Chọn loại yêu cầu, bộ phận phụ trách và người phê duyệt.",
       )}
     >
       <RequestAssignmentFields
         form={model.form}
         lookups={model.lookups.data}
         disabled={disabled}
-        types={model.types.data ?? []}
+        types={model.availableTypes}
         typesLoading={model.types.isFetching}
       />
       {(groupError?.type === "custom" || groupError?.type === "group-name") && (
@@ -153,12 +153,9 @@ export function RequestAssignmentPanel({
       {model.types.isError && (
         <ErrorToast message={model.types.error.message} />
       )}
-      {model.types.isSuccess && model.types.data.length === 0 && (
+      {model.types.isSuccess && model.availableTypes.length === 0 && (
         <p role="status" className="text-sm text-muted-foreground">
-          {t(
-            "request-create",
-            "Bộ phận này chưa có loại yêu cầu đang kích hoạt.",
-          )}
+          {t("request-create", "Chưa có loại yêu cầu đang kích hoạt.")}
         </p>
       )}
       {manualUrl && (

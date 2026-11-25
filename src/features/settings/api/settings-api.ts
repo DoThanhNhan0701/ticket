@@ -158,6 +158,7 @@ function settingsBody(
       name: values.name,
       description: values.description,
       is_active: values.is_active,
+      is_restricted_workflow: values.is_restricted_workflow,
       is_manager: Number(values.is_manager),
       group_email: values.group_email,
       ls_member: values.ls_member.map(Number),

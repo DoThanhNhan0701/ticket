@@ -75,15 +75,11 @@ function SettingsForm({
           "report-groups",
           "report-types",
           "request-types",
+          "request-create-types",
           "handling-request-types",
           "request-teams",
           ...(kind === "handling-departments"
-            ? [
-                "request-create-lookups",
-                "request-create-types",
-                "requests",
-                "request-detail",
-              ]
+            ? ["request-create-lookups", "requests", "request-detail"]
             : []),
         ].map((key) =>
           client.invalidateQueries({ queryKey: [key], refetchType: "none" }),
@@ -163,6 +159,18 @@ function SettingsForm({
             label={t("settings", "Kích hoạt")}
             disabled={busy || !ready}
           />
+          {kind === "handling-departments" && (
+            <CheckboxField
+              control={form.control}
+              name="is_restricted_workflow"
+              id="settings-is-restricted-workflow"
+              label={t(
+                "settings-handling-departments",
+                "Tiếp nhận qua trưởng bộ phận",
+              )}
+              disabled={busy || !ready}
+            />
+          )}
           {kind === "request-types" && (
             <FormFieldShell
               id="settings-attachment"

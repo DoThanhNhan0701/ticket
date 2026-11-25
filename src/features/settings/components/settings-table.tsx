@@ -95,6 +95,25 @@ function entityColumns(
         "center",
       ),
       textColumn("group_email", t("settings", "Email bộ phận"), "260px"),
+      {
+        id: "is_restricted_workflow",
+        label: t(
+          "settings-handling-departments",
+          "Tiếp nhận qua trưởng bộ phận",
+        ),
+        width: "220px",
+        align: "center",
+        render: (row) => (
+          <Badge
+            tone={row.is_restricted_workflow ? "warning" : "neutral"}
+            className="whitespace-nowrap"
+          >
+            {row.is_restricted_workflow
+              ? t("settings-handling-departments", "Có")
+              : t("settings-handling-departments", "Không")}
+          </Badge>
+        ),
+      },
     );
   if (kind === "request-types")
     columns.push(

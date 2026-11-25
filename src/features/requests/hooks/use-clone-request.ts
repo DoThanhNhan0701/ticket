@@ -29,7 +29,7 @@ export function useCloneRequest({
   restored?: boolean;
   form: UseFormReturn<CreateRequestValues>;
   lookups?: CreateRequestLookups;
-  types?: { id: number }[];
+  types?: readonly { id: number; handling_group: number }[];
   selectedType?: { id: number };
   groups: TemplateGroup[];
   templateReady: boolean;
@@ -57,10 +57,15 @@ export function useCloneRequest({
       Boolean(
         ticket &&
         types &&
-        !types.some((type) => type.id === ticket.ticket_type),
+        !types.some(
+          (type) =>
+            type.id === ticket.ticket_type &&
+            type.handling_group === ticket.handling_group,
+        ),
       ));
   useEffect(() => {
-    if (!ticket || !lookups || unavailable || stage.current !== 0) return;
+    if (!ticket || !lookups || !types || unavailable || stage.current !== 0)
+      return;
     const pick = (id: number | null | undefined, options: { id: number }[]) =>
       options.some((option) => option.id === id) ? String(id) : "";
     form.reset({
@@ -68,7 +73,7 @@ export function useCloneRequest({
       title: ticket.title,
       description: ticket.description,
       handling_group: String(ticket.handling_group),
-      ticket_type: "",
+      ticket_type: String(ticket.ticket_type),
       approve_user: pick(ticket.approve_user, lookups.approvers),
       fore_cus: pick(ticket.fore_cus, lookups.customers),
       bophansudung: pick(ticket.bophansudung, lookups.departments),
@@ -78,13 +83,8 @@ export function useCloneRequest({
         .map((value) => value.trim())
         .filter((id) => lookups.teams.some((team) => String(team.id) === id)),
     });
-    stage.current = 1;
-  }, [ticket, lookups, unavailable, form]);
-  useEffect(() => {
-    if (!ticket || !types || unavailable || stage.current !== 1) return;
-    form.setValue("ticket_type", String(ticket.ticket_type));
     stage.current = 2;
-  }, [ticket, types, unavailable, form]);
+  }, [ticket, lookups, types, unavailable, form]);
   useEffect(() => {
     if (
       !ticket ||

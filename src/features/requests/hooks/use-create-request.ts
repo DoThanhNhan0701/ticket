@@ -26,8 +26,8 @@ import {
 } from "../utils/request-detail-data";
 import {
   createRequest,
+  getAllCreateRequestTypes,
   getCreateRequestLookups,
-  getCreateRequestTypes,
   uploadRequestAttachment,
 } from "../api/create-request-api";
 import {
@@ -100,7 +100,7 @@ export function useCreateRequest() {
         zodResolver(
           getCreateRequestSchema(groups, lookups.data?.groups, {
             handling_group: lookups.data?.groups,
-            ticket_type: types.data,
+            ticket_type: types.data ? availableTypes : undefined,
             approve_user: lookups.data?.approvers,
             fore_cus: lookups.data?.customers,
             bophansudung: lookups.data?.departments,
@@ -119,17 +119,19 @@ export function useCreateRequest() {
   const groupNameError = useGroupNameError(form, group, lookups.data?.groups);
 
   const types = useQuery({
-    queryKey: ["request-create-types", userId, group],
-    queryFn: ({ signal }) => getCreateRequestTypes(group, signal),
-    enabled: Boolean(
-      lookups.data?.groups.some((row) => String(row.id) === group),
-    ),
+    queryKey: ["request-create-types", userId],
+    queryFn: ({ signal }) => getAllCreateRequestTypes(signal),
     retry: false,
     refetchOnReconnect: true,
   });
-  const selectedType = types.data?.find(
-    (row) => String(row.id) === type && String(row.handling_group) === group,
-  );
+  const availableTypes = useMemo(() => {
+    const allTypes = types.data ?? [];
+    const activeGroups = lookups.data?.groups;
+    if (!activeGroups) return allTypes;
+    const activeGroupIds = new Set(activeGroups.map((row) => row.id));
+    return allTypes.filter((row) => activeGroupIds.has(row.handling_group));
+  }, [types.data, lookups.data?.groups]);
+  const selectedType = availableTypes.find((row) => String(row.id) === type);
   const template = useQuery({
     queryKey: ["request-create-template", userId, selectedType?.id],
     queryFn: async ({ signal }) => {
@@ -156,18 +158,25 @@ export function useCreateRequest() {
     () => getCreateRequestGroups(templateGroups),
     [templateGroups],
   );
-  const previousGroup = useRef(group);
   const previousType = useRef(type);
   const initializedType = useRef(draftKey.saved?.values.ticket_type);
   useEffect(() => {
-    if (previousGroup.current === group) return;
-    previousGroup.current = group;
-    form.setValue("ticket_type", "", {
-      shouldValidate: form.formState.isSubmitted,
-    });
-    form.setValue("rows", [{ values: {} }]);
-    form.clearErrors("rows");
-  }, [group, form]);
+    if (!type) {
+      if (form.getValues("handling_group")) {
+        form.setValue("handling_group", "", {
+          shouldValidate: form.formState.isSubmitted,
+        });
+      }
+      return;
+    }
+    if (!selectedType) return;
+    const nextGroup = String(selectedType.handling_group);
+    if (form.getValues("handling_group") !== nextGroup) {
+      form.setValue("handling_group", nextGroup, {
+        shouldValidate: form.formState.isSubmitted,
+      });
+    }
+  }, [type, selectedType, form]);
   useEffect(() => {
     if (previousType.current !== type) {
       previousType.current = type;
@@ -201,7 +210,7 @@ export function useCreateRequest() {
     userId,
     form,
     lookups: lookups.data,
-    types: types.data,
+    types: types.data ? availableTypes : undefined,
     selectedType,
     groups,
     templateReady: template.isSuccess && !template.isFetching,
@@ -315,6 +324,7 @@ export function useCreateRequest() {
     draft,
     lookups,
     types,
+    availableTypes,
     template,
     groups,
     selectedType,

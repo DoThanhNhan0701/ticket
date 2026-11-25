@@ -150,23 +150,25 @@ beforeEach(() => {
       ]);
     if (path === "/api/list_vanphong/")
       return Response.json([settingsFixtures.offices]);
-    if (path === "/api/list_tickettype/")
+    if (path === "/api/list_handling_alltickettype/")
       return typeFailure
         ? Response.json({ detail: "Types offline" }, { status: 500 })
-        : Response.json(
-            page(
-              url.searchParams.get("handling_group") === "5"
-                ? [
-                    settingsFixtures["request-types"],
-                    {
-                      ...settingsFixtures["request-types"],
-                      id: 999,
-                      is_active: false,
-                    },
-                  ]
-                : [],
-            ),
-          );
+        : Response.json([
+            settingsFixtures["request-types"],
+            {
+              ...settingsFixtures["request-types"],
+              id: 187,
+              name: "Cấp tài khoản IT",
+              handling_group: 6,
+              handling_group_name: "IT",
+            },
+            {
+              ...settingsFixtures["request-types"],
+              id: 999,
+              name: "Loại đã tắt",
+              is_active: false,
+            },
+          ]);
     if (path.startsWith("/api/template_form/"))
       return templateFailure
         ? Response.json({ detail: "Template offline" }, { status: 500 })
@@ -226,8 +228,12 @@ async function ready() {
 }
 async function chooseType() {
   await ready();
-  await select("Bộ phận xử lý", handlingGroupName);
   await select("Loại yêu cầu", "Đăng ký từ xa");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
+    ).toContain(handlingGroupName),
+  );
 }
 async function fillAssignment() {
   await chooseType();
@@ -399,11 +405,18 @@ it("revalidates required selections and text on change after the first submit, w
   await waitFor(() =>
     expect(
       document
-        .getElementById("create-handling_group")
+        .getElementById("create-ticket_type")
         ?.getAttribute("aria-invalid"),
     ).toBe("true"),
   );
-  await select("Bộ phận xử lý", "ISMS");
+  await select("Loại yêu cầu", "Đăng ký từ xa");
+  await waitFor(() =>
+    expect(
+      document
+        .getElementById("create-ticket_type")
+        ?.getAttribute("aria-invalid"),
+    ).toBe("false"),
+  );
   await waitFor(() =>
     expect(
       document
@@ -416,7 +429,6 @@ it("revalidates required selections and text on change after the first submit, w
       .getElementById("create-approve_user")
       ?.getAttribute("aria-invalid"),
   ).toBe("true");
-  await select("Loại yêu cầu", "Đăng ký từ xa");
   await select("Người phê duyệt", "Đỗ Nhân");
   await select("Bộ phận sử dụng", "Department AI");
   await select("Văn phòng", "VP Huế");
@@ -563,17 +575,34 @@ it("keeps a length error while notes remain invalid, then clears it on correctio
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
 
-it("drops errors from the previous template when switching groups and revalidates the new template", async () => {
+it("drops errors from the previous template when switching request types and revalidates the new template", async () => {
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation(async (input, options) => {
+    if (new URL(String(input)).pathname === "/api/template_form/187")
+      return Response.json({
+        message: "The ticket type template does not exist",
+      });
+    return original(input, options);
+  });
   renderPage();
   await fillBase();
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
-  await select("Bộ phận xử lý", "IT");
-  await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
+  await select("Loại yêu cầu", "Cấp tài khoản IT");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
+    ).toContain("IT"),
+  );
+  await screen.findByText("Loại yêu cầu này không có biểu mẫu chi tiết.");
   expect(screen.queryByText("Vui lòng nhập Ghi chú chi tiết.")).toBeNull();
   expect(document.getElementById("detail-0-f0")).toBeNull();
-  await select("Bộ phận xử lý", "ISMS");
   await select("Loại yêu cầu", "Đăng ký từ xa");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
+    ).toContain("ISMS"),
+  );
   await screen.findByText("Vui lòng nhập Ghi chú chi tiết.");
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
@@ -893,12 +922,23 @@ it("allows creation when all detail sections are configured for updates after cr
   });
 });
 
-it("loads real endpoint contracts, defaults only the single company and hides inactive types", async () => {
+it("loads real endpoint contracts, defaults only the single company, hides inactive types and sorts request types A to Z", async () => {
   renderPage();
   await ready();
-  expect(
-    screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
-  ).toContain("Chọn bộ phận xử lý");
+  const comboboxes = screen.getAllByRole("combobox");
+  expect(comboboxes[0].getAttribute("aria-label")).toBe("Loại yêu cầu");
+  expect(comboboxes[1].getAttribute("aria-label")).toBe("Bộ phận xử lý");
+  expect(comboboxes[1].hasAttribute("disabled")).toBe(true);
+  expect(comboboxes[1].textContent).toContain("Chọn bộ phận xử lý");
+  await waitFor(() =>
+    expect(comboboxes[0].hasAttribute("disabled")).toBe(false),
+  );
+  fireEvent.click(comboboxes[0]);
+  const optionLabels = (await screen.findAllByRole("option")).map(
+    (option) => option.textContent,
+  );
+  expect(optionLabels).toEqual(["Cấp tài khoản IT", "Đăng ký từ xa"]);
+  fireEvent.keyDown(comboboxes[0], { key: "Escape" });
   expect(document.getElementById("create-due-date")).toBeNull();
   await fillBase();
   expect(
@@ -910,9 +950,7 @@ it("loads real endpoint contracts, defaults only the single company and hides in
       .getByRole("link", { name: "Tài liệu hướng dẫn" })
       .getAttribute("href"),
   ).toBe("https://example.com/guide.pdf");
-  expect(calls("/list_tickettype/")[0][0].toString()).toContain(
-    "handling_group=5",
-  );
+  expect(calls("/list_handling_alltickettype/")).toHaveLength(1);
 });
 it("creates the exact legacy payload with multiple detail rows and returns to the list", async () => {
   client.setQueryData(["requests", "created", 42], { count: 0 });
@@ -1074,15 +1112,22 @@ it("disables past due dates while allowing today and future dates", async () => 
   expect(calendarDay(today).disabled).toBe(false);
   expect(calendarDay(addDays(today, 1)).disabled).toBe(false);
 });
-it("resets dependent types and rows when the handling group changes", async () => {
+it("updates handling group and resets rows when the request type changes", async () => {
   renderPage();
   await fillBase();
   await fillDetails();
-  await select("Bộ phận xử lý", "IT");
-  await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
-  expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
-  await screen.findByText("Vui lòng chọn thông tin.");
+  await select("Loại yêu cầu", "Cấp tài khoản IT");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
+    ).toContain("IT"),
+  );
+  await waitFor(() =>
+    expect(
+      (document.getElementById("detail-0-f0") as HTMLInputElement | null)
+        ?.value,
+    ).toBe(""),
+  );
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
 it("allows creation without a template instead of treating it as a lookup error", async () => {
@@ -1120,7 +1165,7 @@ it("retains the draft after create failure and allows retry", async () => {
 it("blocks a long handling group immediately on selection and recovers when a valid group is selected", async () => {
   handlingGroupName = "A".repeat(20);
   renderPage();
-  await select("Bộ phận xử lý", handlingGroupName);
+  await select("Loại yêu cầu", "Đăng ký từ xa");
   await screen.findByText(/Tên bộ phận xử lý quá dài.*19 ký tự/);
   expect(
     screen
@@ -1134,7 +1179,7 @@ it("blocks a long handling group immediately on selection and recovers when a va
   ).toBe(true);
   expect(document.getElementById("create-title")).toBeNull();
   expect(calls("/ticket_manager")).toHaveLength(0);
-  await select("Bộ phận xử lý", "IT");
+  await select("Loại yêu cầu", "Cấp tài khoản IT");
   await waitFor(() =>
     expect(screen.queryByText(/Tên bộ phận xử lý quá dài/)).toBeNull(),
   );
@@ -1442,8 +1487,12 @@ it("clones again after repeated resets without restoring cleared edits or creati
     expect(calls("/ticket_manager")).toHaveLength(0);
     expect(calls("/attachmentticketfile")).toHaveLength(0);
   }
-  await select("Bộ phận xử lý", "IT");
-  await screen.findByText("Bộ phận này chưa có loại yêu cầu đang kích hoạt.");
+  await select("Loại yêu cầu", "Cấp tài khoản IT");
+  await waitFor(() =>
+    expect(
+      screen.getByRole("combobox", { name: "Bộ phận xử lý" }).textContent,
+    ).toContain("IT"),
+  );
   expect(screen.queryByText(/Không thể sao chép/)).toBeNull();
 });
 
@@ -1478,7 +1527,7 @@ it("reveals the clone form only after source, catalogs, types and template have 
   const paths = [
     "/ticket_manager/42",
     "/list_customer/",
-    "/list_tickettype/",
+    "/list_handling_alltickettype/",
     "/template_form/186",
   ];
   paths.forEach(pause);

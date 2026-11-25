@@ -36,6 +36,7 @@ export interface SettingsRecord {
   is_manager?: number | null;
   username_manager?: string;
   ls_member?: number[];
+  is_restricted_workflow?: boolean;
   handling_group?: number;
   handling_group_name?: string;
   slug_name?: string;
@@ -71,10 +72,11 @@ export interface SettingsFormValues {
   permission: string[];
   handling_group: string;
   is_active: boolean;
+  is_restricted_workflow: boolean;
 }
 export type SettingsTextField = Exclude<
   keyof SettingsFormValues,
-  "ls_member" | "permission" | "is_active"
+  "ls_member" | "permission" | "is_active" | "is_restricted_workflow"
 >;
 export interface SettingsField {
   name: SettingsTextField | "ls_member" | "permission";

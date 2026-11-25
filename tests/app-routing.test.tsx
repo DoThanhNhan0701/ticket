@@ -84,6 +84,7 @@ vi.mock("@/features/requests/api/create-request-api", () => ({
     approvers: [],
     customers: [],
   }),
+  getAllCreateRequestTypes: vi.fn().mockResolvedValue([]),
   getCreateRequestTypes: vi.fn().mockResolvedValue([]),
   createRequest: vi.fn(),
   uploadRequestAttachment: vi.fn(),

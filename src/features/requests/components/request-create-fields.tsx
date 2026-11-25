@@ -32,16 +32,17 @@ export function RequestAssignmentFields({
   useLocale();
   const fields = [
     {
-      name: "handling_group",
-      label: t("request-create", "Bộ phận xử lý"),
-      options: options(lookups?.groups ?? []),
-    },
-    {
       name: "ticket_type",
       label: t("request-create", "Loại yêu cầu"),
       options: options(types),
       loading: typesLoading,
       disabled: !types.length,
+    },
+    {
+      name: "handling_group",
+      label: t("request-create", "Bộ phận xử lý"),
+      options: options(lookups?.groups ?? []),
+      disabled: true,
     },
     {
       name: "approve_user",

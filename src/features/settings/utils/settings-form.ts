@@ -40,6 +40,7 @@ export function getSettingsDefaults(
     permission: record?.permission?.map(String) ?? [],
     handling_group: recordText(record, "handling_group"),
     is_active: record?.is_active ?? true,
+    is_restricted_workflow: record?.is_restricted_workflow ?? false,
   };
 }
 const text = z.string().trim().max(255, "Tối đa 255 ký tự.");
@@ -61,6 +62,7 @@ const formSchema = z.object({
   permission: z.array(z.string()),
   handling_group: text,
   is_active: z.boolean(),
+  is_restricted_workflow: z.boolean(),
 });
 function validateField(
   field: SettingsField,

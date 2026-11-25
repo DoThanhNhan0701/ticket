@@ -59,6 +59,28 @@ export async function getCreateRequestLookups(signal?: AbortSignal) {
 export type CreateRequestLookups = Awaited<
   ReturnType<typeof getCreateRequestLookups>
 >;
+function sortRequestTypesByName<T extends { name: string }>(
+  rows: readonly T[],
+) {
+  return [...rows].sort((a, b) =>
+    a.name.localeCompare(b.name, "vi", { sensitivity: "base" }),
+  );
+}
+
+export async function getAllCreateRequestTypes(signal?: AbortSignal) {
+  const response = await getRequest<unknown>(
+    API_ENDPOINTS.lookups.allHandlingTicketTypes,
+    { signal },
+  );
+  return sortRequestTypesByName(
+    parseApiResponse(
+      z.array(requestTypeSchema),
+      response,
+      "Dữ liệu loại yêu cầu không hợp lệ.",
+    ).filter((row) => row.is_active),
+  );
+}
+
 export async function getCreateRequestTypes(
   group: string,
   signal?: AbortSignal,
@@ -84,8 +106,8 @@ export async function getCreateRequestTypes(
     count = result.count;
     rows.push(...result.results);
   }
-  return rows.filter(
-    (row) => row.is_active && String(row.handling_group) === group,
+  return sortRequestTypesByName(
+    rows.filter((row) => row.is_active && String(row.handling_group) === group),
   );
 }
 export async function createRequest(
