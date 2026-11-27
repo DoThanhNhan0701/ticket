@@ -270,51 +270,23 @@ function calendarDay(date: Date) {
   }) as HTMLButtonElement;
 }
 
-it("reveals each section only after the previous section is complete without submitting", async () => {
+it("shows general and additional fields immediately and reveals details after choosing a type", async () => {
   renderPage();
   await ready();
   expect(
-    screen.queryByRole("heading", { name: "Thông tin yêu cầu" }),
-  ).toBeNull();
+    screen.getByRole("heading", { name: "Thông tin yêu cầu" }),
+  ).toBeTruthy();
   expect(
     screen.queryByRole("heading", { name: /^Chi tiết yêu cầu/ }),
   ).toBeNull();
   expect(
-    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeNull();
-  fireEvent.submit(screen.getByRole("form", { name: "Tạo yêu cầu mới" }));
+    screen.getByRole("heading", { name: "Thông tin bổ sung" }),
+  ).toBeTruthy();
+  change("create-description", "Ghi chú nhập trước");
   await chooseType();
-  expect(
-    screen.queryByRole("heading", { name: "Thông tin yêu cầu" }),
-  ).toBeNull();
-  await select("Người phê duyệt", "Đỗ Nhân");
-  expect(
-    screen.getByRole("heading", { name: "Thông tin yêu cầu" }),
-  ).toBeTruthy();
-  await select("Bộ phận sử dụng", "Department AI");
-  await select("Văn phòng", "VP Huế");
-  change("create-title", "   ");
-  expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
-  change("create-title", "Yêu cầu mới");
   expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
-  expect(
-    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeNull();
-  await fillDetails();
-  change("create-description", "Ghi chú giữ nguyên khi sửa chi tiết");
-  expect(
-    screen.getByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeTruthy();
-  change("detail-0-f3", "19/10/2026");
-  expect(
-    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeNull();
-  change("detail-0-f3", "21/10/2026");
-  expect(
-    screen.getByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeTruthy();
   expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
-    "Ghi chú giữ nguyên khi sửa chi tiết",
+    "Ghi chú nhập trước",
   );
   expect(calls("/ticket_manager")).toHaveLength(0);
 });
@@ -348,8 +320,8 @@ it("retains later section drafts and attachments while an earlier section is bei
     target: { files: [new File(["draft"], "draft.txt")] },
   });
   change("create-title", "");
-  expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
-  expect(screen.queryByLabelText("Ghi chú")).toBeNull();
+  expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
+  expect(screen.getByLabelText("Ghi chú")).toBeTruthy();
   expect(
     screen
       .getByRole("button", { name: "Tạo yêu cầu" })
@@ -364,7 +336,7 @@ it("retains later section drafts and attachments while an earlier section is bei
   );
   expect(screen.getByRole("button", { name: "Bỏ tệp draft.txt" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Thêm dòng" }));
-  expect(screen.queryByLabelText("Ghi chú")).toBeNull();
+  expect(screen.getByLabelText("Ghi chú")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Xóa dòng 2" }));
   expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
     "Ghi chú cần giữ",
@@ -387,7 +359,7 @@ it("validates a due date on first submit and clears the error as soon as it is c
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByText("Ngày mong muốn phải hợp lệ và không trước hôm nay.");
   expect(calls("/ticket_manager")).toHaveLength(0);
-  expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
+  expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
   change("create-due-date", format(startOfToday(), "dd/MM/yyyy"));
   fireEvent.blur(document.getElementById("create-due-date")!);
   expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
@@ -696,17 +668,19 @@ it("accepts an attachment exactly at the size limit", async () => {
   expect(calls("/attachmentticketfile")).toHaveLength(1);
 });
 
-it("returns to the first section and clears the draft when starting over", async () => {
+it("keeps all sections visible and clears the draft when starting over", async () => {
   renderPage();
   await fillBase();
   await fillDetails();
   change("create-description", "Ghi chú cũ");
   fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
   expect(
-    screen.queryByRole("heading", { name: "Thông tin yêu cầu" }),
-  ).toBeNull();
+    screen.getByRole("heading", { name: "Thông tin yêu cầu" }),
+  ).toBeTruthy();
   expect(screen.queryByRole("group", { name: "Dòng 1" })).toBeNull();
-  expect(screen.queryByLabelText("Ghi chú")).toBeNull();
+  expect((screen.getByLabelText("Ghi chú") as HTMLTextAreaElement).value).toBe(
+    "",
+  );
   await fillBase();
   expect(
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
@@ -872,8 +846,8 @@ it("requires all enabled creation sections while ignoring required fields in dis
   ).toBeTruthy();
   expect(screen.queryByRole("textbox", { name: "Kết quả xử lý" })).toBeNull();
   expect(
-    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeNull();
+    screen.getByRole("heading", { name: "Thông tin bổ sung" }),
+  ).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Tạo yêu cầu" }));
   await screen.findByText("Vui lòng nhập Kết quả nghiệm thu.");
   expect(calls("/ticket_manager")).toHaveLength(0);
@@ -939,11 +913,10 @@ it("loads real endpoint contracts, defaults only the single company, hides inact
   );
   expect(optionLabels).toEqual(["Cấp tài khoản IT", "Đăng ký từ xa"]);
   fireEvent.keyDown(comboboxes[0], { key: "Escape" });
-  expect(document.getElementById("create-due-date")).toBeNull();
-  await fillBase();
   expect(
     (document.getElementById("create-due-date") as HTMLInputElement).value,
   ).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
+  await fillBase();
   expect(await screen.findByRole("group", { name: "Dòng 1" })).toBeTruthy();
   expect(
     screen
@@ -1177,7 +1150,9 @@ it("blocks a long handling group immediately on selection and recovers when a va
       .getByRole("button", { name: "Tạo yêu cầu" })
       .hasAttribute("disabled"),
   ).toBe(true);
-  expect(document.getElementById("create-title")).toBeNull();
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("");
   expect(calls("/ticket_manager")).toHaveLength(0);
   await select("Loại yêu cầu", "Cấp tài khoản IT");
   await waitFor(() =>
@@ -1465,7 +1440,9 @@ it("clones again after repeated resets without restoring cleared edits or creati
     );
     fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
     await waitFor(() =>
-      expect(document.getElementById("create-title")).toBeNull(),
+      expect(
+        (document.getElementById("create-title") as HTMLInputElement).value,
+      ).toBe(""),
     );
     expect(sessionStorage.getItem("request-create-draft:v1:42:42")).toBeNull();
     expect(document.getElementById("detail-0-f0")).toBeNull();
@@ -1799,7 +1776,9 @@ it("restores an incomplete draft after remount and isolates it from another acco
   auth = { ...auth, userId: 99 };
   renderPage();
   await ready();
-  expect(screen.queryByLabelText("Tiêu đề yêu cầu")).toBeNull();
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("");
   cleanup();
   client.clear();
   auth = { ...auth, userId: 42 };
@@ -1812,14 +1791,19 @@ it("restores an incomplete draft after remount and isolates it from another acco
     (document.getElementById("detail-0-f0") as HTMLInputElement).value,
   ).toBe("Saved unfinished row");
   expect(
-    screen.queryByRole("heading", { name: "Thông tin bổ sung" }),
-  ).toBeNull();
+    screen.getByRole("heading", { name: "Thông tin bổ sung" }),
+  ).toBeTruthy();
+  const restoredMessage = "Đã khôi phục bản nháp yêu cầu của bạn.";
+  expect(screen.getByText(restoredMessage)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Làm lại" }));
+  expect(screen.queryByText(restoredMessage)).toBeNull();
   cleanup();
   client.clear();
   renderPage();
   await ready();
-  expect(screen.queryByLabelText("Tiêu đề yêu cầu")).toBeNull();
+  expect(
+    (document.getElementById("create-title") as HTMLInputElement).value,
+  ).toBe("");
 });
 
 it("resumes a created ticket after remount without recreating it or reuploading successful files", async () => {
@@ -1884,7 +1868,7 @@ it("keeps typing and submission usable when draft storage is blocked", async () 
   expect(calls("/ticket_manager")).toHaveLength(1);
 });
 
-it("keeps the create form stable while typing without changing step validity", async () => {
+it("keeps the create form stable while typing in general, detail, and notes fields", async () => {
   const renders = vi.spyOn(createRequestHooks, "useCreateRequest");
   renderPage();
   await fillBase();

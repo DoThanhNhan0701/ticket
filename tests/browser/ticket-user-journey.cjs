@@ -288,7 +288,7 @@ async function create() {
 async function discussion(ticket) {
   if (done("discussion-edit-reply-and-comment")) return;
   const page = await openTicket("nhandt01", ticket, "created");
-  await tab(page, "Trao đổi");
+  await tab(page, "Thông tin chung");
   const composer = page.getByRole("form", {
     name: "Phản hồi mới",
     exact: true,
@@ -399,7 +399,7 @@ async function processing(ticket) {
       .getByRole("button", { name: "Đổi ngày mong muốn", exact: true })
       .waitFor();
     await page
-      .getByRole("tabpanel")
+      .getByRole("region", { name: /^Tệp đính kèm/ })
       .locator('input[type="file"]')
       .setInputFiles(textFile("detail"));
     await page
@@ -658,12 +658,7 @@ async function mobile(ticket) {
   const page = await openTicket("nhandt01", ticket, "created");
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 950 });
-    for (const name of [
-      "Thông tin chung",
-      "Chi tiết yêu cầu",
-      "Trao đổi",
-      "Lịch sử",
-    ]) {
+    for (const name of ["Thông tin chung", "Chi tiết yêu cầu", "Lịch sử"]) {
       await tab(page, name);
       // DOM inspection only; all navigation and changes use normal UI controls.
       const size = await page.evaluate(() => ({

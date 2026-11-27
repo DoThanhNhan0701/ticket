@@ -53,12 +53,12 @@ export function FileAttachmentTile({
       ) : (
         <span
           aria-hidden="true"
-          className={`flex size-full min-w-0 flex-col items-center justify-center gap-1 p-2 ${image ? "bg-muted/30 text-muted-foreground" : getFileTileColor(name)}`}
+          className={`flex size-full min-w-0 flex-col items-center justify-center gap-0.5 p-1 ${image ? "bg-muted/30 text-muted-foreground" : getFileTileColor(name)}`}
         >
           {image ? (
-            <Image className="size-6" />
+            <Image className="size-4" />
           ) : (
-            <FileText className="size-6" />
+            <FileText className="size-4" />
           )}
           <span className="max-w-full truncate text-[10px] font-medium uppercase">
             {name.includes(".")
@@ -70,7 +70,7 @@ export function FileAttachmentTile({
       <span className="sr-only">{name}</span>
     </>
   );
-  const className = `flex size-full items-center justify-center overflow-hidden rounded-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${onRestore ? "opacity-40 grayscale" : ""}`;
+  const className = `flex size-full items-center justify-center overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${onRestore ? "opacity-40 grayscale" : ""}`;
   let action = (
     <span role="img" aria-label={name} title={name} className={className}>
       {content}
@@ -103,7 +103,7 @@ export function FileAttachmentTile({
       </a>
     );
   return (
-    <li className="group/file relative size-18 shrink-0 rounded-xl border border-border bg-muted/20">
+    <li className="group/file relative size-14 shrink-0 rounded-lg border border-border bg-muted/20">
       {action}
       {url && !onRestore && (
         <CopyFileLink name={name} url={url} disabled={disabled} />
@@ -133,7 +133,7 @@ function CopyFileLink({
       title={t("attachments", "Sao chép liên kết")}
       aria-label={t("attachments", "Sao chép liên kết {0}", [name])}
       disabled={disabled}
-      className="pointer-events-none absolute right-1 bottom-1 z-10 size-7 rounded-md bg-card/95 opacity-0 shadow-xs group-hover/file:pointer-events-auto group-hover/file:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
+      className="pointer-events-none absolute right-0.5 bottom-0.5 z-10 size-6 rounded-md bg-card/95 opacity-0 shadow-xs group-hover/file:pointer-events-auto group-hover/file:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(url);

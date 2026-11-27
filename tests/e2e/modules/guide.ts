@@ -82,7 +82,9 @@ export async function guideRequest(h: Harness) {
     "Guide 8.1: keyboard @ mention selects without prematurely sending; persisted comment",
     async () => {
       await openTicket(h);
-      await p.getByRole("tab", { name: /^Trao đổi/ }).click();
+      await p
+        .getByRole("tab", { name: "Thông tin chung", exact: true })
+        .click();
       const form = p.getByRole("form", { name: "Phản hồi mới", exact: true });
       const input = form.getByRole("textbox");
       const username = h.own.users.username!;
@@ -111,7 +113,9 @@ export async function guideRequest(h: Harness) {
           .filter({ hasText: `${text}@${username} kiểm tra hướng dẫn` }),
       ).toBeVisible();
       await openTicket(h);
-      await p.getByRole("tab", { name: /^Trao đổi/ }).click();
+      await p
+        .getByRole("tab", { name: "Thông tin chung", exact: true })
+        .click();
       await expect(
         p
           .getByRole("article")

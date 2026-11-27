@@ -43,6 +43,7 @@ export function useRequestCreateDraft({
   createdRef: { current: CreatedRequest | undefined };
   pendingFiles: { current: File[] };
 }>) {
+  const [restored, setRestored] = useState(Boolean(saved));
   const [loading, setLoading] = useState(Boolean(saved?.files.length));
   const [missing, setMissing] = useState<DraftFile[]>([]);
   const [storageError, setStorageError] = useState(false);
@@ -116,6 +117,7 @@ export function useRequestCreateDraft({
   }, [files, loading, key, enabled]);
   const clear = () => {
     active.current = false;
+    setRestored(false);
     removeRequestDraft(key);
     void writeDraftFiles(fileKey.current, []).catch(() => {});
   };
@@ -125,7 +127,7 @@ export function useRequestCreateDraft({
     active.current = true;
   };
   return {
-    restored: Boolean(saved),
+    restored,
     discardMissing: (file: DraftFile) =>
       setMissing((previous) =>
         previous.filter((other) => !draftFileMatches(file, other)),

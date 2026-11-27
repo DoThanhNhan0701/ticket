@@ -24,24 +24,6 @@ export async function openTicket(h: Harness) {
   ).toBeVisible();
   h.visits.add("/requests/:ticketID");
 }
-async function expectCreateStepAtBottom(h: Harness, step: number) {
-  await expect(h.page.locator(`[data-request-step="${step}"]`)).toBeVisible();
-  await expect
-    .poll(
-      () =>
-        h.page
-          .locator("main")
-          .evaluate((main) =>
-            Math.abs(main.scrollHeight - main.clientHeight - main.scrollTop),
-          ),
-      {
-        timeout: 10000,
-        message: `Step ${step} scrolls to the actual content bottom`,
-      },
-    )
-    .toBeLessThanOrEqual(1);
-}
-
 export async function requestJourney(h: Harness) {
   const p = h.page;
   await longNameGuard(h);
@@ -62,7 +44,11 @@ export async function requestJourney(h: Harness) {
         exact: true,
       });
       await expect(form).toBeVisible();
-      await expect(p.locator('[data-request-step="2"]')).toHaveCount(0);
+      for (const step of [1, 2, 4])
+        await expect(
+          form.locator(`[data-request-step="${step}"]`),
+        ).toBeVisible();
+      await expect(form.locator('[data-request-step="3"]')).toHaveCount(0);
       await p.getByRole("button", { name: "Tạo yêu cầu", exact: true }).click();
       await expect(p.locator("#create-handling_group")).toHaveAttribute(
         "aria-invalid",
@@ -80,7 +66,6 @@ export async function requestJourney(h: Harness) {
       const company = p.getByRole("combobox", { name: "Công ty", exact: true });
       await company.click();
       await p.getByRole("option").first().click();
-      await expectCreateStepAtBottom(h, 2);
       const title = `${h.prefix} Yêu cầu tiếng Việt ✓`;
       await p.locator("#create-title").fill(title);
       await h.choose(
@@ -88,10 +73,8 @@ export async function requestJourney(h: Harness) {
         requireOwn(h, "requesting-departments").name,
       );
       await h.choose("Văn phòng", requireOwn(h, "offices").name);
-      await expectCreateStepAtBottom(h, 3);
       await p.locator("#detail-0-f0").fill(`${h.prefix} Nội dung thử`);
       await p.locator("#detail-0-f1").fill("0");
-      await expectCreateStepAtBottom(h, 4);
       await p
         .getByRole("button", { name: "Sao chép dòng 1", exact: true })
         .click();
@@ -151,12 +134,7 @@ export async function requestJourney(h: Harness) {
         )
         .toBeGreaterThan(0);
       await p.keyboard.press("Escape");
-      for (const tab of [
-        "Chi tiết yêu cầu",
-        "Lịch sử",
-        "Trao đổi",
-        "Thông tin chung",
-      ]) {
+      for (const tab of ["Chi tiết yêu cầu", "Lịch sử", "Thông tin chung"]) {
         await p.getByRole("tab", { name: new RegExp(`^${tab}`) }).click();
         await expect(
           p.getByRole("tab", { name: new RegExp(`^${tab}`) }),
@@ -170,7 +148,9 @@ export async function requestJourney(h: Harness) {
     "Comment validation clears live; pending files/draft survive tab switches and Stay warning",
     async () => {
       await openTicket(h);
-      await p.getByRole("tab", { name: /^Trao đổi/ }).click();
+      await p
+        .getByRole("tab", { name: "Thông tin chung", exact: true })
+        .click();
       const form = p.getByRole("form", { name: "Phản hồi mới", exact: true });
       const input = form.getByRole("textbox");
       await form
@@ -187,12 +167,7 @@ export async function requestJourney(h: Harness) {
       await form
         .locator('input[type="file"]')
         .setInputFiles(textFile(h, "draft"));
-      for (const tab of [
-        "Thông tin chung",
-        "Chi tiết yêu cầu",
-        "Lịch sử",
-        "Trao đổi",
-      ])
+      for (const tab of ["Chi tiết yêu cầu", "Lịch sử", "Thông tin chung"])
         await p.getByRole("tab", { name: new RegExp(`^${tab}`) }).click();
       await expect(input).toHaveValue(`${h.prefix} draft`);
       await p
@@ -221,7 +196,9 @@ export async function requestJourney(h: Harness) {
     "Send comment using Enter; Shift+Enter, attachment, reply and edit UI",
     async () => {
       await openTicket(h);
-      await p.getByRole("tab", { name: /^Trao đổi/ }).click();
+      await p
+        .getByRole("tab", { name: "Thông tin chung", exact: true })
+        .click();
       const form = p.getByRole("form", { name: "Phản hồi mới", exact: true });
       const input = form.getByRole("textbox");
       const content = `${h.prefix} Comment`;
@@ -272,7 +249,9 @@ export async function requestJourney(h: Harness) {
     "Responsive detail and keyboard accessible discussion",
     async () => {
       await openTicket(h);
-      await p.getByRole("tab", { name: /^Trao đổi/ }).click();
+      await p
+        .getByRole("tab", { name: "Thông tin chung", exact: true })
+        .click();
       return h.responsive();
     },
   );
@@ -372,8 +351,7 @@ export async function cloneReset(h: Harness) {
       await expect(p.locator("#create-handling_group")).toHaveText(
         "Chọn bộ phận xử lý",
       );
-      // Request details are conditional on a selected group/type, so reset hides the title field.
-      await expect(p.locator("#create-title")).toHaveCount(0);
+      await expect(p.locator("#create-title")).toHaveValue("");
       await h.nav("Danh sách yêu cầu");
     },
   );
@@ -413,7 +391,7 @@ export async function longNameGuard(h: Harness) {
       await expect(
         p.getByRole("button", { name: "Tạo yêu cầu", exact: true }),
       ).toBeDisabled();
-      await expect(p.locator("#create-title")).toHaveCount(0);
+      await expect(p.locator("#create-title")).toHaveValue("");
       await p
         .getByRole("button", { name: "Tải lại danh mục", exact: true })
         .click();

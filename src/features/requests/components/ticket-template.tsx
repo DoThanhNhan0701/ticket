@@ -145,10 +145,10 @@ export function TicketTemplate({
             key={index}
             className={`min-w-0 gap-0 py-0 shadow-none ${active ? "border-primary/40" : ""}`}
           >
-            <div className="flex min-w-0 items-center justify-between gap-3 border-b border-border bg-muted/30 px-3 py-2 sm:px-4">
+            <div className="flex min-w-0 items-center justify-between gap-2 border-b border-border bg-muted/30 px-2.5 py-1">
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 <span
-                  className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-xs font-medium text-muted-foreground"
+                  className="flex size-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-xs font-medium text-muted-foreground"
                   aria-hidden="true"
                 >
                   {index + 1}
@@ -227,14 +227,14 @@ export function TicketTemplate({
               aria-label={t("request-detail", "Dữ liệu {0}", [group.title])}
               className="max-w-full overflow-x-auto"
             >
-              <table className="w-full text-sm">
+              <table className="w-full text-sm leading-4">
                 <thead className="bg-muted/40">
                   <tr>
-                    <th className="min-w-12 px-2.5 py-1.5 text-left">#</th>
+                    <th className="min-w-12 px-2 py-1 text-left">#</th>
                     {selected.map((field) => (
                       <th
                         key={field.fieldKey}
-                        className="min-w-60 px-2.5 py-1.5 text-left font-medium"
+                        className="min-w-60 px-2 py-1 text-left font-medium"
                       >
                         <div className="flex items-center gap-1">
                           <Tooltip>
@@ -263,13 +263,13 @@ export function TicketTemplate({
                         key={String(record.key ?? row)}
                         className="border-t border-border align-top"
                       >
-                        <td className="px-2.5 py-1.5 text-muted-foreground">
+                        <td className="px-2 py-1 text-muted-foreground">
                           {row + 1}
                         </td>
                         {selected.map((field) => (
                           <td
                             key={field.fieldKey}
-                            className="min-w-60 px-2.5 py-1.5"
+                            className="min-w-60 px-2 py-1"
                             style={{
                               minWidth: Math.min(
                                 600,
@@ -310,7 +310,7 @@ export function TicketTemplate({
                 </tbody>
               </table>
               {!ticket.data_item?.dataform.data.length && (
-                <p className="p-4 text-sm text-muted-foreground">
+                <p className="p-2 text-sm text-muted-foreground">
                   {t("request-detail", "Chưa có dòng dữ liệu.")}
                 </p>
               )}

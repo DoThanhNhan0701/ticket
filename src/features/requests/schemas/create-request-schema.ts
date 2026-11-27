@@ -45,20 +45,6 @@ export type CreateRequestChoices = Partial<
   Record<ChoiceField, readonly { id: number }[]>
 >;
 
-export const requestAssignmentSchema = createRequestValuesSchema.pick({
-  handling_group: true,
-  ticket_type: true,
-  approve_user: true,
-  fore_cus: true,
-});
-export const requestGeneralSchema = createRequestValuesSchema.pick({
-  title: true,
-  bophansudung: true,
-  other1: true,
-  vanphong: true,
-  duedate: true,
-});
-
 export function getCreateRequestSchema(
   groups: readonly TemplateGroup[],
   handlingGroups: readonly { id: number; name?: string }[] = [],

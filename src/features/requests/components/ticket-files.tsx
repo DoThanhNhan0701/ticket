@@ -43,7 +43,7 @@ export function TicketFiles({
       <ul
         className={
           layout === "tiles"
-            ? "flex min-w-0 flex-wrap gap-2"
+            ? "flex min-w-0 flex-wrap gap-1.5"
             : "grid min-w-0 gap-2"
         }
       >

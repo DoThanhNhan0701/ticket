@@ -222,12 +222,15 @@ it("preserves unsent files and reply text across all detail tabs, warning only w
   renderApp("/requests/42?tab=general");
   await screen.findByRole("tab", { name: "Thông tin chung" });
   const general = screen.getByRole("tabpanel", { name: "Thông tin chung" });
-  fireEvent.change(within(general).getByLabelText("Tệp đính kèm"), {
-    target: { files: [new File(["draft"], "general-draft.txt")] },
-  });
-  fireEvent.click(screen.getByRole("tab", { name: /Trao đổi/ }));
-  const discussion = await screen.findByRole("tabpanel", { name: /Trao đổi/ });
-  const reply = within(discussion).getByRole("form", { name: "Phản hồi mới" });
+  fireEvent.change(
+    within(
+      within(general).getByRole("region", { name: /^Tệp đính kèm/ }),
+    ).getByLabelText("Tệp đính kèm"),
+    {
+      target: { files: [new File(["draft"], "general-draft.txt")] },
+    },
+  );
+  const reply = within(general).getByRole("form", { name: "Phản hồi mới" });
   fireEvent.change(within(reply).getByLabelText("Phản hồi"), {
     target: { value: "Phản hồi chưa gửi" },
   });
@@ -235,13 +238,7 @@ it("preserves unsent files and reply text across all detail tabs, warning only w
     target: { files: [new File(["reply"], "reply-draft.txt")] },
   });
 
-  for (const name of [
-    "Chi tiết yêu cầu",
-    "Lịch sử",
-    "Thông tin chung",
-    "Trao đổi",
-    "Thông tin chung",
-  ]) {
+  for (const name of ["Chi tiết yêu cầu", "Lịch sử", "Thông tin chung"]) {
     fireEvent.click(screen.getByRole("tab", { name: new RegExp(`^${name}`) }));
     await screen.findByRole("tabpanel", { name: new RegExp(`^${name}`) });
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -249,7 +246,6 @@ it("preserves unsent files and reply text across all detail tabs, warning only w
   expect(
     within(general).getByRole("button", { name: "Bỏ tệp general-draft.txt" }),
   ).toBeTruthy();
-  fireEvent.click(screen.getByRole("tab", { name: /Trao đổi/ }));
   expect(
     (within(reply).getByLabelText("Phản hồi") as HTMLTextAreaElement).value,
   ).toBe("Phản hồi chưa gửi");
@@ -263,7 +259,7 @@ it("preserves unsent files and reply text across all detail tabs, warning only w
   fireEvent.click(screen.getByRole("button", { name: "Ở lại" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(screen.getByTestId("current-path").textContent).toBe(
-    "/requests/42?tab=discussion",
+    "/requests/42?tab=general",
   );
 
   fireEvent.click(screen.getByRole("link", { name: "Danh sách yêu cầu" }));

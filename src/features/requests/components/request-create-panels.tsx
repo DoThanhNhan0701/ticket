@@ -182,15 +182,10 @@ export function RequestTemplateSection({
   onBusyChange: (value: boolean) => void;
 }>) {
   useLocale();
-  const templateLoading = Boolean(
-    model.selectedType && !model.template.data && model.template.isFetching,
-  );
-  if (
-    model.selectedType &&
-    model.template.data &&
-    !templateLoading &&
-    model.groups.length > 0
-  ) {
+  if (!model.selectedType) return null;
+
+  const templateLoading = !model.template.data && model.template.isFetching;
+  if (model.template.data && model.groups.length > 0) {
     return (
       <RequestDetailRows
         key={model.selectedType.id}
@@ -207,29 +202,19 @@ export function RequestTemplateSection({
       step={3}
       title={t("request-create", "Chi tiết yêu cầu")}
     >
-      {!model.selectedType && (
-        <p className="flex items-center gap-2 rounded-md border border-dashed border-border bg-muted/20 p-2.5 text-sm text-muted-foreground">
-          <FileText className="size-4 shrink-0" aria-hidden="true" />
-          {t(
-            "request-create",
-            "Chọn loại yêu cầu ở trên để hiển thị biểu mẫu chi tiết.",
-          )}
-        </p>
-      )}
       {templateLoading && (
         <LoadingState
           message={t("request-create", "Đang tải biểu mẫu chi tiết...")}
         />
       )}
-      {model.selectedType && model.template.isError && (
+      {model.template.isError && (
         <ErrorToast
           message={t("request-create", "Không tải được biểu mẫu: {0}", [
             translateMessage(model.template.error.message),
           ])}
         />
       )}
-      {model.selectedType &&
-        model.template.isSuccess &&
+      {model.template.isSuccess &&
         !templateLoading &&
         model.groups.length === 0 && (
           <p

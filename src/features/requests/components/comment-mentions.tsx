@@ -56,7 +56,7 @@ export function CommentMentions({
     });
   };
   return (
-    <div className="min-w-0 space-y-2">
+    <div className="min-w-0 space-y-1">
       <label htmlFor={id} className="text-sm font-medium">
         {label}
       </label>
@@ -66,7 +66,7 @@ export function CommentMentions({
           id={id}
           value={value}
           disabled={disabled}
-          rows={2}
+          rows={1}
           aria-invalid={invalid}
           aria-describedby={invalid ? `${id}-error` : `${id}-hint`}
           aria-autocomplete="list"
@@ -78,7 +78,7 @@ export function CommentMentions({
             "request-discussion",
             "Nhập phản hồi, gõ @ để nhắc đến người dùng...",
           )}
-          className="min-h-14 max-h-[min(40dvh,15rem)] min-w-0 resize-none overflow-y-auto border-0 bg-transparent py-1.5 field-sizing-content shadow-none ring-0 whitespace-pre-wrap wrap-anywhere focus-visible:ring-0"
+          className="min-h-8 max-h-[min(40dvh,15rem)] min-w-0 resize-none overflow-y-auto border-0 bg-transparent py-1 field-sizing-content shadow-none ring-0 whitespace-pre-wrap wrap-anywhere focus-visible:ring-0"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onClick={(event) => {
@@ -164,7 +164,7 @@ function CommentInputFrame({
   useLocale();
   return (
     <div
-      className={`min-w-0 rounded-2xl border bg-card p-1.5 shadow-xs focus-within:ring-2 focus-within:ring-ring/25 ${invalid ? "border-destructive" : "border-input focus-within:border-ring"}`}
+      className={`min-w-0 rounded-lg border bg-card p-1 shadow-xs focus-within:ring-2 focus-within:ring-ring/25 ${invalid ? "border-destructive" : "border-input focus-within:border-ring"}`}
     >
       {children}
     </div>

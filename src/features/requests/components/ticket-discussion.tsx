@@ -25,12 +25,11 @@ import {
 import { ticketFileUrl } from "../utils/ticket-detail";
 import { CommentComposer } from "./comment-composer";
 import { TicketFiles } from "./ticket-files";
-import { RequestFormSection } from "./request-form-section";
 
 function MentionContent({ text }: Readonly<{ text: string }>) {
   useLocale();
   return (
-    <p className="text-sm leading-relaxed whitespace-pre-wrap wrap-anywhere">
+    <p className="text-sm leading-4 whitespace-pre-wrap wrap-anywhere">
       {text.split(/(@[\p{L}\p{N}_.-]+)/u).map((part, index) =>
         part.startsWith("@") ? (
           <span
@@ -62,20 +61,20 @@ function CommentMessage({
   const timestamp = isValid(date) ? format(date, "dd/MM/yyyy HH:mm") : "";
   return (
     <article
-      className="group/comment min-w-0 space-y-2"
+      className="group/comment min-w-0 space-y-1"
       aria-label={t("request-discussion", "Phản hồi của {0}", [
         message.username,
       ])}
     >
-      <div className="flex min-w-0 items-start gap-2">
+      <div className="flex min-w-0 items-center gap-1.5">
         <UserAvatar
           name={message.username}
           src={message.avatar ? ticketFileUrl(message.avatar) : undefined}
-          className="size-7"
+          className="size-6"
         />
-        <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2">
           <p
-            className="truncate text-sm font-semibold"
+            className="min-w-0 truncate text-sm leading-4 font-semibold"
             title={message.username}
           >
             {message.username}
@@ -95,7 +94,7 @@ function CommentMessage({
               type="button"
               variant="outline"
               size="icon"
-              className="size-8 shrink-0 rounded-lg"
+              className="size-7 shrink-0 rounded-md"
               aria-label={t("request-discussion", "Trả lời")}
               title={t("request-discussion", "Trả lời")}
               onClick={onReply}
@@ -109,7 +108,7 @@ function CommentMessage({
               type="button"
               variant="outline"
               size="icon"
-              className="size-8 shrink-0 rounded-lg"
+              className="size-7 shrink-0 rounded-md"
               aria-label={t(
                 "request-discussion",
                 "Chỉnh sửa phản hồi của {0}",
@@ -196,30 +195,24 @@ export function TicketDiscussion({
   const [replyBusy, setReplyBusy] = useState(false);
   const [editing, setEditing] = useState<EditingComment | null>(null);
   return (
-    <div className="min-w-0 space-y-4">
-      <RequestFormSection
-        title={t("request-discussion", "Trao đổi")}
-        description={t(
-          "request-discussion",
-          "Gửi phản hồi, đính kèm tệp và nhắc đến người dùng để trao đổi về yêu cầu.",
-        )}
-      >
+    <div className="min-w-0 space-y-1.5">
+      <Card className="min-w-0 rounded-lg px-2.5 py-2 sm:px-3">
         <CommentComposer
           onSend={(draft) =>
             addTicketComment(ticket.id, draft.content, draft.files)
           }
           onSaved={onSaved}
         />
-      </RequestFormSection>
+      </Card>
       {ticket.comments.length > 0 ? (
-        <div className="min-w-0 space-y-3">
+        <div className="min-w-0 space-y-1.5">
           <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <MessageSquare className="size-4" />
             {ticket.comments.length}{" "}
             {t("request-discussion", "cuộc trao đổi")}{" "}
           </p>
           {ticket.comments.map((comment) => (
-            <Card key={comment.id} className="min-w-0 gap-2 p-3">
+            <Card key={comment.id} className="min-w-0 gap-1.5 p-2">
               <CommentMessage
                 message={comment}
                 onEdit={
@@ -233,7 +226,7 @@ export function TicketDiscussion({
                 replyDisabled={replyBusy}
               />
               {comment.item_comment.length > 0 && (
-                <div className="ml-2 min-w-0 space-y-3 border-l-2 border-border pl-3">
+                <div className="ml-2 min-w-0 space-y-1.5 border-l-2 border-border pl-2">
                   {comment.item_comment.map((reply) => (
                     <CommentMessage
                       key={reply.id}
@@ -248,7 +241,7 @@ export function TicketDiscussion({
                 </div>
               )}
               {replyTo === comment.id && (
-                <div className="min-w-0 rounded-lg border border-border bg-muted/20 p-3">
+                <div className="min-w-0 rounded-lg border border-border bg-muted/20 p-2">
                   <CommentComposer
                     label={t("request-discussion", "Trả lời {0}", [
                       comment.username,
@@ -265,8 +258,8 @@ export function TicketDiscussion({
           ))}
         </div>
       ) : (
-        <div className="flex min-h-36 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">
-          <MessageSquare className="size-6" aria-hidden="true" />
+        <div className="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-2.5 py-1.5 text-sm text-muted-foreground">
+          <MessageSquare className="size-4 shrink-0" aria-hidden="true" />
           <p>{t("request-discussion", "Chưa có phản hồi.")}</p>
         </div>
       )}

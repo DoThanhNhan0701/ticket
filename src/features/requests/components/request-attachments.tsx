@@ -26,7 +26,7 @@ function attachmentLabelClass(compact: boolean, hidden?: boolean) {
 
 function pickerClassName(compact: boolean, style: "dropzone" | "inline") {
   if (compact)
-    return "size-9 rounded-xl text-muted-foreground hover:text-foreground";
+    return "size-7 rounded-md text-muted-foreground hover:text-foreground";
   if (style === "inline")
     return "min-h-8 w-full border-dashed text-primary hover:border-primary/50";
   return "h-auto min-h-20 w-full flex-col gap-1 border-dashed px-2.5 py-2.5 whitespace-normal text-center hover:border-primary/50";
@@ -44,7 +44,7 @@ function PickerContent({
   multiple: boolean;
 }>) {
   useLocale();
-  if (compact) return <Paperclip className="size-5" aria-hidden="true" />;
+  if (compact) return <Paperclip className="size-4" aria-hidden="true" />;
   if (style === "inline")
     return (
       <>
@@ -174,7 +174,7 @@ export function RequestAttachments({
         <div
           className={
             tiles
-              ? "flex min-w-0 flex-wrap items-start gap-2"
+              ? "flex min-w-0 flex-wrap items-start gap-1.5"
               : "min-w-0 space-y-2"
           }
         >
@@ -231,7 +231,7 @@ function AttachmentList({
 }>) {
   useLocale();
   return (
-    <ul className={tiles ? "flex min-w-0 flex-wrap gap-2" : "space-y-2"}>
+    <ul className={tiles ? "flex min-w-0 flex-wrap gap-1.5" : "space-y-2"}>
       {files.map((file, index) =>
         tiles ? (
           <FileAttachmentTile

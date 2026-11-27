@@ -55,7 +55,7 @@ export function TicketAttachments({
       <TicketFiles files={ticket.attachment_files} layout="tiles" />
     ) : null;
   return (
-    <div className="min-w-0 space-y-3">
+    <div className="min-w-0 space-y-1.5">
       {!existingAttachments && (
         <p className="text-sm text-muted-foreground">
           {t("attachments", "Không có tệp đính kèm.")}
@@ -75,7 +75,7 @@ export function TicketAttachments({
                 <AsyncButton
                   type="button"
                   size="icon"
-                  className="size-9 rounded-xl"
+                  className="size-7 rounded-md"
                   aria-label={
                     mutation.isError
                       ? t("attachments", "Tải lại tệp còn lại")

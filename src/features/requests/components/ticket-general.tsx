@@ -51,9 +51,9 @@ function GeneralSection({
         className,
       )}
     >
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+      <div className="flex items-center gap-2 border-b border-border px-2.5 py-1.5">
         <Icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
-        <div className="min-w-0">
+        <div className="flex min-w-0 flex-wrap items-baseline gap-x-2">
           <h2
             id={id}
             className="flex items-center gap-1.5 text-[0.8125rem] leading-4 font-semibold"
@@ -68,14 +68,14 @@ function GeneralSection({
           {description && (
             <p
               title={description}
-              className="mt-0.5 truncate text-[0.6875rem] leading-3.5 text-muted-foreground"
+              className="truncate text-[0.6875rem] leading-3.5 text-muted-foreground"
             >
               {description}
             </p>
           )}
         </div>
       </div>
-      <div className="p-2.5 sm:p-3">{children}</div>
+      <div className="p-2">{children}</div>
     </section>
   );
 }
@@ -94,7 +94,7 @@ function ReadField({
       </dt>
       <dd
         aria-label={label}
-        className="min-h-4 text-sm font-medium whitespace-pre-wrap wrap-anywhere"
+        className="min-h-4 text-sm leading-4 font-medium whitespace-pre-wrap wrap-anywhere"
       >
         {value}
       </dd>
@@ -118,14 +118,14 @@ export function TicketGeneral({
     ],
   ].filter(([, value]) => value);
   return (
-    <div className="grid min-w-0 grid-cols-1 items-stretch gap-2.5 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] xl:grid-rows-[1fr_auto]">
+    <div className="grid min-w-0 grid-cols-1 items-stretch gap-1.5 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] xl:grid-rows-[1fr_auto]">
       <GeneralSection
         title={t("request-detail", "Thông tin yêu cầu")}
         className="xl:col-start-1 xl:row-start-1"
         description={t("request-detail", "Thông tin cơ bản và đơn vị sử dụng")}
         icon={FileText}
       >
-        <dl className="grid min-w-0 grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-4">
+        <dl className="grid min-w-0 grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-4">
           <ReadField
             label={t("request-detail", "Loại yêu cầu")}
             icon={FileType}
@@ -164,12 +164,12 @@ export function TicketGeneral({
             href={manual}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex text-sm text-primary underline-offset-4 hover:underline"
+            className="mt-2 inline-flex text-sm text-primary underline-offset-4 hover:underline"
           >
             {t("request-detail", "Tài liệu hướng dẫn")}
           </a>
         )}
-        <dl className="mt-3 space-y-2.5 border-t border-border pt-2.5">
+        <dl className="mt-2 space-y-1.5 border-t border-border pt-1.5">
           <ReadField
             label={t("request-detail", "Ghi chú")}
             icon={NotebookPen}
@@ -194,7 +194,7 @@ export function TicketGeneral({
         )}
         icon={UserRound}
       >
-        <dl className="space-y-2.5 [&>div+div]:border-t [&>div+div]:border-border [&>div+div]:pt-2.5">
+        <dl className="space-y-1.5 [&>div+div]:border-t [&>div+div]:border-border [&>div+div]:pt-1.5">
           <ReadField
             label={t("request-detail", "Người phê duyệt")}
             icon={UserCheck}

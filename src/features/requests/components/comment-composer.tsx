@@ -88,7 +88,7 @@ export function CommentComposer({
           ? t("request-discussion", "Chỉnh sửa bình luận")
           : t("request-discussion", "{0} mới", [label])
       }
-      className="min-w-0 space-y-4"
+      className="min-w-0 space-y-1.5"
       onSubmit={(event) => {
         event.preventDefault();
         if (submitting.current) return;
@@ -106,9 +106,9 @@ export function CommentComposer({
         disabled={mutation.isPending}
         invalid={empty && !content.trim()}
       >
-        <div className="min-w-0 space-y-3 px-2 pb-1">
+        <div className="min-w-0 space-y-1.5 px-1 pb-0.5">
           {Object.keys(existingFiles).length > 0 && (
-            <div className="min-w-0 space-y-2">
+            <div className="min-w-0 space-y-1.5">
               <p className="text-sm font-medium">
                 {t("request-discussion", "Tệp đã đính kèm")}
               </p>
@@ -127,13 +127,13 @@ export function CommentComposer({
           <RequestAttachments
             compact
             actions={
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex shrink-0 items-center gap-1">
                 {onCancel && (
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="size-9 rounded-xl"
+                    className="size-7 rounded-md"
                     aria-label={t("request-discussion", "Hủy")}
                     title={t("request-discussion", "Hủy")}
                     disabled={mutation.isPending}
@@ -171,7 +171,7 @@ export function CommentComposer({
                       <Send className="size-4" />
                     )
                   }
-                  className="size-9 shrink-0 rounded-xl"
+                  className="size-7 shrink-0 rounded-md"
                 >
                   <span className="sr-only">
                     {editing

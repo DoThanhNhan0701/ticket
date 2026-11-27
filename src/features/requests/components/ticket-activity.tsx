@@ -21,7 +21,7 @@ export function TicketHistory({
     staleTime: 0,
   });
   return (
-    <Card className="min-w-0 gap-4 p-4 sm:p-5">
+    <Card className="min-w-0 gap-1.5 p-2">
       {history.isPending && active && (
         <LoadingState message={t("request-detail", "Đang tải lịch sử...")} />
       )}
@@ -31,15 +31,15 @@ export function TicketHistory({
           {t("request-detail", "Chưa có lịch sử thay đổi.")}
         </p>
       )}
-      <ol className="space-y-3">
+      <ol className="space-y-1">
         {history.data?.map((entry, index) => {
           const timestamp = formatDataDateTime(entry.created);
           return (
             <li
               key={entry.id ?? index}
-              className="space-y-2 rounded-lg border border-border p-3 text-sm"
+              className="space-y-0.5 rounded-md border border-border px-2 py-1 text-sm leading-4"
             >
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <div className="flex flex-wrap items-baseline gap-x-2">
                 <strong className="min-w-0 wrap-anywhere">
                   {entry.username}
                 </strong>

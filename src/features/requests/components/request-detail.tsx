@@ -4,14 +4,7 @@ import { APP_ROUTES } from "@/constants/routes";
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  FileText,
-  History,
-  Info,
-  ListChecks,
-  MessageSquare,
-  RefreshCw,
-} from "lucide-react";
+import { FileText, History, Info, ListChecks, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TruncatedText } from "@/components/truncated-text";
 import { ErrorAlert } from "@/components/error-alert";
@@ -43,18 +36,12 @@ const tabs = [
   },
   {
     get label() {
-      return t("request-detail", "Trao đổi");
-    },
-    icon: MessageSquare,
-  },
-  {
-    get label() {
       return t("request-detail", "Lịch sử");
     },
     icon: History,
   },
 ];
-const tabKeys = ["general", "details", "discussion", "history"];
+const tabKeys = ["general", "details", "history"];
 function TicketStatusSummary({
   ticket,
 }: Readonly<{ ticket: RequestDetailData }>) {
@@ -95,10 +82,6 @@ function DetailTabs({
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const active = Math.max(0, tabKeys.indexOf(params.get("tab") ?? "general"));
-  const commentCount = ticket.comments.reduce(
-    (total, comment) => total + 1 + comment.item_comment.length,
-    0,
-  );
   const setActive = (index: number) => {
     const next = new URLSearchParams(location.search);
     next.set("tab", tabKeys[index]);
@@ -149,7 +132,7 @@ function DetailTabs({
   };
   return (
     <>
-      <div className="min-w-0 shrink-0 rounded-lg border border-border bg-card p-2.5 sm:p-3">
+      <div className="min-w-0 shrink-0 rounded-lg border border-border bg-card px-2.5 py-1.5">
         <div className="flex min-w-0 items-start justify-between gap-2">
           <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center gap-0.5 sm:block">
             <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase sm:hidden">
@@ -165,7 +148,7 @@ function DetailTabs({
             <TicketActions ticket={ticket} onSaved={onSaved} />
           </div>
         </div>
-        <p className="mt-1.5 min-w-0 text-sm leading-5 font-medium whitespace-pre-wrap wrap-anywhere sm:font-normal">
+        <p className="mt-1 min-w-0 text-sm leading-4 font-medium whitespace-pre-wrap wrap-anywhere sm:font-normal">
           {ticket.title}
         </p>
       </div>
@@ -174,7 +157,7 @@ function DetailTabs({
         {...dragHandlers}
         role="tablist"
         aria-label={t("request-detail", "Các bước yêu cầu")}
-        className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(4,minmax(8rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-lg border border-border bg-card p-0.5 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+        className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(3,minmax(8rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-lg border border-border bg-card p-0.5 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       >
         {tabs.map(({ label, icon: Icon }, index) => (
           <button
@@ -194,17 +177,6 @@ function DetailTabs({
           >
             <Icon className="size-3.5 shrink-0" aria-hidden="true" />
             {label}
-            {tabKeys[index] === "discussion" && (
-              <span
-                aria-label={t("request-detail", "{0} bình luận", [
-                  commentCount,
-                ])}
-                title={t("request-detail", "Tổng số bình luận và câu trả lời")}
-                className={`inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-medium tabular-nums ${active === index ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"}`}
-              >
-                {commentCount}
-              </span>
-            )}
           </button>
         ))}
       </div>
@@ -216,15 +188,17 @@ function DetailTabs({
           aria-labelledby={`ticket-tab-${index}`}
           hidden={active !== index}
           tabIndex={0}
-          className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pb-3 -outline-offset-2"
+          className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pb-2 -outline-offset-2"
         >
-          {index === 0 && <TicketGeneral ticket={ticket} onSaved={onSaved} />}
+          {index === 0 && (
+            <div className="min-w-0 space-y-1.5">
+              <TicketGeneral ticket={ticket} onSaved={onSaved} />
+              <TicketDiscussion ticket={ticket} onSaved={onSaved} />
+            </div>
+          )}
           {index === 1 && <TicketTemplate ticket={ticket} onSaved={onSaved} />}
           {index === 2 && (
-            <TicketDiscussion ticket={ticket} onSaved={onSaved} />
-          )}
-          {index === 3 && (
-            <TicketHistory id={ticket.id} active={active === 3} />
+            <TicketHistory id={ticket.id} active={active === 2} />
           )}
         </div>
       ))}
@@ -270,7 +244,7 @@ export function RequestDetail() {
     Boolean(query.data) &&
     !(error instanceof ApiError && [401, 403, 404].includes(error.status));
   return (
-    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-2 overflow-hidden">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-1.5 overflow-hidden">
       <PageHeader
         title={t("request-detail", "Chi tiết yêu cầu")}
         description={t(

@@ -181,7 +181,7 @@ const writes = () =>
 it.each([
   ["general", "Thông tin chung"],
   ["details", "Chi tiết yêu cầu"],
-  ["discussion", "Trao đổi"],
+  ["discussion", "Thông tin chung"],
   ["history", "Lịch sử"],
   ["unknown", "Thông tin chung"],
 ])("restores the selected tab from tab=%s", async (key, label) => {
@@ -216,7 +216,7 @@ it("groups general information and processing details while keeping all template
   await ready();
   expect(screen.getAllByRole("tabpanel")).toHaveLength(1);
   expect(screen.getByRole("region", { name: "Thông tin xử lý" })).toBeTruthy();
-  expect(screen.getAllByRole("tab")).toHaveLength(4);
+  expect(screen.getAllByRole("tab")).toHaveLength(3);
   expect(
     screen.queryByRole("tab", {
       name: /Loại yêu cầu|Thông tin bổ sung|Thông tin yêu cầu/,
@@ -228,7 +228,11 @@ it("groups general information and processing details while keeping all template
   );
   expect(panel.getByLabelText("Ngày mong muốn")).toBeTruthy();
   expect(panel.getByLabelText("Ghi chú").textContent).toBe(ticket.description);
-  expect(panel.queryAllByRole("textbox")).toHaveLength(0);
+  expect(
+    within(
+      panel.getByRole("region", { name: "Thông tin yêu cầu" }),
+    ).queryAllByRole("textbox"),
+  ).toHaveLength(0);
   expect(
     panel.getByRole("heading", { name: "Thông tin yêu cầu" }),
   ).toBeTruthy();
@@ -236,7 +240,9 @@ it("groups general information and processing details while keeping all template
   expect(panel.getByRole("link", { name: "report.pdf" })).toBeTruthy();
   tab("Thông tin chung");
   expect(
-    within(screen.getByRole("tabpanel")).getByText("handler"),
+    within(screen.getByRole("region", { name: "Thông tin xử lý" })).getByText(
+      "handler",
+    ),
   ).toBeTruthy();
   tab("Chi tiết yêu cầu");
   expect(screen.getByRole("heading", { name: "Phần tạo" })).toBeTruthy();
@@ -279,7 +285,7 @@ it("reveals the selected tab inside a narrow tab bar without scrolling the page"
     });
   });
   tab("Lịch sử");
-  await waitFor(() => expect(list.scrollLeft).toBe(432));
+  await waitFor(() => expect(list.scrollLeft).toBe(284));
   fireEvent.keyDown(screen.getByRole("tab", { name: "Lịch sử" }), {
     key: "Home",
   });
@@ -653,7 +659,7 @@ it("previews images in a modal and keeps other files as links", async () => {
 });
 it("displays replies and posts a trimmed comment without duplicate blank submissions", async () => {
   await ready();
-  tab("Trao đổi");
+  tab("Thông tin chung");
   expect(screen.getByText("Cảm ơn")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Gửi phản hồi" }));
   expect(writes()).toHaveLength(0);
@@ -719,7 +725,9 @@ it("uploads each attachment once and reloads detail once for the complete batch"
   client.setQueryData(reportsKey, { cached: true });
   await ready();
   fireEvent.change(
-    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    within(
+      screen.getByRole("region", { name: /^Tệp đính kèm/ }),
+    ).getByLabelText("Tệp đính kèm"),
     {
       target: {
         files: [new File(["one"], "one.txt"), new File(["two"], "two.txt")],
@@ -744,7 +752,9 @@ it("uploads each attachment once and reloads detail once for the complete batch"
 it("does not reload detail when returning from the file picker with unsent attachments", async () => {
   await ready();
   fireEvent.change(
-    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    within(
+      screen.getByRole("region", { name: /^Tệp đính kèm/ }),
+    ).getByLabelText("Tệp đính kèm"),
     {
       target: { files: [new File(["draft"], "draft.txt")] },
     },
@@ -780,7 +790,9 @@ it("keeps remaining uploads after partial success when refreshing detail fails",
   });
   await ready();
   fireEvent.change(
-    within(screen.getByRole("tabpanel")).getByLabelText("Tệp đính kèm"),
+    within(
+      screen.getByRole("region", { name: /^Tệp đính kèm/ }),
+    ).getByLabelText("Tệp đính kèm"),
     {
       target: {
         files: [new File(["one"], "one.txt"), new File(["two"], "two.txt")],
@@ -866,17 +878,15 @@ it("preserves old field identifiers, row keys and date ranges on section updates
   ).toBe(true);
 });
 
-it.each([true, false])(
-  "counts comments and replies on the discussion tab (empty: %s)",
-  async (empty) => {
-    if (empty) ticket.comments = [];
-    await ready();
-    const count = empty ? 0 : 2;
-    expect(
-      screen.getByRole("tab", { name: `Trao đổi ${count} bình luận` }),
-    ).toBeTruthy();
-  },
-);
+it("shows discussion within the general tab", async () => {
+  await ready();
+  const general = within(
+    screen.getByRole("tabpanel", { name: "Thông tin chung" }),
+  );
+  expect(general.queryByRole("heading", { name: "Trao đổi" })).toBeNull();
+  expect(general.getByRole("form", { name: "Phản hồi mới" })).toBeTruthy();
+  expect(screen.queryByRole("tab", { name: /Trao đổi/ })).toBeNull();
+});
 
 it.each([5, 18, 20])(
   "runs the special department %s flow through received status 8 before assignment",
@@ -1064,7 +1074,7 @@ it.each([
   vi.spyOn(window.history, "state", "get").mockReturnValue({ idx: 1 });
   open("42", previous);
   await screen.findByText("RS-0042");
-  tab("Trao đổi");
+  tab("Thông tin chung");
   fireEvent.click(screen.getByRole("button", { name: "Quay lại" }));
   await waitFor(() =>
     expect(screen.getByTestId("detail-location").textContent).toBe(previous),

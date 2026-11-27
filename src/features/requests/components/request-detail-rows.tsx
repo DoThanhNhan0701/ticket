@@ -179,16 +179,18 @@ export const RequestDetailRows = memo(function RequestDetailRows({
           ref={scrollContainer}
           role="region"
           aria-label={t("request-create", "Các dòng chi tiết yêu cầu")}
-          className="relative min-w-0 max-w-full overflow-x-auto rounded-lg pb-2"
+          className="relative min-w-0 max-w-full overflow-x-auto rounded-lg pb-1"
         >
           <div
-            className="min-w-full space-y-1.5 pr-3"
-            style={{ minWidth: `calc(${minimumWidth}px + 0.75rem)` }}
+            className="min-w-full space-y-1 pr-3 sm:[--row-actions-width:7rem]"
+            style={{
+              minWidth: `calc(${minimumWidth}px + 0.75rem + var(--row-actions-width, 0px))`,
+            }}
           >
             <div
               role="group"
               aria-label={t("request-create", "Tiêu đề các cột chi tiết")}
-              className="grid items-start gap-x-3 gap-y-1.5 rounded-md border border-border bg-muted/40 px-2.5 py-1.5"
+              className="grid items-start gap-2 rounded-md border border-border bg-muted/40 px-2.5 py-1 sm:pl-[calc(0.625rem+var(--row-actions-width))]"
               style={{ gridTemplateColumns: columns }}
             >
               {groups.length > 1 &&
@@ -235,74 +237,76 @@ export const RequestDetailRows = memo(function RequestDetailRows({
               <fieldset
                 key={row.id}
                 aria-label={t("request-create", "Dòng {0}", [index + 1])}
-                className="min-w-0 rounded-md border border-border px-2.5 pt-0.5 pb-1.5"
+                className="min-w-0 rounded-md border border-border px-2.5 py-1"
               >
-                <legend className="sticky left-0 z-10 rounded-md bg-card px-1.5 text-xs font-semibold">
-                  <div className="flex items-center gap-1.5">
-                    <span className="whitespace-nowrap">
-                      {t("request-create", "Dòng")} {index + 1}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="size-6"
-                        title={t("request-create", "Sao chép dòng")}
-                        aria-label={t("request-create", "Sao chép dòng {0}", [
-                          index + 1,
-                        ])}
-                        disabled={busy}
-                        onClick={() =>
-                          rows.append({
-                            values: {
-                              ...form.getValues(`rows.${index}.values`),
-                            },
-                          })
-                        }
-                      >
-                        <Copy className="size-3.5" aria-hidden="true" />
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="size-6 text-destructive"
-                        title={t("request-create", "Xóa dòng")}
-                        aria-label={t("request-create", "Xóa dòng {0}", [
-                          index + 1,
-                        ])}
-                        disabled={busy || rows.fields.length === 1}
-                        onClick={() => rows.remove(index)}
-                      >
-                        <Trash2 className="size-3.5" aria-hidden="true" />
-                      </Button>
+                <div className="sm:grid sm:grid-cols-[var(--row-actions-width)_minmax(0,1fr)] sm:items-start">
+                  <div className="sticky left-0 z-10 mb-1 w-fit rounded-md bg-card text-xs font-semibold sm:mb-0 sm:self-center">
+                    <div className="flex items-center gap-1.5">
+                      <span className="whitespace-nowrap">
+                        {t("request-create", "Dòng")} {index + 1}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="size-6"
+                          title={t("request-create", "Sao chép dòng")}
+                          aria-label={t("request-create", "Sao chép dòng {0}", [
+                            index + 1,
+                          ])}
+                          disabled={busy}
+                          onClick={() =>
+                            rows.append({
+                              values: {
+                                ...form.getValues(`rows.${index}.values`),
+                              },
+                            })
+                          }
+                        >
+                          <Copy className="size-3.5" aria-hidden="true" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="size-6 text-destructive"
+                          title={t("request-create", "Xóa dòng")}
+                          aria-label={t("request-create", "Xóa dòng {0}", [
+                            index + 1,
+                          ])}
+                          disabled={busy || rows.fields.length === 1}
+                          onClick={() => rows.remove(index)}
+                        >
+                          <Trash2 className="size-3.5" aria-hidden="true" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </legend>
-                <div
-                  className="grid items-start gap-2"
-                  style={{ gridTemplateColumns: columns }}
-                >
-                  {fields.map((field, column) => (
-                    <div
-                      key={field.fieldKey}
-                      title={field.title}
-                      className="min-w-0"
-                      style={{
-                        gridColumn: column + 1,
-                      }}
-                    >
-                      <RequestDetailField
-                        hideLabel
-                        form={form}
-                        field={field}
-                        fields={fields}
-                        row={index}
-                        disabled={busy}
-                      />
-                    </div>
-                  ))}
+                  <div
+                    className="grid items-start gap-2"
+                    style={{ gridTemplateColumns: columns }}
+                  >
+                    {fields.map((field, column) => (
+                      <div
+                        key={field.fieldKey}
+                        title={field.title}
+                        className="min-w-0"
+                        style={{
+                          gridColumn: column + 1,
+                        }}
+                      >
+                        <RequestDetailField
+                          hideLabel
+                          form={form}
+                          field={field}
+                          fields={fields}
+                          row={index}
+                          disabled={busy}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </fieldset>
             ))}

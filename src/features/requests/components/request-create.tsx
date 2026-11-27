@@ -9,8 +9,6 @@ import { Button } from "@/components/ui/button";
 import { AsyncButton } from "@/components/ui/async-button";
 import { LoadingState } from "@/components/loading-state";
 import { useCreateRequest } from "../hooks/use-create-request";
-import { useRequestCreateSteps } from "../hooks/use-request-create-steps";
-import { useRequestStepScroll } from "../hooks/use-request-step-scroll";
 import {
   RequestGeneralFields,
   RequestNotesField,
@@ -27,10 +25,8 @@ export function RequestCreate() {
   useLocale();
   const model = useCreateRequest(),
     navigate = useNavigate();
-  const steps = useRequestCreateSteps(model);
   const [excelBusy, setExcelBusy] = useState(false);
   const cloneLoading = useCloneFormLoading(model);
-  const formRef = useCreateRequestStepScroll(model, steps, cloneLoading);
   const busy = model.mutation.isPending || excelBusy;
   const disabled =
     busy ||
@@ -55,10 +51,9 @@ export function RequestCreate() {
     );
   return (
     <form
-      ref={formRef}
       aria-label={t("request-create", "Tạo yêu cầu mới")}
       noValidate
-      className="request-create-form relative w-full min-w-0 space-y-2 pb-1.5"
+      className="request-create-form relative w-full min-w-0 space-y-1.5 pb-1.5"
       aria-busy={busy || model.lookups.isPending}
       onSubmit={(event) => {
         if (busy || waitingForData || model.created) {
@@ -70,24 +65,22 @@ export function RequestCreate() {
     >
       <RequestRowsValidation form={model.form} groups={model.groups} />
       <RequestCreateMessages model={model} />
-      <div className="relative min-w-0 space-y-2">
+      <div className="relative min-w-0 space-y-1.5">
         <RequestAssignmentPanel model={model} disabled={disabled} />
-        {steps.general && (
-          <RequestFormSection
-            step={2}
-            title={t("request-create", "Thông tin yêu cầu")}
-            description={t(
-              "request-create",
-              "Nhập nội dung cần hỗ trợ và thông tin đơn vị sử dụng.",
-            )}
-          >
-            <RequestGeneralFields
-              form={model.form}
-              lookups={model.lookups.data}
-              disabled={disabled}
-            />
-          </RequestFormSection>
-        )}
+        <RequestFormSection
+          step={2}
+          title={t("request-create", "Thông tin yêu cầu")}
+          description={t(
+            "request-create",
+            "Nhập nội dung cần hỗ trợ và thông tin đơn vị sử dụng.",
+          )}
+        >
+          <RequestGeneralFields
+            form={model.form}
+            lookups={model.lookups.data}
+            disabled={disabled}
+          />
+        </RequestFormSection>
         {model.lookups.isPending && (
           <LoadingState
             message={t("request-create", "Đang tải danh mục...")}
@@ -95,34 +88,30 @@ export function RequestCreate() {
           />
         )}
       </div>
-      {steps.details && (
-        <RequestTemplateSection
-          model={model}
-          disabled={disabled}
-          onBusyChange={setExcelBusy}
-        />
-      )}
-      {(steps.additional || model.created) && (
-        <RequestFormSection
-          step={4}
-          title={t("request-create", "Thông tin bổ sung")}
-          description={t(
-            "request-create",
-            "Ghi chú và tài liệu đính kèm nếu cần.",
-          )}
-        >
-          <div className="grid min-w-0 grid-cols-1 items-start gap-2 lg:grid-cols-2">
-            <RequestNotesField form={model.form} disabled={disabled} />
-            <RequestAttachments
-              layout="tiles"
-              previewAllFiles
-              files={model.files}
-              onChange={model.setFiles}
-              disabled={busy || model.draft.loading}
-            />
-          </div>
-        </RequestFormSection>
-      )}
+      <RequestTemplateSection
+        model={model}
+        disabled={disabled}
+        onBusyChange={setExcelBusy}
+      />
+      <RequestFormSection
+        step={4}
+        title={t("request-create", "Thông tin bổ sung")}
+        description={t(
+          "request-create",
+          "Ghi chú và tài liệu đính kèm nếu cần.",
+        )}
+      >
+        <div className="grid min-w-0 grid-cols-1 items-start gap-2 lg:grid-cols-2">
+          <RequestNotesField form={model.form} disabled={disabled} />
+          <RequestAttachments
+            layout="tiles"
+            previewAllFiles
+            files={model.files}
+            onChange={model.setFiles}
+            disabled={busy || model.draft.loading}
+          />
+        </div>
+      </RequestFormSection>
       <div className="sticky bottom-0 z-20 pt-1.5">
         <div className="flex min-w-0 items-center justify-between gap-1.5 rounded-lg border border-border bg-card/95 px-2 py-1.5 shadow-sm backdrop-blur-sm">
           <Button
@@ -226,21 +215,5 @@ function useCloneFormLoading(model: ReturnType<typeof useCreateRequest>) {
     !model.lookups.isError &&
     !model.types.isError &&
     !model.template.isError,
-  );
-}
-
-function useCreateRequestStepScroll(
-  model: ReturnType<typeof useCreateRequest>,
-  steps: ReturnType<typeof useRequestCreateSteps>,
-  cloneLoading: boolean,
-) {
-  let currentStep = 1;
-  if (steps.additional) currentStep = 4;
-  else if (steps.details) currentStep = 3;
-  else if (steps.general) currentStep = 2;
-  return useRequestStepScroll(
-    currentStep,
-    !cloneLoading && !model.draft.loading && !model.created,
-    !model.template.isFetching,
   );
 }
