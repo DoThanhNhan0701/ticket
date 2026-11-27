@@ -61,7 +61,7 @@ export function RequestAssignmentFields({
     },
   ] as const;
   return (
-    <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid min-w-0 grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
       {fields.map((field) => (
         <SelectField
           key={field.name}
@@ -90,7 +90,7 @@ export function RequestGeneralFields({
 }: Readonly<FieldsProps>) {
   useLocale();
   return (
-    <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid min-w-0 grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
       <InputField
         control={form.control}
         name="title"

@@ -123,7 +123,7 @@ function SettingsForm({
       <form
         aria-label={`${record ? t("settings", "Chỉnh sửa") : t("settings", "Thêm")} ${config.label}`}
         noValidate
-        className="space-y-4"
+        className="space-y-2.5"
         onSubmit={form.handleSubmit((values) => {
           if (submitting.current || attachmentError || !ready) return;
           submitting.current = true;
@@ -141,7 +141,7 @@ function SettingsForm({
           />
         )}
         {mutation.isError && <ErrorToast message={mutation.error.message} />}
-        <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 items-start gap-2.5 sm:grid-cols-2">
           {config.fields.map((field) => (
             <SettingsFieldControl
               key={field.name}

@@ -40,10 +40,10 @@ export function RecruitmentAdvancedDrawer({
           void onApply(event);
         }}
       >
-        <div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto overscroll-contain p-4 sm:grid-cols-2 sm:p-6">
+        <div className="grid min-h-0 flex-1 content-start gap-2.5 overflow-y-auto overscroll-contain p-3 sm:grid-cols-2 sm:p-4">
           {children}
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2 p-4 sm:p-6">
+        <div className="flex shrink-0 flex-wrap items-center gap-2 p-3 sm:p-4">
           <Button type="submit" disabled={disabled}>
             {t("recruitment", "Áp dụng bộ lọc")}
           </Button>

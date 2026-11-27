@@ -40,16 +40,16 @@ export function WorkspaceSkeleton() {
       role="status"
       aria-label={t("common", "Loading...")}
       data-workspace-loading=""
-      className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3"
+      className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-2.5"
     >
       <PageHeaderSkeleton
         actions={
           <>
             {listScope && (
-              <div className="size-11 rounded-lg bg-(--workspace-skeleton-soft) sm:hidden" />
+              <div className="size-11 rounded-md bg-(--workspace-skeleton-soft) sm:hidden" />
             )}
             {showCreate && (
-              <div className="size-11 rounded-lg bg-(--workspace-skeleton-fill) sm:h-10 sm:w-32" />
+              <div className="size-11 rounded-md bg-(--workspace-skeleton-fill) sm:h-8 sm:w-32" />
             )}
           </>
         }
@@ -57,7 +57,7 @@ export function WorkspaceSkeleton() {
       {listScope && (
         <div
           aria-hidden="true"
-          className="flex min-h-0 min-w-0 flex-1 flex-col gap-4"
+          className="flex min-h-0 min-w-0 flex-1 flex-col gap-2.5"
         >
           <DataSearchSkeleton />
           <div className={dataResultsClassName}>
@@ -74,7 +74,9 @@ export function WorkspaceSidebarSkeleton({
 }: Readonly<{ collapsed?: boolean }>) {
   return (
     <div aria-hidden="true" className="flex h-full min-h-0 flex-col">
-      <div className="min-h-0 flex-1 space-y-3 overflow-hidden px-3 pt-3 pb-4">
+      <div
+        className={`min-h-0 flex-1 space-y-3 overflow-hidden pt-2.5 pb-3 ${collapsed ? "px-1.5" : "px-2"}`}
+      >
         {Array.from({ length: 4 }, (_, index) => (
           <div
             key={index}
@@ -87,7 +89,7 @@ export function WorkspaceSidebarSkeleton({
           </div>
         ))}
       </div>
-      <div className="flex h-[69px] shrink-0 items-center justify-center border-t border-sidebar-border">
+      <div className="flex h-11 shrink-0 items-center justify-center border-t border-sidebar-border">
         <div className="size-4 rounded bg-(--workspace-skeleton-fill)" />
       </div>
     </div>

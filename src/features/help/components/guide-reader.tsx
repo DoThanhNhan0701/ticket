@@ -39,10 +39,10 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
     }
   };
   return (
-    <div className="grid min-h-0 min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden sm:rounded-2xl sm:border sm:border-border/80 sm:bg-card sm:shadow-sm lg:grid-cols-[18rem_minmax(0,1fr)] lg:grid-rows-1">
+    <div className="grid min-h-0 min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden sm:rounded-2xl sm:border sm:border-border/80 sm:bg-card sm:shadow-sm lg:grid-cols-[14rem_minmax(0,1fr)] lg:grid-rows-1">
       <nav
         aria-label={t("help", "Mục lục hướng dẫn")}
-        className="min-h-0 min-w-0 border-b border-border/70 pb-3 sm:bg-muted/20 sm:p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
+        className="min-h-0 min-w-0 border-b border-border/70 pb-3 sm:bg-muted/20 sm:p-3 lg:overflow-y-auto lg:border-r lg:border-b-0"
       >
         <div className="lg:hidden">
           <SearchableSelect

@@ -72,7 +72,7 @@ export function TimePicker({
             spellCheck={false}
             value={value}
             disabled={disabled}
-            className={cn("pl-11 tabular-nums", className)}
+            className={cn("pl-9 tabular-nums", className)}
             onChange={(event) => onValueChange(event.target.value)}
             onBlur={(event) => {
               const time = parseTime(value.trim());
@@ -98,9 +98,9 @@ export function TimePicker({
               disabled={disabled}
               aria-label={t("common", "Chọn {0}", [label.toLowerCase()])}
               title={t("common", "Chọn {0}", [label.toLowerCase()])}
-              className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
+              className="absolute inset-y-0 left-0 h-auto w-9 rounded-r-none text-muted-foreground"
             >
-              <Clock3 className="size-4" aria-hidden="true" />
+              <Clock3 className="size-3.5" aria-hidden="true" />
             </Button>
           </PopoverTrigger>
         </div>

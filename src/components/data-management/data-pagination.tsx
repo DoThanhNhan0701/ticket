@@ -42,7 +42,7 @@ function PageIndicator({
         ])}
         value={draft}
         disabled={disabled}
-        className="h-11 w-12 px-1 text-center text-xs [appearance:textfield] sm:h-9 sm:w-14 sm:text-sm sm:pointer-coarse:h-11 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="h-11 w-12 px-1 text-center text-xs [appearance:textfield] sm:h-8 sm:w-12 sm:text-sm sm:pointer-coarse:h-11 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         onFocus={(event) => event.currentTarget.select()}
         onChange={(event) => setDraft(event.target.value)}
         onBlur={() => setDraft(String(page))}
@@ -83,7 +83,7 @@ export function DataPagination({
   const first = count ? (page - 1) * pageSize + 1 : 0;
   const last = Math.min(page * pageSize, count);
   return (
-    <div className="flex min-w-0 shrink-0 flex-nowrap items-center justify-between gap-2 border-t border-border p-2 sm:gap-4 sm:p-4">
+    <div className="flex min-w-0 shrink-0 flex-nowrap items-center justify-between gap-2 border-t border-border px-2 py-1.5 sm:gap-3 sm:px-3 sm:py-2">
       <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground sm:gap-3 sm:text-sm">
         <p
           aria-live="polite"
@@ -152,7 +152,7 @@ export function DataPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-11 sm:size-9 sm:pointer-coarse:size-11"
+          className="size-11 sm:size-8 sm:pointer-coarse:size-11"
           aria-label={t("common", "Trang trước")}
           disabled={disabled || page <= 1}
           onClick={() => onPage(page - 1)}
@@ -170,7 +170,7 @@ export function DataPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-11 sm:size-9 sm:pointer-coarse:size-11"
+          className="size-11 sm:size-8 sm:pointer-coarse:size-11"
           aria-label={t("common", "Trang sau")}
           disabled={disabled || page >= totalPages}
           onClick={() => onPage(page + 1)}

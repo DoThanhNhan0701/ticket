@@ -25,7 +25,7 @@ export function DataResultsSkeleton({
         <div className="min-w-352">
           <div
             className={cn(
-              "grid h-12 items-center border-b bg-subtle",
+              "grid h-9 items-center border-b bg-subtle",
               resultColumns,
             )}
           >
@@ -40,7 +40,7 @@ export function DataResultsSkeleton({
             <div
               key={row}
               className={cn(
-                "grid h-18 items-center border-b border-border",
+                "grid h-8 items-center border-b border-border",
                 resultColumns,
               )}
             >
@@ -59,16 +59,16 @@ export function DataResultsSkeleton({
       </div>
       <div
         aria-hidden="true"
-        className="flex shrink-0 items-center justify-between gap-2 border-t border-border p-2 sm:gap-4 sm:p-4"
+        className="flex shrink-0 items-center justify-between gap-2 border-t border-border px-2 py-1.5 sm:gap-3 sm:px-3 sm:py-2"
       >
         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
           <div className="h-3 w-12 rounded bg-(--workspace-skeleton-fill) sm:w-44" />
-          <div className="h-11 w-16 rounded-lg bg-(--workspace-skeleton-soft) min-[400px]:w-24 sm:h-10 sm:pointer-coarse:h-11" />
+          <div className="h-11 w-16 rounded-md bg-(--workspace-skeleton-soft) min-[400px]:w-24 sm:h-8 sm:pointer-coarse:h-11" />
         </div>
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-          <div className="size-11 rounded-lg bg-(--workspace-skeleton-soft) sm:size-9 sm:pointer-coarse:size-11" />
-          <div className="h-11 w-16 rounded-lg bg-(--workspace-skeleton-soft) sm:h-9 sm:w-24 sm:pointer-coarse:h-11" />
-          <div className="size-11 rounded-lg bg-(--workspace-skeleton-soft) sm:size-9 sm:pointer-coarse:size-11" />
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="size-11 rounded-md bg-(--workspace-skeleton-soft) sm:size-8 sm:pointer-coarse:size-11" />
+          <div className="h-11 w-16 rounded-md bg-(--workspace-skeleton-soft) sm:h-8 sm:w-20 sm:pointer-coarse:h-11" />
+          <div className="size-11 rounded-md bg-(--workspace-skeleton-soft) sm:size-8 sm:pointer-coarse:size-11" />
         </div>
       </div>
     </>
@@ -80,7 +80,7 @@ export function DataSearchSkeleton() {
     <div
       aria-hidden="true"
       data-slot="data-search-skeleton"
-      className="hidden h-10 max-w-3xl shrink-0 items-center gap-2 sm:flex sm:pointer-coarse:h-11"
+      className="hidden h-8 max-w-3xl shrink-0 items-center gap-2 sm:flex sm:pointer-coarse:h-11"
     >
       <div className="h-full min-w-0 flex-1 rounded-lg bg-(--workspace-skeleton-fill)" />
       <div className="h-full w-48 shrink-0 rounded-lg bg-(--workspace-skeleton-soft)" />

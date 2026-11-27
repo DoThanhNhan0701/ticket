@@ -99,7 +99,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                       aria-describedby={
                         fieldState.error ? `${id}-error` : undefined
                       }
-                      className="pl-11"
+                      className="pl-9"
                       onChange={(event) => {
                         const nextValue = event.target.value;
                         if (isDateDraft(nextValue)) {
@@ -123,9 +123,9 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                           label.toLowerCase(),
                         ])}
                         title={t("common", "Choose {0}", [label.toLowerCase()])}
-                        className="absolute inset-y-0 left-0 h-auto w-11 rounded-r-none text-muted-foreground"
+                        className="absolute inset-y-0 left-0 h-auto w-9 rounded-r-none text-muted-foreground"
                       >
-                        <CalendarIcon className="h-4 w-4" />
+                        <CalendarIcon className="h-3.5 w-3.5" />
                       </Button>
                     </PopoverTrigger>
                   </div>

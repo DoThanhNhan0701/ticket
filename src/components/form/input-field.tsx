@@ -81,7 +81,7 @@ export function InputField<TFieldValues extends FieldValues>({
               aria-invalid={fieldState.invalid}
               aria-required={required}
               aria-describedby={fieldState.error ? `${id}-error` : undefined}
-              className={cn(icon && "pr-12", inputClassName)}
+              className={cn(icon && "pr-9", inputClassName)}
             />
             {icon && (
               <span className="absolute right-1 flex items-center text-muted-foreground">

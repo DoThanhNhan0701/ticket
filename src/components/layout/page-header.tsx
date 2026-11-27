@@ -26,7 +26,7 @@ export function PageHeader({
 }: Readonly<PageHeaderProps>) {
   useLocale();
   return (
-    <header className="flex h-11 shrink-0 items-center sm:h-10 justify-between gap-2 sm:gap-3">
+    <header className="flex h-11 shrink-0 items-center sm:h-8 justify-between gap-2 sm:gap-3">
       <div className="flex min-w-0 flex-1 items-center gap-2">
         {onBack && (
           <Button

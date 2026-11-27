@@ -7,7 +7,7 @@ export function PageHeaderSkeleton({
     <div
       aria-hidden="true"
       data-slot="page-header-skeleton"
-      className="flex h-11 shrink-0 items-center justify-between gap-2 sm:h-10 sm:gap-3"
+      className="flex h-11 shrink-0 items-center justify-between gap-2 sm:h-8 sm:gap-3"
     >
       <div className="flex min-w-0 flex-1 items-center gap-2">
         <div className="size-8 shrink-0 rounded-lg bg-(--workspace-skeleton-fill)" />

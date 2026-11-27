@@ -108,11 +108,11 @@ export function SearchableSelect({
         >
           <Combobox.Popup
             aria-label={t("common", "Chọn {0}", [label.toLowerCase()])}
-            className="flex max-h-(--available-height) w-(--anchor-width) min-w-48 max-w-(--available-width) flex-col rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-md outline-none"
+            className="flex max-h-(--available-height) w-(--anchor-width) min-w-48 max-w-(--available-width) flex-col rounded-lg border border-border bg-popover p-1.5 text-popover-foreground shadow-md outline-none"
           >
-            <div className="relative mb-2 shrink-0">
+            <div className="relative mb-1.5 shrink-0">
               <Search
-                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground"
                 aria-hidden="true"
               />
               <Combobox.Input
@@ -121,7 +121,7 @@ export function SearchableSelect({
                 onChange={(event) => setSearch(event.currentTarget.value)}
                 aria-label={t("common", "Tìm {0}", [label.toLowerCase()])}
                 placeholder={t("common", "Tìm {0}...", [label.toLowerCase()])}
-                className="pl-9"
+                className="pl-8"
               />
             </div>
             <Combobox.Empty className="px-2 py-3 text-center text-sm text-muted-foreground empty:hidden">
@@ -135,7 +135,7 @@ export function SearchableSelect({
                   key={option.value}
                   value={option}
                   disabled={option.disabled}
-                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm outline-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
+                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm outline-none sm:min-h-7 sm:pointer-coarse:min-h-11 data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
                 >
                   <span
                     className="min-w-0 flex-1 truncate"

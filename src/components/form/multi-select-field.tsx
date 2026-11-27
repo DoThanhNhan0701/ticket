@@ -90,7 +90,7 @@ function SelectedBadges({
         <Badge
           tone="brand"
           key={option.value}
-          className="h-7 min-w-14 max-w-full shrink gap-1 px-1.5 py-0"
+          className="h-6 min-w-14 max-w-full shrink gap-1 px-1.5 py-0"
         >
           <span title={option.label} className="min-w-0 truncate">
             {option.label}
@@ -158,7 +158,7 @@ function MultiSelectInput({
           data-slot="multi-select-control"
           className={cn(
             controlClassName,
-            "flex h-11 min-w-0 items-center gap-1 py-0 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25 sm:h-10 sm:pointer-coarse:h-11",
+            "flex h-11 min-w-0 items-center gap-1 py-0 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25 sm:h-8 sm:pointer-coarse:h-11",
             invalid && "border-destructive",
             isDisabled && "cursor-not-allowed bg-muted opacity-75",
           )}
@@ -262,7 +262,7 @@ function MultiSelectInput({
                 aria-pressed={isSelected}
                 onClick={() => toggleOption(option.value)}
                 className={cn(
-                  "w-full text-left px-2.5 py-1.5 rounded min-h-11 text-base sm:min-h-0 sm:text-sm sm:pointer-coarse:min-h-11 sm:pointer-coarse:text-base flex items-center justify-between cursor-pointer",
+                  "w-full text-left px-2 py-1 rounded min-h-11 text-base sm:min-h-7 sm:text-sm sm:pointer-coarse:min-h-11 sm:pointer-coarse:text-base flex items-center justify-between cursor-pointer",
                   isSelected
                     ? "bg-accent text-accent-foreground font-semibold"
                     : "text-foreground hover:bg-muted",

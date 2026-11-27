@@ -58,7 +58,7 @@ export function RequestCreate() {
       ref={formRef}
       aria-label={t("request-create", "Tạo yêu cầu mới")}
       noValidate
-      className="request-create-form relative w-full min-w-0 space-y-4 pb-3"
+      className="request-create-form relative w-full min-w-0 space-y-2.5 pb-2"
       aria-busy={busy || model.lookups.isPending}
       onSubmit={(event) => {
         if (busy || waitingForData || model.created) {
@@ -70,7 +70,7 @@ export function RequestCreate() {
     >
       <RequestRowsValidation form={model.form} groups={model.groups} />
       <RequestCreateMessages model={model} />
-      <div className="relative min-w-0 space-y-4">
+      <div className="relative min-w-0 space-y-2.5">
         <RequestAssignmentPanel model={model} disabled={disabled} />
         {steps.general && (
           <RequestFormSection
@@ -111,7 +111,7 @@ export function RequestCreate() {
             "Ghi chú và tài liệu đính kèm nếu cần.",
           )}
         >
-          <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 items-start gap-2.5 lg:grid-cols-2">
             <RequestNotesField form={model.form} disabled={disabled} />
             <RequestAttachments
               layout="tiles"
@@ -123,8 +123,8 @@ export function RequestCreate() {
           </div>
         </RequestFormSection>
       )}
-      <div className="sticky bottom-0 z-20 pt-4">
-        <div className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-border bg-card/95 p-3 shadow-sm backdrop-blur-sm">
+      <div className="sticky bottom-0 z-20 pt-2">
+        <div className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-border bg-card/95 p-2.5 shadow-sm backdrop-blur-sm">
           <Button
             type="button"
             variant="outline"

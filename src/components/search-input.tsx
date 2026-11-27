@@ -28,7 +28,7 @@ export function SearchInput({
   return (
     <div className={cn("relative min-w-0", wrapperClassName)}>
       <Search
-        className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+        className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground"
         aria-hidden="true"
       />
       <Input
@@ -40,7 +40,7 @@ export function SearchInput({
         disabled={disabled}
         onChange={(event) => onValueChange(event.target.value)}
         className={cn(
-          "pl-9 pr-12 [&::-webkit-search-cancel-button]:appearance-none",
+          "pl-8 pr-9 [&::-webkit-search-cancel-button]:appearance-none",
           className,
         )}
       />
@@ -53,7 +53,7 @@ export function SearchInput({
             inputRef.current?.focus();
           }}
           aria-label={t("common", "Clear {0}", [label.toLowerCase()])}
-          className="absolute top-1/2 right-0.5 flex h-11 w-11 sm:h-9 sm:w-9 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          className="absolute top-1/2 right-0.5 flex h-11 w-11 sm:h-7 sm:w-7 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           <X className="h-3.5 w-3.5" aria-hidden="true" />
         </button>

@@ -116,7 +116,7 @@ export function ReportFiltersForm({
       onOpenChange={setMobileOpen}
       activeCount={0}
     >
-      <Card className="gap-4 p-4 sm:p-5">
+      <Card className="gap-2.5 p-3 sm:p-3.5">
         <form
           aria-label={
             mode === "export"
@@ -124,12 +124,12 @@ export function ReportFiltersForm({
               : t(namespace, "Bộ lọc báo cáo")
           }
           noValidate
-          className="space-y-4"
+          className="space-y-2.5"
           onSubmit={form.handleSubmit((values) =>
             submit(values, mode === "export"),
           )}
         >
-          <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid items-start gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
             <DatePickerField
               control={form.control}
               name="startdate"

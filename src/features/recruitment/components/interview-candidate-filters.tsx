@@ -87,10 +87,10 @@ export function InterviewCandidateFilters({
       <form
         aria-label={t("interviews", "Bộ lọc CV phỏng vấn")}
         noValidate
-        className="space-y-3 rounded-xl border bg-card p-3"
+        className="space-y-2.5 rounded-xl border bg-card p-2.5"
         onSubmit={submit}
       >
-        <div className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap [&>[data-slot=field]]:xl:w-60 [&>[data-slot=field]]:xl:flex-none">
+        <div className="grid grid-cols-1 items-end gap-2.5 sm:grid-cols-2 xl:flex xl:flex-wrap [&>[data-slot=field]]:xl:w-60 [&>[data-slot=field]]:xl:flex-none">
           <InputField
             {...shared}
             id="interview-filter-search"

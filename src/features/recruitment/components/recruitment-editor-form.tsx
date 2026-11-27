@@ -199,7 +199,7 @@ export function RecruitmentEditorForm({
   return (
     <form
       aria-label={actionLabels[state.action]}
-      className="space-y-4"
+      className="space-y-2.5"
       noValidate
       onSubmit={(event) => {
         if (
@@ -215,7 +215,7 @@ export function RecruitmentEditorForm({
       }}
     >
       {fields.length === 0 && (
-        <p className="rounded-lg border bg-muted/40 p-4 text-sm">
+        <p className="rounded-lg border bg-muted/40 p-3 text-sm">
           {confirmationMessage(state)}
         </p>
       )}

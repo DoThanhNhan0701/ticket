@@ -46,7 +46,7 @@ export function FormFieldShell({
           id={`${id}-error`}
           errors={[error]}
           title={error?.message ? translateMessage(error.message) : undefined}
-          className="min-w-0 truncate text-sm text-destructive"
+          className="min-w-0 truncate text-xs text-destructive"
         />
       )}
     </Field>

@@ -41,10 +41,10 @@ export function DataFiltersPanel({
             variant="outline"
             size="icon"
             className={cn(
-              "h-11 sm:h-10 sm:pointer-coarse:h-11",
+              "h-11 sm:h-8 sm:pointer-coarse:h-11",
               !iconOnly && (activeFilterCount > 0 || label)
-                ? "w-auto gap-2 px-3"
-                : "w-11 sm:w-10 sm:pointer-coarse:w-11",
+                ? "w-auto gap-1.5 px-2.5"
+                : "w-11 sm:w-8 sm:pointer-coarse:w-11",
             )}
             aria-label={label ?? t("common", "Lọc nâng cao")}
             aria-description={filterDescription}
@@ -68,7 +68,7 @@ export function DataFiltersPanel({
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/60 transition-opacity duration-200 data-closed:opacity-0 motion-reduce:transition-none" />
         <Dialog.Viewport className="fixed inset-0 z-50 flex justify-end">
           <Dialog.Popup className="flex h-dvh min-h-0 w-full max-w-lg flex-col border-l border-border bg-card text-foreground shadow-xl outline-none transition-transform duration-200 data-closed:translate-x-full motion-reduce:transition-none">
-            <header className="flex shrink-0 items-center justify-between gap-3 p-4 sm:p-6">
+            <header className="flex shrink-0 items-center justify-between gap-3 p-3 sm:p-4">
               <DialogHeading
                 icon={<Filter aria-hidden="true" />}
                 title={label ?? t("common", "Lọc nâng cao")}

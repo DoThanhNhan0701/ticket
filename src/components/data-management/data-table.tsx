@@ -86,7 +86,7 @@ export function DataTable<T>({
     <Table
       aria-label={label}
       className={cn(
-        "table-fixed [&_td]:px-3 [&_td]:py-3 [&_td]:align-middle",
+        "table-fixed [&_td]:px-2.5 [&_td]:py-1.5 [&_td]:align-middle",
         className,
       )}
       wrapperClassName="min-h-0 flex-1 overscroll-contain rounded-t-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -105,7 +105,7 @@ export function DataTable<T>({
               key={column.id}
               scope="col"
               className={cn(
-                "px-3 py-3 align-middle",
+                "px-2.5 py-1.5 align-middle",
                 alignClasses[column.align ?? "left"],
                 column.sticky === "right" &&
                   "right-0 z-20 sm:shadow-[-1px_0_0_var(--border)]",
@@ -123,7 +123,7 @@ export function DataTable<T>({
             <TableRow
               key={getRowKey(row)}
               className={cn(
-                "h-18 bg-card",
+                "bg-card",
                 path &&
                   "cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
                 getRowClassName?.(row),

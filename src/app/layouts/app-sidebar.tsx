@@ -104,7 +104,7 @@ function CollapsedSidebarGroup({
         sideOffset={24}
         collisionPadding={12}
         aria-label={t("layout", group.label)}
-        className="w-64 max-w-[calc(100vw-2rem)] p-2"
+        className="w-52 max-w-[calc(100vw-2rem)] p-2"
         onOpenAutoFocus={(event) => {
           const firstLink =
             contentRef.current?.querySelector<HTMLAnchorElement>("a[href]");
@@ -154,7 +154,7 @@ function SidebarLink({
       title={t("layout", page.label)}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        "flex min-h-11 items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring lg:min-h-8.5 lg:pointer-coarse:min-h-11",
         active
           ? "bg-sidebar-primary text-sidebar-primary-foreground"
           : "ticket-menu-item text-muted-foreground",
@@ -195,13 +195,16 @@ export function AppSidebar({
     <div className="flex h-full min-h-0 flex-col text-sidebar-foreground">
       <nav
         aria-label={t("layout", "Điều hướng Ticket")}
-        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-3 pt-3 pb-4"
+        className={cn(
+          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pt-2.5 pb-3",
+          collapsed ? "px-1.5" : "px-2",
+        )}
       >
         <div
           className={cn(
             collapsed
               ? "flex w-full max-w-12 flex-col items-center gap-2"
-              : "space-y-1 lg:w-[calc(18rem-1px-1.5rem)]",
+              : "space-y-1 lg:w-[calc(13rem-1px-1rem)]",
           )}
         >
           {groups.length === 0 && (
@@ -257,7 +260,7 @@ export function AppSidebar({
               );
             }
             const links = (
-              <ul className="ml-3 space-y-1 border-l border-sidebar-border pl-2">
+              <ul className="ml-2.5 space-y-0.5 border-l border-sidebar-border pl-2">
                 {group.pages.map((page) => (
                   <li key={page.path}>
                     <SidebarLink page={page} onNavigate={onNavigate} />
@@ -278,7 +281,7 @@ export function AppSidebar({
               >
                 <summary
                   className={cn(
-                    "ticket-menu-item flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring [&::-webkit-details-marker]:hidden",
+                    "ticket-menu-item flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring lg:min-h-9 lg:pointer-coarse:min-h-11 [&::-webkit-details-marker]:hidden",
                     active
                       ? "text-sidebar-accent-foreground"
                       : "text-sidebar-foreground",
@@ -312,7 +315,7 @@ export function AppSidebar({
           size="icon"
           type="button"
           variant="ghost"
-          className="ticket-menu-item h-[69px] w-full shrink-0 cursor-pointer rounded-none border-0 border-t border-sidebar-border bg-transparent shadow-none focus-visible:ring-inset active:translate-y-0 aria-expanded:bg-transparent"
+          className="ticket-menu-item h-11 w-full shrink-0 cursor-pointer rounded-none border-0 border-t border-sidebar-border bg-transparent shadow-none focus-visible:ring-inset active:translate-y-0 aria-expanded:bg-transparent"
           aria-label={
             collapsed
               ? t("layout", "Mở rộng sidebar")
@@ -383,7 +386,7 @@ export function MobileSidebar({
                 ? desktopToggleRef.current
                 : true
             }
-            className="flex h-dvh w-76 max-w-[calc(100vw-2rem)] flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-xl outline-none transition-transform data-closed:-translate-x-full"
+            className="flex h-dvh w-64 max-w-[calc(100vw-2rem)] flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-xl outline-none transition-transform data-closed:-translate-x-full"
           >
             <div className="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-sidebar-border px-4 py-3">
               <DialogHeading

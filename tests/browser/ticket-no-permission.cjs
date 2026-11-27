@@ -188,7 +188,7 @@ const paths = [
     await page.waitForFunction(
       () =>
         document.getElementById("desktop-sidebar").getBoundingClientRect()
-          .width === 288,
+          .width === 208,
     );
     await page.screenshot({
       path: "/tmp/ticket-no-permission-desktop.png",

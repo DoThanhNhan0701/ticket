@@ -230,11 +230,11 @@ export function TicketTemplate({
               <table className="w-full text-sm">
                 <thead className="bg-muted/40">
                   <tr>
-                    <th className="min-w-12 p-3 text-left">#</th>
+                    <th className="min-w-12 px-2.5 py-1.5 text-left">#</th>
                     {selected.map((field) => (
                       <th
                         key={field.fieldKey}
-                        className="min-w-60 p-3 text-left font-medium"
+                        className="min-w-60 px-2.5 py-1.5 text-left font-medium"
                       >
                         <div className="flex items-center gap-1">
                           <Tooltip>
@@ -263,11 +263,13 @@ export function TicketTemplate({
                         key={String(record.key ?? row)}
                         className="border-t border-border align-top"
                       >
-                        <td className="p-3 text-muted-foreground">{row + 1}</td>
+                        <td className="px-2.5 py-1.5 text-muted-foreground">
+                          {row + 1}
+                        </td>
                         {selected.map((field) => (
                           <td
                             key={field.fieldKey}
-                            className="min-w-60 p-3"
+                            className="min-w-60 px-2.5 py-1.5"
                             style={{
                               minWidth: Math.min(
                                 600,

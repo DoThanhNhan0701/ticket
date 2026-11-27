@@ -35,7 +35,7 @@ export function DataFiltersForm<Name extends string>({
         onApply(normalizeFilterValues(fields, filters)),
       )}
     >
-      <div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto overscroll-contain p-4 sm:grid-cols-2 sm:p-6">
+      <div className="grid min-h-0 flex-1 content-start gap-2.5 overflow-y-auto overscroll-contain p-3 sm:grid-cols-2 sm:p-4">
         {fields.map((field) => {
           const props = {
             control,
@@ -78,7 +78,7 @@ export function DataFiltersForm<Name extends string>({
           return <InputField key={field.name} {...props} />;
         })}
       </div>
-      <div className="grid shrink-0 grid-cols-2 gap-2 p-4 sm:flex sm:flex-wrap sm:p-6">
+      <div className="grid shrink-0 grid-cols-2 gap-2 p-3 sm:flex sm:flex-wrap sm:p-4">
         <Button
           title={
             onCancel ? t("common", "Tìm kiếm") : t("common", "Áp dụng bộ lọc")

@@ -104,8 +104,8 @@ export function LoginPage({
           <div className="mb-8 flex justify-center lg:hidden">
             <BrandLogo className="h-9 w-56 max-w-full" />
           </div>
-          <Card className="gap-6 p-6 shadow-md sm:p-8">
-            <CardHeader className="gap-2 p-0">
+          <Card className="gap-4 p-5 shadow-md sm:p-6">
+            <CardHeader className="gap-1.5 p-0">
               <CardTitle className="text-2xl font-semibold tracking-tight">
                 {t("login", "Sign In to Ticket")}
               </CardTitle>
@@ -119,10 +119,10 @@ export function LoginPage({
             <CardContent className="p-0">
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5"
+                className="space-y-3"
               >
                 {error && <ErrorToast message={error} />}
-                <FieldGroup className="gap-5">
+                <FieldGroup className="gap-3">
                   <InputField
                     control={form.control}
                     name="username"
@@ -154,7 +154,7 @@ export function LoginPage({
                 </AsyncButton>
               </form>
             </CardContent>
-            <div className="flex items-center justify-center gap-2 border-t border-border pt-5 text-xs text-muted-foreground">
+            <div className="flex items-center justify-center gap-2 border-t border-border pt-3.5 text-xs text-muted-foreground">
               <LockKeyhole className="h-3.5 w-3.5" aria-hidden="true" />
               {t("login", "Authorized personnel only")}
             </div>

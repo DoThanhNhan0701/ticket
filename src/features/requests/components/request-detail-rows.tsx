@@ -245,7 +245,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="size-11 sm:size-9"
+                        className="size-11 sm:size-7"
                         title={t("request-create", "Sao chép dòng")}
                         aria-label={t("request-create", "Sao chép dòng {0}", [
                           index + 1,
@@ -265,7 +265,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="size-11 text-destructive sm:size-9"
+                        className="size-11 text-destructive sm:size-7"
                         title={t("request-create", "Xóa dòng")}
                         aria-label={t("request-create", "Xóa dòng {0}", [
                           index + 1,
@@ -279,7 +279,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                   </div>
                 </legend>
                 <div
-                  className="grid items-start gap-4"
+                  className="grid items-start gap-2.5"
                   style={{ gridTemplateColumns: columns }}
                 >
                   {fields.map((field, column) => (

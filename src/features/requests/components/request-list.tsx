@@ -114,7 +114,7 @@ export function RequestList({
   );
 
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2.5">
       <div className="contents sm:block sm:shrink-0 sm:space-y-3">
         <div className="contents sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <DataSearch

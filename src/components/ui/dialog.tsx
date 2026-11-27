@@ -22,7 +22,7 @@ function DialogContent({
         <DialogPrimitive.Popup
           data-slot="dialog-content"
           className={cn(
-            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-xl border border-border bg-card p-4 sm:p-6 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0 data-nested-dialog-open:blur-[1px] data-nested-dialog-open:brightness-90",
+            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-xl border border-border bg-card p-3 sm:p-4 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0 data-nested-dialog-open:blur-[1px] data-nested-dialog-open:brightness-90",
             className,
           )}
           {...props}
@@ -40,7 +40,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-header"
       className={cn(
-        "sticky -top-4 z-10 -mx-4 -mt-4 mb-5 flex items-center justify-between gap-3 bg-card p-4 pb-0 sm:-top-6 sm:-mx-6 sm:-mt-6 sm:px-6 [&>div]:min-w-0",
+        "sticky -top-3 z-10 -mx-3 -mt-3 mb-3 flex items-center justify-between gap-3 bg-card p-3 pb-0 sm:-top-4 sm:-mx-4 sm:-mt-4 sm:px-4 [&>div]:min-w-0",
         className,
       )}
       {...props}
@@ -54,7 +54,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "sticky -bottom-4 z-10 -mx-4 -mb-4 mt-6 flex flex-wrap justify-end gap-2 bg-card p-4 sm:-bottom-6 sm:-mx-6 sm:-mb-6 sm:px-6",
+        "sticky -bottom-3 z-10 -mx-3 -mb-3 mt-4 flex flex-wrap justify-end gap-2 bg-card p-3 sm:-bottom-4 sm:-mx-4 sm:-mb-4 sm:px-4",
         className,
       )}
       {...props}
