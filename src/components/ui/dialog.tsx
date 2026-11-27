@@ -22,7 +22,7 @@ function DialogContent({
         <DialogPrimitive.Popup
           data-slot="dialog-content"
           className={cn(
-            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-xl border border-border bg-card p-3 sm:p-4 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0 data-nested-dialog-open:blur-[1px] data-nested-dialog-open:brightness-90",
+            "max-h-[calc(100dvh-1rem)] sm:max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto overscroll-contain scroll-pt-28 scroll-pb-24 rounded-lg border border-border bg-card p-2.5 sm:p-3.5 text-foreground shadow-xl outline-none transition-all data-closed:scale-95 data-closed:opacity-0 data-nested-dialog-open:blur-[1px] data-nested-dialog-open:brightness-90",
             className,
           )}
           {...props}
@@ -40,7 +40,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-header"
       className={cn(
-        "sticky -top-3 z-10 -mx-3 -mt-3 mb-3 flex items-center justify-between gap-3 bg-card p-3 pb-0 sm:-top-4 sm:-mx-4 sm:-mt-4 sm:px-4 [&>div]:min-w-0",
+        "sticky -top-2.5 z-10 -mx-2.5 -mt-2.5 mb-2.5 flex items-center justify-between gap-2 bg-card p-2.5 pb-0 sm:-top-3.5 sm:-mx-3.5 sm:-mt-3.5 sm:px-3.5 [&>div]:min-w-0",
         className,
       )}
       {...props}
@@ -54,7 +54,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "sticky -bottom-3 z-10 -mx-3 -mb-3 mt-4 flex flex-wrap justify-end gap-2 bg-card p-3 sm:-bottom-4 sm:-mx-4 sm:-mb-4 sm:px-4",
+        "sticky -bottom-2.5 z-10 -mx-2.5 -mb-2.5 mt-3 flex flex-wrap justify-end gap-1.5 bg-card p-2.5 sm:-bottom-3.5 sm:-mx-3.5 sm:-mb-3.5 sm:px-3.5",
         className,
       )}
       {...props}
@@ -69,7 +69,7 @@ function DialogTitle({
   useLocale();
   return (
     <DialogPrimitive.Title
-      className={cn("m-0 text-sm leading-5 font-semibold", className)}
+      className={cn("m-0 text-[0.8125rem] leading-4 font-semibold", className)}
       {...props}
     />
   );
@@ -83,7 +83,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       className={cn(
-        "mt-0 wrap-break-word text-xs leading-4 text-muted-foreground",
+        "mt-0 wrap-break-word text-[0.6875rem] leading-3.5 text-muted-foreground",
         className,
       )}
       {...props}
@@ -106,10 +106,10 @@ function DialogHeading({
 }>) {
   useLocale();
   return (
-    <div className="flex min-w-0 flex-1 items-center gap-3">
+    <div className="flex min-w-0 flex-1 items-center gap-2">
       <span
         className={cn(
-          "flex size-10 shrink-0 items-center justify-center rounded-xl border [&>svg]:size-5",
+          "flex size-7 shrink-0 items-center justify-center rounded-lg border [&>svg]:size-3.5",
           iconClassName ??
             "border-brand-200 bg-brand-50 text-brand-700 dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200",
         )}
@@ -138,7 +138,7 @@ function DialogCloseButton({
     <DialogPrimitive.Close
       aria-label={t("common", "Close dialog")}
       className={cn(
-        "flex h-11 w-11 shrink-0 sm:h-8 sm:w-8 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+        "flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
         className,
       )}
       {...props}

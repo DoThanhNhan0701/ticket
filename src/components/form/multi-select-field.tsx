@@ -90,7 +90,7 @@ function SelectedBadges({
         <Badge
           tone="brand"
           key={option.value}
-          className="h-6 min-w-14 max-w-full shrink gap-1 px-1.5 py-0"
+          className="h-5 min-w-12 max-w-full shrink gap-0.5 px-1 py-0"
         >
           <span title={option.label} className="min-w-0 truncate">
             {option.label}
@@ -100,7 +100,7 @@ function SelectedBadges({
             disabled={disabled}
             aria-label={t("common", "Remove {0}", [option.label])}
             onClick={() => onRemove(option.value)}
-            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring sm:size-5 sm:pointer-coarse:size-6"
+            className="flex size-4 shrink-0 cursor-pointer items-center justify-center rounded text-current hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
           >
             <X className="h-3 w-3" />
           </button>
@@ -158,7 +158,7 @@ function MultiSelectInput({
           data-slot="multi-select-control"
           className={cn(
             controlClassName,
-            "flex h-11 min-w-0 items-center gap-1 py-0 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25 sm:h-8 sm:pointer-coarse:h-11",
+            "flex h-8 min-w-0 items-center gap-1 py-0 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/25",
             invalid && "border-destructive",
             isDisabled && "cursor-not-allowed bg-muted opacity-75",
           )}
@@ -180,9 +180,7 @@ function MultiSelectInput({
               aria-describedby={invalid ? `${id}-error` : undefined}
               className={cn(
                 "flex min-w-0 items-center justify-between gap-2 self-stretch text-left text-muted-foreground outline-none",
-                selectedOptions.length > 0
-                  ? "w-11 shrink-0 sm:w-8 sm:pointer-coarse:w-11"
-                  : "flex-1",
+                selectedOptions.length > 0 ? "w-8 shrink-0" : "flex-1",
               )}
             >
               {isLoading && (
@@ -202,7 +200,7 @@ function MultiSelectInput({
               disabled={isLoading}
               onClick={() => onChange([])}
               aria-label={t("common", "Clear {0}", [label.toLowerCase()])}
-              className="flex w-11 shrink-0 cursor-pointer items-center justify-center self-stretch rounded text-muted-foreground hover:text-foreground sm:w-6 sm:pointer-coarse:w-11"
+              className="flex w-6 shrink-0 cursor-pointer items-center justify-center self-stretch rounded text-muted-foreground hover:text-foreground"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -211,7 +209,7 @@ function MultiSelectInput({
       </PopoverAnchor>
       <PopoverContent
         align="start"
-        className="w-(--radix-popover-trigger-width) max-w-[calc(100vw-2rem)] min-w-56 p-2 flex flex-col gap-2"
+        className="w-(--radix-popover-trigger-width) max-w-[calc(100vw-2rem)] min-w-52 p-1.5 flex flex-col gap-1.5"
       >
         {options.length > 5 && (
           <SearchInput
@@ -232,7 +230,7 @@ function MultiSelectInput({
               <button
                 type="button"
                 onClick={() => onChange(options.map((option) => option.value))}
-                className="min-h-11 sm:min-h-0 sm:pointer-coarse:min-h-11 text-brand-700 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 cursor-pointer"
+                className="min-h-0 text-brand-700 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 cursor-pointer"
               >
                 {t("common", "Select all")}
               </button>
@@ -240,7 +238,7 @@ function MultiSelectInput({
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 sm:pointer-coarse:min-h-11 sm:pointer-coarse:min-w-11 text-muted-foreground hover:text-foreground cursor-pointer"
+                className="min-h-0 min-w-0 text-muted-foreground hover:text-foreground cursor-pointer"
               >
                 {t("common", "Clear")}
               </button>
@@ -262,7 +260,7 @@ function MultiSelectInput({
                 aria-pressed={isSelected}
                 onClick={() => toggleOption(option.value)}
                 className={cn(
-                  "w-full text-left px-2 py-1 rounded min-h-11 text-base sm:min-h-7 sm:text-sm sm:pointer-coarse:min-h-11 sm:pointer-coarse:text-base flex items-center justify-between cursor-pointer",
+                  "w-full text-left px-2 py-1 rounded min-h-7 text-sm flex items-center justify-between cursor-pointer",
                   isSelected
                     ? "bg-accent text-accent-foreground font-semibold"
                     : "text-foreground hover:bg-muted",

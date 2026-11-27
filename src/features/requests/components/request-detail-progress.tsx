@@ -127,7 +127,7 @@ export const RequestDetailProgress = memo(function RequestDetailProgress({
         variant="outline"
         aria-label={t("request-create", "Đến ô chưa nhập")}
         title={t("request-create", "Đến ô chưa nhập")}
-        className="size-9 shrink-0 px-0 sm:h-8 sm:w-auto sm:px-3"
+        className="size-7 shrink-0 px-0 sm:h-7 sm:w-auto sm:px-2.5"
         disabled={disabled}
         onClick={() => {
           const input = document.getElementById(next.id);

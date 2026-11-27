@@ -28,8 +28,8 @@ function pickerClassName(compact: boolean, style: "dropzone" | "inline") {
   if (compact)
     return "size-9 rounded-xl text-muted-foreground hover:text-foreground";
   if (style === "inline")
-    return "min-h-11 w-full border-dashed text-primary hover:border-primary/50";
-  return "h-auto min-h-28 w-full flex-col gap-2 border-dashed px-3 py-4 whitespace-normal text-center hover:border-primary/50";
+    return "min-h-8 w-full border-dashed text-primary hover:border-primary/50";
+  return "h-auto min-h-20 w-full flex-col gap-1 border-dashed px-2.5 py-2.5 whitespace-normal text-center hover:border-primary/50";
 }
 
 function PickerContent({
@@ -259,7 +259,7 @@ function AttachmentList({
               <button
                 type="button"
                 aria-label={`${isImageFile(file) ? t("attachments", "Xem ảnh") : t("attachments", "Mở tệp")} ${file.name}`}
-                className="flex min-h-11 min-w-0 flex-1 items-center gap-2 text-left text-sm underline-offset-4 hover:text-primary hover:underline focus-visible:rounded focus-visible:outline-2 focus-visible:outline-ring"
+                className="flex min-h-8 min-w-0 flex-1 items-center gap-1.5 text-left text-sm underline-offset-4 hover:text-primary hover:underline focus-visible:rounded focus-visible:outline-2 focus-visible:outline-ring"
                 title={file.name}
                 onClick={() => onPreview(file)}
               >
@@ -281,7 +281,7 @@ function AttachmentList({
               type="button"
               variant="ghost"
               size="icon"
-              className="size-11"
+              className="size-8"
               disabled={disabled}
               aria-label={t("attachments", "Bỏ tệp {0}", [file.name])}
               onClick={() =>

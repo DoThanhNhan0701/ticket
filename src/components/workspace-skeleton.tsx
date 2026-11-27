@@ -46,10 +46,10 @@ export function WorkspaceSkeleton() {
         actions={
           <>
             {listScope && (
-              <div className="size-11 rounded-md bg-(--workspace-skeleton-soft) sm:hidden" />
+              <div className="size-8 rounded-md bg-(--workspace-skeleton-soft) sm:hidden" />
             )}
             {showCreate && (
-              <div className="size-11 rounded-md bg-(--workspace-skeleton-fill) sm:h-8 sm:w-32" />
+              <div className="size-8 rounded-md bg-(--workspace-skeleton-fill) sm:h-8 sm:w-32" />
             )}
           </>
         }
@@ -80,7 +80,7 @@ export function WorkspaceSidebarSkeleton({
         {Array.from({ length: 4 }, (_, index) => (
           <div
             key={index}
-            className="flex h-11 items-center gap-3 rounded-lg px-2"
+            className="flex h-9 items-center gap-2.5 rounded-md px-2"
           >
             <div className="size-5 shrink-0 rounded bg-(--workspace-skeleton-fill)" />
             {!collapsed && (
@@ -89,7 +89,7 @@ export function WorkspaceSidebarSkeleton({
           </div>
         ))}
       </div>
-      <div className="flex h-11 shrink-0 items-center justify-center border-t border-sidebar-border">
+      <div className="flex h-9 shrink-0 items-center justify-center border-t border-sidebar-border">
         <div className="size-4 rounded bg-(--workspace-skeleton-fill)" />
       </div>
     </div>

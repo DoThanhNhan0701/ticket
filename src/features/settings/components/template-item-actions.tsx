@@ -19,7 +19,7 @@ export function TemplateItemActions({
 }>) {
   useLocale();
   return (
-    <div className="flex shrink-0 items-center gap-1 [&>button]:size-11 sm:[&>button]:size-9 sm:pointer-coarse:[&>button]:size-11">
+    <div className="flex shrink-0 items-center gap-1 [&>button]:size-8 sm:[&>button]:size-7">
       <Button
         type="button"
         variant="outline"

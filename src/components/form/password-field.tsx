@@ -33,7 +33,7 @@ export function PasswordField<TFieldValues extends FieldValues>({
             isVisible ? "Hide password" : "Show password",
           )}
           aria-pressed={isVisible}
-          className="flex h-11 w-11 sm:h-7 sm:w-7 items-center justify-center rounded sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          className="flex h-7 w-7 items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           <Icon className="h-3.5 w-3.5" />
         </button>

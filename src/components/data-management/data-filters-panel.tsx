@@ -41,10 +41,10 @@ export function DataFiltersPanel({
             variant="outline"
             size="icon"
             className={cn(
-              "h-11 sm:h-8 sm:pointer-coarse:h-11",
+              "h-8",
               !iconOnly && (activeFilterCount > 0 || label)
                 ? "w-auto gap-1.5 px-2.5"
-                : "w-11 sm:w-8 sm:pointer-coarse:w-11",
+                : "w-8",
             )}
             aria-label={label ?? t("common", "Lọc nâng cao")}
             aria-description={filterDescription}
@@ -80,7 +80,7 @@ export function DataFiltersPanel({
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="size-11 sm:size-9 sm:pointer-coarse:size-11"
+                    className="size-9"
                     aria-label={t("common", "Đóng bộ lọc nâng cao")}
                   />
                 }

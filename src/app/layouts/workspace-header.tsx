@@ -13,7 +13,7 @@ export function WorkspaceHeader({
   return (
     <>
       <div className="flex min-w-0 items-center gap-2">
-        <div className="flex size-11 shrink-0 items-center justify-center lg:hidden">
+        <div className="flex size-8 shrink-0 items-center justify-center lg:hidden">
           {loading ? (
             <div
               aria-hidden="true"
@@ -37,7 +37,7 @@ export function WorkspaceHeader({
       {loading ? (
         <div
           aria-hidden="true"
-          className="h-11 w-36 shrink-0 rounded-lg bg-(--workspace-skeleton-soft)"
+          className="h-8 w-32 shrink-0 rounded-md bg-(--workspace-skeleton-soft)"
         />
       ) : (
         <AccountMenu />

@@ -120,7 +120,7 @@ export function SettingsList({
                 variant="ghost"
                 aria-label={t("settings", "Xóa lọc")}
                 title={t("settings", "Xóa lọc")}
-                className="hidden w-11 px-0 sm:inline-flex lg:w-auto lg:px-4"
+                className="hidden w-8 px-0 sm:inline-flex lg:w-auto lg:px-3"
                 onClick={() =>
                   update({ search: undefined, is_active: undefined, page: 1 })
                 }
@@ -137,7 +137,7 @@ export function SettingsList({
                 variant="outline"
                 aria-label={t("settings", "Thông tin quyền hạn")}
                 title={t("settings", "Thông tin quyền hạn")}
-                className="w-11 px-0 lg:w-auto lg:px-4"
+                className="w-8 px-0 lg:w-auto lg:px-3"
                 onClick={() => setPermissionHelpOpen(true)}
               >
                 <Info className="size-4" aria-hidden="true" />
@@ -150,7 +150,7 @@ export function SettingsList({
               type="button"
               aria-label={t("settings", "Thêm mới")}
               title={t("settings", "Thêm mới")}
-              className="w-11 px-0 lg:w-auto lg:px-4"
+              className="w-8 px-0 lg:w-auto lg:px-3"
               onClick={() => setEditor({})}
             >
               <Plus className="size-4" aria-hidden="true" />

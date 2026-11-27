@@ -47,7 +47,7 @@ export function UserGuidePage() {
             aria-label={t("help", "Tải tài liệu Word")}
             className={buttonVariants({
               variant: "outline",
-              className: "max-sm:size-11 max-sm:px-0",
+              className: "max-sm:size-8 max-sm:px-0",
             })}
           >
             <Download className="size-4" aria-hidden="true" />

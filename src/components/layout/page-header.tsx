@@ -26,7 +26,7 @@ export function PageHeader({
 }: Readonly<PageHeaderProps>) {
   useLocale();
   return (
-    <header className="flex h-11 shrink-0 items-center sm:h-8 justify-between gap-2 sm:gap-3">
+    <header className="flex h-8 shrink-0 items-center justify-between gap-2 sm:gap-3">
       <div className="flex min-w-0 flex-1 items-center gap-2">
         {onBack && (
           <Button
@@ -43,16 +43,16 @@ export function PageHeader({
           </Button>
         )}
         {Icon && (
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-700 dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200">
-            <Icon className="size-4" aria-hidden="true" />
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-700 dark:border-brand-700 dark:bg-brand-950 dark:text-brand-200">
+            <Icon className="size-3.5" aria-hidden="true" />
           </span>
         )}
-        <div className="flex min-h-8 min-w-0 flex-1 flex-col justify-center">
-          <h1 className="text-base leading-5 font-semibold tracking-tight text-foreground">
+        <div className="flex min-h-7 min-w-0 flex-1 flex-col justify-center">
+          <h1 className="text-[0.8125rem] leading-4 font-semibold tracking-tight text-foreground">
             <TruncatedText text={title} />
           </h1>
           {description && (
-            <p className="mt-0.5 text-xs leading-4 text-muted-foreground">
+            <p className="text-[0.6875rem] leading-3.5 text-muted-foreground">
               <TruncatedText text={description} />
             </p>
           )}
@@ -60,7 +60,7 @@ export function PageHeader({
       </div>
       <MobilePageActionSlot />
       {actions && (
-        <div className="flex min-w-0 shrink-0 items-center gap-2 max-sm:[&>a]:size-11 max-sm:[&>a]:p-0 max-sm:[&>button]:size-11 max-sm:[&>button]:p-0 max-sm:[&_svg]:size-4 sm:h-full sm:[&>a]:h-full sm:[&>button]:h-full">
+        <div className="flex min-w-0 shrink-0 items-center gap-2 max-sm:[&>a]:size-8 max-sm:[&>a]:p-0 max-sm:[&>button]:size-8 max-sm:[&>button]:p-0 max-sm:[&_svg]:size-4 sm:h-full sm:[&>a]:h-full sm:[&>button]:h-full">
           {actions}
         </div>
       )}

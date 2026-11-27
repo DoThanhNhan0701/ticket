@@ -20,7 +20,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={label}
       title={label}
-      className="size-11 shrink-0 rounded-md border-border bg-card text-foreground hover:bg-accent sm:size-9 sm:pointer-coarse:size-11"
+      className="size-9 shrink-0 rounded-md border-border bg-card text-foreground hover:bg-accent"
     >
       <Icon className="h-4 w-4" aria-hidden="true" />
     </Button>

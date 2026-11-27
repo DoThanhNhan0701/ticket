@@ -40,7 +40,7 @@ export function RecruitmentFilterActions({
           type="button"
           variant="outline"
           size="icon"
-          className="size-11 sm:size-10 sm:pointer-coarse:size-11"
+          className="size-8"
           disabled={busy}
           onClick={onReset}
           aria-label={t("recruitment", "Xóa lọc tuyển dụng")}

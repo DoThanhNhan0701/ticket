@@ -143,12 +143,12 @@ export function DatePickerField<TFieldValues extends FieldValues>({
                   components={{ YearsDropdown: CalendarYearPicker }}
                   classNames={{
                     month_caption:
-                      "flex min-h-11 items-center justify-center px-8",
+                      "flex min-h-8 items-center justify-center px-8",
                     dropdowns:
-                      "flex min-h-11 items-center justify-center gap-2 text-sm font-medium",
-                    nav: "pointer-events-none absolute inset-x-0 top-0 flex min-h-11 items-center justify-between gap-1 *:pointer-events-auto",
+                      "flex min-h-8 items-center justify-center gap-2 text-sm font-medium",
+                    nav: "pointer-events-none absolute inset-x-0 top-0 flex min-h-8 items-center justify-between gap-1 *:pointer-events-auto",
                     caption_label:
-                      "flex h-11 items-center gap-2 px-3 text-sm font-medium sm:h-9 sm:pointer-coarse:h-11 [&>svg]:size-4",
+                      "flex h-7 items-center gap-2 px-2 text-sm font-medium [&>svg]:size-4",
                   }}
                   startMonth={new Date(startYear, 0)}
                   endMonth={new Date(endYear, 11)}

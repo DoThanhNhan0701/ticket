@@ -25,7 +25,7 @@ export function RecruitmentEditorTabs({
     if (scroll) scroll.scrollTop = 0;
   }, [tab]);
   const tabClassName =
-    "flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-muted data-[active]:bg-primary data-[active]:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
+    "flex min-h-8 flex-1 items-center justify-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-muted data-[active]:bg-primary data-[active]:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
   return (
     <Tabs.Root ref={root} value={tab} onValueChange={setTab}>
       <Tabs.List

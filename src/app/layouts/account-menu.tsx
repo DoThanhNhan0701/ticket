@@ -18,12 +18,12 @@ export function AccountMenu() {
           <Button
             type="button"
             variant="outline"
-            className="group h-11 min-w-0 gap-2 border-primary/30 bg-transparent px-2 hover:border-primary/50 hover:bg-white/60 aria-expanded:bg-white/60"
+            className="group h-8 min-w-0 gap-1.5 border-primary/30 bg-transparent px-1.5 hover:border-primary/50 hover:bg-white/60 aria-expanded:bg-white/60"
             aria-label={t("layout", "Account menu for {0}", [username])}
           />
         }
       >
-        <UserAvatar name={username} src={avatarUrl} className="size-8" />
+        <UserAvatar name={username} src={avatarUrl} className="size-6" />
         <span className="max-w-24 truncate text-sm font-medium sm:max-w-40">
           {username}
         </span>

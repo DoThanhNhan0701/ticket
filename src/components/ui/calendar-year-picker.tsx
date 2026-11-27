@@ -43,7 +43,7 @@ export function CalendarYearPicker({
           variant="outline"
           disabled={disabled}
           aria-label={t("common", label)}
-          className="h-11 gap-2 px-3 sm:h-9 sm:pointer-coarse:h-11"
+          className="h-9 gap-2 px-3"
         >
           {options.find((option) => option.value === Number(value))?.label ??
             value}
@@ -100,7 +100,7 @@ export function CalendarYearPicker({
                 variant={option.value === Number(value) ? "default" : "ghost"}
                 disabled={option.disabled}
                 aria-pressed={option.value === Number(value)}
-                className="h-11 px-1 tabular-nums"
+                className="h-7 px-1 tabular-nums"
                 onClick={() => selectYear(option.value)}
               >
                 {option.label}

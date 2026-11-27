@@ -58,7 +58,7 @@ export function RequestCreate() {
       ref={formRef}
       aria-label={t("request-create", "Tạo yêu cầu mới")}
       noValidate
-      className="request-create-form relative w-full min-w-0 space-y-2.5 pb-2"
+      className="request-create-form relative w-full min-w-0 space-y-2 pb-1.5"
       aria-busy={busy || model.lookups.isPending}
       onSubmit={(event) => {
         if (busy || waitingForData || model.created) {
@@ -70,7 +70,7 @@ export function RequestCreate() {
     >
       <RequestRowsValidation form={model.form} groups={model.groups} />
       <RequestCreateMessages model={model} />
-      <div className="relative min-w-0 space-y-2.5">
+      <div className="relative min-w-0 space-y-2">
         <RequestAssignmentPanel model={model} disabled={disabled} />
         {steps.general && (
           <RequestFormSection
@@ -111,7 +111,7 @@ export function RequestCreate() {
             "Ghi chú và tài liệu đính kèm nếu cần.",
           )}
         >
-          <div className="grid min-w-0 grid-cols-1 items-start gap-2.5 lg:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 items-start gap-2 lg:grid-cols-2">
             <RequestNotesField form={model.form} disabled={disabled} />
             <RequestAttachments
               layout="tiles"
@@ -123,45 +123,48 @@ export function RequestCreate() {
           </div>
         </RequestFormSection>
       )}
-      <div className="sticky bottom-0 z-20 pt-2">
-        <div className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-border bg-card/95 p-2.5 shadow-sm backdrop-blur-sm">
+      <div className="sticky bottom-0 z-20 pt-1.5">
+        <div className="flex min-w-0 items-center justify-between gap-1.5 rounded-lg border border-border bg-card/95 px-2 py-1.5 shadow-sm backdrop-blur-sm">
           <Button
             type="button"
             variant="outline"
+            size="sm"
             disabled={busy}
             aria-label={t("request-create", "Quay lại danh sách")}
             title={t("request-create", "Quay lại danh sách")}
-            className="size-11 p-0 sm:w-auto sm:px-4"
+            className="size-7 p-0 sm:w-auto sm:px-2.5"
             onClick={() => navigate(APP_ROUTES.requests.list)}
           >
-            <ArrowLeft className="size-4" aria-hidden="true" />
+            <ArrowLeft className="size-3.5" aria-hidden="true" />
             <span className="hidden sm:inline">
               {t("request-create", "Quay lại")}
             </span>
           </Button>
-          <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:flex-none">
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 sm:flex-none">
             <Button
               type="button"
               variant="ghost"
+              size="sm"
               disabled={requestResetDisabled(model, busy)}
               aria-label={t("request-create", "Làm lại")}
               title={t("request-create", "Làm lại")}
-              className="size-11 p-0 sm:w-auto sm:px-4"
+              className="size-7 p-0 sm:w-auto sm:px-2.5"
               onClick={model.reset}
             >
-              <RotateCcw className="size-4" aria-hidden="true" />
+              <RotateCcw className="size-3.5" aria-hidden="true" />
               <span className="hidden sm:inline">
                 {t("request-create", "Làm lại")}
               </span>
             </Button>
             <AsyncButton
               type={model.created ? "button" : "submit"}
+              size="sm"
               loading={model.mutation.isPending}
               loadingText={t("request-create", "Đang gửi...")}
               disabled={submitDisabled}
               onClick={model.created ? model.retryAttachments : undefined}
-              className="min-w-0 flex-1 sm:flex-none"
-              icon={<Send className="size-4" aria-hidden="true" />}
+              className="min-w-0 flex-1 px-2.5 sm:flex-none"
+              icon={<Send className="size-3.5" aria-hidden="true" />}
             >
               {model.created
                 ? t("request-create", "Tải lại đính kèm")

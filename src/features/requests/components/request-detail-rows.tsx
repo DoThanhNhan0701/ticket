@@ -122,8 +122,9 @@ export const RequestDetailRows = memo(function RequestDetailRows({
           <>
             <AsyncButton
               mobileIconOnly
+              size="sm"
               title={t("request-create", "Tải mẫu")}
-              icon={<Download className="size-4" aria-hidden="true" />}
+              icon={<Download className="size-3.5" aria-hidden="true" />}
               type="button"
               variant="outline"
               loading={download.isPending}
@@ -134,8 +135,9 @@ export const RequestDetailRows = memo(function RequestDetailRows({
             </AsyncButton>
             <AsyncButton
               mobileIconOnly
+              size="sm"
               title={t("request-create", "Nhập Excel")}
-              icon={<Upload className="size-4" aria-hidden="true" />}
+              icon={<Upload className="size-3.5" aria-hidden="true" />}
               type="button"
               variant="outline"
               loading={upload.isPending}
@@ -186,7 +188,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
             <div
               role="group"
               aria-label={t("request-create", "Tiêu đề các cột chi tiết")}
-              className="grid items-start gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/40 px-3 py-2"
+              className="grid items-start gap-x-3 gap-y-1.5 rounded-md border border-border bg-muted/40 px-2.5 py-1.5"
               style={{ gridTemplateColumns: columns }}
             >
               {groups.length > 1 &&
@@ -233,10 +235,10 @@ export const RequestDetailRows = memo(function RequestDetailRows({
               <fieldset
                 key={row.id}
                 aria-label={t("request-create", "Dòng {0}", [index + 1])}
-                className="min-w-0 rounded-lg border border-border px-3 pt-1 pb-2"
+                className="min-w-0 rounded-md border border-border px-2.5 pt-0.5 pb-1.5"
               >
-                <legend className="sticky left-0 z-10 rounded-lg bg-card px-2 text-sm font-semibold">
-                  <div className="flex items-center gap-2">
+                <legend className="sticky left-0 z-10 rounded-md bg-card px-1.5 text-xs font-semibold">
+                  <div className="flex items-center gap-1.5">
                     <span className="whitespace-nowrap">
                       {t("request-create", "Dòng")} {index + 1}
                     </span>
@@ -245,7 +247,7 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="size-11 sm:size-7"
+                        className="size-6"
                         title={t("request-create", "Sao chép dòng")}
                         aria-label={t("request-create", "Sao chép dòng {0}", [
                           index + 1,
@@ -259,13 +261,13 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                           })
                         }
                       >
-                        <Copy className="size-4" aria-hidden="true" />
+                        <Copy className="size-3.5" aria-hidden="true" />
                       </Button>
                       <Button
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="size-11 text-destructive sm:size-7"
+                        className="size-6 text-destructive"
                         title={t("request-create", "Xóa dòng")}
                         aria-label={t("request-create", "Xóa dòng {0}", [
                           index + 1,
@@ -273,13 +275,13 @@ export const RequestDetailRows = memo(function RequestDetailRows({
                         disabled={busy || rows.fields.length === 1}
                         onClick={() => rows.remove(index)}
                       >
-                        <Trash2 className="size-4" aria-hidden="true" />
+                        <Trash2 className="size-3.5" aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
                 </legend>
                 <div
-                  className="grid items-start gap-2.5"
+                  className="grid items-start gap-2"
                   style={{ gridTemplateColumns: columns }}
                 >
                   {fields.map((field, column) => (
@@ -309,11 +311,12 @@ export const RequestDetailRows = memo(function RequestDetailRows({
         <Button
           type="button"
           variant="outline"
+          size="sm"
           className="w-full border-dashed"
           disabled={busy}
           onClick={() => rows.append(emptyDetailRow(groups))}
         >
-          <Plus className="size-4" aria-hidden="true" />
+          <Plus className="size-3.5" aria-hidden="true" />
           {t("request-create", "Thêm dòng")}
         </Button>
       </RequestFormSection>

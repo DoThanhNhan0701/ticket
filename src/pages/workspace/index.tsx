@@ -150,7 +150,7 @@ export function WorkspacePage({
                 to={createTicketPage.path}
                 title={t("layout", createTicketPage.label)}
                 className={buttonVariants({
-                  className: "max-sm:size-11 max-sm:gap-0 max-sm:px-0",
+                  className: "max-sm:size-8 max-sm:gap-0 max-sm:px-0",
                 })}
               >
                 <createTicketPage.icon className="size-4" aria-hidden="true" />

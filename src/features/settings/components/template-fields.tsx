@@ -27,7 +27,7 @@ export function TemplateCheckbox({
     <label
       htmlFor={id}
       className={cn(
-        "flex min-h-11 cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2 text-xs transition-colors hover:bg-muted has-disabled:cursor-not-allowed has-disabled:opacity-60",
+        "flex min-h-8 cursor-pointer items-center gap-2 rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted has-disabled:cursor-not-allowed has-disabled:opacity-60",
         checked ? "border-primary/30 bg-primary/10" : "border-border bg-card",
       )}
     >
@@ -156,7 +156,7 @@ export function TemplateFieldControls({
         open={advancedOpen}
         onToggle={(event) => setAdvancedOpen(event.currentTarget.open)}
       >
-        <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
           <Settings2
             className="size-4 text-muted-foreground"
             aria-hidden="true"

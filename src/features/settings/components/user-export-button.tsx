@@ -37,7 +37,7 @@ export function UserExportButton({
           : t("settings", "Xuất Excel")
       }
       title={t("settings", "Xuất Excel")}
-      className="w-11 px-0 lg:w-auto lg:px-4"
+      className="w-8 px-0 lg:w-auto lg:px-3"
       loading={mutation.isPending}
       loadingText={
         <span className="hidden lg:inline">

@@ -115,7 +115,7 @@ function DataSearchForm({
         aria-label={t("common", "Tìm kiếm")}
         title={t("common", "Tìm kiếm")}
         className={
-          iconOnlyOnMobile ? "w-11 px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
+          iconOnlyOnMobile ? "w-8 px-0 sm:w-auto sm:px-3" : "px-2.5 sm:px-3"
         }
       >
         {iconOnlyOnMobile && (

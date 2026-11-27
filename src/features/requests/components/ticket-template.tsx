@@ -165,7 +165,7 @@ export function TicketTemplate({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
+                        className="size-7 gap-1 sm:h-7 sm:w-auto sm:px-2.5"
                         aria-label={t("request-detail", "Hủy")}
                         title={t("request-detail", "Hủy chỉnh sửa")}
                         disabled={mutation.isPending}
@@ -184,7 +184,7 @@ export function TicketTemplate({
                         type="button"
                         loading={mutation.isPending}
                         size="icon"
-                        className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
+                        className="size-7 gap-1 sm:h-7 sm:w-auto sm:px-2.5"
                         aria-label={t("request-detail", "Lưu thay đổi")}
                         title={t("request-detail", "Lưu thay đổi")}
                         icon={<Save className="size-3.5" aria-hidden="true" />}
@@ -200,7 +200,7 @@ export function TicketTemplate({
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="size-9 gap-1.5 sm:h-8 sm:w-auto sm:px-3"
+                      className="size-7 gap-1 sm:h-7 sm:w-auto sm:px-2.5"
                       aria-label={t("request-detail", "Chỉnh sửa")}
                       title={t("request-detail", "Chỉnh sửa phần này")}
                       disabled={editing !== null}

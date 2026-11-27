@@ -78,7 +78,7 @@ export function TicketDueDate({
                 type="button"
                 variant="outline"
                 size="icon"
-                className="size-11 sm:size-10 sm:pointer-coarse:size-11"
+                className="size-8"
                 aria-label={t("request-detail", "Hủy đổi ngày")}
                 title={t("request-detail", "Hủy đổi ngày")}
                 disabled={mutation.isPending}
@@ -89,7 +89,7 @@ export function TicketDueDate({
               <AsyncButton
                 type="submit"
                 size="icon"
-                className="size-11 sm:size-10 sm:pointer-coarse:size-11"
+                className="size-8"
                 aria-label={t("request-detail", "Lưu ngày mong muốn")}
                 title={t("request-detail", "Lưu ngày mong muốn")}
                 loading={mutation.isPending}
@@ -129,7 +129,7 @@ export function TicketDueDate({
           aria-label={t("request-detail", "Đổi ngày mong muốn")}
           title={t("request-detail", "Đổi ngày mong muốn")}
           disabled={mutation.isPending}
-          className="size-9 text-muted-foreground pointer-coarse:size-11"
+          className="size-9 text-muted-foreground"
           onClick={() => {
             form.reset({ duedate: ticket.duedate });
             mutation.reset();

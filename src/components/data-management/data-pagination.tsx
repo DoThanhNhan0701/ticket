@@ -42,7 +42,7 @@ function PageIndicator({
         ])}
         value={draft}
         disabled={disabled}
-        className="h-11 w-12 px-1 text-center text-xs [appearance:textfield] sm:h-8 sm:w-12 sm:text-sm sm:pointer-coarse:h-11 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="h-8 w-12 px-1 text-center text-xs [appearance:textfield] sm:w-12 sm:text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         onFocus={(event) => event.currentTarget.select()}
         onChange={(event) => setDraft(event.target.value)}
         onBlur={() => setDraft(String(page))}
@@ -152,7 +152,7 @@ export function DataPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-11 sm:size-8 sm:pointer-coarse:size-11"
+          className="size-8"
           aria-label={t("common", "Trang trước")}
           disabled={disabled || page <= 1}
           onClick={() => onPage(page - 1)}
@@ -170,7 +170,7 @@ export function DataPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-11 sm:size-8 sm:pointer-coarse:size-11"
+          className="size-8"
           aria-label={t("common", "Trang sau")}
           disabled={disabled || page >= totalPages}
           onClick={() => onPage(page + 1)}

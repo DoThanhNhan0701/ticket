@@ -22,7 +22,7 @@ export function WorkspaceFrame({
       data-workspace-frame=""
       className="homepage-dashboard-background flex h-dvh min-h-0 flex-col overflow-hidden text-foreground"
     >
-      <header className="h-13 shrink-0 border-b border-border">
+      <header className="h-11 shrink-0 border-b border-border">
         <div className="flex h-full items-center justify-between gap-2 px-[clamp(0.625rem,1.5vw,1rem)]">
           {header}
         </div>
@@ -40,7 +40,7 @@ export function WorkspaceFrame({
         </aside>
         <main
           aria-busy={busy}
-          className="relative isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-2 sm:p-3"
+          className="relative isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto p-2 sm:p-2.5"
         >
           <div className="flex h-full min-h-full min-w-0 w-full flex-1 flex-col">
             {children}

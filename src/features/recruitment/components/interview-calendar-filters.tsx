@@ -81,7 +81,7 @@ function MobileCalendarNavigation({
           disabled={disabled}
           aria-label={t("interviews", "Khoảng trước")}
           title={t("interviews", "Khoảng trước")}
-          className="size-11"
+          className="size-8"
           onClick={() => shift(-1)}
         >
           <ChevronLeft className="size-4" />
@@ -101,7 +101,7 @@ function MobileCalendarNavigation({
           disabled={disabled}
           aria-label={t("interviews", "Khoảng sau")}
           title={t("interviews", "Khoảng sau")}
-          className="size-11"
+          className="size-8"
           onClick={() => shift(1)}
         >
           <ChevronRight className="size-4" />

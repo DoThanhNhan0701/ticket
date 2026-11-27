@@ -67,7 +67,7 @@ function TicketStatusSummary({
     <div
       role="group"
       aria-label={t("request-detail", "Trạng thái yêu cầu")}
-      className="flex h-10 min-w-0 max-w-[25vw] items-center justify-center rounded-lg border px-2 sm:max-w-xs sm:px-3"
+      className="flex h-8 min-w-0 max-w-[25vw] items-center justify-center rounded-md border px-2 sm:max-w-xs sm:px-2.5"
       style={{
         borderColor: `color-mix(in srgb, ${color} 50%, var(--card))`,
         backgroundColor: `color-mix(in srgb, ${color} 12%, var(--card))`,
@@ -149,9 +149,9 @@ function DetailTabs({
   };
   return (
     <>
-      <div className="min-w-0 shrink-0 rounded-xl border border-border bg-card p-3 sm:p-4">
+      <div className="min-w-0 shrink-0 rounded-lg border border-border bg-card p-2.5 sm:p-3">
         <div className="flex min-w-0 items-start justify-between gap-2">
-          <div className="flex min-h-11 min-w-0 flex-1 flex-col justify-center gap-1 sm:min-h-0 sm:block">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center gap-0.5 sm:block">
             <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase sm:hidden">
               {t("request-detail", "Mã yêu cầu")}
             </span>
@@ -160,12 +160,12 @@ function DetailTabs({
               className="font-mono text-xs font-medium text-muted-foreground sm:font-sans sm:text-sm sm:font-semibold sm:text-foreground"
             />
           </div>
-          <div className="ml-auto flex min-w-0 max-w-3/4 shrink-0 flex-wrap items-start justify-end gap-2 sm:max-w-full">
+          <div className="ml-auto flex min-w-0 max-w-3/4 shrink-0 flex-wrap items-start justify-end gap-1.5 sm:max-w-full">
             <TicketCloneButton ticket={ticket} />
             <TicketActions ticket={ticket} onSaved={onSaved} />
           </div>
         </div>
-        <p className="mt-3 min-w-0 text-sm leading-5 font-medium whitespace-pre-wrap wrap-anywhere sm:mt-2 sm:font-normal">
+        <p className="mt-1.5 min-w-0 text-sm leading-5 font-medium whitespace-pre-wrap wrap-anywhere sm:font-normal">
           {ticket.title}
         </p>
       </div>
@@ -174,7 +174,7 @@ function DetailTabs({
         {...dragHandlers}
         role="tablist"
         aria-label={t("request-detail", "Các bước yêu cầu")}
-        className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(4,minmax(9rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-xl border border-border bg-card p-1 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+        className={`relative grid w-fit min-w-0 max-w-full shrink-0 grid-cols-[repeat(4,minmax(8rem,1fr))] gap-1 overflow-x-auto overscroll-x-contain rounded-lg border border-border bg-card p-0.5 select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       >
         {tabs.map(({ label, icon: Icon }, index) => (
           <button
@@ -190,9 +190,9 @@ function DetailTabs({
             tabIndex={active === index ? 0 : -1}
             onKeyDown={(event) => switchWithKeyboard(event, index)}
             onClick={() => setActive(index)}
-            className={`flex min-h-9 min-w-0 cursor-inherit items-center justify-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring pointer-coarse:min-h-11 ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+            className={`flex min-h-7 min-w-0 cursor-inherit items-center justify-center gap-1.5 rounded-md px-2 text-xs font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-ring ${active === index ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
           >
-            <Icon className="size-4 shrink-0" aria-hidden="true" />
+            <Icon className="size-3.5 shrink-0" aria-hidden="true" />
             {label}
             {tabKeys[index] === "discussion" && (
               <span
@@ -270,7 +270,7 @@ export function RequestDetail() {
     Boolean(query.data) &&
     !(error instanceof ApiError && [401, 403, 404].includes(error.status));
   return (
-    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3 overflow-hidden">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-2 overflow-hidden">
       <PageHeader
         title={t("request-detail", "Chi tiết yêu cầu")}
         description={t(
@@ -289,7 +289,7 @@ export function RequestDetail() {
               type="button"
               variant="outline"
               size="icon"
-              className="size-10"
+              className="size-8"
               aria-label={t("request-detail", "Tải lại yêu cầu")}
               title={t("request-detail", "Tải lại yêu cầu")}
               disabled={!valid || query.isFetching}

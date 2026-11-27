@@ -163,7 +163,7 @@ export function RequestAssignmentPanel({
           href={manualUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-lg text-sm text-brand-700 underline-offset-4 hover:underline dark:text-brand-200 sm:min-h-0 sm:pointer-coarse:min-h-11"
+          className="inline-flex min-h-0 w-fit max-w-full items-center gap-2 rounded-lg text-sm text-brand-700 underline-offset-4 hover:underline dark:text-brand-200"
         >
           <FileText className="size-4 shrink-0" aria-hidden="true" />
           {t("request-create", "Tài liệu hướng dẫn")}
@@ -208,8 +208,8 @@ export function RequestTemplateSection({
       title={t("request-create", "Chi tiết yêu cầu")}
     >
       {!model.selectedType && (
-        <p className="flex items-center gap-3 rounded-lg border border-dashed border-border bg-muted/20 p-4 text-sm text-muted-foreground">
-          <FileText className="size-5 shrink-0" aria-hidden="true" />
+        <p className="flex items-center gap-2 rounded-md border border-dashed border-border bg-muted/20 p-2.5 text-sm text-muted-foreground">
+          <FileText className="size-4 shrink-0" aria-hidden="true" />
           {t(
             "request-create",
             "Chọn loại yêu cầu ở trên để hiển thị biểu mẫu chi tiết.",
@@ -234,7 +234,7 @@ export function RequestTemplateSection({
         model.groups.length === 0 && (
           <p
             role="status"
-            className="rounded-lg bg-muted/20 p-4 text-sm text-muted-foreground"
+            className="rounded-md bg-muted/20 p-2.5 text-sm text-muted-foreground"
           >
             {model.template.data?.forms.length
               ? t(

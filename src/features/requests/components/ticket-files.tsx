@@ -90,7 +90,7 @@ export function TicketFiles({
             </>
           );
           const className =
-            "flex min-h-11 w-full min-w-0 items-center gap-2 rounded-lg px-3 text-left text-sm hover:bg-muted";
+            "flex min-h-8 w-full min-w-0 items-center gap-1.5 rounded-md px-2.5 text-left text-sm hover:bg-muted";
           let action = (
             <span className={className} title={name}>
               {content}

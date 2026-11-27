@@ -135,7 +135,7 @@ export function SearchableSelect({
                   key={option.value}
                   value={option}
                   disabled={option.disabled}
-                  className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm outline-none sm:min-h-7 sm:pointer-coarse:min-h-11 data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
+                  className="flex min-h-7 cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm outline-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
                 >
                   <span
                     className="min-w-0 flex-1 truncate"

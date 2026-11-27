@@ -47,17 +47,20 @@ function GeneralSection({
     <section
       aria-labelledby={id}
       className={cn(
-        "min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm",
+        "min-w-0 overflow-hidden rounded-lg border border-border bg-card shadow-sm",
         className,
       )}
     >
-      <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-5">
-        <Icon className="size-5 shrink-0" aria-hidden="true" />
+      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <Icon className="size-4 shrink-0 text-primary" aria-hidden="true" />
         <div className="min-w-0">
-          <h2 id={id} className="flex items-center gap-2 text-sm font-semibold">
+          <h2
+            id={id}
+            className="flex items-center gap-1.5 text-[0.8125rem] leading-4 font-semibold"
+          >
             {title}
             {badge !== undefined && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary tabular-nums">
+              <span className="rounded-full bg-primary/10 px-1.5 py-0 text-[0.6875rem] text-primary tabular-nums">
                 {badge}
               </span>
             )}
@@ -65,14 +68,14 @@ function GeneralSection({
           {description && (
             <p
               title={description}
-              className="mt-0.5 truncate text-xs text-muted-foreground"
+              className="mt-0.5 truncate text-[0.6875rem] leading-3.5 text-muted-foreground"
             >
               {description}
             </p>
           )}
         </div>
       </div>
-      <div className="p-4 sm:p-5">{children}</div>
+      <div className="p-2.5 sm:p-3">{children}</div>
     </section>
   );
 }
@@ -84,14 +87,14 @@ function ReadField({
 }: Readonly<{ label: string; value: ReactNode; icon: LucideIcon }>) {
   useLocale();
   return (
-    <div className="min-w-0 space-y-1.5">
+    <div className="min-w-0 space-y-0.5">
       <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <Icon className="size-3.5 shrink-0" aria-hidden="true" />
         {label}
       </dt>
       <dd
         aria-label={label}
-        className="min-h-5 text-sm font-medium whitespace-pre-wrap wrap-anywhere"
+        className="min-h-4 text-sm font-medium whitespace-pre-wrap wrap-anywhere"
       >
         {value}
       </dd>
@@ -115,14 +118,14 @@ export function TicketGeneral({
     ],
   ].filter(([, value]) => value);
   return (
-    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] xl:grid-rows-[1fr_auto]">
+    <div className="grid min-w-0 grid-cols-1 items-stretch gap-2.5 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] xl:grid-rows-[1fr_auto]">
       <GeneralSection
         title={t("request-detail", "Thông tin yêu cầu")}
         className="xl:col-start-1 xl:row-start-1"
         description={t("request-detail", "Thông tin cơ bản và đơn vị sử dụng")}
         icon={FileText}
       >
-        <dl className="grid min-w-0 grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-6">
+        <dl className="grid min-w-0 grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2 sm:[&>div:nth-child(even)]:border-l sm:[&>div:nth-child(even)]:border-border sm:[&>div:nth-child(even)]:pl-4">
           <ReadField
             label={t("request-detail", "Loại yêu cầu")}
             icon={FileType}
@@ -166,7 +169,7 @@ export function TicketGeneral({
             {t("request-detail", "Tài liệu hướng dẫn")}
           </a>
         )}
-        <dl className="mt-5 space-y-4 border-t border-border pt-4">
+        <dl className="mt-3 space-y-2.5 border-t border-border pt-2.5">
           <ReadField
             label={t("request-detail", "Ghi chú")}
             icon={NotebookPen}
@@ -191,7 +194,7 @@ export function TicketGeneral({
         )}
         icon={UserRound}
       >
-        <dl className="space-y-4 [&>div+div]:border-t [&>div+div]:border-border [&>div+div]:pt-4">
+        <dl className="space-y-2.5 [&>div+div]:border-t [&>div+div]:border-border [&>div+div]:pt-2.5">
           <ReadField
             label={t("request-detail", "Người phê duyệt")}
             icon={UserCheck}

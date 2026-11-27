@@ -209,7 +209,7 @@ function MentionSuggestions({
             role="option"
             aria-selected={index === selected}
             tabIndex={-1}
-            className={`flex min-h-11 w-full min-w-0 flex-col justify-center rounded-md px-3 py-2 text-left text-sm ${index === selected ? "bg-accent text-accent-foreground" : "hover:bg-accent"}`}
+            className={`flex min-h-8 w-full min-w-0 flex-col justify-center rounded-md px-2.5 py-1 text-left text-sm ${index === selected ? "bg-accent text-accent-foreground" : "hover:bg-accent"}`}
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => onChoose(user.username)}
           >

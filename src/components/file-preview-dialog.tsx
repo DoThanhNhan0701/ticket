@@ -221,7 +221,7 @@ function PreviewContent({
     );
   return (
     <div className="flex min-h-40 flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-muted/20 p-6 text-center text-sm text-muted-foreground">
-      <FileText aria-hidden="true" className="size-10" />
+      <FileText aria-hidden="true" className="size-8" />
       <p className="max-w-full break-all font-medium text-foreground">{name}</p>
       <p>
         {t(

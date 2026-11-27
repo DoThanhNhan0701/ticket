@@ -53,7 +53,7 @@ export function SearchInput({
             inputRef.current?.focus();
           }}
           aria-label={t("common", "Clear {0}", [label.toLowerCase()])}
-          className="absolute top-1/2 right-0.5 flex h-11 w-11 sm:h-7 sm:w-7 sm:pointer-coarse:h-11 sm:pointer-coarse:w-11 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          className="absolute top-1/2 right-0.5 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           <X className="h-3.5 w-3.5" aria-hidden="true" />
         </button>

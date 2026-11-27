@@ -24,7 +24,7 @@ export function MobilePageActionSlot() {
   return (
     <div
       ref={context.setTarget}
-      className="flex h-11 shrink-0 items-center gap-2 empty:hidden sm:hidden [&_[data-slot=button]]:size-11 [&_[data-slot=button]]:p-0 [&_svg]:size-4"
+      className="flex h-8 shrink-0 items-center gap-2 empty:hidden sm:hidden [&_[data-slot=button]]:size-8 [&_[data-slot=button]]:p-0 [&_svg]:size-4"
     />
   );
 }

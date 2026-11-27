@@ -30,7 +30,7 @@ export function ReportSummaryCards({
             type="button"
             variant="outline"
             onClick={() => setSelected(label)}
-            className="h-auto min-h-24 min-w-0 flex-col items-start gap-3 p-4 text-left sm:h-auto sm:pointer-coarse:h-auto"
+            className="h-auto min-h-24 min-w-0 flex-col items-start gap-3 p-4 text-left sm:h-auto"
             aria-label={t("reports", "{0}: {1} yêu cầu", [
               t("reports", t("statuses", label)),
               summary.count,

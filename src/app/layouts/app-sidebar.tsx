@@ -76,7 +76,7 @@ function CollapsedSidebarGroup({
                 aria-label={t("layout", group.label)}
                 aria-current={active ? "true" : undefined}
                 className={cn(
-                  "relative size-11 rounded-xl",
+                  "relative size-9 rounded-lg",
                   active
                     ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-xs ring-1 ring-inset ring-sidebar-ring/20 hover:bg-primary-hover"
                     : "ticket-menu-item text-muted-foreground",
@@ -154,7 +154,7 @@ function SidebarLink({
       title={t("layout", page.label)}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex min-h-11 items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring lg:min-h-8.5 lg:pointer-coarse:min-h-11",
+        "flex min-h-8 items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring lg:min-h-8.5",
         active
           ? "bg-sidebar-primary text-sidebar-primary-foreground"
           : "ticket-menu-item text-muted-foreground",
@@ -221,7 +221,7 @@ export function AppSidebar({
               className={cn(
                 "rounded-xl border border-dashed border-sidebar-border bg-muted/30 text-muted-foreground",
                 collapsed
-                  ? "flex size-11 items-center justify-center"
+                  ? "flex size-9 items-center justify-center"
                   : "space-y-3 p-4",
               )}
             >
@@ -281,7 +281,7 @@ export function AppSidebar({
               >
                 <summary
                   className={cn(
-                    "ticket-menu-item flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring lg:min-h-9 lg:pointer-coarse:min-h-11 [&::-webkit-details-marker]:hidden",
+                    "ticket-menu-item flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-sidebar-ring [&::-webkit-details-marker]:hidden",
                     active
                       ? "text-sidebar-accent-foreground"
                       : "text-sidebar-foreground",
@@ -315,7 +315,7 @@ export function AppSidebar({
           size="icon"
           type="button"
           variant="ghost"
-          className="ticket-menu-item h-11 w-full shrink-0 cursor-pointer rounded-none border-0 border-t border-sidebar-border bg-transparent shadow-none focus-visible:ring-inset active:translate-y-0 aria-expanded:bg-transparent"
+          className="ticket-menu-item h-9 w-full shrink-0 cursor-pointer rounded-none border-0 border-t border-sidebar-border bg-transparent shadow-none focus-visible:ring-inset active:translate-y-0 aria-expanded:bg-transparent"
           aria-label={
             collapsed
               ? t("layout", "Mở rộng sidebar")
@@ -370,7 +370,7 @@ export function MobileSidebar({
           <Button
             variant="outline"
             size="icon"
-            className="size-11 border-primary/30 bg-transparent hover:border-primary/50 hover:bg-white/60 lg:hidden"
+            className="size-8 border-primary/30 bg-transparent hover:border-primary/50 hover:bg-white/60 lg:hidden"
             aria-label={t("layout", "Mở menu điều hướng")}
           />
         }
@@ -399,7 +399,7 @@ export function MobileSidebar({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-11 w-11"
+                    className="size-8"
                     aria-label={t("layout", "Đóng menu điều hướng")}
                   />
                 }

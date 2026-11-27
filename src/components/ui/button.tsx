@@ -22,7 +22,7 @@ function Button({
       data-slot="button"
       className={cn(
         buttonVariants({ variant, size, className }),
-        mobileIconOnly && "max-sm:size-11 max-sm:gap-0 max-sm:px-0",
+        mobileIconOnly && "max-sm:size-8 max-sm:gap-0 max-sm:px-0",
       )}
       {...props}
     >

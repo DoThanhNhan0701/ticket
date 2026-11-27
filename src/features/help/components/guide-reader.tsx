@@ -71,7 +71,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
                 aria-label={item.title}
                 title={item.title}
                 aria-current={selected === index ? "page" : undefined}
-                className={`flex min-h-11 min-w-0 w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left text-sm leading-6 transition-colors focus-visible:outline-2 focus-visible:outline-ring ${selected === index ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                className={`flex min-h-8 min-w-0 w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm leading-5 transition-colors focus-visible:outline-2 focus-visible:outline-ring ${selected === index ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
                 onClick={() => selectChapter(String(index + 1))}
               >
                 <span
@@ -140,7 +140,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
               variant="outline"
               disabled={selected === 0}
               onClick={() => selectChapter(String(selected))}
-              className="h-auto min-h-11 justify-start px-3 text-xs whitespace-normal sm:text-sm"
+              className="h-auto min-h-8 justify-start px-2.5 py-1 text-xs whitespace-normal sm:text-sm"
             >
               <ArrowLeft className="size-4" aria-hidden="true" />
               {t("help", "Chương trước")}
@@ -149,7 +149,7 @@ export function GuideReader({ guide }: Readonly<{ guide: GuideDocument }>) {
               variant="outline"
               disabled={selected === guide.chapters.length - 1}
               onClick={() => selectChapter(String(selected + 2))}
-              className="h-auto min-h-11 justify-end px-3 text-xs whitespace-normal sm:text-sm"
+              className="h-auto min-h-8 justify-end px-2.5 py-1 text-xs whitespace-normal sm:text-sm"
             >
               {" "}
               {t("help", "Chương tiếp theo")}{" "}

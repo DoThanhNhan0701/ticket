@@ -15,30 +15,33 @@ export function RequestFormSection({
   children: ReactNode;
 }>) {
   return (
-    <Card data-request-step={step} className="min-w-0 gap-2.5 p-3 sm:p-3.5">
-      <div className="flex min-w-0 items-start justify-between gap-3">
-        <div className="flex min-w-0 flex-1 items-start gap-3">
+    <Card
+      data-request-step={step}
+      className="min-w-0 gap-2 rounded-lg p-2.5 sm:p-3"
+    >
+      <div className="flex min-w-0 items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
           {step !== undefined && (
             <span
               aria-hidden="true"
-              className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-sm font-semibold text-foreground"
+              className="flex size-6 shrink-0 items-center justify-center rounded-md bg-primary/15 text-xs font-semibold text-foreground"
             >
               {step}
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <h2 className="flex min-w-0 items-center gap-2 font-semibold">
+            <h2 className="flex min-w-0 items-center gap-1.5 text-[0.8125rem] leading-4 font-semibold">
               {title}
             </h2>
             {description && (
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-0.5 text-[0.6875rem] leading-3.5 text-muted-foreground">
                 {description}
               </p>
             )}
           </div>
         </div>
         {actions && (
-          <div className="flex shrink-0 items-center gap-2">{actions}</div>
+          <div className="flex shrink-0 items-center gap-1.5">{actions}</div>
         )}
       </div>
       {children}
