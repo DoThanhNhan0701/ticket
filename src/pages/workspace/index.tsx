@@ -136,7 +136,9 @@ export function WorkspacePage({
 
   return (
     <MobilePageActionProvider>
-      <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3">
+      <div
+        className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-3 data-[compact=true]:gap-1"
+      >
         <PageHeader
           title={t("layout", page.label)}
           description={t("layout", page.description)}

@@ -75,26 +75,33 @@ export async function listPage(h: Harness, item: (typeof menu)[number]) {
         await expect(search).toHaveValue("");
       },
     );
-    await h.run(
-      item.module,
-      item.route,
-      "Searchable status dropdown opens, searches, and Escape closes",
-      async () => {
-        await p
-          .getByRole("combobox", { name: "Trạng thái", exact: true })
-          .click();
-        const search = p.getByRole("combobox", {
-          name: "Tìm trạng thái",
-          exact: true,
-        });
-        await search.fill(`NO_OPTION_${h.prefix}`);
-        await expect(
-          p.getByText("Không tìm thấy kết quả.", { exact: true }),
-        ).toBeVisible();
-        await p.keyboard.press("Escape");
-        await expect(p.getByRole("listbox")).toHaveCount(0);
-      },
-    );
+    if (!item.route.includes("/settings/")) {
+      await h.run(
+        item.module,
+        item.route,
+        "Quick status buttons apply immediately and reset to all",
+        async () => {
+          const group = p.getByRole("group", {
+            name: "Trạng thái",
+            exact: true,
+          });
+          const all = group.getByRole("button", {
+            name: "Tất cả",
+            exact: true,
+          });
+          const status = group.getByRole("button", { pressed: false }).first();
+          await expect(all).toHaveAttribute("aria-pressed", "true");
+          await expect(status).toBeVisible();
+          const name = (await status.innerText()).trim();
+          await status.click();
+          await expect(
+            group.getByRole("button", { name, exact: true }),
+          ).toHaveAttribute("aria-pressed", "true");
+          await all.click();
+          await expect(all).toHaveAttribute("aria-pressed", "true");
+        },
+      );
+    }
     await h.run(
       item.module,
       item.route,

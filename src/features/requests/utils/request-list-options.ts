@@ -16,7 +16,7 @@ export function getRequestStatusOptions(
 ) {
   const usesStatusIds = requestListConfig[scope].statusKey === "ticket_status";
   const options = [
-    { value: "all", label: t("request-list", "Tất cả trạng thái") },
+    { value: "all", label: t("request-list", "Tất cả") },
     ...statuses
       .filter(
         (status) =>

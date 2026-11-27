@@ -114,8 +114,8 @@ export function RequestList({
   );
 
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2.5">
-      <div className="contents sm:block sm:shrink-0 sm:space-y-3">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-1">
+      <div className="contents sm:block sm:shrink-0 sm:space-y-1">
         <div className="contents sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <DataSearch
             mobileFilters={{
@@ -125,53 +125,22 @@ export function RequestList({
                   label: t("request-list", "Tìm kiếm yêu cầu"),
                   placeholder: t("request-list", "Nhập từ khóa..."),
                 },
-                {
-                  name: statusKey,
-                  label: t("request-list", "Trạng thái"),
-                  placeholder: t("request-list", "Tất cả trạng thái"),
-                  type: "select",
-                  searchable: true,
-                  options: statusOptions,
-                  isLoading: statuses.isPending,
-                },
                 ...filterFields,
               ],
               initialValues: {
                 ...advancedFilters,
                 searchAll: params.searchAll ?? "",
-                [statusKey]: selectedStatus ?? "all",
               },
               activeCount:
                 countActiveFilters(filterFields, params) +
-                Number(Boolean(params.searchAll)) +
-                Number(Boolean(selectedStatus)),
-              onApply: (filters) =>
-                update({
-                  ...filters,
-                  [statusKey]:
-                    filters[statusKey] === "all"
-                      ? undefined
-                      : filters[statusKey],
-                }),
+                Number(Boolean(params.searchAll)),
+              onApply: (filters) => update(filters),
               onClear: () =>
-                update({}, [
-                  "searchAll",
-                  statusKey,
-                  "typeView",
-                  ...filterNames,
-                ]),
+                update({}, ["searchAll", "typeView", ...filterNames]),
             }}
             label={t("request-list", "Tìm kiếm yêu cầu")}
             resetKey={JSON.stringify(params)}
             initialValue={params.searchAll ?? ""}
-            filter={{
-              label: t("request-list", "Trạng thái"),
-              initialValue: selectedStatus ?? "all",
-              options: statusOptions,
-              loading: statuses.isPending,
-              searchable: true,
-              allOptionValue: "all",
-            }}
             actions={
               <DataFiltersDrawer
                 fields={filterFields}
@@ -184,14 +153,8 @@ export function RequestList({
                 onClear={clearAdvanced}
               />
             }
-            onSearch={(value, status) =>
-              update(
-                {
-                  searchAll: value,
-                  [statusKey]: status === "all" ? undefined : status,
-                },
-                searchFilterNames,
-              )
+            onSearch={(value) =>
+              update({ searchAll: value }, searchFilterNames)
             }
           />
           {hasFilters && (
@@ -206,6 +169,34 @@ export function RequestList({
               {t("request-list", "Xóa lọc")}
             </Button>
           )}
+        </div>
+        <div
+          role="group"
+          aria-label={t("request-list", "Trạng thái")}
+          aria-busy={statuses.isPending}
+          className="flex min-w-0 shrink-0 flex-wrap items-center gap-1"
+        >
+          {statusOptions.map(({ value, label }) => {
+            const active = value === (selectedStatus ?? "all");
+            return (
+              <Button
+                key={value}
+                type="button"
+                size="sm"
+                variant={active ? "default" : "outline"}
+                aria-pressed={active}
+                className="h-auto min-h-7 max-w-full whitespace-normal"
+                onClick={() => {
+                  if (!active)
+                    update({
+                      [statusKey]: value === "all" ? undefined : value,
+                    });
+                }}
+              >
+                {label}
+              </Button>
+            );
+          })}
         </div>
         {statuses.isError && (
           <ErrorToast

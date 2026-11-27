@@ -290,7 +290,7 @@ it.each(pages)(
 );
 
 it.each(pages)(
-  "uses searchable status IDs and ignores unsafe or cross-scope controls on $label",
+  "uses quick status IDs and ignores unsafe or cross-scope controls on $label",
   async ({ path, label, endpoint }) => {
     renderPage(
       `${path}?page=2&typeView=create&ticket_status_name=wrong&ticket_status=unsafe&ticket_type_id=-9&team_id=1,bad&type_option=99&username_create=wrong`,
@@ -302,15 +302,8 @@ it.each(pages)(
       columnSort: "id",
       typeSort: "descend",
     });
-    fireEvent.click(screen.getByRole("combobox", { name: "Trạng thái" }));
-    expect(screen.queryByRole("option", { name: "Trạng thái ẩn" })).toBeNull();
-    fireEvent.change(screen.getByRole("combobox", { name: "Tìm trạng thái" }), {
-      target: { value: "hoan thanh" },
-    });
-    fireEvent.click(await screen.findByRole("option", { name: "Hoàn thành" }));
-    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
-    expect(calls(endpoint)).toHaveLength(1);
-    fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
+    expect(screen.queryByRole("button", { name: "Trạng thái ẩn" })).toBeNull();
     await waitFor(() => expect(params(endpoint).ticket_status).toBe("9"));
     expect(params(endpoint).ticket_status_name).toBeUndefined();
     expect(params(endpoint).page).toBe("1");

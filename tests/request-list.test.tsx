@@ -29,6 +29,8 @@ import {
   requestTypeFixtures,
 } from "./fixtures/requests";
 
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+
 const fetchMock = vi.fn<typeof fetch>();
 const ticket = requestTicketFixture;
 const statuses = requestStatusFixtures;
@@ -509,32 +511,28 @@ it("clears advanced filters from the drawer while preserving quick search and st
   expect(lastParams().title).toBeUndefined();
 });
 
-it("applies a draft status by name only on search and omits the all-status value", async () => {
-  renderList("/requests?page=2");
+it("filters immediately by status name and resets to all with one click", async () => {
+  renderList("/requests?page=2&searchAll=laptop&title=applied");
   await ready();
-  await selectOption("Trạng thái", "Hoàn thành");
-  expect(listCalls()).toHaveLength(1);
-  expect(lastParams()).toMatchObject({ page: "2" });
-  expect(lastParams().ticket_status_name).toBeUndefined();
-  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
   await waitFor(() =>
     expect(lastParams()).toMatchObject({
       page: "1",
       ticket_status_name: "Hoàn thành",
+      searchAll: "laptop",
+      title: "applied",
     }),
   );
-  await ready();
-  await selectOption("Trạng thái", "Tất cả trạng thái");
-  expect(listCalls()).toHaveLength(2);
-  expect(lastParams().ticket_status_name).toBe("Hoàn thành");
-  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  expect(
+    screen.getByRole("button", { name: "Hoàn thành", pressed: true }),
+  ).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Tất cả" }));
   await waitFor(() => expect(lastParams().ticket_status_name).toBeUndefined());
 });
 
-it("submits keyword and status together and restores both from browser history", async () => {
+it("preserves the selected status while searching and restores both from browser history", async () => {
   renderList("/requests?page=2&searchAll=old&ticket_status_name=Đang+xử+lý");
   await ready();
-  await selectOption("Trạng thái", "Hoàn thành");
   fireEvent.change(
     screen.getByRole("searchbox", { name: "Tìm kiếm yêu cầu" }),
     { target: { value: "  laptop  " } },
@@ -545,7 +543,7 @@ it("submits keyword and status together and restores both from browser history",
     expect(lastParams()).toMatchObject({
       page: "1",
       searchAll: "laptop",
-      ticket_status_name: "Hoàn thành",
+      ticket_status_name: "Đang xử lý",
     }),
   );
   await ready();
@@ -556,8 +554,8 @@ it("submits keyword and status together and restores both from browser history",
     ),
   );
   expect(
-    screen.getByRole("combobox", { name: "Trạng thái" }).textContent,
-  ).toContain("Đang xử lý");
+    screen.getByRole("button", { name: "Đang xử lý", pressed: true }),
+  ).toBeTruthy();
   await ready();
   const callsBeforeClear = listCalls().length;
   fireEvent.click(screen.getByRole("button", { name: "Xóa tìm kiếm yêu cầu" }));
@@ -706,10 +704,10 @@ it("keeps tickets visible when the status endpoint fails and retries it independ
   await waitFor(() =>
     expect(screen.queryByText(/Không tải được trạng thái/)).toBeNull(),
   );
-  await selectOption("Trạng thái", "Hoàn thành");
-  expect(listCalls()).toHaveLength(1);
-  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
-  expect(lastParams().ticket_status_name).toBe("Hoàn thành");
+  fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
+  await waitFor(() =>
+    expect(lastParams().ticket_status_name).toBe("Hoàn thành"),
+  );
 });
 
 it("distinguishes loading, empty results and malformed API data", async () => {
@@ -892,10 +890,8 @@ it("submits real status and request-type IDs with all-request advanced fields an
   auth.permissions = { can_allticket: true };
   renderList("/requests/all?typeView=handle");
   await allReady();
-  const before = fetchMock.mock.calls.length;
-  await selectOption("Trạng thái", "Hoàn thành");
-  expect(fetchMock).toHaveBeenCalledTimes(before);
-  fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
+  await waitFor(() => expect(allListParams().ticket_status).toBe("9"));
   await allReady();
   expect(allListParams().ticket_status).toBe("9");
   expect(allListParams().ticket_status_name).toBeUndefined();
@@ -947,8 +943,8 @@ it("submits real status and request-type IDs with all-request advanced fields an
   await allReady();
   expect(allListParams().typeView).toBe("handle");
   expect(
-    screen.getByRole("combobox", { name: "Trạng thái" }).textContent,
-  ).toContain("Hoàn thành");
+    screen.getByRole("button", { name: "Hoàn thành", pressed: true }),
+  ).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Lọc nâng cao" }));
   await screen.findByRole("dialog");
   expect(
@@ -1186,33 +1182,30 @@ it.each(approvalPages)(
     expect(table.getByRole("cell", { name: "101" })).toBeTruthy();
     expect(table.getByText(ticket.username_create)).toBeTruthy();
     expect(screen.queryByRole("link", { name: "Tạo yêu cầu" })).toBeNull();
-    fireEvent.click(screen.getByRole("combobox", { name: "Trạng thái" }));
     expect(
-      await screen.findByRole("option", { name: "Hoàn thành" }),
+      await screen.findByRole("button", { name: "Hoàn thành" }),
     ).toBeTruthy();
     expect(
-      Boolean(screen.queryByRole("option", { name: "Trạng thái ban đầu" })),
+      Boolean(screen.queryByRole("button", { name: "Trạng thái ban đầu" })),
     ).toBe(typeView === "pendingAccept");
-    const completed = screen.getByRole("option", { name: "Hoàn thành" });
-    fireEvent.pointerDown(completed, { pointerType: "mouse" });
-    fireEvent.click(completed);
-    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
     fireEvent.click(table.getByText("Thiết bị"));
     expect(screen.getByTestId("location").textContent).toBe("/requests/42");
   },
 );
 
 it.each(approvalPages)(
-  "applies draft search/status and requester filters to $label, preserving the view on clear and Back",
+  "applies search, status and requester filters to $label, preserving the view on clear and Back",
   async ({ path, label, typeView }) => {
     auth.permissions = { can_accept: true };
     renderList(`${path}?page=2`);
     await ready(label);
-    await selectOption("Trạng thái", "Hoàn thành");
+    fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
+    await waitFor(() =>
+      expect(lastParams().ticket_status_name).toBe("Hoàn thành"),
+    );
     fireEvent.change(screen.getByRole("searchbox"), {
       target: { value: "  Máy & VPN  " },
     });
-    expect(listCalls()).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
     await ready(label);
     expect(lastParams()).toMatchObject({
@@ -1234,7 +1227,7 @@ it.each(approvalPages)(
     expect(screen.queryByLabelText("Người phê duyệt")).toBeNull();
     for (const [name, value] of Object.entries(fields))
       fireEvent.change(screen.getByLabelText(name), { target: { value } });
-    expect(listCalls()).toHaveLength(2);
+    expect(listCalls()).toHaveLength(3);
     fireEvent.click(screen.getByRole("button", { name: "Áp dụng bộ lọc" }));
     await waitFor(() => expect(lastParams().username_create).toBe("Requester"));
     await ready(label);
@@ -1422,7 +1415,7 @@ it.each([
     statusValue: "Hoàn thành",
   })),
 ])(
-  "searches status options without accents on $label and applies the selected value only on submit",
+  "filters immediately using the status value on $label",
   async ({ path, label, statusKey, statusValue }) => {
     auth.permissions = {
       can_view: true,
@@ -1432,31 +1425,11 @@ it.each([
     renderList(`${path}?page=2`);
     await ready(label);
     const readParams = path === "/requests/all" ? allListParams : lastParams;
-    const before = fetchMock.mock.calls.length;
-    fireEvent.click(screen.getByRole("combobox", { name: "Trạng thái" }));
-    const search = screen.getByRole("combobox", { name: "Tìm trạng thái" });
-    fireEvent.change(search, { target: { value: "không có trạng thái này" } });
-    expect(await screen.findByText("Không tìm thấy kết quả.")).toBeTruthy();
-    fireEvent.change(search, { target: { value: "hOAn tHaNh" } });
-    expect(
-      await screen.findByRole("option", { name: "Hoàn thành" }),
-    ).toBeTruthy();
-    expect(screen.queryByRole("option", { name: "Đang xử lý" })).toBeNull();
-    fireEvent.click(screen.getByRole("option", { name: "Hoàn thành" }));
-    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
-    expect(fetchMock).toHaveBeenCalledTimes(before);
-    expect(readParams()[statusKey]).toBeUndefined();
-    expect(readParams().page).toBe("2");
-    fireEvent.click(screen.getByRole("button", { name: "Tìm kiếm" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Hoàn thành" }));
     await waitFor(() => expect(readParams()[statusKey]).toBe(statusValue));
-    await ready(label);
     expect(readParams().page).toBe("1");
     expect(
-      screen
-        .getByRole("combobox", { name: "Trạng thái" })
-        .getAttribute("title"),
-    ).toBe("Hoàn thành");
+      screen.getByRole("button", { name: "Hoàn thành", pressed: true }),
+    ).toBeTruthy();
   },
 );
-
-vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
